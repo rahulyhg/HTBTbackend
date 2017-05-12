@@ -1,0 +1,56 @@
+{
+    "title": "Coupon",
+    "description": "List of Coupon",
+    "pageType": "view",
+    "sendIdWithCreate": true,
+    "urlFields": ["_id"],
+    "fields": [{
+        "name": "Coupon code",
+        "isSort": "",
+        "tableRef": "couponCode"
+    }, {
+        "name": "discount by Percent",
+        "isSort": "",
+        "tableRef": "discountPercent"
+    }, {
+        "name": "discount by Amount",
+        "isSort": "",
+        "tableRef": "discountAmount"
+}
+
+  ],
+    "action": [{
+        "name": "edit",
+        "icon": "fa-pencil",
+        "buttonClass": "btn-primary",
+        "type": "page",
+        "action": "editCoupon",
+        "fieldsToSend": {
+            "_id": "_id"
+        }
+    }, {
+        "name": "delete",
+        "icon": "fa-trash",
+        "buttonClass": "btn-danger",
+        "type": "apiCallConfirm",
+        "title": "Delete Coupon",
+        "content": "Are you sure you want to delete Coupon?",
+        "api": "Coupon/delete",
+        "fieldsToSend": {
+            "name": "_id",
+            "value": "_id"
+        }
+    }],
+    "button": [{
+
+        "name": "Create",
+        "icon": "plus",
+        "class": "btn-success",
+        "type": "page",
+        "action": "createCoupon"
+    }],
+    "apiCall": {
+        "url": "Coupon/search",
+        "params": "_id"
+    }
+}

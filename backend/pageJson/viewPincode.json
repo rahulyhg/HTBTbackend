@@ -1,0 +1,49 @@
+{
+    "title": "Pincode",
+    "description": "List of Pincode",
+    "pageType": "view",
+    "sendIdWithCreate": true,
+    "urlFields": ["_id"],
+    "fields": [{
+        "name": "Pincode",
+        "isSort": "",
+        "tableRef": "pincode"
+  
+}
+
+  ],
+    "action": [{
+        "name": "edit",
+        "icon": "fa-pencil",
+        "buttonClass": "btn-primary",
+        "type": "page",
+        "action": "editPincode",
+        "fieldsToSend": {
+            "_id": "_id"
+        }
+    }, {
+        "name": "delete",
+        "icon": "fa-trash",
+        "buttonClass": "btn-danger",
+        "type": "apiCallConfirm",
+        "title": "Delete Pincode",
+        "content": "Are you sure you want to delete Pincode?",
+        "api": "Pincode/delete",
+        "fieldsToSend": {
+            "name": "_id",
+            "value": "_id"
+        }
+    }],
+    "button": [{
+
+        "name": "Create",
+        "icon": "plus",
+        "class": "btn-success",
+        "type": "page",
+        "action": "createPincode"
+    }],
+    "apiCall": {
+        "url": "Pincode/search",
+        "params": "_id"
+    }
+}

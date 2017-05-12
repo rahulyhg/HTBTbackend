@@ -1,0 +1,5 @@
+apps:
+  - script: "app.js"
+    name: "NodeFramework - 80"
+    watch: false
+    args: "--prod"

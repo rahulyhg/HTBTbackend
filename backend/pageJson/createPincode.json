@@ -1,0 +1,53 @@
+{
+    "title": "Create Pincode",
+    "name": "Pincode",
+    "jsonPage": "viewPincode",
+    "desciption": "",
+    "pageType": "create",
+    "urlFields": ["Pincode"],
+    "fields": [{
+        "name": "Pincode",
+        "type": "text",
+        "tableRef": "pincode",
+        "placeholder": "Enter Pincode",
+        "id": "Pincode",
+        "validation": ["required", "trim", "unique"],
+        "url": ""
+    }, {
+
+       "name": "Days",
+       "type": "tags",
+       "tableRef": "days",
+       "placeholder": "Enter days",
+       "id": "days",
+       "validation": ["", "trim", ""],
+       "url": "",
+       "dropDownField": "",
+       "dropDownType": "multiple",
+       "onView": true,
+       "dropDown": ["Monday","Tuesday","Wednesday","ThursDay","Friday","Saturday","Sunday"]
+
+    }],
+    "action": [{
+        "name": "submit",
+        "action": "submitPincode",
+        "stateName": {
+            "page": "page",
+            "json": {
+                "id": "viewPincode"
+            }
+        }
+    }, {
+        "name": "cancel",
+        "sideMenuRedirect": true,
+        "stateName": {
+            "page": "page",
+            "json": {
+                "id": "viewPincode"
+            }
+        }
+    }],
+    "apiCall": {
+        "url": "Pincode/save"
+    }
+}

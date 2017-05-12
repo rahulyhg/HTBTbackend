@@ -1,0 +1,136 @@
+{
+    "title": "Edit User",
+    "name": "User",
+    "jsonPage": "viewUser",
+    "desciption": "",
+    "pageType": "edit",
+    "urlFields": ["_id"],
+    "fields": [{
+        "name": "Name",
+        "type": "text",
+        "tableRef": "name",
+        "placeholder": "Enter Name",
+        "id": "name",
+        "validation": ["required", "trim", "unique"],
+        "url": ""
+    }, {
+        "name": "Email",
+        "type": "text",
+        "tableRef": "email",
+        "placeholder": "Enter Email",
+        "id": "email",
+        "validation": ["", "trim", "unique"],
+        "url": ""
+    }, {
+        "name": "Establishment Name",
+        "type": "text",
+        "tableRef": "establishmentName",
+        "placeholder": "Enter Establishment Name",
+        "id": "establishmentName",
+        "validation": ["", "trim", "unique"],
+        "url": ""
+    }, {
+        "name": "Establishment Address",
+        "type": "text",
+        "tableRef": "establishmentAddress",
+        "placeholder": "Enter Establishment Address",
+        "id": "establishmentAddress",
+        "validation": ["", "trim", "unique"],
+        "url": ""
+    }, {
+        "name": "Pincode",
+        "type": "text",
+        "tableRef": "pincode",
+        "placeholder": "Enter Pincode",
+        "id": "pincode",
+        "validation": ["", "trim", "unique"],
+        "url": ""
+    }, {
+
+        "name": "Pan Card",
+        "type": "image",
+        "tableRef": "panCard",
+        "placeholder": "Pan Card",
+        "id": "panCard",
+        "view": true,
+        "disabled": true,
+        "url": ""
+    }, {
+        "name": "Adhar Card",
+        "type": "image",
+        "tableRef": "adharCard",
+        "placeholder": "Adhar Card",
+        "id": "adharCard",
+        "view": true,
+        "disabled": true,
+        "url": ""
+    }, {
+
+        "name": "Mobile No.",
+        "type": "text",
+        "tableRef": "mobile",
+        "placeholder": "Enter mobile No.",
+        "id": "mobile",
+        "url": ""
+    }, {
+        "name": "Landline No.",
+        "type": "text",
+        "tableRef": "landLine",
+        "placeholder": "Enter Landline No.",
+        "id": "landLine",
+        "url": ""
+    }, {
+
+        "name": "AccessLevel",
+        "type": "tags",
+        "tableRef": "accessLevel",
+        "placeholder": "Enter Title",
+        "id": "status",
+        "validation": ["", "trim", ""],
+        "url": "",
+        "dropDownField": "",
+        "dropDownType": "single",
+        "onView": true,
+        "dropDown": ["User", "Distributor"]
+    }, {
+       "name": "verification",
+       "type": "tags",
+       "tableRef": "verification",
+       "placeholder": "Enter verification",
+       "id": "verification",
+       "validation": ["", "trim", ""],
+       "url": "",
+       "dropDownField": "",
+       "dropDownType": "single",
+       "onView": true,
+      "dropDown": [true,false]
+    }],
+    "action": [{
+        "name": "submit",
+        "action": "submitUser",
+        "stateName": {
+            "page": "page",
+            "json": {
+                "id": "viewUser"
+            }
+        }
+    }, {
+        "name": "cancel",
+        "sideMenuRedirect": true,
+        "stateName": {
+            "page": "page",
+            "json": {
+                "id": "viewUser"
+            }
+        }
+    }],
+    "apiCall": {
+        "url": "User/save",
+        "params": "_id"
+    },
+    "preApi": {
+        "url": "User/getOne",
+        "params": "_id"
+    }
+
+}

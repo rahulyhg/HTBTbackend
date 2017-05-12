@@ -1,0 +1,70 @@
+{
+    "title": "Create Coupon",
+    "name": "Coupon",
+    "jsonPage": "viewCoupon",
+    "desciption": "",
+    "pageType": "create",
+    "urlFields": ["Coupon"],
+    "fields": [{
+        "name": "couponCode",
+        "type": "text",
+        "tableRef": "couponCode",
+        "placeholder": "Enter couponCode",
+        "id": "couponCode",
+        "validation": ["required", "trim", "unique"],
+        "url": ""
+    }, {
+        "name": "Discount By Percent",
+        "type": "text",
+        "tableRef": "discountPercent",
+        "placeholder": "Enter Discount By Percent",
+        "id": "discountPercent",
+        "validation": ["", "trim", "unique"],
+        "url": ""
+    }, {
+        "name": "Discount By Amount",
+        "type": "text",
+        "tableRef": "discountAmount",
+        "placeholder": "Enter Discount By Amount",
+        "id": "discountAmount",
+        "validation": ["", "trim", "unique"],
+        "url": ""
+        }, {
+           "name": "status",
+           "type": "tags",
+           "tableRef": "status",
+           "placeholder": "Enter status",
+           "id": "status",
+           "validation": ["", "trim", ""],
+           "url": "",
+           "dropDownField": "",
+           "dropDownType": "single",
+           "onView": true,
+          "dropDown": [true,false]
+
+
+
+    }],
+    "action": [{
+        "name": "submit",
+        "action": "submitCoupon",
+        "stateName": {
+            "page": "page",
+            "json": {
+                "id": "viewCoupon"
+            }
+        }
+    }, {
+        "name": "cancel",
+        "sideMenuRedirect": true,
+        "stateName": {
+            "page": "page",
+            "json": {
+                "id": "viewCoupon"
+            }
+        }
+    }],
+    "apiCall": {
+        "url": "Coupon/save"
+    }
+}

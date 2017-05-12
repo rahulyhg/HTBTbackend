@@ -1,0 +1,58 @@
+{
+    "title": "Create Order",
+    "name": "Order",
+    "jsonPage": "viewOrder",
+    "desciption": "",
+    "pageType": "create",
+    "urlFields": ["Order"],
+    "fields": [{
+      "name": "Name",
+      "type": "text",
+      "tableRef": "name",
+      "placeholder": "Enter Name",
+      "id": "name",
+      "validation": ["required", "trim", "unique"],
+      "url": ""
+    }, {
+
+        "name": "Description",
+        "type": "text",
+        "tableRef": "description",
+        "placeholder": "Enter Description",
+        "id": "description",
+        "validation": ["required", "trim", "unique"],
+        "url": ""
+    }, {
+
+        "name": "category Image",
+        "type": "image",
+        "tableRef": "catImage",
+        "placeholder": "category Image",
+        "id": "catImage",
+        "view": true,
+        "disabled": true,
+        "url": ""
+    }],
+    "action": [{
+        "name": "submit",
+        "action": "submitOrder",
+        "stateName": {
+            "page": "page",
+            "json": {
+                "id": "viewOrder"
+            }
+        }
+    }, {
+        "name": "cancel",
+        "sideMenuRedirect": true,
+        "stateName": {
+            "page": "page",
+            "json": {
+                "id": "viewOrder"
+            }
+        }
+    }],
+    "apiCall": {
+        "url": "Order/save"
+    }
+}

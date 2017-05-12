@@ -1,0 +1,63 @@
+{
+    "title": "Edit Categories",
+    "name": "Categories",
+    "jsonPage": "viewCategories",
+    "desciption": "",
+    "pageType": "edit",
+    "urlFields": ["_id"],
+    "fields": [{
+      "name": "Name",
+      "type": "text",
+      "tableRef": "name",
+      "placeholder": "Enter Name",
+      "id": "name",
+      "validation": ["required", "trim", "unique"],
+      "url": ""
+    }, {
+        "name": "Description",
+        "type": "text",
+        "tableRef": "description",
+        "placeholder": "Enter Description",
+        "id": "description",
+        "validation": ["required", "trim", "unique"],
+        "url": ""
+    }, {
+
+        "name": "category Image",
+        "type": "image",
+        "tableRef": "catImage",
+        "placeholder": "category Image",
+        "id": "catImage",
+        "view": true,
+        "disabled": true,
+        "url": ""
+    }],
+    "action": [{
+        "name": "submit",
+        "action": "submitCategories",
+        "stateName": {
+            "page": "page",
+            "json": {
+                "id": "viewCategories"
+            }
+        }
+    }, {
+        "name": "cancel",
+        "sideMenuRedirect": true,
+        "stateName": {
+            "page": "page",
+            "json": {
+                "id": "viewCategories"
+            }
+        }
+    }],
+    "apiCall": {
+        "url": "Categories/save",
+        "params": "_id"
+    },
+    "preApi": {
+        "url": "Categories/getOne",
+        "params": "_id"
+    }
+
+}
