@@ -30,7 +30,7 @@ var schema = new Schema({
     },
     mobile: {
         type: String,
-        default: ""
+        default: "",
     },
     landLine: {
         type: String,

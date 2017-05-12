@@ -1,14 +1,14 @@
 var schema = new Schema({
+
     product: [{
           productId:  {
                 type: Schema.Types.ObjectId,
-                ref: 'product',
+                ref: 'Product',
             },
             productQuantity: {
                 type: String,
             }
         }
-
     ],
     plan: {
         type: String,
@@ -20,6 +20,7 @@ var schema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
     },
+
     balance:String,
     status: String,//processing,confirmed,cancelled,delivered,delay,renew
     addedDate: Date,
@@ -40,7 +41,7 @@ schema.plugin(timestamps);
 
 module.exports = mongoose.model('Order', schema);
 
-var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "Order", "Order"));
+var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "Order", "Orders"));
 var model = {
 
 

@@ -98,7 +98,8 @@ myApp.service('JsonService', function ($http, TemplateService, $state, toastr, $
       }
       if (action && action.type == "page") {
         $state.go("page", sendTo);
-      } else if (action && action.type == "apiCallConfirm") {
+      }
+ else if (action && action.type == "apiCallConfirm") {
         globalfunction.confDel(function (value2) {
           if (value2) {
             NavigationService.delete(action.api, value, function (data) {

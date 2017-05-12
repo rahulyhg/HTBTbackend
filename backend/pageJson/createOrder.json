@@ -6,32 +6,100 @@
     "pageType": "create",
     "urlFields": ["Order"],
     "fields": [{
-      "name": "Name",
-      "type": "text",
-      "tableRef": "name",
-      "placeholder": "Enter Name",
-      "id": "name",
-      "validation": ["required", "trim", "unique"],
-      "url": ""
+        "name": "product",
+        "type": "box",
+        "tableRef": "product",
+        "validation": ["", "trim", ""],
+        "fields": [{
+            "name": "product",
+            "type": "selectFromTable",
+            "tableRef": "productId",
+            "tableValue": "name",
+            "dropDownType": "single",
+            "searchApi": "searchCall",
+            "placeholder": "Enter product",
+            "id": "input1",
+            "onView": true,
+            "validation": ["required", "trim", ""],
+            "url": "Product/search"
+        }, {
+            "name": "product Quantity",
+            "type": "text",
+            "tableRef": "productQuantity",
+            "tableValue": "productQuantity",
+            "placeholder": "Enter product Quantity",
+            "id": "productQuantity",
+            "onView": true,
+            "validation": ["", "trim", ""]
+
+        }]
+
+
+    }, {
+        "name": "plan",
+        "type": "tags",
+        "tableRef": "plan",
+        "placeholder": "Enter plan",
+        "id": "plan",
+        "validation": ["", "trim", ""],
+        "url": "",
+        "dropDownField": "",
+        "dropDownType": "single",
+        "onView": true,
+        "dropDown": ["Monthly", "Quarterly", "Onetime"]
     }, {
 
-        "name": "Description",
-        "type": "text",
-        "tableRef": "description",
-        "placeholder": "Enter Description",
-        "id": "description",
-        "validation": ["required", "trim", "unique"],
+        "name": "Delivery date",
+        "type": "date",
+        "tableRef": "deliverdate",
+        "placeholder": "Enter deliverdate",
+        "id": "deliverdate",
         "url": ""
     }, {
+        "name": "user",
+        "type": "selectFromTable",
+        "tableRef": "user",
+        "tableValue": "user",
+        "dropDownType": "single",
+        "searchApi": "searchCall",
+        "placeholder": "Enter user",
+        "id": "input1",
+        "onView": true,
+        "validation": ["", "trim", ""],
+        "url": "User/search"
+    }, {
 
-        "name": "category Image",
-        "type": "image",
-        "tableRef": "catImage",
-        "placeholder": "category Image",
-        "id": "catImage",
-        "view": true,
-        "disabled": true,
+        "name": "added date",
+        "type": "date",
+        "tableRef": "deliverdate",
+        "placeholder": "Enter deliverdate",
+        "id": "deliverdate",
         "url": ""
+    }, {
+        "name": "status",
+        "type": "tags",
+        "tableRef": "status",
+        "placeholder": "Enter  Status",
+        "id": "status",
+        "validation": ["", "trim", ""],
+        "url": "",
+        "dropDownField": "",
+        "dropDownType": "single",
+        "onView": true,
+        "dropDown": ["Processing", "Confirmed","Cancelled","Delivered","delay"]
+    }, {
+        "name": "Payment status",
+        "type": "tags",
+        "tableRef": "PaymentStatus",
+        "placeholder": "Enter Payment Status",
+        "id": "PaymentStatus",
+        "validation": ["", "trim", ""],
+        "url": "",
+        "dropDownField": "",
+        "dropDownType": "single",
+        "onView": true,
+        "dropDown": ["paid", "unpaid"]
+
     }],
     "action": [{
         "name": "submit",
@@ -53,6 +121,6 @@
         }
     }],
     "apiCall": {
-        "url": "Order/save"
+        "url": "order/save"
     }
 }

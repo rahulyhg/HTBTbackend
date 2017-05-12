@@ -2927,6 +2927,8 @@ html[xmlns] .flexslider .slides {
   position: absolute;
   top: 0;
   left: 0;
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
   z-index: 8020; }
 
 .fancybox-skin {
@@ -2968,7 +2970,7 @@ html[xmlns] .flexslider .slides {
   max-height: 100%; }
 
 #fancybox-loading, .fancybox-close, .fancybox-prev span, .fancybox-next span {
-  background-image: url("fancybox_sprite.png"); }
+  background-image: url(fancybox_sprite.png); }
 
 #fancybox-loading {
   position: fixed;
@@ -2984,7 +2986,7 @@ html[xmlns] .flexslider .slides {
 #fancybox-loading div {
   width: 44px;
   height: 44px;
-  background: url("fancybox_loading.gif") center center no-repeat; }
+  background: url(fancybox_loading.gif) center center no-repeat; }
 
 .fancybox-close {
   position: absolute;
@@ -3002,7 +3004,7 @@ html[xmlns] .flexslider .slides {
   height: 100%;
   cursor: pointer;
   text-decoration: none;
-  background: transparent url("blank.gif");
+  background: transparent url(blank.gif);
   /* helps IE */
   -webkit-tap-highlight-color: transparent;
   z-index: 8040; }
@@ -3038,14 +3040,13 @@ html[xmlns] .flexslider .slides {
   position: absolute;
   top: -99999px;
   left: -99999px;
-  visibility: hidden;
   max-width: 99999px;
   max-height: 99999px;
   overflow: visible !important; }
 
 /* Overlay helper */
 .fancybox-lock {
-  overflow: hidden !important;
+  overflow: visible !important;
   width: auto; }
 
 .fancybox-lock body {
@@ -3061,7 +3062,7 @@ html[xmlns] .flexslider .slides {
   overflow: hidden;
   display: none;
   z-index: 8010;
-  background: url("fancybox_overlay.png"); }
+  background: url(fancybox_overlay.png); }
 
 .fancybox-overlay-fixed {
   position: fixed;
@@ -3125,11 +3126,11 @@ html[xmlns] .flexslider .slides {
 /*Retina graphics!*/
 @media only screen and (-webkit-min-device-pixel-ratio: 1.5), only screen and (min--moz-device-pixel-ratio: 1.5), only screen and (min-device-pixel-ratio: 1.5) {
   #fancybox-loading, .fancybox-close, .fancybox-prev span, .fancybox-next span {
-    background-image: url("fancybox_sprite@2x.png");
+    background-image: url(fancybox_sprite@2x.png);
     background-size: 44px 152px;
     /*The size of the normal image, half the size of the hi-res image*/ }
   #fancybox-loading div {
-    background-image: url("fancybox_loading@2x.gif");
+    background-image: url(fancybox_loading@2x.gif);
     background-size: 24px 24px;
     /*The size of the normal image, half the size of the hi-res image*/ } }
 

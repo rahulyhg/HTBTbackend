@@ -10,6 +10,18 @@ var schema = new Schema({
     price: {
         type: String,
     },
+    commission: {
+        type: String,
+    },
+    goldCommission: {
+        type: String,
+    },
+    silverCommission: {
+        type: String,
+    },
+    platinumCommission: {
+        type: String,
+    },
     priceList: [{
         startRange: String,
         endRange: String,

@@ -60,6 +60,11 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
             templateUrl: "views/login.html",
             controller: 'LoginCtrl'
         })
+      //   .state('createOrder', {
+      //      url: "/createOrder/:id/{page:.*}/{keyword:.*}",
+      //      templateUrl: "views/template.html",
+      //     controller: 'createOrderCtrl',
+      // })
 
         .state('country-list', {
             url: "/country-list/{page:.*}/{keyword:.*}",

@@ -21,6 +21,39 @@
       "id": "price",
       "validation": ["required", "trim", "unique"],
       "url": ""
+
+    }, {
+      "name": "commission",
+      "type": "text",
+      "tableRef": "commission",
+      "placeholder": "Enter commission",
+      "id": "commission",
+      "validation": ["", "trim", "unique"],
+      "url": ""
+  }, {
+      "name": "Gold commission",
+      "type": "text",
+      "tableRef": "goldCommission",
+      "placeholder": "Enter commission",
+      "id": "goldCommission",
+      "validation": ["", "trim", "unique"],
+      "url": ""
+  }, {
+      "name": "Silver commission",
+      "type": "text",
+      "tableRef": "silverCommission",
+      "placeholder": "Enter Silver commission",
+      "id": "silverCommission",
+      "validation": ["", "trim", "unique"],
+      "url": ""
+  }, {
+      "name": "Platinum commission",
+      "type": "text",
+      "tableRef": "platinumCommission",
+      "placeholder": "Enter Platinum commission",
+      "id": "platinumCommission",
+      "validation": ["", "trim", "unique"],
+      "url": ""
   }, {
        "name": "Category",
        "type": "selectFromTable",
