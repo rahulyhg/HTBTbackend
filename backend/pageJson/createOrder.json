@@ -30,7 +30,7 @@
     "onView": true,
     "dropDown": ["customer", "self"]
 }, {
-    "name": "customer",
+    "name": "customer(optional)",
     "type": "selectFromTable",
     "tableRef": "customer",
     "tableValue": "customer",
@@ -92,7 +92,7 @@
         "id": "deliverdate",
         "url": ""
     }, {
-        
+
 
         "name": "added date",
         "type": "readonly",
