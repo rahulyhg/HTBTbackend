@@ -39,4 +39,41 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
         apiService.getDemo($scope.formData, function (data) {
             console.log(data);
         });
+    })
+
+    .controller('SignUpCtrl', function ($scope, TemplateService, apiService, NavigationService, $timeout) {
+        $scope.template = TemplateService.getHTML("content/signup.html");
+        TemplateService.title = "Sign Up"; //This is the Title of the Website
+        apiService.getDemo($scope.formData, function (data) {
+            console.log(data);
+        });
+    })
+
+ .controller('ReviewCtrl', function ($scope, TemplateService, apiService, NavigationService, $uibModal, $timeout) {
+        $scope.template = TemplateService.getHTML("content/review.html");
+        TemplateService.title = "Review"; //This is the Title of the Website
+        apiService.getDemo($scope.formData, function (data) {
+            console.log(data);
+        });
+
+        $scope.terms = function(){
+            $uibModal.open({
+                animation:true,
+                templateUrl:"views/terms.html",
+                // $scope:scope
+            })
+            // $scope.template = TemplateService.getHTML("/terms.html");
+        }
+    })
+
+    .controller('headerctrl', function($scope, TemplateService) {
+    $scope.template = TemplateService;
+    $scope.$on('$stateChangeSuccess', function(event, toState, toParams, fromState, fromParams) {
+        $(window).scrollTop(0);
     });
+    $scope.status = {
+            isCustomHeaderOpen: false,
+            isFirstOpen: true,
+            isFirstDisabled: false
+        };
+});
