@@ -1,0 +1,60 @@
+{
+    "title": "OtherProduct",
+    "description": "List of OtherProducts",
+    "pageType": "view",
+    "sendIdWithCreate": true,
+    "urlFields": ["_id"],
+    "fields": [{
+        "name": "Name",
+        "isSort": "",
+        "tableRef": "name"
+    }, {
+        "name": "price",
+        "isSort": "",
+        "tableRef": "price"
+    }, {
+        "name": "Small Image",
+        "isSort": "",
+        "tableRef": "smallImage",
+        "type":"image"
+    }, {
+        "name": "Big Image",
+        "isSort": "",
+        "tableRef": "bigImage",
+        "type":"image"
+    }],
+    "action": [{
+        "name": "edit",
+        "icon": "fa-pencil",
+        "buttonClass": "btn-primary",
+        "type": "page",
+        "action": "editOtherProduct",
+        "fieldsToSend": {
+            "_id": "_id"
+        }
+    }, {
+        "name": "delete",
+        "icon": "fa-trash",
+        "buttonClass": "btn-danger",
+        "type": "apiCallConfirm",
+        "title": "Delete OtherProduct",
+        "content": "Are you sure you want to delete OtherProduct?",
+        "api": "OtherProduct/delete",
+        "fieldsToSend": {
+            "name": "_id",
+            "value": "_id"
+        }
+    }],
+    "button": [{
+
+        "name": "Create",
+        "icon": "plus",
+        "class": "btn-success",
+        "type": "page",
+        "action": "createOtherProduct"
+    }],
+    "apiCall": {
+        "url": "OtherProduct/search",
+        "params": "_id"
+    }
+}

@@ -22,93 +22,93 @@
         "validation": ["required", "trim", "unique"],
         "url": ""
     }, {
-      "name": "commission",
-      "type": "text",
-      "tableRef": "commission",
-      "placeholder": "Enter commission",
-      "id": "commission",
-      "validation": ["", "trim", "unique"],
-      "url": ""
-  }, {
-      "name": "Gold commission",
-      "type": "text",
-      "tableRef": "goldCommission",
-      "placeholder": "Enter commission",
-      "id": "goldCommission",
-      "validation": ["", "trim", "unique"],
-      "url": ""
-  }, {
-      "name": "Silver commission",
-      "type": "text",
-      "tableRef": "silverCommission",
-      "placeholder": "Enter Silver commission",
-      "id": "silverCommission",
-      "validation": ["", "trim", "unique"],
-      "url": ""
-  }, {
-      "name": "Platinum commission",
-      "type": "text",
-      "tableRef": "platinumCommission",
-      "placeholder": "Enter Platinum commission",
-      "id": "platinumCommission",
-      "validation": ["", "trim", "unique"],
-      "url": ""
-  }, {
-       "name": "Category",
-       "type": "selectFromTable",
-       "tableRef": "category",
-       "dropDownType": "single",
-       "searchApi": "searchCall",
-       "placeholder": "Enter Category",
-       "id": "input1",
-       "validation": ["", "trim", ""],
-       "url": "Categories/search"
-   }, {
-     "name": "priceList",
-      "type": "box",
-      "tableRef": "priceList",
-      "validation": ["", "trim", ""],
-      "fields": [{
-              "name": "Start Range",
-              "type": "text",
-              "tableRef": "startRange",
-              "tableValue": "startRange",
-              "placeholder": "Enter Start Range",
-              "id": "startRange",
-              "onView": true,
-              "validation": ["", "trim", ""]
-          }, {
-              "name": "End Range",
-              "type": "text",
-              "tableRef": "endRange",
-              "tableValue": "endRange",
-              "placeholder": "Enter End Range",
-              "id": "endRange",
-              "onView": true,
-              "validation": ["", "trim", ""]
-          }, {
-              "name": "Final Price",
-              "type": "text",
-              "tableRef": "finalPrice",
-              "tableValue": "finalPrice",
-              "placeholder": "Enter Final Price",
-              "id": "finalPrice",
-              "onView": true,
-              "validation": ["", "trim", ""]
-          }]
-          }, {
-       "name": "Subscription",
-       "type": "tags",
-       "tableRef": "subscription",
-       "placeholder": "Enter Subscription",
-       "id": "subscription",
-       "validation": ["", "trim", ""],
-       "url": "",
-       "dropDownField": "",
-       "dropDownType": "single",
-       "onView": true,
-      "dropDown": [true,false]
-   }, {
+        "name": "commission",
+        "type": "text",
+        "tableRef": "commission",
+        "placeholder": "Enter commission",
+        "id": "commission",
+        "validation": ["", "trim", "unique"],
+        "url": ""
+    }, {
+        "name": "Gold commission",
+        "type": "text",
+        "tableRef": "goldCommission",
+        "placeholder": "Enter commission",
+        "id": "goldCommission",
+        "validation": ["", "trim", "unique"],
+        "url": ""
+    }, {
+        "name": "Silver commission",
+        "type": "text",
+        "tableRef": "silverCommission",
+        "placeholder": "Enter Silver commission",
+        "id": "silverCommission",
+        "validation": ["", "trim", "unique"],
+        "url": ""
+    }, {
+        "name": "Platinum commission",
+        "type": "text",
+        "tableRef": "platinumCommission",
+        "placeholder": "Enter Platinum commission",
+        "id": "platinumCommission",
+        "validation": ["", "trim", "unique"],
+        "url": ""
+    }, {
+        "name": "Category",
+        "type": "selectFromTable",
+        "tableRef": "category",
+        "dropDownType": "single",
+        "searchApi": "searchCall",
+        "placeholder": "Enter Category",
+        "id": "input1",
+        "validation": ["", "trim", ""],
+        "url": "Categories/search"
+    }, {
+        "name": "priceList",
+        "type": "box",
+        "tableRef": "priceList",
+        "validation": ["", "trim", ""],
+        "fields": [{
+            "name": "Start Range",
+            "type": "text",
+            "tableRef": "startRange",
+            "tableValue": "startRange",
+            "placeholder": "Enter Start Range",
+            "id": "startRange",
+            "onView": true,
+            "validation": ["", "trim", ""]
+        }, {
+            "name": "End Range",
+            "type": "text",
+            "tableRef": "endRange",
+            "tableValue": "endRange",
+            "placeholder": "Enter End Range",
+            "id": "endRange",
+            "onView": true,
+            "validation": ["", "trim", ""]
+        }, {
+            "name": "Final Price",
+            "type": "text",
+            "tableRef": "finalPrice",
+            "tableValue": "finalPrice",
+            "placeholder": "Enter Final Price",
+            "id": "finalPrice",
+            "onView": true,
+            "validation": ["", "trim", ""]
+        }]
+    }, {
+        "name": "Subscription",
+        "type": "tags",
+        "tableRef": "subscription",
+        "placeholder": "Enter Subscription",
+        "id": "subscription",
+        "validation": ["", "trim", ""],
+        "url": "",
+        "dropDownField": "",
+        "dropDownType": "single",
+        "onView": true,
+        "dropDown": [true, false]
+    }, {
         "name": "Big Image",
         "type": "image",
         "tableRef": "bigImage",
@@ -127,30 +127,33 @@
         "disabled": true,
         "url": ""
     }, {
-     "name": "Amount Deposit",
-     "type": "number",
-     "tableRef": "AmtDeposit",
-     "placeholder": "Enter Amount Deposit",
-     "id": "AmtDeposit",
-     "validation": ["", "trim", "unique"],
-     "url": ""
+        "name": "Amount Deposit",
+        "type": "number",
+        "tableRef": "AmtDeposit",
+        "placeholder": "Enter Amount Deposit",
+        "id": "AmtDeposit",
+        "validation": ["", "trim", "unique"],
+        "onView": true,
+        "url": ""
     }, {
-      "name": "Quantity",
-      "type": "number",
-      "tableRef": "quantity",
-      "placeholder": "Enter Quantity",
-      "id": "quantity",
-      "validation": ["", "trim", "unique"],
-      "url": ""
-     }, {
-     "name": "Applicable Before",
-     "type": "number",
-     "tableRef": "applicableBefore",
-     "placeholder": "Enter Applicable Before",
-     "id": "applicableBefore",
-     "validation": ["", "trim", "unique"],
-     "url": ""
-     }, {
+        "name": "Quantity",
+        "type": "text",
+        "tableRef": "quantity",
+        "placeholder": "Enter Quantity",
+        "id": "quantity",
+        "validation": ["", "trim", "unique"],
+        "onView": true,
+        "url": ""
+    }, {
+        "name": "Applicable Before",
+        "type": "text",
+        "tableRef": "applicableBefore",
+        "placeholder": "Enter Applicable Before",
+        "id": "applicableBefore",
+        "validation": ["", "trim", "unique"],
+        "onView": true,
+        "url": ""
+    }, {
         "name": "Featured Product",
         "type": "tags",
         "tableRef": "featuredProduct",
@@ -161,7 +164,7 @@
         "dropDownField": "",
         "dropDownType": "single",
         "onView": true,
-       "dropDown": [true,false]
+        "dropDown": [true, false]
     }],
     "action": [{
         "name": "submit",

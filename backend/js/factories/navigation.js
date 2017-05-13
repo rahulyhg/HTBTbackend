@@ -12,11 +12,11 @@ myApp.factory('NavigationService', function ($http) {
         sref: "#/page/viewUser//",
         icon: "phone"
     },{
-        name: "Customer",
-        classis: "active",
-        sref: "#/page/viewCustomer//",
-        icon: "phone"
-    },{
+    //     name: "Customer",
+    //     classis: "active",
+    //     sref: "#/page/viewCustomer//",
+    //     icon: "phone"
+    // },{
         name: "Categories",
         classis: "active",
         sref: "#/page/viewCategories//",
@@ -25,6 +25,11 @@ myApp.factory('NavigationService', function ($http) {
         name: "Products",
         classis: "active",
         sref: "#/page/viewProduct//",
+        icon: "phone"
+    },{
+        name: "Other Products",
+        classis: "active",
+        sref: "#/page/viewOtherProduct//",
         icon: "phone"
     },{
         name: "Pincode",

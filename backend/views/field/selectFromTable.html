@@ -5,5 +5,4 @@
     <multiple-select name="{{type.tableRef}}" required filter='{"{{type.filterField}}":"{{formData[type.filterValue]}}"}' ng-model="formData[type.tableRef]"
         ng-name="formData[type.tableRef+'nameOnly']" url="{{type.url}}" api="{{type.searchApi}}" ng-if="type.filterField" ng-disabled="type.disabled"></multiple-select>
     <div class="error-msg" ng-show="detailForm[type.tableRef].$invalid">Please Select {{type.name}}</div>
-{{formData}}
 </div>

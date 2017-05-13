@@ -64,13 +64,12 @@
         "searchApi": "searchCall",
         "placeholder": "Enter user",
         "id": "input1",
-        "onView": true,
         "validation": ["", "trim", ""],
         "url": "User/search"
     }, {
 
         "name": "added date",
-        "type": "date",
+        "type": "readonly",
         "tableRef": "deliverdate",
         "placeholder": "Enter deliverdate",
         "id": "deliverdate",
@@ -86,7 +85,6 @@
         "dropDownField": "",
         "default":"Processing",
         "dropDownType": "single",
-        "onView": true,
         "dropDown": ["Processing", "Confirmed","Cancelled","Delivered","delay"]
     }, {
         "name": "Payment status",
@@ -96,9 +94,9 @@
         "id": "PaymentStatus",
         "validation": ["", "trim", ""],
         "url": "",
+        "default":"unpaid",
         "dropDownField": "",
         "dropDownType": "single",
-        "onView": true,
         "dropDown": ["paid", "unpaid"]
 
     }],

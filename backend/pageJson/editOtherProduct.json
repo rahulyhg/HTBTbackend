@@ -1,0 +1,84 @@
+{
+    "title": "Edit OtherProduct",
+    "name": "OtherProduct",
+    "jsonPage": "viewOtherProduct",
+    "desciption": "",
+    "pageType": "edit",
+    "urlFields": ["_id"],
+    "fields": [{
+        "name": "Name",
+        "type": "text",
+        "tableRef": "name",
+        "placeholder": "Enter Name",
+        "id": "name",
+        "validation": ["required", "trim", "unique"],
+        "url": ""
+    }, {
+        "name": "Price",
+        "type": "text",
+        "tableRef": "price",
+        "placeholder": "Enter price",
+        "id": "price",
+        "validation": ["required", "trim", "unique"],
+        "url": ""
+    }, {
+
+        "name": "Big Image",
+        "type": "image",
+        "tableRef": "bigImage",
+        "placeholder": "Big Image",
+        "id": "bigImage",
+        "view": true,
+        "disabled": true,
+        "url": ""
+    }, {
+        "name": "Small Card",
+        "type": "image",
+        "tableRef": "smallImage",
+        "placeholder": "Small Card",
+        "id": "smallImage",
+        "view": true,
+        "disabled": true,
+        "url": ""
+      },{
+        "name": "Quantity",
+        "type": "text",
+        "tableRef": "quantity",
+        "placeholder": "Enter Quantity",
+        "id": "quantity",
+        "validation": ["", "trim", "unique"],
+        "onView": true,
+        "url": ""
+
+
+
+    }],
+    "action": [{
+        "name": "submit",
+        "action": "submitOtherProduct",
+        "stateName": {
+            "page": "page",
+            "json": {
+                "id": "viewOtherProduct"
+            }
+        }
+    }, {
+        "name": "cancel",
+        "sideMenuRedirect": true,
+        "stateName": {
+            "page": "page",
+            "json": {
+                "id": "viewOtherProduct"
+            }
+        }
+    }],
+    "apiCall": {
+        "url": "OtherProduct/save",
+        "params": "_id"
+    },
+    "preApi": {
+        "url": "OtherProduct/getOne",
+        "params": "_id"
+    }
+
+}

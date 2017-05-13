@@ -44,11 +44,19 @@ var schema = new Schema({
         type: String,
         default: ""
     },
+    deposit: {
+        type: String,
+        default: ""
+    },
     accessLevel: {
         type: String,
         enum: ['Customer', 'Distributor']
     },
     verification: {
+        type: Boolean,
+        default:false
+    },
+    suspend: {
         type: Boolean,
         default:false
     },

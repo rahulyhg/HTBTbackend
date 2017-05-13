@@ -14,7 +14,7 @@
           "fields": [{
               "name": "product",
               "type": "selectFromTable",
-              "tableRef": "name",
+              "tableRef": "product",
               "tableValue": "name",
               "dropDownType": "single",
               "searchApi": "searchCall",
@@ -101,7 +101,7 @@
           "dropDownField": "",
           "dropDownType": "single",
           "onView": true,
-          "dropDown": ["paid", "unpaid"]
+          "dropDown": ["Paid", "Unpaid"]
 
     }],
     "action": [{

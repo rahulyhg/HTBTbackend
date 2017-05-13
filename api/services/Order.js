@@ -1,10 +1,11 @@
 var schema = new Schema({
 
     product: [{
-          productId:  {
+          product:  {
                 type: Schema.Types.ObjectId,
                 ref: 'Product',
             },
+            "product-nameOnly":String,
             productQuantity: {
                 type: String,
             }
@@ -20,7 +21,12 @@ var schema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
     },
-
+    "user-nameOnly":String,
+    paymentStatus:{
+          type:String,
+          enum:['Paid', 'Unpaid'],
+          default:"Unpaid"
+        },
     balance:String,
     totalAmount:{
       type:String
@@ -31,11 +37,7 @@ var schema = new Schema({
       default:"Processing"
     },
     addedDate: Date,
-    paymentStatus:{
-          type:String,
-          enum:['Paid', 'Unpaid'],
-          default:"Unpaid"
-        },
+
 
 
 });
@@ -52,7 +54,7 @@ schema.plugin(timestamps);
 
 module.exports = mongoose.model('Order', schema);
 
-var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "Order", "Orders"));
+var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user", "user"));
 var model = {
 
 

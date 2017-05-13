@@ -1,7 +1,7 @@
 {
-    "title": "Edit Pincode",
-    "name": "Pincode",
-    "jsonPage": "viewPincode",
+    "title": "Edit Coupon",
+    "name": "Coupon",
+    "jsonPage": "viewCoupon",
     "desciption": "",
     "pageType": "edit",
     "urlFields": ["_id"],
@@ -47,11 +47,11 @@
     }],
     "action": [{
         "name": "submit",
-        "action": "submitPincode",
+        "action": "submitCoupon",
         "stateName": {
             "page": "page",
             "json": {
-                "id": "viewPincode"
+                "id": "viewCoupon"
             }
         }
     }, {
@@ -60,16 +60,16 @@
         "stateName": {
             "page": "page",
             "json": {
-                "id": "viewPincode"
+                "id": "viewCoupon"
             }
         }
     }],
     "apiCall": {
-        "url": "Pincode/save",
+        "url": "Coupon/save",
         "params": "_id"
     },
     "preApi": {
-        "url": "Pincode/getOne",
+        "url": "Coupon/getOne",
         "params": "_id"
     }
 

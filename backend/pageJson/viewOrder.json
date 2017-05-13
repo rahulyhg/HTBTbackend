@@ -5,6 +5,11 @@
     "sendIdWithCreate": true,
     "urlFields": ["_id"],
     "fields": [{
+      "name": "user",
+      "isSort": "",
+      "tableRef": "user",
+      "type":"selectFromTable"
+    },{
       "name": "Deliver date",
       "isSort": "",
       "tableRef": "deliverdate",

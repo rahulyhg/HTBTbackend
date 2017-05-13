@@ -46,6 +46,30 @@
         "validation": ["", "trim", "unique"],
         "url": ""
     }, {
+        "name": "Deposit",
+        "type": "text",
+        "tableRef": "deposit",
+        "placeholder": "Enter Deposit",
+        "id": "deposit",
+        "validation": ["", "trim", "unique"],
+        "url": ""
+    }, {
+        "name": "Earnings",
+        "type": "text",
+        "tableRef": "earnings",
+        "placeholder": "Enter Earnings",
+        "id": "earnings",
+        "validation": ["", "trim", "unique"],
+        "url": ""
+    }, {
+        "name": "Last Month Earnings",
+        "type": "text",
+        "tableRef": "lastMonthEarnings",
+        "placeholder": "Enter Last Month Earnings",
+        "id": "lastMonthEarnings",
+        "validation": ["", "trim", "unique"],
+        "url": ""
+    }, {
 
         "name": "Pan Card",
         "type": "image",
@@ -104,6 +128,19 @@
        "dropDownType": "single",
        "onView": true,
       "dropDown": [true,false]
+    },{
+      "name": "Suspend",
+      "type": "tags",
+      "tableRef": "suspend",
+      "placeholder": "Enter suspend",
+      "id": "suspend",
+      "validation": ["", "trim", ""],
+      "url": "",
+      "dropDownField": "",
+      "dropDownType": "single",
+      "onView": true,
+     "dropDown": [true,false]
+
     }],
     "action": [{
         "name": "submit",

@@ -104,6 +104,18 @@
        "dropDownType": "single",
        "onView": true,
       "dropDown": [true,false]
+  }, {
+       "name": "Suspend",
+       "type": "tags",
+       "tableRef": "suspend",
+       "placeholder": "Enter suspend",
+       "id": "suspend",
+       "validation": ["", "trim", ""],
+       "url": "",
+       "dropDownField": "",
+       "dropDownType": "single",
+       "onView": true,
+      "dropDown": [true,false]
     }],
     "action": [{
         "name": "submit",
