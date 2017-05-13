@@ -84,6 +84,7 @@
         "validation": ["", "trim", ""],
         "url": "",
         "dropDownField": "",
+        "default":"Processing",
         "dropDownType": "single",
         "onView": true,
         "dropDown": ["Processing", "Confirmed","Cancelled","Delivered","delay"]

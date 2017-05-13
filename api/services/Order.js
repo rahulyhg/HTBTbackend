@@ -22,9 +22,20 @@ var schema = new Schema({
     },
 
     balance:String,
-    status: String,//processing,confirmed,cancelled,delivered,delay,renew
+    totalAmount:{
+      type:String
+    },
+    status: {
+      type:String,
+      enum:['Processing', 'Confirmed','Cancelled','Delivered','delay'],
+      default:"Processing"
+    },
     addedDate: Date,
-    paymentStatus:String //paid,unpaid
+    paymentStatus:{
+          type:String,
+          enum:['Paid', 'Unpaid'],
+          default:"Unpaid"
+        },
 
 
 });

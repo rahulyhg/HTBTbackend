@@ -91,7 +91,7 @@
         "dropDownField": "",
         "dropDownType": "single",
         "onView": true,
-        "dropDown": ["User", "Distributor"]
+        "dropDown": ["Customer", "Distributor"]
     }, {
        "name": "verification",
        "type": "tags",

@@ -100,6 +100,26 @@ var model = {
         });
     },
 
+    getAllCategoryProduct: function (data, callback) {
+        console.log("data", data)
+        Product.find({
+          category: data.category
+        }).exec(function (err, found) {
+            if (err) {
+                callback(err, null);
+            } else {
+                if (found) {
+                    callback(null, found);
+                } else {
+                    callback({
+                        message: "Incorrect Credentials!"
+                    }, null);
+                }
+            }
+
+        });
+    },
+
 
 
 
