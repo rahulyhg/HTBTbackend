@@ -5,19 +5,24 @@
     "sendIdWithCreate": true,
     "urlFields": ["_id"],
     "fields": [{
-        "name": "Name",
-        "isSort": "",
-        "tableRef": "name"
-    }, {
-        "name": "Description",
-        "isSort": "",
-        "tableRef": "description"
-    }, {
-        "name": "category Image",
-        "isSort": "",
-        "tableRef": "catImage",
-        "type":"image"
-    }],
+      "name": "User name",
+      "isSort": "",
+      "tableRef": "user",
+      "type":"selectFromTable"
+    },{
+      "name": "Deliver date",
+      "isSort": "",
+      "tableRef": "deliverdate",
+      "type":"date"
+    },{
+      "name": "Status",
+      "isSort": "",
+      "tableRef": "status"
+    },{
+      "name": "Payment Status",
+      "isSort": "",
+      "tableRef": "paymentStatus"
+      }],
     "action": [{
         "name": "edit",
         "icon": "fa-pencil",

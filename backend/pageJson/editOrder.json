@@ -5,44 +5,128 @@
     "desciption": "",
     "pageType": "edit",
     "urlFields": ["_id"],
-    "fields": [{
-      "name": "couponCode",
-      "type": "text",
-      "tableRef": "couponCode",
-      "placeholder": "Enter couponCode",
-      "id": "couponCode",
-      "validation": ["required", "trim", "unique"],
-      "url": ""
+
+      "fields": [{
+        "name": "user",
+        "type": "selectFromTable",
+        "tableRef": "user",
+        "tableValue": "user",
+        "dropDownType": "single",
+        "searchApi": "searchCall",
+        "placeholder": "Enter user",
+        "id": "input1",
+        "onView": true,
+        "validation": ["", "trim", ""],
+        "url": "User/search"
+    }, {
+      "name": "order For ",
+      "type": "tags",
+      "tableRef": "orderFor",
+      "placeholder": "Enter Order For",
+      "id": "orderFor",
+      "validation": ["", "trim", ""],
+      "url": "",
+      "dropDownField": "",
+      "dropDownType": "single",
+      "onView": true,
+      "dropDown": ["customer", "self"]
   }, {
-      "name": "Discount By Percent",
-      "type": "text",
-      "tableRef": "discountPercent",
-      "placeholder": "Enter Discount By Percent",
-      "id": "discountPercent",
-      "validation": ["", "trim", "unique"],
-      "url": ""
+      "name": "customer",
+      "type": "selectFromTable",
+      "tableRef": "customer",
+      "tableValue": "customer",
+      "dropDownType": "single",
+      "searchApi": "searchCall",
+      "placeholder": "Enter user",
+      "id": "input1",
+      "onView": true,
+      "validation": ["", "trim", ""],
+      "url": "User/search"
   }, {
-      "name": "Discount By Amount",
-      "type": "text",
-      "tableRef": "discountAmount",
-      "placeholder": "Enter Discount By Amount",
-      "id": "discountAmount",
-      "validation": ["", "trim", "unique"],
-      "url": ""
+          "name": "product",
+          "type": "box",
+          "tableRef": "product",
+          "validation": ["", "trim", ""],
+          "fields": [{
+              "name": "product",
+              "type": "selectFromTable",
+              "tableRef": "product",
+              "tableValue": "name",
+              "dropDownType": "single",
+              "searchApi": "searchCall",
+              "placeholder": "Enter product",
+              "id": "input1",
+              "onView": true,
+              "validation": ["required", "trim", ""],
+              "url": "Product/search"
+          }, {
+              "name": "product Quantity",
+              "type": "text",
+              "tableRef": "productQuantity",
+              "tableValue": "productQuantity",
+              "placeholder": "Enter product Quantity",
+              "id": "productQuantity",
+              "onView": true,
+              "validation": ["", "trim", ""]
+
+          }]
+
+
       }, {
-         "name": "status",
-         "type": "tags",
-         "tableRef": "status",
-         "placeholder": "Enter status",
-         "id": "status",
-         "validation": ["", "trim", ""],
-         "url": "",
-         "dropDownField": "",
-         "dropDownType": "single",
-         "onView": true,
-        "dropDown": [true,false]
+          "name": "plan",
+          "type": "tags",
+          "tableRef": "plan",
+          "placeholder": "Enter plan",
+          "id": "plan",
+          "validation": ["", "trim", ""],
+          "url": "",
+          "dropDownField": "",
+          "dropDownType": "single",
+          "onView": true,
+          "dropDown": ["Monthly", "Quarterly", "Onetime"]
+      }, {
+
+          "name": "Delivery date",
+          "type": "date",
+          "tableRef": "deliverdate",
+          "placeholder": "Enter deliverdate",
+          "id": "deliverdate",
+          "onView": true,
+          "url": ""
+      }, {
 
 
+          "name": "added date",
+          "type": "date",
+          "tableRef": "deliverdate",
+          "placeholder": "Enter deliverdate",
+          "id": "deliverdate",
+          "onView": true,
+          "url": ""
+      }, {
+          "name": "status",
+          "type": "tags",
+          "tableRef": "status",
+          "placeholder": "Enter  Status",
+          "id": "status",
+          "validation": ["", "trim", ""],
+          "url": "",
+          "dropDownField": "",
+          "dropDownType": "single",
+          "onView": true,
+          "dropDown": ["Processing", "Confirmed","Cancelled","Delivered","delay"]
+      }, {
+          "name": "Payment status",
+          "type": "tags",
+          "tableRef": "PaymentStatus",
+          "placeholder": "Enter Payment Status",
+          "id": "PaymentStatus",
+          "validation": ["", "trim", ""],
+          "url": "",
+          "dropDownField": "",
+          "dropDownType": "single",
+          "onView": true,
+          "dropDown": ["Paid", "Unpaid"]
 
     }],
     "action": [{

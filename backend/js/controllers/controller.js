@@ -382,7 +382,16 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             });
         };
     })
+  .controller('createOrderCtrl', function ($scope, TemplateService, NavigationService, JsonService, $timeout, $state, $stateParams, $uibModal, toastr) {
+    $scope.template = TemplateService.changecontent("createOrder");
+          $scope.menutitle = NavigationService.makeactive("createOrder");
+          TemplateService.title = $scope.menutitle;
+          $scope.navigation = NavigationService.getnav();
+          $scope.formData = {};
 
+
+
+   })
     .controller('DetailFieldCtrl', function ($scope, TemplateService, NavigationService, JsonService, $timeout, $state, $stateParams, $uibModal, toastr) {
         if (!$scope.type.type) {
             $scope.type.type = "text";

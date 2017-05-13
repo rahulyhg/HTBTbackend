@@ -12,6 +12,18 @@ var controller = {
          })
      }
  },
+  getAllCustomer: function (req, res) {
+     if (req.body) {
+         User.getAllCustomer(req.body, res.callback);
+     } else {
+         res.json({
+             value: false,
+             data: {
+                 message: "Invalid Request"
+             }
+         })
+     }
+ },
 
     pdf: function (req, res) {
 

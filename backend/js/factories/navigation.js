@@ -12,6 +12,11 @@ myApp.factory('NavigationService', function ($http) {
         sref: "#/page/viewUser//",
         icon: "phone"
     },{
+    //     name: "Customer",
+    //     classis: "active",
+    //     sref: "#/page/viewCustomer//",
+    //     icon: "phone"
+    // },{
         name: "Categories",
         classis: "active",
         sref: "#/page/viewCategories//",
@@ -22,6 +27,11 @@ myApp.factory('NavigationService', function ($http) {
         sref: "#/page/viewProduct//",
         icon: "phone"
     },{
+        name: "Other Products",
+        classis: "active",
+        sref: "#/page/viewOtherProduct//",
+        icon: "phone"
+    },{
         name: "Pincode",
         classis: "active",
         sref: "#/page/viewPincode//",
@@ -30,6 +40,11 @@ myApp.factory('NavigationService', function ($http) {
         name: "Coupon",
         classis: "active",
         sref: "#/page/viewCoupon//",
+        icon: "phone"
+    },{
+        name: "Order",
+        classis: "active",
+        sref: "#/page/viewOrder//",
         icon: "phone"
     }];
 

@@ -4,38 +4,10 @@ var schema = new Schema({
         required: true,
     },
 
-    tag: {
-        type: String,
-    },
     price: {
         type: String,
     },
-    commission: {
-        type: String,
-    },
-    goldCommission: {
-        type: String,
-    },
-    silverCommission: {
-        type: String,
-    },
-    platinumCommission: {
-        type: String,
-    },
-    priceList: [{
-        startRange: String,
-        endRange: String,
-        finalPrice: String
-    }],
-    subscription: {
-        type: Boolean
-    },
-    AmtDeposit: {
-        type: Number,
-    },
-    applicableBefore: {
-        type: Number,
-    },
+
     smallImage: {
         type: String,
         default: "",
@@ -43,23 +15,12 @@ var schema = new Schema({
     bigImage: {
         type: String,
         default: "",
-    },
-    limit: {
-        type: String,
-        default: "",
-    },
+},
     quantity: {
         type: String,
         default: "",
     },
-    category: {
-        type: Schema.Types.ObjectId,
-        ref: 'Categories',
-        index: true
-    },
-    featuredProduct: {
-        type: Boolean
-    },
+
 
 
 
@@ -75,15 +36,15 @@ schema.plugin(deepPopulate, {
 schema.plugin(uniqueValidator);
 schema.plugin(timestamps);
 
-module.exports = mongoose.model('Product', schema);
+module.exports = mongoose.model('OtherProduct', schema);
 
-var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "Product", "Products"));
+var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "OtherProduct", "OtherProducts"));
 var model = {
 
-    getAllFeaturedProduct: function (data, callback) {
+    getAllFeaturedOtherProduct: function (data, callback) {
         console.log("data", data)
-        Product.find({
-            featuredProduct: true
+        OtherProduct.find({
+            featuredOtherProduct: true
         }).exec(function (err, found) {
             if (err) {
                 callback(err, null);
@@ -100,9 +61,9 @@ var model = {
         });
     },
 
-    getAllCategoryProduct: function (data, callback) {
+    getAllCategoryOtherProduct: function (data, callback) {
         console.log("data", data)
-        Product.find({
+        OtherProduct.find({
           category: data.category
         }).exec(function (err, found) {
             if (err) {

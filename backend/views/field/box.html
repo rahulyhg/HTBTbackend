@@ -16,10 +16,11 @@
             </thead>
             <tbody>
                 <tr ng-repeat="data in model | filter:search.text ">
-                    <td ng-repeat="field2 in type.fields" ng-if="field2.onView">{{data[field2.tableRef]}}</td>
+                    <td ng-repeat="field2 in type.fields" ng-if="field2.onView && field2.type == 'selectFromTable'">{{data[field2.tableRef+'-nameOnly']}}</td>
+                    <td ng-repeat="field2 in type.fields" ng-if="field2.onView && field2.type != 'selectFromTable'">{{data[field2.tableRef]}}</td>
                     <td>
                         <a class="btn btn-primary" ng-click="editBox('Edit',data)">
-                            <i class="fa fa-pencil"></i>
+                            <i class="Fa fa-pencil"></i>
                         </a>
                         <a class="btn btn-danger" ng-click="deleteBox($index, model)">
                             <i class="fa fa-trash"></i>

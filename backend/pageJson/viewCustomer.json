@@ -1,22 +1,28 @@
 {
-    "title": "Pincode",
-    "description": "List of Pincode",
+    "title": "Customer",
+    "description": "List of Customer",
     "pageType": "view",
     "sendIdWithCreate": true,
     "urlFields": ["_id"],
     "fields": [{
-        "name": "Pincode",
+        "name": "Name",
         "isSort": "",
-        "tableRef": "pincode"
-}
-
-  ],
+        "tableRef": "name"
+    }, {
+        "name": "Email",
+        "isSort": "",
+        "tableRef": "email"
+    }, {
+        "name": "Mobile",
+        "isSort": "",
+        "tableRef": "mobile"
+    }],
     "action": [{
         "name": "edit",
         "icon": "fa-pencil",
         "buttonClass": "btn-primary",
         "type": "page",
-        "action": "editPincode",
+        "action": "editUser",
         "fieldsToSend": {
             "_id": "_id"
         }
@@ -25,9 +31,9 @@
         "icon": "fa-trash",
         "buttonClass": "btn-danger",
         "type": "apiCallConfirm",
-        "title": "Delete Pincode",
-        "content": "Are you sure you want to delete Pincode?",
-        "api": "Pincode/delete",
+        "title": "Delete User",
+        "content": "Are you sure you want to delete User?",
+        "api": "user/delete",
         "fieldsToSend": {
             "name": "_id",
             "value": "_id"
@@ -39,10 +45,10 @@
         "icon": "plus",
         "class": "btn-success",
         "type": "page",
-        "action": "createPincode"
+        "action": "createUser"
     }],
     "apiCall": {
-        "url": "Pincode/search",
+        "url": "User/getAllCustomer",
         "params": "_id"
     }
 }

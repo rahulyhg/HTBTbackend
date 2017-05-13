@@ -1,0 +1,54 @@
+<div class="heading-sec">
+    <div class="row">
+        <div class="col-md-12 column">
+            <div class="heading-profile">
+                <h2>Create Master Reform</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="widget">
+    <div class="form-elements-sec">
+        <div class="sec">
+            <div class="clearfix"></div>
+            <button class="btn btn-primary pull-right" type="button" ng-click="modalQuestion();">Add Questions</button>
+            <h4>Category Name</h4>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Category</label>
+                        <input type="text" name="category" ng-model="formData.category" class="form-control" required>
+                    </div>
+                </div>
+            </div>
+
+            <table class="table table-responsive" ng-if="formData.questionAnswerList">
+                <thead>
+                    <tr>
+                        <th>Question</th>
+                        <th>Answer</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in formData.questionAnswerList">
+                        <td>{{item.question}} ({{item.points}})</td>
+                        <td>
+                            <span ng-repeat="ans in item.answers">{{ans.answer}} ({{ans.points}}), </span>
+                        </td>
+                        <td><button class="btn btn-primary" uib-tooltip="Edit" ng-click="modalQuestion(item)"><i class="fa fa-pencil"></i></button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+<div class="clearfix"></div>
+<div class="text-center mt20 odd-even-button">
+    <button class="btn btn-default" type="button" ng-click="saveMasterReform(formData)">Save</button>
+    <a class="btn btn-danger" href="#!/page/viewMasterReform//">Cancel</a>
+
+</div>
+</div>

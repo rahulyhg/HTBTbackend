@@ -30,7 +30,7 @@ var schema = new Schema({
     },
     mobile: {
         type: String,
-        default: ""
+        default: "",
     },
     landLine: {
         type: String,
@@ -44,11 +44,19 @@ var schema = new Schema({
         type: String,
         default: ""
     },
+    deposit: {
+        type: String,
+        default: ""
+    },
     accessLevel: {
         type: String,
-        enum: ['User', 'Distributor']
+        enum: ['Customer', 'Distributor']
     },
     verification: {
+        type: Boolean,
+        default:false
+    },
+    suspend: {
         type: Boolean,
         default:false
     },
@@ -90,6 +98,25 @@ var model = {
       console.log("data", data)
       User.findOne({
           _id: data._id
+      }).exec(function (err, found) {
+          if (err) {
+              callback(err, null);
+          } else {
+              if (found) {
+                  callback(null, found);
+              } else {
+                  callback({
+                      message: "Incorrect Credentials!"
+                  }, null);
+              }
+          }
+
+      });
+  },
+  getAllCustomer: function (data, callback) {
+      console.log("data", data)
+      User.find({
+          accessLevel:"Customer"
       }).exec(function (err, found) {
           if (err) {
               callback(err, null);

@@ -91,13 +91,25 @@
         "dropDownField": "",
         "dropDownType": "single",
         "onView": true,
-        "dropDown": ["User", "Distributor"]
+        "dropDown": ["Customer", "Distributor"]
     }, {
        "name": "verification",
        "type": "tags",
        "tableRef": "verification",
        "placeholder": "Enter verification",
        "id": "verification",
+       "validation": ["", "trim", ""],
+       "url": "",
+       "dropDownField": "",
+       "dropDownType": "single",
+       "onView": true,
+      "dropDown": [true,false]
+  }, {
+       "name": "Suspend",
+       "type": "tags",
+       "tableRef": "suspend",
+       "placeholder": "Enter suspend",
+       "id": "suspend",
        "validation": ["", "trim", ""],
        "url": "",
        "dropDownField": "",

@@ -1,18 +1,27 @@
 var schema = new Schema({
+
     product: [{
-          productId:  {
+          product:  {
                 type: Schema.Types.ObjectId,
-                ref: 'product',
+                ref: 'Product',
             },
+            "product-nameOnly":String,
             productQuantity: {
                 type: String,
             }
         }
-
     ],
     plan: {
         type: String,
         enum: ['monthly', 'quarterly', 'onetime']
+    },
+    orderFor: {
+        type: String,
+        enum: ['customer', 'self']
+    },
+    customer: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
     },
     deliverdate: Date,
     couponCode: String,
@@ -20,10 +29,23 @@ var schema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User',
     },
+    "user-nameOnly":String,
+    paymentStatus:{
+          type:String,
+          enum:['Paid', 'Unpaid'],
+          default:"Unpaid"
+        },
     balance:String,
-    status: String,//processing,confirmed,cancelled,delivered,delay,renew
+    totalAmount:{
+      type:String
+    },
+    status: {
+      type:String,
+      enum:['Processing', 'Confirmed','Cancelled','Delivered','delay'],
+      default:"Processing"
+    },
     addedDate: Date,
-    paymentStatus:String //paid,unpaid
+
 
 
 });
@@ -40,7 +62,7 @@ schema.plugin(timestamps);
 
 module.exports = mongoose.model('Order', schema);
 
-var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "Order", "Order"));
+var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user", "user"));
 var model = {
 
 
