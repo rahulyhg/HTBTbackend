@@ -7,6 +7,42 @@
     "urlFields": ["_id"],
 
       "fields": [{
+        "name": "user",
+        "type": "selectFromTable",
+        "tableRef": "user",
+        "tableValue": "user",
+        "dropDownType": "single",
+        "searchApi": "searchCall",
+        "placeholder": "Enter user",
+        "id": "input1",
+        "onView": true,
+        "validation": ["", "trim", ""],
+        "url": "User/search"
+    }, {
+      "name": "order For ",
+      "type": "tags",
+      "tableRef": "orderFor",
+      "placeholder": "Enter Order For",
+      "id": "orderFor",
+      "validation": ["", "trim", ""],
+      "url": "",
+      "dropDownField": "",
+      "dropDownType": "single",
+      "onView": true,
+      "dropDown": ["customer", "self"]
+  }, {
+      "name": "customer",
+      "type": "selectFromTable",
+      "tableRef": "customer",
+      "tableValue": "customer",
+      "dropDownType": "single",
+      "searchApi": "searchCall",
+      "placeholder": "Enter user",
+      "id": "input1",
+      "onView": true,
+      "validation": ["", "trim", ""],
+      "url": "User/search"
+  }, {
           "name": "product",
           "type": "box",
           "tableRef": "product",
@@ -58,18 +94,7 @@
           "onView": true,
           "url": ""
       }, {
-          "name": "user",
-          "type": "selectFromTable",
-          "tableRef": "user",
-          "tableValue": "user",
-          "dropDownType": "single",
-          "searchApi": "searchCall",
-          "placeholder": "Enter user",
-          "id": "input1",
-          "onView": true,
-          "validation": ["", "trim", ""],
-          "url": "User/search"
-      }, {
+
 
           "name": "added date",
           "type": "date",

@@ -15,6 +15,14 @@ var schema = new Schema({
         type: String,
         enum: ['monthly', 'quarterly', 'onetime']
     },
+    orderFor: {
+        type: String,
+        enum: ['customer', 'self']
+    },
+    customer: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+    },
     deliverdate: Date,
     couponCode: String,
     user: {
