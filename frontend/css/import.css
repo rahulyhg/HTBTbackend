@@ -9132,9 +9132,6 @@ button.close {
   src: url("../fonts/glyphicons-halflings-regular.eot");
   src: url("../fonts/glyphicons-halflings-regular.eot?#iefix") format("embedded-opentype"), url("../fonts/glyphicons-halflings-regular.woff2") format("woff2"), url("../fonts/glyphicons-halflings-regular.woff") format("woff"), url("../fonts/glyphicons-halflings-regular.ttf") format("truetype"), url("../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular") format("svg"); }
 
-body {
-  padding-top: 70px; }
-
 img.loading {
   text-align: center;
   opacity: 1;
@@ -9147,6 +9144,26 @@ img {
 
 img.doneLoading {
   opacity: 1; }
+
+.centeralign {
+  text-align: center; }
+
+.header-label {
+  display: inline-block; }
+  .header-label label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: bold;
+    padding-left: 10px;
+    font-size: 16px; }
+
+.topimgdiv {
+  width: 10%;
+  display: inline-block;
+  padding-top: 20px; }
+  .topimgdiv img {
+    width: 100%; }
 
 .custom-checkbox {
   position: relative;
@@ -9161,6 +9178,11 @@ img.doneLoading {
     color: #fff;
     transition: all 300ms linear;
     opacity: 1; }
+  .custom-checkbox label {
+    display: inline-block;
+    max-width: 100%;
+    margin-bottom: 5px;
+    font-weight: normal !important; }
   .custom-checkbox label:after {
     border: 1px solid red;
     content: '';
@@ -9169,13 +9191,14 @@ img.doneLoading {
     display: inline-block;
     position: absolute;
     left: 0;
+    top: 2px;
     transition: all 300ms linear; }
   .custom-checkbox label:before {
     content: "\f00c";
     font: normal normal normal 14px/1 FontAwesome;
     position: absolute;
     left: 0px;
-    top: 2px;
+    top: 4px;
     color: red;
     z-index: 1;
     opacity: 0;
@@ -9466,7 +9489,7 @@ header {
 .crossimgdiv {
   position: absolute;
   right: 22px;
-  top: 78px; }
+  top: 10px; }
 
 .crossimgsize {
   width: 71%; }
