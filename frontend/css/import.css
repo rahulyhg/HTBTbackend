@@ -9165,6 +9165,13 @@ img.doneLoading {
   .topimgdiv img {
     width: 100%; }
 
+.mainimgdiv {
+  width: 10%;
+  display: inline-block;
+  padding: 20px 0; }
+  .mainimgdiv img {
+    width: 100%; }
+
 .custom-checkbox {
   position: relative;
   left: 10px; }
@@ -9409,11 +9416,15 @@ header {
   background: white;
   margin: 0 0px; }
 
+.border-bottommar {
+  border-bottom: 1px solid #bcc1c4;
+  margin-right: 10px; }
+
 .colipwid {
   text-align: left;
   padding: 0 !important;
   margin: 0 !important;
-  border-bottom: 1px solid #bcc1c4; }
+  margin-right: 10px; }
   .colipwid input {
     text-align: left;
     width: 100%; }
@@ -9488,11 +9499,12 @@ header {
 
 .crossimgdiv {
   position: absolute;
-  right: 22px;
-  top: 10px; }
+  right: 32px;
+  top: 83px;
+  width: 6%; }
 
 .crossimgsize {
-  width: 71%; }
+  width: 100%; }
 
 .termscolor {
   color: #ff414d; }
@@ -9510,6 +9522,50 @@ header {
   width: 100% !important;
   height: 90% !important;
   text-align: justify !important; }
+
+.full button span {
+  background-color: limegreen;
+  border-radius: 32px;
+  color: black; }
+
+.partially button span {
+  background-color: orange;
+  border-radius: 32px;
+  color: black; }
+
+.display-none {
+  display: none !important; }
+
+.cal-on-click {
+  border: none;
+  padding: 0;
+  font-size: 14px;
+  background: transparent !important;
+  box-shadow: none !important;
+  text-align: center !important; }
+
+.uib-datepicker-popup.dropdown-menu {
+  display: block;
+  float: left;
+  margin: 0;
+  left: -58px !important; }
+
+.glyphicon {
+  font-family: 'Fontawesome'; }
+
+.glyphicon-chevron-right:before {
+  content: '\f054'; }
+
+.glyphicon-chevron-left:before {
+  content: '\f053'; }
+
+.arrow {
+  font-size: 20px;
+  color: #969696;
+  padding-left: 8px;
+  position: absolute;
+  top: 32px;
+  right: 0px; }
 
 #fancybox-loading,
 .fancybox-close,

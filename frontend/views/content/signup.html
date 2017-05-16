@@ -1,4 +1,4 @@
-<div class=" ">
+<div class="">
   <div class="centeralign">
     <div class="topimgdiv">
       <img src="img/mainscreenlogo.png" alt="">
@@ -40,11 +40,12 @@
     </div>-->
 
   <div class="custom-checkbox">
-    <input type="checkbox" id="checkme">
+    <input type="checkbox" id="checkme" ng-model="showaddr">
     <label for="checkme">My billing address is same as my shipping address</label>
   </div>
 
 
+<div ng-if="showaddr"> 
 
   <label class=" item-input inputField">
     <input class="inputsize" type="text" placeholder="Name"  ng-model="signupForm.name" name="name" required>
@@ -69,6 +70,8 @@
   <label class=" item-input inputField">
     <input class="inputsize" type="number" placeholder="Pincode" >
   </label>
+</div>
+  
   <button class="button" ui-sref="review">Place Order</button>
 
 </div>

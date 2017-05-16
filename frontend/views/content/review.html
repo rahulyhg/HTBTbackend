@@ -1,6 +1,14 @@
 <div class="bgcolor">
-    <div class="container">
+    <div class="container bgcolor">
         <div>
+              <div class="centeralign">
+    <div class="mainimgdiv">
+      <img src="img/mainscreenlogo.png" alt="">
+    </div>
+    <div class="header-label">
+      <label for="">Review & Checkout</label>
+    </div>
+  </div>
             <div class="subplan">
                 <label for="">Subscription Plan</label>
                 <div class="crossimgdiv">
@@ -40,7 +48,7 @@
                 <label class="colmd5copon" for="">Enter coupon code</label>
             </div>
             <div class="col-xs-6 colipwid">
-                <div class="">
+                <div class="border-bottommar">
                     <input class="couponlineheight" type="text" placeholder="Type coupon code here">
                 </div>
 
@@ -113,19 +121,19 @@
                             Delivering on friday
                         </h4>
                         <div>
-                            <label class="text-center rel" ng-click="openDatePicker()">
-                        Click here to change!
-                        
-                    </label>
-                            <input type="date">
+                         
+                            <input type="text" class="form-control display-none" uib-datepicker-popup ng-model="dt" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+          <span class="input-group-btn t">
+            <button type="button" class="btn btn-default  cal-on-click" ng-click="open2()">Click here to change!  </button>
                         </div>
 
 
 
                         <!-- <input type="date" class="hidedate"> -->
                     </div>
+                    <i class="fa fa-chevron-right arrow" aria-hidden="true"></i>
                     <div class="custarr">
-                        <i class="ion ion-chevron-right item-note "></i>
+                       
                     </div>
                 </div>
 
