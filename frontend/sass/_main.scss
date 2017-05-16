@@ -29,6 +29,50 @@ img {
 img.doneLoading {
     opacity: 1;
 }
+// custom checkbox
+
+.custom-checkbox {
+  position: relative;
+  left: 10px;
+  input {
+    -webkit-appearance: none;
+  }
+  input:checked + label:after {
+    border: 1px solid #ff414d;
+    background-color: #ff414d;
+    transition: all 300ms linear;
+  }
+  input:checked + label:before {
+    color: #fff;
+    transition: all 300ms linear;
+     opacity: 1;
+  }
+  label:after {
+    border: 1px solid red;
+    content: '';
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+    position: absolute;
+    left: 0;
+    transition: all 300ms linear;
+  }
+  label:before {
+    content: "\f00c";
+    font: normal normal normal 14px/1 FontAwesome;
+    position: absolute;
+    left: 0px;
+    top: 2px;
+    color: red;
+    z-index: 1;
+    opacity: 0;
+    transition: all 300ms linear;
+  }
+  label {
+    padding-left: 20px;
+  }
+}
+// custom checkbox
 
 nav li:hover .dropdown-menu {
     display: block;
