@@ -1,11 +1,12 @@
 {
-    "title": "Create Levels for Relationship Partner",
-    "name": "Levels",
-    "jsonPage": "viewpartnerLevel",
+    "title": "Edit PartnerLevel",
+    "name": "PartnerLevel",
+    "jsonPage": "viewPartnerLevel",
     "desciption": "",
-    "pageType": "create",
-    "urlFields": ["PartnerLevel"],
-    "fields": [{
+    "pageType": "edit",
+    "urlFields": ["_id"],
+
+      "fields": [{
         "name": "Level Name",
         "type": "text",
         "tableRef": "name",
@@ -32,11 +33,10 @@
 
 
 
-
     }],
     "action": [{
         "name": "submit",
-        "action": "submitCoupon",
+        "action": "submitPartnerLevel",
         "stateName": {
             "page": "page",
             "json": {
@@ -54,6 +54,12 @@
         }
     }],
     "apiCall": {
-        "url": "PartnerLevel/save"
+        "url": "PartnerLevel/save",
+        "params": "_id"
+    },
+    "preApi": {
+        "url": "PartnerLevel/getOne",
+        "params": "_id"
     }
+
 }
