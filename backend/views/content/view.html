@@ -42,8 +42,6 @@
                                     <tr ng-repeat="item in items">
                                         <td>{{($index + 1)+((currentPage-1)*maxRow)}}</td>
                                         <td ng-repeat="field in json.json.fields">
-                                              <pre>{{field|json}}</pre>
-                                                <pre>{{item|json}}</pre>
                                             <view-field type="field" value="item"></view-field>
                                         </td>
                                         <td ng-repeat="but in json.json.action">
