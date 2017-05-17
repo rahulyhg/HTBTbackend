@@ -27,10 +27,30 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
             url: "/form",
             templateUrl: tempateURL,
             controller: 'FormCtrl'
+        })
+
+        .state('signup', {
+            url: "/signup",
+            templateUrl: tempateURL,
+            controller: 'SignUpCtrl'
+        })
+
+        .state('review', {
+            url: "/review",
+            templateUrl: tempateURL,
+            controller: 'ReviewCtrl'
         });
-    $urlRouterProvider.otherwise("/");
+
+     
+   
+
+    $urlRouterProvider.otherwise("/signup");
     $locationProvider.html5Mode(isproduction);
-});
+})
+
+
+
+    
 
 // For Language JS
 myApp.config(function ($translateProvider) {

@@ -1,0 +1,81 @@
+<div class="">
+  <div class="centeralign">
+    <div class="topimgdiv">
+      <img src="img/mainscreenlogo.png" alt="">
+    </div>
+    <div class="header-label">
+      <label for="">Enter Shipping Details</label>
+    </div>
+  </div>
+
+  <label class=" item-input inputField">
+    <input class="inputsize" type="text" placeholder="Name"  ng-model="signupForm.name" name="name" required>
+    <p class="error-msg" ng-show="userForm.name.$error.required && userForm.name.$touched">Please Enter Your Name.</p>
+
+  </label>
+  <label class=" item-input inputField">
+    <input class="inputsize" type="number" placeholder="Mobile Number">
+  </label>
+  <label class=" item-input inputField">
+    <input class="inputsize" type="number" placeholder="Email ID" >
+  </label>
+  <label class=" item-input inputField">
+    <input class="inputsize" type="number" placeholder="Company Name (Optional)" >
+  </label>
+  <label class=" item-input inputField">
+    <input class="inputsize" type="number" placeholder="Shipping Address" >
+  </label>
+  <label class=" item-input inputField">
+    <input class="inputsize" type="number" placeholder="" diasbled>
+  </label>
+  <label class=" item-input inputField">
+    <input class="inputsize" type="number" placeholder="Pincode" >
+  </label>
+
+
+
+  <!--<div class="squaredThree checkbox">
+      <input type="checkbox" value="None" id="squaredThree" name="check" />
+      <label class="squaredThreelabel" for="squaredThree"></label>       
+    </div>-->
+
+  <div class="custom-checkbox">
+    <input type="checkbox" id="checkme" ng-model="showaddr">
+    <label for="checkme">My billing address is same as my shipping address</label>
+  </div>
+
+
+<div ng-if="showaddr"> 
+
+  <label class=" item-input inputField">
+    <input class="inputsize" type="text" placeholder="Name"  ng-model="signupForm.name" name="name" required>
+    <p class="error-msg" ng-show="userForm.name.$error.required && userForm.name.$touched">Please Enter Your Name.</p>
+
+  </label>
+  <label class=" item-input inputField">
+    <input class="inputsize" type="number" placeholder="Mobile Number">
+  </label>
+  <label class=" item-input inputField">
+    <input class="inputsize" type="number" placeholder="Email ID" >
+  </label>
+  <label class=" item-input inputField">
+    <input class="inputsize" type="number" placeholder="Company Name (Optional)" >
+  </label>
+  <label class=" item-input inputField">
+    <input class="inputsize" type="number" placeholder="Shipping Address" >
+  </label>
+  <label class=" item-input inputField">
+    <input class="inputsize" type="number" placeholder="" diasbled>
+  </label>
+  <label class=" item-input inputField">
+    <input class="inputsize" type="number" placeholder="Pincode" >
+  </label>
+</div>
+  
+  <button class="button" ui-sref="review">Place Order</button>
+
+</div>
+
+<!--<div class="signupbtn">
+      Get Started
+    </div>-->
