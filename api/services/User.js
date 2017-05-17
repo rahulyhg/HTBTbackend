@@ -1,4 +1,5 @@
 var schema = new Schema({
+  userID:String,
     name: {
         type: String,
         required: true,
@@ -50,16 +51,36 @@ var schema = new Schema({
     },
     accessLevel: {
         type: String,
-        enum: ['Customer', 'Distributor']
+        enum: ['Customer', 'Relationship Partner']
     },
+    dateofjoin: Date,
+
     verification: {
-        type: Boolean,
-        default:false
+      type: String,
+      enum: ['Verified', 'Not Verified']
     },
-    suspend: {
-        type: Boolean,
-        default:false
+    levelstatus: {
+      type: String,
+      enum: ['Bronze', 'Silver','Gold']
     },
+    status: {
+      type: String,
+      enum: ['Active', 'Suspended','Inactive','Not Purchased Yet']
+    },
+    earningsBlock: {
+      type: String,
+      enum: ['Active', 'Inactive']
+    },
+    methodofjoin: {
+      type: String,
+      enum: ['Relationship Partner', 'App','Customer Representative']
+    },
+    notes: [{
+        note: {
+            type: String
+        },
+        notestime: Date
+    }],
     customer: [{
         customrId: {
             type: Schema.Types.ObjectId,
@@ -72,6 +93,8 @@ var schema = new Schema({
         }
 
     }],
+
+
     coupon:[{
       name:{
         type: String,
@@ -94,6 +117,7 @@ module.exports = mongoose.model('User', schema);
 
 var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user", "user"));
 var model = {
+
   getProfile: function (data, callback) {
       console.log("data", data)
       User.findOne({
@@ -115,23 +139,139 @@ var model = {
   },
   getAllCustomer: function (data, callback) {
       console.log("data", data)
+      var maxRow = Config.maxRow;
+
+          var page = 1;
+          if (data.page) {
+              page = data.page;
+          }
+          var field = data.field;
+
+      var options = {
+             field: data.field,
+             filters: {
+                 keyword: {
+                     fields: ['name'],
+                     term: data.keyword
+                 }
+             },
+             sort: {
+                 asc: 'name'
+             },
+             start: (page - 1) * maxRow,
+             count: maxRow
+         };
       User.find({
           accessLevel:"Customer"
-      }).exec(function (err, found) {
-          if (err) {
-              callback(err, null);
-          } else {
-              if (found) {
-                  callback(null, found);
-              } else {
-                  callback({
-                      message: "Incorrect Credentials!"
-                  }, null);
-              }
-          }
+      }) .order(options)
+                .keyword(options)
+                .page(options, callback);
 
-      });
   },
+  getAllRelPartner: function (data, callback) {
+      console.log("data", data)
+      var maxRow = Config.maxRow;
 
+          var page = 1;
+          if (data.page) {
+              page = data.page;
+          }
+          var field = data.field;
+
+      var options = {
+             field: data.field,
+             filters: {
+                 keyword: {
+                     fields: ['name'],
+                     term: data.keyword
+                 }
+             },
+             sort: {
+                 asc: 'name'
+             },
+             start: (page - 1) * maxRow,
+             count: maxRow
+         };
+      User.find({
+          accessLevel:"Relationship Partner"
+      }) .order(options)
+                .keyword(options)
+                .page(options, callback);
+
+  },
+  saveUserData: function (data, callback) {
+    var year = new Date().getFullYear().toString().substr(2, 2);
+    var month=new Date().getMonth();
+    var strMon='';
+    console.log(month.toString().length,year);
+
+    if(month.toString().length>1){
+      console.log(month.length);
+      strMon=month;
+    }
+    else {
+      strMon="0"+month;
+    }
+      var userID = '';
+      User.find({}).sort({
+        createdAt: -1
+      }).exec(function (err, fdata) {
+        if (err) {
+          console.log(err);
+          callback(err, null);
+        } else {
+          // var getmonth = fdata[fdata.length-1].userID.toString().substr(fdata[fdata.length-1].userID.toString().length-7,fdata[fdata.length-1].userID.toString().length);
+          // var getmonth = 03;
+          // var strMon = 03;
+
+              console.log(fdata.length);
+              if(fdata.length>0 )
+              {
+                console.log(fdata[0]);
+                var ID = parseInt(fdata[0].userID.toString().substr(fdata[0].userID.toString().length-5,fdata[0].userID.toString().length))+1;
+                console.log(ID);
+                if(ID.toString().length==5){
+                  userID="UserID"+year+strMon+ID;
+                  console.log("5",userID);
+
+                }else if(ID.toString().length==4){
+                  userID="UserID"+year+strMon+"0"+ID;
+                  console.log("4",userID);
+
+              }else if(ID.toString().length==3){
+                  userID="UserID"+year+strMon+"00"+ID;
+                  console.log("3",userID);
+
+              }else if(ID.toString().length==2){
+                  userID="UserID"+year+strMon+"000"+ID;
+                  console.log("2",userID);
+
+              }else{
+                  userID="UserID"+year+strMon+"0000"+ID;
+                  console.log("1",userID);
+                }
+                // userID="cust"+year+strMon+ID;
+                // console.log(userID);
+
+
+              }
+              else {
+                console.log("hello");
+                userID="UserID"+year+strMon+"00001";
+                console.log(userID);
+              }
+              data.userID=userID;
+              data.dateofjoin= new Date();
+              User.saveData(data,function(err,savedData){
+                if(err){
+                  callback(err,null);
+                }
+                else {
+                  callback(null,savedData);
+                }
+              })
+        }
+      });
+    },
 };
 module.exports = _.assign(module.exports, exports, model);

@@ -13,7 +13,7 @@
         "isSort": "",
         "tableRef": "email"
     }, {
-        "name": "Mobile",
+        "name": "Mobile Number",
         "isSort": "",
         "tableRef": "mobile"
     }],
@@ -39,14 +39,7 @@
             "value": "_id"
         }
     }],
-    "button": [{
 
-        "name": "Create",
-        "icon": "plus",
-        "class": "btn-success",
-        "type": "page",
-        "action": "createUser"
-    }],
     "apiCall": {
         "url": "User/getAllCustomer",
         "params": "_id"

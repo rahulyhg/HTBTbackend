@@ -24,6 +24,30 @@ var controller = {
          })
      }
  },
+  getAllRelPartner: function (req, res) {
+     if (req.body) {
+         User.getAllRelPartner(req.body, res.callback);
+     } else {
+         res.json({
+             value: false,
+             data: {
+                 message: "Invalid Request"
+             }
+         })
+     }
+ },
+  saveUserData: function (req, res) {
+     if (req.body) {
+         User.saveUserData(req.body, res.callback);
+     } else {
+         res.json({
+             value: false,
+             data: {
+                 message: "Invalid Request"
+             }
+         })
+     }
+ },
 
     pdf: function (req, res) {
 

@@ -6,6 +6,14 @@
     "pageType": "edit",
     "urlFields": ["_id"],
     "fields": [{
+        "name": "User ID",
+        "type": "readonly",
+        "tableRef": "userID",
+        "placeholder": "Enter User ID",
+        "id": "userID",
+        "validation": ["required", "trim", "unique"],
+        "url": ""
+    }, {
         "name": "Name",
         "type": "text",
         "tableRef": "name",
@@ -14,14 +22,29 @@
         "validation": ["required", "trim", "unique"],
         "url": ""
     }, {
-        "name": "Email",
+        "name": "Email ID",
         "type": "text",
         "tableRef": "email",
-        "placeholder": "Enter Email",
+        "placeholder": "Enter Email ID",
         "id": "email",
         "validation": ["", "trim", "unique"],
         "url": ""
+
     }, {
+      "name": "Mobile Number",
+      "type": "text",
+      "tableRef": "mobile",
+      "placeholder": "Enter mobile Number",
+      "id": "mobile",
+      "url": ""
+  }, {
+      "name": "Landline Number",
+      "type": "text",
+      "tableRef": "landLine",
+      "placeholder": "Enter Landline Number",
+      "id": "landLine",
+      "url": ""
+  }, {
         "name": "Establishment Name",
         "type": "text",
         "tableRef": "establishmentName",
@@ -46,6 +69,71 @@
         "validation": ["", "trim", "unique"],
         "url": ""
     }, {
+
+              "name": "Pan Card",
+              "type": "image",
+              "tableRef": "panCard",
+              "placeholder": "Pan Card",
+              "id": "panCard",
+              "view": true,
+              "disabled": true,
+              "url": ""
+          }, {
+              "name": "Aadhar Card",
+              "type": "image",
+              "tableRef": "adharCard",
+              "placeholder": "Aadhar Card",
+              "id": "adharCard",
+              "view": true,
+              "disabled": true,
+              "url": ""
+
+        }, {
+          "name": "Date of Join",
+          "type": "date",
+          "tableRef": "dateofjoin",
+          "placeholder": "Enter Date of Join",
+          "id": "establishmentName",
+          "validation": ["", "trim", "unique"],
+          "url": ""
+      }, {
+           "name": "Verification Status",
+           "type": "tags",
+           "tableRef": "verification",
+           "placeholder": "Enter verification Status",
+           "id": "verification",
+           "validation": ["", "trim", ""],
+           "url": "",
+           "dropDownField": "",
+           "dropDownType": "single",
+           "onView": true,
+          "dropDown": ["Verified","Not Verified"]
+      }, {
+           "name": "Status",
+           "type": "tags",
+           "tableRef": "status",
+           "placeholder": "Enter Status",
+           "id": "status",
+           "validation": ["", "trim", ""],
+           "url": "",
+           "dropDownField": "",
+           "dropDownType": "single",
+           "onView": true,
+           "dropDown": ["Active","Suspended"]
+
+      }, {
+           "name": "Block Earnings",
+           "type": "tags",
+           "tableRef": "earningsBlock",
+           "placeholder": "Enter Block Earnings",
+           "id": "earningsBlock",
+           "validation": ["", "trim", ""],
+           "url": "",
+           "dropDownField": "",
+           "dropDownType": "single",
+           "onView": true,
+          "dropDown": ["Active","Inactive"]
+          }, {
         "name": "Deposit",
         "type": "text",
         "tableRef": "deposit",
@@ -62,48 +150,15 @@
         "validation": ["", "trim", "unique"],
         "url": ""
     }, {
-        "name": "Last Month Earnings",
+        "name": "Earnings For The Last Month",
         "type": "text",
         "tableRef": "lastMonthEarnings",
-        "placeholder": "Enter Last Month Earnings",
+        "placeholder": "Enter Earnings For The Last Month",
         "id": "lastMonthEarnings",
         "validation": ["", "trim", "unique"],
         "url": ""
     }, {
 
-        "name": "Pan Card",
-        "type": "image",
-        "tableRef": "panCard",
-        "placeholder": "Pan Card",
-        "id": "panCard",
-        "view": true,
-        "disabled": true,
-        "url": ""
-    }, {
-        "name": "Adhar Card",
-        "type": "image",
-        "tableRef": "adharCard",
-        "placeholder": "Adhar Card",
-        "id": "adharCard",
-        "view": true,
-        "disabled": true,
-        "url": ""
-    }, {
-
-        "name": "Mobile No.",
-        "type": "text",
-        "tableRef": "mobile",
-        "placeholder": "Enter mobile No.",
-        "id": "mobile",
-        "url": ""
-    }, {
-        "name": "Landline No.",
-        "type": "text",
-        "tableRef": "landLine",
-        "placeholder": "Enter Landline No.",
-        "id": "landLine",
-        "url": ""
-    }, {
 
         "name": "AccessLevel",
         "type": "tags",
@@ -116,30 +171,6 @@
         "dropDownType": "single",
         "onView": true,
         "dropDown": ["Customer", "Distributor"]
-    }, {
-       "name": "verification",
-       "type": "tags",
-       "tableRef": "verification",
-       "placeholder": "Enter verification",
-       "id": "verification",
-       "validation": ["", "trim", ""],
-       "url": "",
-       "dropDownField": "",
-       "dropDownType": "single",
-       "onView": true,
-      "dropDown": [true,false]
-    },{
-      "name": "Suspend",
-      "type": "tags",
-      "tableRef": "suspend",
-      "placeholder": "Enter suspend",
-      "id": "suspend",
-      "validation": ["", "trim", ""],
-      "url": "",
-      "dropDownField": "",
-      "dropDownType": "single",
-      "onView": true,
-     "dropDown": [true,false]
 
     }],
     "action": [{

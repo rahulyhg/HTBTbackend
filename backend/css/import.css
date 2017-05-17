@@ -32745,6 +32745,15 @@ body {
   font-size: 12px;
   line-height: 120%; }
 
+.panImage {
+  height: 100px;
+  width: 150px;
+  display: inline-flex; }
+  .panImage img {
+    height: 100%;
+    width: 100%;
+    display: inline-block; }
+
 /* Start writing sass here */
 #fancybox-loading, .fancybox-close, .fancybox-next span, .fancybox-prev span {
   background-image: url(../img/fancybox_sprite.png); }

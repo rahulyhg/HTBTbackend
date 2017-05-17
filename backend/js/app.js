@@ -43,11 +43,6 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
             controller: 'PageJsonCtrl'
         })
 
-        // .state('page', {
-        //     abstract: true,
-        //     url: "/page",
-        //     template: "<div ui-view>hello</div>"
-        // })
 
         //  .state('page.viewUser', {
         //     url: "/viewUser",
@@ -60,11 +55,11 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
             templateUrl: "views/login.html",
             controller: 'LoginCtrl'
         })
-      //   .state('createOrder', {
-      //      url: "/createOrder/:id/{page:.*}/{keyword:.*}",
-      //      templateUrl: "views/template.html",
-      //     controller: 'createOrderCtrl',
-      // })
+        .state('editUser', {
+           url: "/edituser/:id/{page:.*}/{keyword:.*}",
+           templateUrl: "views/template.html",
+          controller: 'EditUserCtrl',
+      })
 
         .state('country-list', {
             url: "/country-list/{page:.*}/{keyword:.*}",

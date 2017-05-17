@@ -1,6 +1,6 @@
 {
-    "title": "User",
-    "description": "List of Users",
+    "title": "Relationship Partner",
+    "description": "List of Relationship Partner",
     "pageType": "view",
     "sendIdWithCreate": true,
     "urlFields": ["_id"],
@@ -21,7 +21,8 @@
         "name": "edit",
         "icon": "fa-pencil",
         "buttonClass": "btn-primary",
-        "type": "editUser",
+        "type": "page",
+        "action": "editUser",
         "fieldsToSend": {
             "_id": "_id"
         }
@@ -38,16 +39,9 @@
             "value": "_id"
         }
     }],
-    "button": [{
 
-        "name": "Create",
-        "icon": "plus",
-        "class": "btn-success",
-        "type": "page",
-        "action": "createUser"
-    }],
     "apiCall": {
-        "url": "User/search",
+        "url": "User/getAllRelPartner",
         "params": "_id"
     }
 }
