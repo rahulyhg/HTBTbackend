@@ -1,5 +1,5 @@
 apps:
   - script: "app.js"
-    name: "HTBT - 80"
+    name: "HTBT - 8080"
     watch: false
     args: "--prod"
