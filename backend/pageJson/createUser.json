@@ -6,141 +6,58 @@
     "pageType": "create",
     "urlFields": ["User"],
     "fields": [{
-        "name": "Name",
-        "type": "text",
-        "tableRef": "name",
-        "placeholder": "Enter Name",
-        "id": "name",
-        "validation": ["required", "trim", "unique"],
-        "url": ""
-    }, {
-        "name": "Email ID",
-        "type": "text",
-        "tableRef": "email",
-        "placeholder": "Enter Email ID",
-        "id": "email",
-        "validation": ["", "trim", "unique"],
-        "url": ""
-    }, {
-        "name": "Establishment Name",
-        "type": "text",
-        "tableRef": "establishmentName",
-        "placeholder": "Enter Establishment Name",
-        "id": "establishmentName",
-        "validation": ["", "trim", "unique"],
-        "url": ""
-    }, {
-        "name": "Establishment Address",
-        "type": "text",
-        "tableRef": "establishmentAddress",
-        "placeholder": "Enter Establishment Address",
-        "id": "establishmentAddress",
-        "validation": ["", "trim", "unique"],
-        "url": ""
-    }, {
-        "name": "Pincode",
-        "type": "text",
-        "tableRef": "pincode",
-        "placeholder": "Enter Pincode",
-        "id": "pincode",
-        "validation": ["", "trim", "unique"],
-        "url": ""
-    }, {
+      "name": "Type",
+      "type": "tags",
+      "tableRef": "accessLevel",
+      "placeholder": "Enter Type",
+      "id": "status",
+      "validation": ["", "trim", ""],
+      "url": "",
+      "dropDownField": "",
+      "dropDownType": "single",
+      "onView": true,
+      "dropDown": ["Customer", "Relationship Partner"]
+  }, {
 
-        "name": "Pan Card",
-        "type": "image",
-        "tableRef": "panCard",
-        "placeholder": "Pan Card",
-        "id": "panCard",
-        "view": true,
-        "disabled": true,
-        "url": ""
-    }, {
-        "name": "Aadhar Card",
-        "type": "image",
-        "tableRef": "adharCard",
-        "placeholder": "Aadhar Card",
-        "id": "adharCard",
-        "view": true,
-        "disabled": true,
-        "url": ""
-    }, {
+      "name": "Name",
+      "type": "text",
+      "tableRef": "name",
+      "placeholder": "Enter Name",
+      "id": "name",
+      "validation": ["required", "trim", "unique"],
+      "url": ""
 
-        "name": "Mobile Number",
-        "type": "text",
-        "tableRef": "mobile",
-        "placeholder": "Enter Mobile Number",
-        "id": "mobile",
-        "url": ""
-    }, {
-        "name": "Landline Number",
-        "type": "text",
-        "tableRef": "landLine",
-        "placeholder": "Enter Landline Number",
-        "id": "landLine",
-        "url": ""
+  }, {
+      "name": "Status",
+      "type": "tags",
+      "tableRef": "status",
+      "placeholder": "Enter Status",
+      "id": "status",
+      "validation": ["", "trim", ""],
+      "url": "",
+      "dropDownField": "",
+      "dropDownType": "single",
+      "onView": true,
+      "dropDown": ["Active", "Suspended", "Inactive", "Not Purchased Yet"]
 
-    }, {
-        "name": "Method of Join",
-        "type": "tags",
-        "tableRef": "methodofjoin",
-        "placeholder": "Enter Method of join",
-        "id": "methodofjoin",
-        "validation": ["", "trim", ""],
-        "url": "",
-        "dropDownField": "",
-        "dropDownType": "single",
-        "onView": true,
-        "dropDown":  ["Relationship Partner", "App","Customer Representative"]
-    }, {
-        "name": "Verification Status",
-        "type": "tags",
-        "tableRef": "verification",
-        "placeholder": "Enter verification Status",
-        "id": "verification",
-        "validation": ["", "trim", ""],
-        "url": "",
-        "dropDownField": "",
-        "dropDownType": "single",
-        "onView": true,
-        "dropDown": ["Verified", "Not Verified"]
-    }, {
-        "name": "Status",
-        "type": "tags",
-        "tableRef": "status",
-        "placeholder": "Enter Status",
-        "id": "status",
-        "validation": ["", "trim", ""],
-        "url": "",
-        "dropDownField": "",
-        "dropDownType": "single",
-        "onView": true,
-        "dropDown": ["Active","Suspended"]
-    }, {
-        "name": "Block Earnings",
-        "type": "tags",
-        "tableRef": "earningsBlock",
-        "placeholder": "Enter Block Earnings",
-        "id": "earningsBlock",
-        "validation": ["", "trim", ""],
-        "url": "",
-        "dropDownField": "",
-        "dropDownType": "single",
-        "onView": true,
-        "dropDown": ["Active", "Inactive"]
-    }, {
+  }, {
 
-        "name": "AccessLevel",
-        "type": "tags",
-        "tableRef": "accessLevel",
-        "placeholder": "Enter Title",
-        "id": "status",
-        "validation": ["", "trim", ""],
-        "url": "",
-        "dropDownField": "",
-        "dropDownType": "single",
-        "onView": true,
-        "dropDown": ["Customer", "Relationship Partner"]
+      "name": "Email ID",
+      "type": "text",
+      "tableRef": "email",
+      "placeholder": "Enter Email ID",
+      "id": "email",
+      "validation": ["", "trim", "unique"],
+      "url": ""
+
+  }, {
+      "name": "Mobile Number",
+      "type": "text",
+      "tableRef": "mobile",
+      "placeholder": "Enter mobile Number",
+      "id": "mobile",
+      "url": ""
+
     }],
     "action": [{
         "name": "submit",

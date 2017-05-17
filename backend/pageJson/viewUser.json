@@ -18,13 +18,15 @@
         "tableRef": "mobile"
     }],
     "action": [{
-        "name": "edit",
-        "icon": "fa-pencil",
-        "buttonClass": "btn-primary",
-        "type": "editUser",
-        "fieldsToSend": {
-            "_id": "_id"
-        }
+      "name": "edit",
+      "icon": "fa-pencil",
+      "buttonClass": "btn-primary",
+      "type": "page",
+      "action": "editUser",
+      "fieldsToSend": {
+          "_id": "_id"
+      }
+        
     }, {
         "name": "delete",
         "icon": "fa-trash",

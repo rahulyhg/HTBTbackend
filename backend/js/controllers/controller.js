@@ -391,18 +391,26 @@ myApp.controller('DashboardCtrl', function($scope, TemplateService, NavigationSe
         console.log("$stateParams-json--", JSON.parse($stateParams.keyword)._id);
 
         if (!_.isEmpty($stateParams.keyword)) {
-
+          $scope.data = {};
             var formData = {};
             formData._id = JSON.parse($stateParams.keyword)._id;
             NavigationService.apiCall("User/getOne", formData, function(data) {
-                //  if (data.value === true) {
+                 if (data.value === true) {
                 console.log("login", data.data);
-                $scope.data = {};
-
                 $scope.data = data.data;
+
+                NavigationService.apiCall("Order/getOrderByUser", formData, function(data) {
+                     if (data.value === true) {
+                    console.log("getOrderByUser", data.data);
+                    $scope.OrderData = data.data;
+                    //  $.jStorage.set('user', data.data);
+                    //  $.jStorage.set("accessToken", data.data.accessToken[0]);
+                     }
+
+                });
                 //  $.jStorage.set('user', data.data);
                 //  $.jStorage.set("accessToken", data.data.accessToken[0]);
-                //  }
+                 }
 
             });
         } else {
@@ -424,9 +432,6 @@ myApp.controller('DashboardCtrl', function($scope, TemplateService, NavigationSe
           $scope.data.notes.push(noteWithTime);
           NavigationService.apiCall("User/saveUserData", $scope.data, function(data) {
               console.log("login", data.data);
-
-
-
           });
 
         };

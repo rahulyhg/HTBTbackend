@@ -107,6 +107,9 @@ schema.plugin(deepPopulate, {
     populate: {
         'user': {
             select: 'name _id'
+        },
+        'customer':{
+          select:''
         }
     }
 });
@@ -115,7 +118,7 @@ schema.plugin(timestamps);
 
 module.exports = mongoose.model('User', schema);
 
-var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user", "user"));
+var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user", "user","customer","customer"));
 var model = {
 
   getProfile: function (data, callback) {

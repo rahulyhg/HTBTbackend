@@ -65,7 +65,25 @@ module.exports = mongoose.model('Order', schema);
 var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user", "user"));
 var model = {
 
+  getOrderByUser: function (data, callback) {
+      console.log("data", data)
+      Order.find({
+          user: data._id
+      }).exec(function (err, found) {
+          if (err) {
+              callback(err, null);
+          } else {
+              if (found) {
+                  callback(null, found);
+              } else {
+                  callback({
+                      message: "Invalid data!"
+                  }, null);
+              }
+          }
 
+      });
+  },
 
 };
 module.exports = _.assign(module.exports, exports, model);

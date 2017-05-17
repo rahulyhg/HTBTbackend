@@ -6,27 +6,54 @@
     "pageType": "edit",
     "urlFields": ["_id"],
     "fields": [{
-      "name": "Pincode",
-      "type": "text",
-      "tableRef": "pincode",
-      "placeholder": "Enter Pincode",
-      "id": "pincode",
-       "onView": true,
-      "validation": ["required", "trim", "unique"],
-      "url": ""
-  }, {
+        "name": "Pincode",
+        "type": "text",
+        "tableRef": "pincode",
+        "placeholder": "Enter Pincode",
+        "id": "pincode",
+        "onView": true,
+        "validation": ["required", "trim", "unique"],
+        "url": ""
+    }, {
 
-     "name": "Days",
-     "type": "tags",
-     "tableRef": "days",
-     "placeholder": "Enter days",
-     "id": "days",
-     "validation": ["", "trim", ""],
-     "url": "",
-     "dropDownField": "",
-     "dropDownType": "multiple",
-     "onView": true,
-     "dropDown": ["Monday","Tuesday","Wednesday","ThursDay","Friday","Saturday","Sunday"]
+        "name": "Days",
+        "type": "tags",
+        "tableRef": "days",
+        "placeholder": "Enter days",
+        "id": "days",
+        "validation": ["", "trim", ""],
+        "url": "",
+        "dropDownField": "",
+        "dropDownType": "multiple",
+        "onView": true,
+        "dropDown": ["Monday", "Tuesday", "Wednesday", "ThursDay", "Friday", "Saturday", "Sunday"]
+
+    }, {
+        "name": "Yearly Holidays",
+        "type": "box",
+        "tableRef": "holidays",
+        "validation": ["", "trim", ""],
+        "fields": [{
+
+            "name": "Holidays Date",
+            "type": "date",
+            "tableRef": "hdate",
+            "tableValue": "hdate",
+            "placeholder": "Enter Holidays Date",
+            "id": "hdate",
+            "onView": true,
+            "validation": ["", "trim", ""]
+        }, {
+            "name": "Description",
+            "type": "text",
+            "tableRef": "description",
+            "tableValue": "description",
+            "placeholder": "Enter Description",
+            "id": "description",
+            "onView": true,
+            "validation": ["", "trim", ""]
+
+        }]
 
     }],
     "action": [{

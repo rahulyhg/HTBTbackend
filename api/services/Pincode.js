@@ -2,6 +2,12 @@ var schema = new Schema({
     pincode: Number,
     days: [
         String
+    ],
+    holidays: [{
+      hdate: Date,
+        description: {
+            type: String,
+        }}
     ]
 });
 
