@@ -184,6 +184,6 @@
         }
     }],
     "apiCall": {
-        "url": "Product/save"
+        "url": "Product/saveProduct"
     }
 }
