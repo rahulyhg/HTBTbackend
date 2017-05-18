@@ -6,6 +6,15 @@
     "pageType": "create",
     "urlFields": ["Order"],
     "fields": [{
+
+
+      "name": "Order date",
+        "type": "readonly",
+        "tableRef": "addeddate",
+        "placeholder": "Enter deliverdate",
+        "id": "addeddate",
+        "url": ""
+    }, {
       "name": "user",
       "type": "selectFromTable",
       "tableRef": "user",
@@ -94,13 +103,7 @@
     }, {
 
 
-        "name": "added date",
-        "type": "readonly",
-        "tableRef": "deliverdate",
-        "placeholder": "Enter deliverdate",
-        "id": "deliverdate",
-        "url": ""
-    }, {
+  
         "name": "status",
         "type": "tags",
         "tableRef": "status",
