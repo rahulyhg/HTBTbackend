@@ -51,11 +51,11 @@ myApp.factory('NavigationService', function ($http) {
         classis: "active",
         sref: "#/page/viewPartnerLevel//",
         icon: "phone"
-    // },{
-    //     name: "Order",
-    //     classis: "active",
-    //     sref: "#/page/viewOrder//",
-    //     icon: "phone"
+    },{
+        name: "Order",
+        classis: "active",
+        sref: "#/page/viewOrder//",
+        icon: "phone"
     }];
 
     return {

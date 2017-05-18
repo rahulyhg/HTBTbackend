@@ -57,6 +57,7 @@ var schema = new Schema({
 
     verification: {
       type: String,
+      default:'Not Verified',
       enum: ['Verified', 'Not Verified']
     },
     levelstatus: {
@@ -69,7 +70,7 @@ var schema = new Schema({
     },
     earningsBlock: {
       type: String,
-      enum: ['Active', 'Inactive']
+      enum: ['Yes', 'No']
     },
     methodofjoin: {
       type: String,
@@ -94,7 +95,10 @@ var schema = new Schema({
 
     }],
 
-
+    relationshipId: {
+               type: Schema.Types.ObjectId,
+               ref: 'User'
+           },
     coupon:[{
       name:{
         type: String,
