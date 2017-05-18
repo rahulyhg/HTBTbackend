@@ -12,25 +12,26 @@
         <div class="sec">
             <div class="form-group" fields>
                 <label>Date Of Order</label>
-                <input type="text" name="userID" placeholder="Date Of Joining" ng-model="data.orderDate | date" class="form-control" readonly>
+                <input type="text" name="userID" placeholder="Date Of Joining" ng-model="data.dateofjoin | date" class="form-control" readonly>
             </div>
             <div class="form-group" fields>
                 <label>Order ID </label>
-                <input type="text" name="userID" placeholder="User ID" ng-model="data.orderID" class="form-control" readonly>
+                <input type="text" name="userID" placeholder="User ID" ng-model="data.userID" class="form-control" readonly>
             </div>
             <div class="form-group" fields>
                 <label>Customer ID </label>
-                <input type="text" name="userID" placeholder="User ID" ng-model="data.user.userID" class="form-control" readonly>
+                <input type="text" name="userID" placeholder="User ID" ng-model="data.userID" class="form-control" readonly>
             </div>
             <div class="form-group" fields>
                 <label>Customer Name </label>
-                <input type="text" name="name" placeholder="name" ng-model="data.user.name" class="form-control">
+                <input type="text" name="name" placeholder="name" ng-model="data.name" class="form-control">
                 <div class="error-msg" ng-show="name.$invalid && name.$touched">Please enter valid Customer name</div>
             </div>
+
             <div class="form-group" fields>
                 <label>Customer Mobile Number</label>
-                <input type="text" name="mobile" placeholder="Mobile Number" ng-model="data.user.mobile" class="form-control">
-       
+                <input type="number" name="mobile" placeholder="Mobile Number" ng-model="data.mobile" class="form-control">
+                <div class="error-msg" ng-show="mobile.$invalid && mobile.$touched">Please enter valid Customer Mobile Number</div>
             </div>
 
             <div class="form-group" ng-if="data.accessLevel=='Customer'">
@@ -42,11 +43,11 @@
               <option value="">Customer Representative</option>
             </select>
             </div>
-              <!--<div class="form-group" fields>
+              <div class="form-group" fields>
                 <label>Subscription</label>
                 <input type="text" name="name" placeholder="Subscription" ng-model="data.name" class="form-control">
                
-            </div>-->
+            </div>
             <div class="sec">
                 <div>
                     <a class="btn btn-primary pull-right" ng-click="addProduct(data.notes)">Add New</a>
@@ -67,10 +68,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="data in data.product | filter:search.text ">
-                                    <td>{{data.product.productID}}</td>
-                                    <td>{{data.productQuantity }}</td>
-                                    <td>{{data.price }}</td>
+                                <tr ng-repeat="data in data.notes | filter:search.text ">
+                                    <td>{{data.note}}</td>
+                                    <td>{{data.notestime | date}}</td>
+                                    <td>{{data.notestime | date}}</td>
 
                                     <!-- <td>
                                   <a class="btn btn-primary" ng-click="editBox('Edit',data)">
@@ -91,7 +92,7 @@
 
    <div class="form-group" fields>
                 <label>Total Payment</label>
-                <input type="text" name="name" placeholder="Total Payment" ng-model="data.totalAmount" class="form-control">
+                <input type="text" name="name" placeholder="Total Payment" ng-model="data.name" class="form-control">
                
             </div>
 

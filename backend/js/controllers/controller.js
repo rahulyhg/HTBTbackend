@@ -465,20 +465,12 @@ myApp.controller('DashboardCtrl', function($scope, TemplateService, NavigationSe
           $scope.data = {};
             var formData = {};
             formData._id = JSON.parse($stateParams.keyword)._id;
-            NavigationService.apiCall("User/getOne", formData, function(data) {
+            NavigationService.apiCall("Order/getOne", formData, function(data) {
                  if (data.value === true) {
                 console.log("login", data.data);
                 $scope.data = data.data;
 
-                NavigationService.apiCall("Order/getOrderByUser", formData, function(data) {
-                     if (data.value === true) {
-                    console.log("getOrderByUser", data.data);
-                    $scope.OrderData = data.data;
-                    //  $.jStorage.set('user', data.data);
-                    //  $.jStorage.set("accessToken", data.data.accessToken[0]);
-                     }
-
-                });
+         
                 //  $.jStorage.set('user', data.data);
                 //  $.jStorage.set("accessToken", data.data.accessToken[0]);
                  }
