@@ -37,6 +37,7 @@ var schema = new Schema({
         default: "Unpaid"
     },
     balance: String,
+    totalQuantity:String,
     totalAmount: {
         type: String
     },
@@ -48,7 +49,7 @@ var schema = new Schema({
     requestDate: Date,
     methodOfOrder: String,
     methodOfRequest: String,
-
+    methodOfPayment:String
 
 });
 
