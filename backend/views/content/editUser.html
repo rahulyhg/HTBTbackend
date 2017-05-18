@@ -106,9 +106,9 @@
                 <label>Status</label>
 
                 <select class="form-control" name="" ng-model="data.status">
-              <option value="">Inactive</option>
-              <option value="">Not Purchased Yet</option>
-              <option value="">Active</option>
+              <option selected value="Inactive">Inactive</option>
+              <option value="Not Purchased Yet">Not Purchased Yet</option>
+              <option value="Active">Active</option>
             </select>
             </div>
         </div>
@@ -192,7 +192,7 @@
         <div class="sec" ng-if="data.accessLevel=='Customer'">
             <div>
                 <!-- <a class="btn btn-primary pull-right" ng-click="modalAddNotes(data.notes)">Add New</a> -->
-                <label>Order History<span ng-show="type.required">*</span></label>
+                <label>Order    <span ng-show="type.required">*</span></label>
                 <span style="float:right;width:200px;"><input type="search" class="form-control" placeholder="Search..." ng-model="search.text"> </span>
             </div>
 
@@ -231,20 +231,16 @@
         </div>
         <div class="form-group" fields ng-if="data.accessLevel=='Customer'">
             <label>Current Jar Balance</label>
-            <input type="number" name="jarbalance" placeholder="Current Jar Balance" ng-model="data.jarbalance" class="form-control" readonly>
+            <input type="text" name="jarbalance" placeholder="Current Jar Balance" ng-model="subscription.balance" class="form-control" readonly>
         </div>
         <div class="form-group" fields ng-if="data.accessLevel=='Customer'">
             <label>Current Jar Deposit</label>
-            <input type="number" name="jardeposit" placeholder="Current Jar Balance" ng-model="data.jardeposit" class="form-control" readonly>
+            <input type="text" name="jardeposit" placeholder="Current Jar Balance" ng-model="subscription.totalQuantity" class="form-control" readonly>
         </div>
         <div class="form-group" ng-if="data.accessLevel=='Customer'">
             <label>Last method of payment</label>
+            <input type="text" name="jardeposit" placeholder="Current Jar Balance" value="{{OrderData[OrderData.length-1].methodOfPayment}}" class="form-control" readonly>
 
-            <select class="form-control" name="" ng-model="data.levelstatus">
-           <option value="">Cash</option>
-           <option value="">Check</option>
-           <option value="">Online</option>
-         </select>
         </div>
         <div class="sec">
             <div>
