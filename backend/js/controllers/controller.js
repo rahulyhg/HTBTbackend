@@ -399,10 +399,14 @@ myApp.controller('DashboardCtrl', function($scope, TemplateService, NavigationSe
                 console.log("login", data.data);
                 $scope.data = data.data;
 
-                NavigationService.apiCall("Order/getOrderByUser", formData, function(data) {
+               NavigationService.apiCall("Order/getOrderByUser", formData, function(data) {
                      if (data.value === true) {
                     console.log("getOrderByUser", data.data);
                     $scope.OrderData = data.data;
+                    _.forEach($scope.OrderData,function(val){
+                  $scope.subscription=  _.filter(val.product, ['subscription', 'yes']);
+                    })
+                    console.log("$scope.subscription",$scope.subscription);
                     //  $.jStorage.set('user', data.data);
                     //  $.jStorage.set("accessToken", data.data.accessToken[0]);
                      }

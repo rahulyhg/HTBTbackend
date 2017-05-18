@@ -29,7 +29,7 @@ var schema = new Schema({
         finalPrice: String
     }],
     subscription: {
-        type: Boolean
+        type: String
     },
     AmtDeposit: {
         type: Number,
