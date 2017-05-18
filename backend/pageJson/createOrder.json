@@ -9,8 +9,15 @@
 
 
       "name": "Order date",
-        "type": "readonly",
+        "type": "text",
         "tableRef": "addeddate",
+        "placeholder": "Enter deliverdate",
+        "id": "addeddate",
+        "url": ""
+    }, {
+           "name": "Order ID",
+        "type": "text",
+        "tableRef": "order ID",
         "placeholder": "Enter deliverdate",
         "id": "addeddate",
         "url": ""

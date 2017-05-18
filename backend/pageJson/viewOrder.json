@@ -25,13 +25,12 @@
       }],
     "action": [{
         "name": "edit",
-        "icon": "fa-pencil",
-        "buttonClass": "btn-primary",
-        "type": "page",
-        "action": "editOrder",
-        "fieldsToSend": {
-            "_id": "_id"
-        }
+      "icon": "fa-pencil",
+      "buttonClass": "btn-primary",
+      "type": "editOrder",
+      "fieldsToSend": {
+          "_id": "_id"
+      }
     }, {
         "name": "delete",
         "icon": "fa-trash",

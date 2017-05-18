@@ -449,6 +449,57 @@ myApp.controller('DashboardCtrl', function($scope, TemplateService, NavigationSe
         };
 
     })
+      .controller('EditOrderCtrl', function($scope, TemplateService, NavigationService, JsonService, $timeout, $state, $stateParams, $uibModal, toastr) {
+        $scope.template = TemplateService.changecontent("editOrder");
+        $scope.menutitle = NavigationService.makeactive("editOrder");
+        TemplateService.title = $scope.menutitle;
+        $scope.navigation = NavigationService.getnav();
+        console.log("$stateParams---", JSON.stringify($stateParams.keyword));
+        console.log("$stateParams-json--", JSON.parse($stateParams.keyword)._id);
+
+        if (!_.isEmpty($stateParams.keyword)) {
+          $scope.data = {};
+            var formData = {};
+            formData._id = JSON.parse($stateParams.keyword)._id;
+            NavigationService.apiCall("User/getOne", formData, function(data) {
+                 if (data.value === true) {
+                console.log("login", data.data);
+                $scope.data = data.data;
+
+                NavigationService.apiCall("Order/getOrderByUser", formData, function(data) {
+                     if (data.value === true) {
+                    console.log("getOrderByUser", data.data);
+                    $scope.OrderData = data.data;
+                    //  $.jStorage.set('user', data.data);
+                    //  $.jStorage.set("accessToken", data.data.accessToken[0]);
+                     }
+
+                });
+                //  $.jStorage.set('user', data.data);
+                //  $.jStorage.set("accessToken", data.data.accessToken[0]);
+                 }
+
+            });
+        } else {
+            $scope.data = {};
+            $scope.data.notes = [];
+        }
+        $scope.fields = [{
+            name: "Notes"
+        }, {
+            name: "Time"
+        }];
+    $scope.addProduct = function(data) {
+
+            var modalInstance = $uibModal.open({
+                animation: $scope.animationsEnabled,
+                templateUrl: '/backend/views/modal/addProduct.html',
+                size: 'lg',
+                scope: $scope
+            });
+        };
+
+    })
     .controller('DetailFieldCtrl', function($scope, TemplateService, NavigationService, JsonService, $timeout, $state, $stateParams, $uibModal, toastr) {
         if (!$scope.type.type) {
             $scope.type.type = "text";

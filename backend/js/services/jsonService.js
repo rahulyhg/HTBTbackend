@@ -109,6 +109,16 @@ myApp.service('JsonService', function ($http, TemplateService, $state, toastr, $
        }
        $state.go("editUser", sendTo);
      }
+     else if (action && action.type == "editOrder") {
+       if (action.fieldsToSend) {
+         var keyword = {};
+         _.each(action.fieldsToSend, function (n, key) {
+           keyword[key] = value[n];
+         });
+         sendTo.keyword = JSON.stringify(keyword);
+       }
+       $state.go("editOrder", sendTo);
+     }
  else if (action && action.type == "apiCallConfirm") {
         globalfunction.confDel(function (value2) {
           if (value2) {

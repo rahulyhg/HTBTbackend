@@ -1,0 +1,110 @@
+<div class="heading-sec">
+    <div class="row">
+        <div class="col-md-12 column">
+            <div class="heading-profile">
+                <h2>Order</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="widget">
+    <div class="form-elements-sec">
+        <div class="sec">
+            <div class="form-group" fields>
+                <label>Date Of Order</label>
+                <input type="text" name="userID" placeholder="Date Of Joining" ng-model="data.dateofjoin | date" class="form-control" readonly>
+            </div>
+            <div class="form-group" fields>
+                <label>Order ID </label>
+                <input type="text" name="userID" placeholder="User ID" ng-model="data.userID" class="form-control" readonly>
+            </div>
+            <div class="form-group" fields>
+                <label>Customer ID </label>
+                <input type="text" name="userID" placeholder="User ID" ng-model="data.userID" class="form-control" readonly>
+            </div>
+            <div class="form-group" fields>
+                <label>Customer Name </label>
+                <input type="text" name="name" placeholder="name" ng-model="data.name" class="form-control">
+                <div class="error-msg" ng-show="name.$invalid && name.$touched">Please enter valid Customer name</div>
+            </div>
+
+            <div class="form-group" fields>
+                <label>Customer Mobile Number</label>
+                <input type="number" name="mobile" placeholder="Mobile Number" ng-model="data.mobile" class="form-control">
+                <div class="error-msg" ng-show="mobile.$invalid && mobile.$touched">Please enter valid Customer Mobile Number</div>
+            </div>
+
+            <div class="form-group" ng-if="data.accessLevel=='Customer'">
+                <label>Method Of Ordering</label>
+
+                <select class="form-control" name="" ng-model="data.methodofjoin">
+              <option value="">Relationship Partner</option>
+              <option value="">App</option>
+              <option value="">Customer Representative</option>
+            </select>
+            </div>
+              <div class="form-group" fields>
+                <label>Subscription</label>
+                <input type="text" name="name" placeholder="Subscription" ng-model="data.name" class="form-control">
+               
+            </div>
+            <div class="sec">
+                <div>
+                    <a class="btn btn-primary pull-right" ng-click="addProduct(data.notes)">Add New</a>
+                    <label>Products Purchased<span ng-show="type.required">*</span></label>
+                    <span style="float:right;width:200px;"><input type="search" class="form-control" placeholder="Search..." ng-model="search.text"> </span>
+                </div>
+
+                <div class="sec">
+                    <div>
+                        <table class="table table-input" ng-if="model.length != 0">
+                            <thead>
+                                <tr>
+                                    <th>Product ID</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+
+                                    <!-- <th width="150px">Actions</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in data.notes | filter:search.text ">
+                                    <td>{{data.note}}</td>
+                                    <td>{{data.notestime | date}}</td>
+                                    <td>{{data.notestime | date}}</td>
+
+                                    <!-- <td>
+                                  <a class="btn btn-primary" ng-click="editBox('Edit',data)">
+                                      <i class="Fa fa-pencil"></i>
+                                  </a>
+                                  <a class="btn btn-danger" ng-click="deleteBox($index, model)">
+                                      <i class="fa fa-trash"></i>
+                                  </a>
+                              </td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+
+            </div>
+
+   <div class="form-group" fields>
+                <label>Total Payment</label>
+                <input type="text" name="name" placeholder="Total Payment" ng-model="data.name" class="form-control">
+               
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div class="text-center mt20 odd-even-button">
+    <button class="btn btn-default" type="button" ng-click="saveMasterReform(formData)">Save</button>
+    <a class="btn btn-danger" href="#!/page/viewMasterReform//">Cancel</a>
+
+</div>
+
+
+

@@ -149,7 +149,7 @@
         }
     }],
     "apiCall": {
-        "url": "Order/save",
+        "url": "Order/saveOrder",
         "params": "_id"
     },
     "preApi": {

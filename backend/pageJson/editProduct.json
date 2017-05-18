@@ -106,8 +106,8 @@
         "url": "",
         "dropDownField": "",
         "dropDownType": "single",
-        "onView": true,
-        "dropDown": [true, false]
+        "onView": "yes",
+        "dropDown": ["yes", "no"]
     }, {
         "name": "Big Image",
         "type": "image",
