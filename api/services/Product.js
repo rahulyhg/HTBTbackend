@@ -183,7 +183,6 @@ var model = {
                 console.log(productID);
               }
               data.productID=productID;
-              data.dateofjoin= new Date();
               Product.saveData(data,function(err,savedData){
                 if(err){
                   callback(err,null);

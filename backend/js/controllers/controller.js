@@ -483,10 +483,10 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                             //  $.jStorage.set("accessToken", data.data.accessToken[0]);
                         }
 
-                    });
-                    //  $.jStorage.set('user', data.data);
-                    //  $.jStorage.set("accessToken", data.data.accessToken[0]);
-                }
+                    });     
+                //  $.jStorage.set('user', data.data);
+                //  $.jStorage.set("accessToken", data.data.accessToken[0]);
+                 }
 
             });
         } else {
