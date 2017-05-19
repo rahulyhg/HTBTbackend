@@ -70,6 +70,9 @@ schema.plugin(deepPopulate, {
     populate: {
         'user': {
             select: 'name _id'
+        },
+        'category':{
+            select:''
         }
     }
 });
@@ -78,14 +81,14 @@ schema.plugin(timestamps);
 
 module.exports = mongoose.model('Product', schema);
 
-var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "Product", "Products"));
+var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user category", "user category"));
 var model = {
 
     getAllFeaturedProduct: function (data, callback) {
         console.log("data", data)
         Product.find({
             featuredProduct: true
-        }).exec(function (err, found) {
+        }).deepPopulate('category').exec(function (err, found) {
             if (err) {
                 callback(err, null);
             } else {
@@ -102,10 +105,10 @@ var model = {
     },
 
     getAllCategoryProduct: function (data, callback) {
-        console.log("data", data)
+        console.log("data", data);
         Product.find({
           category: data.category
-        }).exec(function (err, found) {
+        }).deepPopulate('category').exec(function (err, found) {
             if (err) {
                 callback(err, null);
             } else {
@@ -183,6 +186,7 @@ var model = {
                 console.log(productID);
               }
               data.productID=productID;
+              data.dateofjoin= new Date();
               Product.saveData(data,function(err,savedData){
                 if(err){
                   callback(err,null);

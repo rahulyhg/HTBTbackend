@@ -1,33 +1,29 @@
 {
-    "title": "Delivery Request",
-    "description": "List of Delivery Request",
+    "title": "Inventory Management",
+    "description": "List of Product",
     "pageType": "view",
     "sendIdWithCreate": true,
     "urlFields": ["_id"],
     "fields": [{
-      "name": "User name",
+      "name": "Name",
       "isSort": "",
-      "tableRef": "user",
-      "type":"selectFromTable"
+      "tableRef": "name"
     },{
-      "name": "Deliver date",
+      "name": "Opening Stock Account",
       "isSort": "",
-      "tableRef": "deliverdate",
-      "type":"date"
+      "tableRef": "quantity"
     },{
-      "name": "Status",
+      "name": "Balance",
       "isSort": "",
-      "tableRef": "status"
-    },{
-      "name": "Payment Status",
-      "isSort": "",
-      "tableRef": "paymentStatus"
+      "tableRef": "quantity"
+
       }],
     "action": [{
-        "name": "edit",
+      "name": "edit",
       "icon": "fa-pencil",
       "buttonClass": "btn-primary",
-      "type": "editOrderRequest",
+      "type": "page",
+      "action": "editInventory",
       "fieldsToSend": {
           "_id": "_id"
       }
@@ -44,16 +40,9 @@
             "value": "_id"
         }
     }],
-    "button": [{
-
-        "name": "Create",
-        "icon": "plus",
-        "class": "btn-success",
-        "type": "page",
-        "action": "createOrder"
-    }],
+  
     "apiCall": {
-        "url": "Order/search",
+        "url": "Product/search",
         "params": "_id"
     }
 }

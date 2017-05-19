@@ -57,20 +57,19 @@ var schema = new Schema({
 
     verification: {
       type: String,
-      default:'Not Verified',
       enum: ['Verified', 'Not Verified']
     },
     levelstatus: {
-      type: String,
-      enum: ['Bronze', 'Silver','Gold']
-    },
+            type: Schema.Types.ObjectId,
+            ref: 'PartnerLevel'
+        },
     status: {
       type: String,
       enum: ['Active', 'Suspended','Inactive','Not Purchased Yet']
     },
     earningsBlock: {
       type: String,
-      enum: ['Yes', 'No']
+      enum: ['Active', 'Inactive']
     },
     methodofjoin: {
       type: String,
@@ -94,11 +93,10 @@ var schema = new Schema({
         }
 
     }],
-
-    relationshipId: {
-               type: Schema.Types.ObjectId,
-               ref: 'User'
-           },
+ relationshipId: {
+            type: Schema.Types.ObjectId,
+            ref: 'User'
+        },
     coupon:[{
       name:{
         type: String,
@@ -113,6 +111,12 @@ schema.plugin(deepPopulate, {
             select: 'name _id'
         },
         'customer':{
+          select:''
+        },
+        'relationshipId':{
+          select:''
+        },
+        'levelstatus':{
           select:''
         }
     }

@@ -214,7 +214,7 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="data in OrderData | filter:search.text ">
-                                <td>{{data._id}}</td>
+                                <td>{{data.orderID}}</td>
                                 <td>{{data.addedDate }}</td>
                                 <td>{{data.deliverdate }}</td>
                                 <td>{{data.paymentStatus }}</td>
@@ -239,7 +239,7 @@
         </div>
         <div class="form-group" ng-if="data.accessLevel=='Customer'">
             <label>Last method of payment</label>
-            <input type="text" name="jardeposit" placeholder="Current Jar Balance" value="{{OrderData[OrderData.length-1].methodOfPayment}}" class="form-control" readonly>
+            <input type="text" name="jardeposit" placeholder="Last method of payment" value="{{OrderData[OrderData.length-1].methodOfPayment}}" class="form-control" readonly>
 
         </div>
         <div class="sec">

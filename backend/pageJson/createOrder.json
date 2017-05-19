@@ -8,56 +8,56 @@
     "fields": [{
 
 
-      "name": "Order date",
+        "name": "Order date",
         "type": "text",
         "tableRef": "addeddate",
         "placeholder": "Enter deliverdate",
         "id": "addeddate",
         "url": ""
     }, {
-           "name": "Order ID",
+        "name": "Order ID",
         "type": "text",
         "tableRef": "order ID",
         "placeholder": "Enter deliverdate",
         "id": "addeddate",
         "url": ""
     }, {
-      "name": "user",
-      "type": "selectFromTable",
-      "tableRef": "user",
-      "tableValue": "user",
-      "dropDownType": "single",
-      "searchApi": "searchCall",
-      "placeholder": "Enter user",
-      "id": "input1",
-      "onView": true,
-      "validation": ["", "trim", ""],
-      "url": "User/search"
-  }, {
-    "name": "order For ",
-    "type": "tags",
-    "tableRef": "orderFor",
-    "placeholder": "Enter Order For",
-    "id": "orderFor",
-    "validation": ["", "trim", ""],
-    "url": "",
-    "dropDownField": "",
-    "dropDownType": "single",
-    "onView": true,
-    "dropDown": ["customer", "self"]
-}, {
-    "name": "customer(optional)",
-    "type": "selectFromTable",
-    "tableRef": "customer",
-    "tableValue": "customer",
-    "dropDownType": "single",
-    "searchApi": "searchCall",
-    "placeholder": "Enter user",
-    "id": "input1",
-    "onView": true,
-    "validation": ["", "trim", ""],
-    "url": "User/search"
-}, {
+        "name": "user",
+        "type": "selectFromTable",
+        "tableRef": "user",
+        "tableValue": "user",
+        "dropDownType": "single",
+        "searchApi": "searchCall",
+        "placeholder": "Enter user",
+        "id": "input1",
+        "onView": true,
+        "validation": ["", "trim", ""],
+        "url": "User/search"
+    }, {
+        "name": "order For ",
+        "type": "tags",
+        "tableRef": "orderFor",
+        "placeholder": "Enter Order For",
+        "id": "orderFor",
+        "validation": ["", "trim", ""],
+        "url": "",
+        "dropDownField": "",
+        "dropDownType": "single",
+        "onView": true,
+        "dropDown": ["customer", "self"]
+    }, {
+        "name": "customer(optional)",
+        "type": "selectFromTable",
+        "tableRef": "customer",
+        "tableValue": "customer",
+        "dropDownType": "single",
+        "searchApi": "searchCall",
+        "placeholder": "Enter user",
+        "id": "input1",
+        "onView": true,
+        "validation": ["", "trim", ""],
+        "url": "User/search"
+    }, {
         "name": "product",
         "type": "box",
         "tableRef": "product",
@@ -82,8 +82,8 @@
             "placeholder": "Enter product Quantity",
             "id": "productQuantity",
             "onView": true,
-            "validation": ["", "trim", ""]
-
+            "validation": ["", "trim", ""],
+            "url": ""
         }]
 
 
@@ -110,7 +110,7 @@
     }, {
 
 
-  
+
         "name": "status",
         "type": "tags",
         "tableRef": "status",
@@ -119,9 +119,9 @@
         "validation": ["", "trim", ""],
         "url": "",
         "dropDownField": "",
-        "default":"Processing",
+        "default": "Processing",
         "dropDownType": "single",
-        "dropDown": ["Processing", "Confirmed","Cancelled","Delivered","delay"]
+        "dropDown": ["Processing", "Confirmed", "Cancelled", "Delivered", "delay"]
     }, {
         "name": "Payment status",
         "type": "tags",
@@ -130,7 +130,7 @@
         "id": "PaymentStatus",
         "validation": ["", "trim", ""],
         "url": "",
-        "default":"unpaid",
+        "default": "unpaid",
         "dropDownField": "",
         "dropDownType": "single",
         "dropDown": ["paid", "unpaid"]
@@ -156,6 +156,6 @@
         }
     }],
     "apiCall": {
-        "url": "order/save"
+        "url": "order/saveOrder"
     }
 }
