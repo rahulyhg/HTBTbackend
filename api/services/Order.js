@@ -36,7 +36,7 @@ var schema = new Schema({
         default: "Unpaid"
     },
     balance: String,
-    totalQuantity:String,
+    totalQuantity: String,
     totalAmount: {
         type: String
     },
@@ -46,7 +46,7 @@ var schema = new Schema({
     },
     orderDate: Date,
     methodOfOrder: String,
-    methodOfPayment:String
+    methodOfPayment: String
 
 });
 
@@ -71,31 +71,30 @@ var model = {
     getOrderByUser: function (data, callback) {
         console.log("data", data)
         Order.find({
-            user: data._id
-        }).deepPopulate("user product.product")
+                user: data._id
+            }).deepPopulate("user product.product")
             .lean().sort({
                 _id: -1
             }).exec(function (err, found) {
-            if (err) {
-                callback(err, null);
-            } else {
-                if (found) {
-                    callback(null, found);
+                if (err) {
+                    callback(err, null);
                 } else {
-                    callback({
-                        message: "Invalid data!"
-                    }, null);
+                    if (found) {
+                        callback(null, found);
+                    } else {
+                        callback({
+                            message: "Invalid data!"
+                        }, null);
+                    }
                 }
-            }
 
-        });
+            });
     },
-  
+
     saveOrder: function (data, callback) {
         var year = new Date().getFullYear().toString().substr(2, 2);
         var month = new Date().getMonth();
         var strMon = '';
-         console.log("data---->>>>..",data);
         console.log(month.toString().length, year);
 
         if (month.toString().length > 1) {
@@ -156,18 +155,37 @@ var model = {
                     if (err) {
                         callback(err, null);
                     } else {
-                        console.log("savedData--",savedData);
-                         if(data.product){
-                             console.log("inside Delivery req create");
-                            var deliveryReqData={};
-                            _.forEach(data.product,function(val){
-                            deliveryReqData.product=val.product;
-                            deliveryReqData.Quantity=val.productQuantity;
-                           deliveryReqData.deliverdate=data.deliverdate;
-                           deliveryReqData.Order=savedData._id;
-                           deliveryReqData.requestDate=new Date();
-                           deliveryReqData.methodOfRequest=data.methodOfOrder;
-                           DeliveryRequest.saveData(deliveryReqData, function() {});
+                        console.log("savedData--", savedData);
+                        if (data.product) {
+                            console.log("inside Delivery req create");
+                            var deliveryReqData = {};
+                            _.forEach(data.product, function (val) {
+                                DeliveryRequest.find({}).sort({
+                                    createdAt: -1
+                                }).exec(function (err, fdata) {
+                                    if (err) {
+                                        console.log(err);
+                                        callback(err, null);
+                                    } else {
+                                        if (fdata.length > 0) {
+                                            if (fdata[0].requestID) {
+                                                reqId = parseInt(fdata[0].requestID) + 1;
+                                            } else {
+                                                reqId = 1;
+                                            }
+                                            deliveryReqData.product = val.product;
+                                            deliveryReqData.Quantity = val.productQuantity;
+                                            deliveryReqData.deliverdate = data.deliverdate;
+                                            deliveryReqData.Order = savedData._id;
+                                            deliveryReqData.requestDate = new Date();
+                                            deliveryReqData.methodOfRequest = data.methodOfOrder;
+                                            deliveryReqData.requestID = reqId;
+                                            DeliveryRequest.saveData(deliveryReqData, function () {});
+
+                                        }
+                                    }
+                                });
+
                             })
                         }
                         callback(null, savedData);

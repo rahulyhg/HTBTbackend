@@ -31,6 +31,37 @@ schema.plugin(uniqueValidator);
 schema.plugin(timestamps);
 module.exports = mongoose.model('DeliveryRequest', schema);
 
-var exports = _.cloneDeep(require("sails-wohlig-service")(schema));
-var model = {};
+var exports = _.cloneDeep(require("sails-wohlig-service")(schema,"product Order","product Order"));
+var model = {
+
+      scheduleDelivery: function (data, callback) {
+        var reqID = '';
+        DeliveryRequest.find({}).sort({
+            createdAt: -1
+        }).exec(function (err, fdata) {
+            if (err) {
+                console.log(err);
+                callback(err, null);
+            } else {
+                if (fdata.length > 0) {
+                    console.log(fdata[0]);
+                     reqId = parseInt(fdata[0].requestID) + 1;
+                } else {
+                    console.log("no data");
+                    reqID = 1;
+                    console.log(reqID);
+                }
+                data.requestID = reqID;
+               data.requestDate=new Date();
+                DeliveryRequest.saveData(data, function (err, savedData) {
+                    if (err) {
+                        callback(err, null);
+                    } else {
+                        callback(null, savedData);
+                    }
+                })
+            }
+        });
+    },
+};
 module.exports = _.assign(module.exports, exports, model);

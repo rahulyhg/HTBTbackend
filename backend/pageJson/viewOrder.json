@@ -50,8 +50,7 @@
         "name": "Create",
         "icon": "plus",
         "class": "btn-success",
-        "type": "page",
-        "action": "createOrder"
+        "type": "editOrder"
     }],
     "apiCall": {
         "url": "Order/search",

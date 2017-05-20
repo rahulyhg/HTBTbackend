@@ -464,8 +464,16 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         TemplateService.title = $scope.menutitle;
         $scope.navigation = NavigationService.getnav();
         console.log("$stateParams---", JSON.stringify($stateParams.keyword));
-        console.log("$stateParams-json--", JSON.parse($stateParams.keyword)._id);
+        var formData = {};
+        NavigationService.apiCall("user/search", formData, function (data) {
+            if (data.value === true) {
+                console.log("login", data.data);
+                $scope.userData = data.data.results;
+                //  $.jStorage.set('user', data.data);
+                //  $.jStorage.set("accessToken", data.data.accessToken[0]);
+            }
 
+        });
         if (!_.isEmpty($stateParams.keyword)) {
             $scope.data = {};
             var formData = {};
