@@ -5,16 +5,23 @@
     "sendIdWithCreate": true,
     "urlFields": ["_id"],
     "fields": [{
-      "name": "User name",
+      "name": "Date Of Request",
       "isSort": "",
-      "tableRef": "user",
-      "type":"selectFromTable"
+      "tableRef": "requestDate"
     },{
-      "name": "Deliver date",
+      "name": "Request ID ",
       "isSort": "",
-      "tableRef": "deliverdate",
-      "type":"date"
-    },{
+      "tableRef": "requestID"
+    },
+    {
+        "name": "Customer Name",
+        "type":"fkListView",
+        "fieldToBeShown":"user",
+        "nestedField":"userID",
+        "isSort": "",
+        "tableRef": "order"
+    },
+    {
       "name": "Status",
       "isSort": "",
       "tableRef": "status"
@@ -49,11 +56,11 @@
         "name": "Create",
         "icon": "plus",
         "class": "btn-success",
-        "type": "page",
+        "type": "editOrderRequest",
         "action": "createOrder"
     }],
     "apiCall": {
-        "url": "Order/search",
+        "url": "DeliveryRequest/search",
         "params": "_id"
     }
 }

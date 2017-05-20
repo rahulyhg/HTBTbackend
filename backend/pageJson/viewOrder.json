@@ -8,7 +8,8 @@
       "name": "User name",
       "isSort": "",
       "tableRef": "user",
-      "type":"selectFromTable"
+      "fieldToBeShown":"userID",
+      "type":"fkListView"
     },{
       "name": "Deliver date",
       "isSort": "",
