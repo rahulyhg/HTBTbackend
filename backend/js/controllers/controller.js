@@ -444,6 +444,14 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             });
 
         };
+
+        $scope.saveuser = function (notes) {
+    
+            NavigationService.apiCall("User/saveUserData", $scope.data, function (data) {
+                console.log("login", data.data);
+            });
+
+        };
         $scope.modalAddNotes = function (data) {
 
             var modalInstance = $uibModal.open({
