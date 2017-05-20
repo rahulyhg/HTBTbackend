@@ -31,6 +31,9 @@ var schema = new Schema({
     subscription: {
         type: String
     },
+    deposit:{
+      type:String
+    },
     AmtDeposit: {
         type: Number,
     },
@@ -46,6 +49,10 @@ var schema = new Schema({
         default: "",
     },
     limit: {
+        type: String,
+        default: "",
+    },
+    maxProductLimit: {
         type: String,
         default: "",
     },
