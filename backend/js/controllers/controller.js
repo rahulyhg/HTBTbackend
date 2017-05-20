@@ -563,7 +563,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         }
         $scope.json = JsonService;
         $scope.tags = {};
-        $scope.model = [];
+        $scope.model = $scope.formData[$scope.type.tableRef];
         $scope.tagNgModel = {};
         // $scope.boxModel
         if ($scope.type.validation) {
@@ -659,9 +659,11 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         }
         if ($scope.type.type == "box") {
 
-            if (!_.isArray($scope.formData[$scope.type.tableRef]) && $scope.formData[$scope.type.tableRef] === '') {
+            if (_.isEmpty($scope.formData[$scope.type.tableRef])) {
                 $scope.formData[$scope.type.tableRef] = [];
-                $scope.model = [];
+                $scope.model = $scope.formData[$scope.type.tableRef];
+
+
             } else {
                 if ($scope.formData[$scope.type.tableRef]) {
                     $scope.model = $scope.formData[$scope.type.tableRef];
