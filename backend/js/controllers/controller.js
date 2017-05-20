@@ -616,6 +616,27 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         $scope.navigation = NavigationService.getnav();
         console.log("$stateParams---", JSON.stringify($stateParams.keyword));
 
+                    NavigationService.apiCall("categories/search",
+                        formData,
+                        function (data) {
+                            if (data.value === true) {
+                                console.log("getOrderByUser", data.data);
+                                $scope.cat = data.data.results;
+                                _.forEach($scope.OrderData, function (val) {
+                                    _.forEach(val.product, function (val1) {
+                                        if (_.isEqual(val1.product.subscription, 'yes')) {
+                                            $scope.subscription = val;
+                                        }
+
+                                    })
+                                })
+                                console.log("$scope.subscription",
+                                    $scope.subscription);
+                                //  $.jStorage.set('user', data.data);
+                                //  $.jStorage.set("accessToken",
+                            }
+
+                        });
         if (!_.isEmpty($stateParams.keyword)) {
             $scope.data = {};
             var formData = {};
@@ -661,11 +682,11 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 });
 
         };
-        $scope.saveProduct = function () {
+        $scope.saveProduct = function (formdata) {
 
             // noteWithTime._id=JSON.parse($stateParams.keyword)._id;
             NavigationService.apiCall("Product/saveProduct",
-                $scope.data,
+                formdata,
                 function (data) {
                     console.log("login", data.data);
                 });
