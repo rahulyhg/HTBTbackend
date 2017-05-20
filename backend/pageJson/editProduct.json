@@ -96,19 +96,7 @@
             "onView": true,
             "validation": ["", "trim", ""]
         }]
-    }, {
-        "name": "Subscription",
-        "type": "tags",
-        "tableRef": "subscription",
-        "placeholder": "Enter Subscription",
-        "id": "subscription",
-        "validation": ["", "trim", ""],
-        "url": "",
-        "dropDownField": "",
-        "dropDownType": "single",
-        "onView": "yes",
-        "dropDown": ["yes", "no"]
-    }, {
+    },  {
         "name": "Big Image",
         "type": "image",
         "tableRef": "bigImage",

@@ -22,13 +22,13 @@
         "id": "addeddate",
         "url": ""
     }, {
-        "name": "user",
+        "name": "customer",
         "type": "selectFromTable",
-        "tableRef": "user",
-        "tableValue": "user",
+        "tableRef": "customer",
+        "tableValue": "customer",
         "dropDownType": "single",
         "searchApi": "searchCall",
-        "placeholder": "Enter user",
+        "placeholder": "Enter customer",
         "id": "input1",
         "onView": true,
         "validation": ["", "trim", ""],

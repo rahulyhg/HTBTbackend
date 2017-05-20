@@ -2,7 +2,6 @@ var schema = new Schema({
     requestID: String,
     deliverdate: Date,
     delivertime: Date,
-
     status: {
         type: String, //Delivery Scheduled ,In Transit,Full Delivery Successful,Partial Delivery Successful,Delivery Failed
         default: "Delivery Scheduled"
@@ -16,6 +15,10 @@ var schema = new Schema({
     product: {
         type: Schema.Types.ObjectId,
         ref: 'Product',
+    },
+     customer: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
     },
     Order: {
         type: Schema.Types.ObjectId,
@@ -31,7 +34,7 @@ schema.plugin(uniqueValidator);
 schema.plugin(timestamps);
 module.exports = mongoose.model('DeliveryRequest', schema);
 
-var exports = _.cloneDeep(require("sails-wohlig-service")(schema,"product Order","product Order"));
+var exports = _.cloneDeep(require("sails-wohlig-service")(schema,"product Order customer","product Order customer"));
 var model = {
 
       scheduleDelivery: function (data, callback) {

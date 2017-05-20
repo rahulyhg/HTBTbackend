@@ -12,51 +12,65 @@
         <div class="sec">
             <div class="form-group" fields>
                 <label>Date Of Order</label>
-                <input type="text" name="userID" placeholder="Date Of Joining" ng-model="data.orderDate | date" class="form-control" readonly>
+                <input ng-if="data._id" type="text" name="userID" placeholder="Date Of Joining" ng-model="data.orderDate | date" class="form-control"
+                    ng-disabled="data._id">
+                <input type="date" name="userID" placeholder="Date Of Joining" ng-if="!data._id" ng-model="data.orderDate" class="form-control"
+                    ng-disabled="data._id">
             </div>
-            <div class="form-group" fields>
+            <div ng-if="data._id" class="form-group" fields>
                 <label>Order ID </label>
-                <input type="text" name="userID" placeholder="User ID" ng-model="data.orderID" class="form-control" readonly>
+                <input type="text" name="userID" placeholder="User ID" ng-model="data.orderID" class="form-control" ng-disabled="data._id">
             </div>
+
             <div class="form-group" fields>
                 <label>Customer ID </label>
-                <input type="text" name="userID" placeholder="User ID" ng-model="data.user.userID" class="form-control" readonly>
+                <select class="form-control" name="" ng-model="data1.user" ng-change="setcustomer(data1.user)">
+              <option value="{{users._id}}|{{users.name}}|{{users.mobile}}" ng-repeat="users in userData" >{{users.userID}}</option>
+            </select>
             </div>
             <div class="form-group" fields>
                 <label>Customer Name </label>
-                <input type="text" name="name" placeholder="name" ng-model="data.user.name" class="form-control">
+                <input type="text" name="name" placeholder="name" ng-model="data1.name" class="form-control">
                 <div class="error-msg" ng-show="name.$invalid && name.$touched">Please enter valid Customer name</div>
             </div>
             <div class="form-group" fields>
                 <label>Customer Mobile Number</label>
-                <input type="text" name="mobile" placeholder="Mobile Number" ng-model="data.user.mobile" class="form-control">
+                <input type="text" name="mobile" placeholder="Mobile Number" ng-model="data1.mobile" class="form-control">
 
             </div>
 
-            <div class="form-group" >
+            <div class="form-group">
                 <label>Method Of Ordering</label>
 
                 <select class="form-control" name="" ng-model="data.methodofjoin">
-              <option value="">Relationship Partner</option>
-              <option value="">App</option>
-              <option value="">Customer Representative</option>
+              <option value="Relationship Partner">Relationship Partner</option>
+              <option value="App">App</option>
+              <option value="Customer Representative">Customer Representative</option>
             </select>
             </div>
-              <!--<div class="form-group" fields>
+            <div ng-if="!data._id" class="form-group">
+                <label>Method Of Payment</label>
+                <select class="form-control" name="" ng-model="data.methodOfPayment">
+              <option value="Cash">Cash</option>
+              <option value="Cheque">Cheque</option>
+            </select>
+            </div>
+
+            <!--<div class="form-group" fields>
                 <label>Subscription</label>
                 <input type="text" name="name" placeholder="Subscription" ng-model="data.name" class="form-control">
 
             </div>-->
             <div class="sec">
                 <div>
-                    <!--<a class="btn btn-primary pull-right" ng-click="addProduct(data.notes)">Add New</a>-->
+                    <a class="btn btn-primary pull-right" ng-click="addProduct()">Add New</a>
                     <label>Products Purchased<span ng-show="type.required">*</span></label>
                     <span style="float:right;width:200px;"><input type="search" class="form-control" placeholder="Search..." ng-model="search.text"> </span>
                 </div>
 
                 <div class="sec">
                     <div>
-                        <table class="table table-input" ng-if="model.length != 0">
+                        <table class="table table-input" ng-if="productList.length != 0">
                             <thead>
                                 <tr>
                                     <th>Product ID</th>
@@ -67,8 +81,8 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="data in data.product | filter:search.text ">
-                                    <td>{{data.product.productID}}</td>
+                                <tr ng-repeat="data in productList | filter:search.text ">
+                                    <td>{{data.productID}}</td>
                                     <td>{{data.productQuantity }}</td>
                                     <td>{{data.price }}</td>
 
@@ -89,18 +103,24 @@
 
             </div>
 
-   <div class="form-group" fields>
+            <div class="form-group" fields>
                 <label>Total Payment</label>
                 <input type="text" name="name" placeholder="Total Payment" ng-model="data.totalAmount" class="form-control">
 
             </div>
-
+            <div class="form-group" fields>
+                <label>Delivery date</label>
+                <input ng-if="data._id" type="text" name="deliverdate" placeholder="deliverdate" ng-model="data.deliverdate | date" class="form-control"
+                    ng-disabled="data._id">
+                <input type="date" name="deliverdate" placeholder="deliverdate" ng-if="!data._id" ng-model="data.deliverdate" class="form-control"
+                    ng-disabled="data._id">
+            </div>
 
         </div>
     </div>
 </div>
 <div class="text-center mt20 odd-even-button">
-    <button class="btn btn-default" type="button" ng-click="saveMasterReform(formData)">Save</button>
-    <a class="btn btn-danger" href="#!/page/viewMasterReform//">Cancel</a>
+    <button class="btn btn-default" type="button" ng-click="saveOrder(data)">Save</button>
+    <a class="btn btn-danger" href="#/page/viewOrder//">Cancel</a>
 
 </div>

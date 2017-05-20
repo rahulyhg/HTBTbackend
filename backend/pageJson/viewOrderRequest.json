@@ -16,8 +16,7 @@
     {
         "name": "Customer Name",
         "type":"fkListView",
-        "fieldToBeShown":"user",
-        "nestedField":"userID",
+        "fieldToBeShown":"customer",
         "isSort": "",
         "tableRef": "order"
     },

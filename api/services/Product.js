@@ -28,9 +28,7 @@ var schema = new Schema({
         endRange: String,
         finalPrice: String
     }],
-    subscription: {
-        type: String
-    },
+   
     deposit:{
       type:String
     },

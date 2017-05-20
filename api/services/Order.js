@@ -25,11 +25,6 @@ var schema = new Schema({
     deliverdate: Date,
     delivertime: Date,
     couponCode: String,
-    user: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
-    },
-    "user-nameOnly": String,
     paymentStatus: {
         type: String,
         enum: ['Paid', 'Unpaid'],
@@ -46,13 +41,14 @@ var schema = new Schema({
     },
     orderDate: Date,
     methodOfOrder: String,
-    methodOfPayment: String
+    methodOfPayment: String,
+    paidByCustomer: Boolean
 
 });
 
 schema.plugin(deepPopulate, {
     populate: {
-        'user': {
+        'customer': {
             select: ''
         },
         'product.product': {
@@ -65,14 +61,14 @@ schema.plugin(timestamps);
 
 module.exports = mongoose.model('Order', schema);
 
-var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user product.product", "user product.product"));
+var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "customer product.product", "customer product.product"));
 var model = {
 
     getOrderByUser: function (data, callback) {
         console.log("data", data)
         Order.find({
-                user: data._id
-            }).deepPopulate("user product.product")
+                customer: data._id
+            }).deepPopulate("customer product.product")
             .lean().sort({
                 _id: -1
             }).exec(function (err, found) {
@@ -157,9 +153,10 @@ var model = {
                     } else {
                         console.log("savedData--", savedData);
                         if (data.product) {
-                            console.log("inside Delivery req create");
+                            console.log("inside Delivery req create", data.product);
                             var deliveryReqData = {};
                             _.forEach(data.product, function (val) {
+                                console.log("val--", val);
                                 DeliveryRequest.find({}).sort({
                                     createdAt: -1
                                 }).exec(function (err, fdata) {
@@ -170,19 +167,21 @@ var model = {
                                         if (fdata.length > 0) {
                                             if (fdata[0].requestID) {
                                                 reqId = parseInt(fdata[0].requestID) + 1;
-                                            } else {
-                                                reqId = 1;
                                             }
-                                            deliveryReqData.product = val.product;
-                                            deliveryReqData.Quantity = val.productQuantity;
-                                            deliveryReqData.deliverdate = data.deliverdate;
-                                            deliveryReqData.Order = savedData._id;
-                                            deliveryReqData.requestDate = new Date();
-                                            deliveryReqData.methodOfRequest = data.methodOfOrder;
-                                            deliveryReqData.requestID = reqId;
-                                            DeliveryRequest.saveData(deliveryReqData, function () {});
-
+                                        } else {
+                                            reqId = 1;
                                         }
+                                        deliveryReqData.product = val.product;
+                                        deliveryReqData.Quantity = val.productQuantity;
+                                        deliveryReqData.deliverdate = data.deliverdate;
+                                        deliveryReqData.Order = savedData._id;
+                                        deliveryReqData.requestDate = new Date();
+                                        deliveryReqData.methodOfRequest = data.methodOfOrder;
+                                        deliveryReqData.requestID = reqId;
+                                        deliveryReqData.customer=data.customer
+                                        console.log("deliveryReqData--", deliveryReqData);
+                                        DeliveryRequest.saveData(deliveryReqData, function () {});
+
                                     }
                                 });
 

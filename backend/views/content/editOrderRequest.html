@@ -12,52 +12,47 @@
         <div class="sec">
             <div ng-if="data.requestDate" class="form-group" fields>
                 <label>Date Of Request</label>
-                <input type="date" name="userID" placeholder="Date Of Joining" ng-model="data.requestDate | date" class="form-control" readonly>
+                <input type="text" name="userID" placeholder="Date Of Joining" ng-model="data.requestDate | date" class="form-control" readonly>
             </div>
             <div ng-if="data.userID" class="form-group" fields>
                 <label>Request ID </label>
-                <input type="text" name="userID" placeholder="User ID" ng-model="data.userID" class="form-control" readonly>
+                <input type="text" name="userID" placeholder="User ID" ng-model="data.requestID" class="form-control" readonly>
             </div>
             <div class="form-group" fields>
                 <label>Order ID </label>
-                <select class="form-control" name="" ng-model="data.Order">
-              <option value="{{orders}}" ng-repeat="orders in orderData" >{{orders.orderID}}</option>
-            </select>
+               <input type="text" name="userID" placeholder="User ID" ng-model="data.Order.orderID" class="form-control" readonly>
             </div>
             <div class="form-group" fields>
                 <label>Product ID </label>
-                <select class="form-control" name="" ng-model="data.Order">
-              <option value="product._id" ng-repeat="product in data.Order.product" >{{product.productID}}</option>
-            </select>
+                 <input type="text" name="userID" placeholder="User ID" ng-model="data.product.productID" class="form-control" readonly>
             </div>
             <div class="form-group" fields>
                 <label>Customer ID </label>
-                <input type="text" name="userID" placeholder="User ID" ng-model="data.Order.user.userID" class="form-control" readonly>
+                <input type="text" name="userID" placeholder="User ID" ng-model="data.customer.userID" class="form-control" readonly>
             </div>
             <div class="form-group" fields>
                 <label>Customer Name </label>
-                <input type="text" name="name" placeholder="name" ng-model="data.Order.user.name" class="form-control">
-                <div class="error-msg" ng-show="name.$invalid && name.$touched">Please enter valid Customer name</div>
+                <input type="text" name="name" placeholder="name" ng-model="data.customer.name" class="form-control" disabled>
             </div>
             <div class="form-group" fields>
                 <label>Customer Mobile Number</label>
-                <input type="number" name="mobile" placeholder="Mobile Number" ng-model="data.Order.user.mobile" class="form-control">
-                <div class="error-msg" ng-show="mobile.$invalid && mobile.$touched">Please enter valid Customer Mobile Number</div>
+                <input type="number" name="mobile" placeholder="Mobile Number" ng-model="data.customer.mobile" class="form-control" disabled>
+               
             </div>
             <div class="form-group" fields>
                 <label>Customer Address </label>
-                <input type="text" name="name" placeholder="establishmentAddress" ng-model="data.Order.user.establishmentAddress" class="form-control">
-                <div class="error-msg" ng-show="establishmentAddress.$invalid && establishmentAddress.$touched">Please enter valid Customer name</div>
+                <input type="text" name="name" placeholder="establishmentAddress" ng-model="data.customer.establishmentAddress" class="form-control" disabled>
+                
             </div>
             <div class="form-group" fields>
                 <label>Customer Pincode </label>
-                <input type="text" name="pincode" placeholder="pincode" ng-model="data.Order.user.pincode" class="form-control">
-                <div class="error-msg" ng-show="pincode.$invalid && pincode.$touched">Please enter valid Customer name</div>
+                <input type="text" name="pincode" placeholder="pincode" ng-model="data.customer.pincode" class="form-control" disabled>
+              
             </div>
 
             <div class="form-group" fields>
-                <label>Assigned Delivery Date</label>
-                <input type="Date" name="name" placeholder="Assigned Delivery Date" ng-model="data.deliverdate" class="form-control">
+                <label>Assigned Delivery Date:</label>{{data.deliverdate | date}}
+                <input type="date" name="name" placeholder="Assigned Delivery Date" ng-model="data.deliverdate" class="form-control">
 
             </div>
             <div class="form-group" fields>
@@ -77,18 +72,15 @@
             </select>
             </div>
         </div>
-        <div class="form-group" fields>
-            <label>Product ID</label>
-            <input type="time" name="name" placeholder="Assigned Delivery Time" ng-model="data.Order.product.productID" value="" class="form-control">
-        </div>
+       
          <div class="form-group" fields>
             <label>Quantity</label>
-            <input type="time" name="name" placeholder="Quantity" ng-model="data.Quantity" value="" class="form-control">
+            <input type="text" name="name" placeholder="Quantity" ng-model="data.Quantity" value="" class="form-control" disabled>
         </div>
     
         <div class="form-group" fields>
             <label>Quantity Delivered</label>
-            <input type="text" name="name" placeholder="Total Payment" ng-model="data.quantityDelivered" class="form-control">
+            <input type="text" name="name" placeholder="Total Payment" ng-model="data.QuantityDelivered" class="form-control">
 
         </div>
 

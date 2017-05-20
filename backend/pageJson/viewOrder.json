@@ -7,7 +7,7 @@
     "fields": [{
       "name": "User name",
       "isSort": "",
-      "tableRef": "user",
+      "tableRef": "customer",
       "fieldToBeShown":"userID",
       "type":"fkListView"
     },{

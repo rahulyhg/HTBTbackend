@@ -21,6 +21,19 @@
         "id": "description",
         "validation": ["required", "trim", "unique"],
         "url": ""
+    },
+    {
+        "name": "Subscription",
+        "type": "tags",
+        "tableRef": "subscription",
+        "placeholder": "Enter Subscription",
+        "id": "subscription",
+        "validation": ["", "trim", ""],
+        "url": "",
+        "dropDownField": "",
+        "dropDownType": "single",
+        "onView": true,
+        "dropDown": ["Yes", "No"]
     }, {
 
         "name": "category Image",
