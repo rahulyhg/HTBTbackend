@@ -548,6 +548,9 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                     console.log("Order---data saved ", data.data);
                 }
             });
+              $state.go("page", {
+                        id: "viewOrder"
+                    }); 
         };
 
     })
