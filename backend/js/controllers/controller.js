@@ -450,6 +450,9 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             NavigationService.apiCall("User/saveUserData", $scope.data, function (data) {
                 console.log("login", data.data);
             });
+              $state.go("page", {
+                        id: "viewUser"
+                    });
 
         };
         $scope.modalAddNotes = function (data) {
