@@ -20,102 +20,107 @@ var myApp = angular.module('myApp', [
     'ui.sortable'
 ]);
 
-myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider) {
+myApp.config(function($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider) {
     // for http request with session
     $httpProvider.defaults.withCredentials = true;
     $stateProvider
 
         .state('dashboard', {
-            url: "/dashboard",
-            templateUrl: "views/template.html",
-            controller: 'DashboardCtrl',
-        })
+        url: "/dashboard",
+        templateUrl: "views/template.html",
+        controller: 'DashboardCtrl',
+    })
 
-        .state('login', {
-            url: "/login",
-            templateUrl: "views/login.html",
-            controller: 'LoginCtrl'
-        })
+    .state('login', {
+        url: "/login",
+        templateUrl: "views/login.html",
+        controller: 'LoginCtrl'
+    })
 
-        .state('page', {
-            url: "/page/:id/{page:.*}/{keyword:.*}",
-            templateUrl: "views/template.html",
-            controller: 'PageJsonCtrl'
-        })
+    .state('page', {
+        url: "/page/:id/{page:.*}/{keyword:.*}",
+        templateUrl: "views/template.html",
+        controller: 'PageJsonCtrl'
+    })
 
 
-        //  .state('page.viewUser', {
-        //     url: "/viewUser",
-        //     templateUrl: "views/template.html",
-        //     controller: 'PageJsonCtrl'
-        // })
+    //  .state('page.viewUser', {
+    //     url: "/viewUser",
+    //     templateUrl: "views/template.html",
+    //     controller: 'PageJsonCtrl'
+    // })
 
-        .state('loginapp', {
+    .state('loginapp', {
             url: "/login/:id",
             templateUrl: "views/login.html",
             controller: 'LoginCtrl'
         })
         .state('editUser', {
-           url: "/edituser/:id/{page:.*}/{keyword:.*}",
-           templateUrl: "views/template.html",
-          controller: 'EditUserCtrl',
-      })
-   .state('editOrder', {
-           url: "/editOrder/:id/{page:.*}/{keyword:.*}",
-           templateUrl: "views/template.html",
-          controller: 'EditOrderCtrl',
-      })
-   .state('editOrderRequest', {
-           url: "/editOrderRequest/:id/{page:.*}/{keyword:.*}",
-           templateUrl: "views/template.html",
-          controller: 'editOrderRequestCtrl',
-      })
-
-        .state('country-list', {
-            url: "/country-list/{page:.*}/{keyword:.*}",
+            url: "/edituser/:id/{page:.*}/{keyword:.*}",
             templateUrl: "views/template.html",
-            controller: 'CountryCtrl',
-            params: {
-                page: "1",
-                keyword: ""
-            }
+            controller: 'EditUserCtrl',
+        })
+        .state('editOrder', {
+            url: "/editOrder/:id/{page:.*}/{keyword:.*}",
+            templateUrl: "views/template.html",
+            controller: 'EditOrderCtrl',
+        })
+        .state('editOrderRequest', {
+            url: "/editOrderRequest/:id/{page:.*}/{keyword:.*}",
+            templateUrl: "views/template.html",
+            controller: 'EditOrderRequestCtrl',
+        })
+        .state('editProduct', {
+            url: "/editProduct/:id/{page:.*}/{keyword:.*}",
+            templateUrl: "views/template.html",
+            controller: 'EditProductCtrl',
         })
 
-        .state('createcountry', {
-            url: "/country-create",
-            templateUrl: "views/template.html",
-            controller: 'CreateCountryCtrl'
-        })
+    .state('country-list', {
+        url: "/country-list/{page:.*}/{keyword:.*}",
+        templateUrl: "views/template.html",
+        controller: 'CountryCtrl',
+        params: {
+            page: "1",
+            keyword: ""
+        }
+    })
 
-        .state('editcountry', {
-            url: "/country-edit/:id",
-            templateUrl: "views/template.html",
-            controller: 'EditCountryCtrl'
-        })
+    .state('createcountry', {
+        url: "/country-create",
+        templateUrl: "views/template.html",
+        controller: 'CreateCountryCtrl'
+    })
 
-        .state('schema-creator', {
-            url: "/schema-creator",
-            templateUrl: "views/template.html",
-            controller: 'SchemaCreatorCtrl'
-        })
+    .state('editcountry', {
+        url: "/country-edit/:id",
+        templateUrl: "views/template.html",
+        controller: 'EditCountryCtrl'
+    })
 
-        .state('excel-upload', {
-            url: "/excel-upload/:model",
-            templateUrl: "views/template.html",
-            controller: 'ExcelUploadCtrl'
-        })
+    .state('schema-creator', {
+        url: "/schema-creator",
+        templateUrl: "views/template.html",
+        controller: 'SchemaCreatorCtrl'
+    })
 
-        .state('jagz', {
-            url: "/jagz",
-            templateUrl: "views/jagz.html",
-            controller: 'JagzCtrl'
-        });
+    .state('excel-upload', {
+        url: "/excel-upload/:model",
+        templateUrl: "views/template.html",
+        controller: 'ExcelUploadCtrl'
+    })
+
+    .state('jagz', {
+        url: "/jagz",
+        templateUrl: "views/jagz.html",
+        controller: 'JagzCtrl'
+    });
 
     $urlRouterProvider.otherwise("/dashboard");
     $locationProvider.html5Mode(isproduction);
 });
 
-myApp.config(function ($translateProvider) {
+myApp.config(function($translateProvider) {
     $translateProvider.translations('en', LanguageEnglish);
     $translateProvider.translations('hi', LanguageHindi);
     $translateProvider.preferredLanguage('en');
