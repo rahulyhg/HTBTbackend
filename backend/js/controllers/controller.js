@@ -666,6 +666,9 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 function (data) {
                     console.log("login", data.data);
                 });
+                   $state.go("page", {
+                        id: "viewProduct"
+                    });
 
         };
         $scope.modalAddNotes = function (data) {
