@@ -474,9 +474,9 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 if (data.value === true) {
                     console.log("login", data.data);
                     $scope.data = data.data;
-                //  $.jStorage.set('user', data.data);
-                //  $.jStorage.set("accessToken", data.data.accessToken[0]);
-                 }
+                    //  $.jStorage.set('user', data.data);
+                    //  $.jStorage.set("accessToken", data.data.accessToken[0]);
+                }
 
             });
         } else {
@@ -505,8 +505,25 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         TemplateService.title = $scope.menutitle;
         $scope.navigation = NavigationService.getnav();
         console.log("$stateParams---", JSON.stringify($stateParams.keyword));
-        console.log("$stateParams-json--", JSON.parse($stateParams.keyword)._id);
+        var formData = {};
+        NavigationService.apiCall("Order/search", formData, function (data) {
+            if (data.value === true) {
+                console.log("Order---data ", data.data);
+                $scope.orderData = data.data.results;
+                //  $.jStorage.set('user', data.data);
+                //  $.jStorage.set("accessToken", data.data.accessToken[0]);
+            }
 
+        });
+        $scope.saveDeliveryRequest = function (formdata) {
+            NavigationService.apiCall("DeliveryRequest/save", formData, function (data) {
+                if (data.value === true) {
+                    console.log("Order---data saved ", data.data);
+
+                }
+
+            });
+        }
         if (!_.isEmpty($stateParams.keyword)) {
             $scope.data = {};
             var formData = {};
@@ -515,9 +532,9 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 if (data.value === true) {
                     console.log("login", data.data);
                     $scope.data = data.data;
-                //  $.jStorage.set('user', data.data);
-                //  $.jStorage.set("accessToken", data.data.accessToken[0]);
-                 }
+                    //  $.jStorage.set('user', data.data);
+                    //  $.jStorage.set("accessToken", data.data.accessToken[0]);
+                }
 
             });
         } else {
@@ -546,7 +563,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         }
         $scope.json = JsonService;
         $scope.tags = {};
-        $scope.model = [];
+        $scope.model = $scope.formData[$scope.type.tableRef];
         $scope.tagNgModel = {};
         // $scope.boxModel
         if ($scope.type.validation) {
@@ -642,9 +659,11 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         }
         if ($scope.type.type == "box") {
 
-            if (!_.isArray($scope.formData[$scope.type.tableRef]) && $scope.formData[$scope.type.tableRef] === '') {
+            if (_.isEmpty($scope.formData[$scope.type.tableRef])) {
                 $scope.formData[$scope.type.tableRef] = [];
-                $scope.model = [];
+                $scope.model = $scope.formData[$scope.type.tableRef];
+
+
             } else {
                 if ($scope.formData[$scope.type.tableRef]) {
                     $scope.model = $scope.formData[$scope.type.tableRef];

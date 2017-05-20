@@ -65,7 +65,7 @@
         "fields": [{
             "name": "product",
             "type": "selectFromTable",
-            "tableRef": "productId",
+            "tableRef": "product",
             "tableValue": "name",
             "dropDownType": "single",
             "searchApi": "searchCall",

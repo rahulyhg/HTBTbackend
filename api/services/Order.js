@@ -1,6 +1,5 @@
 var schema = new Schema({
     orderID: String,
-    requestID: String,
     product: [{
         product: {
             type: Schema.Types.ObjectId,
@@ -46,9 +45,7 @@ var schema = new Schema({
         default: "Processing"
     },
     orderDate: Date,
-    requestDate: Date,
     methodOfOrder: String,
-    methodOfRequest: String,
     methodOfPayment:String
 
 });
@@ -98,6 +95,7 @@ var model = {
         var year = new Date().getFullYear().toString().substr(2, 2);
         var month = new Date().getMonth();
         var strMon = '';
+         console.log("data---->>>>..",data);
         console.log(month.toString().length, year);
 
         if (month.toString().length > 1) {
@@ -158,6 +156,20 @@ var model = {
                     if (err) {
                         callback(err, null);
                     } else {
+                        console.log("savedData--",savedData);
+                         if(data.product){
+                             console.log("inside Delivery req create");
+                            var deliveryReqData={};
+                            _.forEach(data.product,function(val){
+                            deliveryReqData.product=val.product;
+                            deliveryReqData.Quantity=val.productQuantity;
+                           deliveryReqData.deliverdate=data.deliverdate;
+                           deliveryReqData.Order=savedData._id;
+                           deliveryReqData.requestDate=new Date();
+                           deliveryReqData.methodOfRequest=data.methodOfOrder;
+                           DeliveryRequest.saveData(deliveryReqData, function() {});
+                            })
+                        }
                         callback(null, savedData);
                     }
                 })
