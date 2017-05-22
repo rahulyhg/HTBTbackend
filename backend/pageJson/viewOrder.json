@@ -5,33 +5,38 @@
     "sendIdWithCreate": true,
     "urlFields": ["_id"],
     "fields": [{
-      "name": "User name",
-      "isSort": "",
-      "tableRef": "customer",
-      "fieldToBeShown":"userID",
-      "type":"fkListView"
-    },{
-      "name": "Deliver date",
-      "isSort": "",
-      "tableRef": "deliverdate",
-      "type":"date"
-    },{
-      "name": "Status",
-      "isSort": "",
-      "tableRef": "status"
-    },{
-      "name": "Payment Status",
-      "isSort": "",
-      "tableRef": "paymentStatus"
-      }],
+            "name": "Order ID",
+            "tableRef": "orderID"
+        },
+        {
+            "name": "User name",
+            "isSort": "",
+            "tableRef": "customer",
+            "fieldToBeShown": "userID",
+            "type": "fkListView"
+        }, {
+            "name": "Deliver date",
+            "isSort": "",
+            "tableRef": "deliverdate",
+            "type": "date"
+        }, {
+            "name": "Status",
+            "isSort": "",
+            "tableRef": "status"
+        }, {
+            "name": "Payment Status",
+            "isSort": "",
+            "tableRef": "paymentStatus"
+        }
+    ],
     "action": [{
         "name": "edit",
-      "icon": "fa-pencil",
-      "buttonClass": "btn-primary",
-      "type": "editOrder",
-      "fieldsToSend": {
-          "_id": "_id"
-      }
+        "icon": "fa-pencil",
+        "buttonClass": "btn-primary",
+        "type": "editOrder",
+        "fieldsToSend": {
+            "_id": "_id"
+        }
     }, {
         "name": "delete",
         "icon": "fa-trash",

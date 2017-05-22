@@ -13,13 +13,7 @@
       "isSort": "",
       "tableRef": "requestID"
     },
-    {
-        "name": "Customer Name",
-        "type":"fkListView",
-        "fieldToBeShown":"customer",
-        "isSort": "",
-        "tableRef": "order"
-    },
+  
     {
       "name": "Status",
       "isSort": "",

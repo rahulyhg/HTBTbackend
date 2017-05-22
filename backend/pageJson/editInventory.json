@@ -51,7 +51,7 @@
         }
     }],
     "apiCall": {
-        "url": "Inventory/save",
+        "url": "Product/save",
         "params": "_id"
     },
     "preApi": {

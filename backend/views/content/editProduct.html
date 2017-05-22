@@ -2,7 +2,8 @@
     <div class="row">
         <div class="col-md-12 column">
             <div class="heading-profile">
-              <h2 ng-if="data.value">Edit Product</h2><h2 ng-if="!data.value">Create Product</h2>   
+                <h2 ng-if="data.value">Edit Product</h2>
+                <h2 ng-if="!data.value">Create Product</h2>
             </div>
         </div>
     </div>
@@ -12,40 +13,39 @@
         <div class="sec">
             <div class="form-group" fields>
                 <label>Product Name</label>
-                <input type="text" name="name" placeholder="Product Name" ng-model="data.name" class="form-control" >
+                <input type="text" name="name" placeholder="Product Name" ng-model="data.name" class="form-control">
             </div>
             <div class="form-group" fields>
                 <label>Tags</label>
-                <input type="text" name="name" placeholder="Product Tags" ng-model="data.tag" class="form-control" >
+                <input type="text" name="name" placeholder="Product Tags" ng-model="data.tag" class="form-control">
             </div>
-            <div class="form-group" >
-                <label>Category</label>
-
-                <select class="form-control" name="" ng-model="data.Category">
-              <option value="{{cat1.name}}" ng-repeat="cat1 in cat">{{cat1.name}}</option>
+            <div class="form-group">
+                <label>Category:</label>{{data.category.name}}
+                <select class="form-control" name="" ng-model="data.category">
+              <option value="{{cat1._id}}" ng-selected="{{data.category.name==cat1.name}}" ng-repeat="cat1 in cat">{{cat1.name}}</option>
             </select>
             </div>
             <div class="form-group" fields>
-                <label>Product Image (Featured Image)<span ng-show="type.required">*</span><span ng-show="type.size">({{type.size}})</span></label>
-                <upload-image ng-model="data.bigImage" ></upload-image>
+                <label>Product Image (Featured Image)<span ng-show="type.required">*</span><span ng-show="type.size">(300 x 450px)</span></label>
+                <upload-image ng-model="data.bigImage"></upload-image>
             </div>
             <div class="form-group" fields>
-                <label>Product Image (Card)<span ng-show="type.required">*</span><span ng-show="type.size">({{type.size}})</span></label>
-                <upload-image ng-model="data.smallImage" ></upload-image>
+                <label>Product Image (Card)<span ng-show="type.required">*</span><span ng-show="type.size">(250 x 300px)</span></label>
+                <upload-image ng-model="data.smallImage"></upload-image>
             </div>
-            <div class="form-group">
+            <!--<div class="form-group">
                 <label>Subscription Product</label>
 
                 <select class="form-control" name="" ng-model="data.methodofjoin">
               <option value="">Yes</option>
               <option value="">No</option>
             </select>
-            </div>
+            </div>-->
             <div class="form-group" fields>
                 <label>Price</label>
-                <input type="text" name="Price" placeholder="Price" ng-model="data.price" class="form-control" >
+                <input type="text" name="Price" placeholder="Price" ng-model="data.price" class="form-control">
             </div>
-            <div class="form-group" >
+            <div class="form-group">
                 <label>Deposit</label>
 
                 <select class="form-control" name="" ng-model="data.deposit">
@@ -55,49 +55,47 @@
             </div>
             <div class="form-group" fields ng-if="data.deposit=='yes'">
                 <label>Per Product Deposit</label>
-                <input type="text" name="userID" placeholder="Per Product Deposit" ng-model="data.AmtDeposit" class="form-control" >
+                <input type="text" name="userID" placeholder="Per Product Deposit" ng-model="data.AmtDeposit" class="form-control">
             </div>
             <div class="form-group" fields ng-if="data.deposit=='yes'">
                 <label>Applicable Before</label>
-                <input type="text" name="applicableBefore" placeholder="Per Applicable Before" ng-model="data.applicableBefore" class="form-control" >
+                <input type="text" name="applicableBefore" placeholder="Per Applicable Before" ng-model="data.applicableBefore" class="form-control">
             </div>
+        </div>
+        <div class="form-group" fields>
+            <label>Minimum Order Size</label>
+            <input type="text" name="limit" placeholder="Minimum Order Size" ng-model="data.limit" class="form-control">
+        </div>
+        <!--<div class="form-group" fields>
+            <label>Per Product Earnings</label>
+            <input type="text" name="commission" placeholder="Per Product Earning" ng-model="data.commission" class="form-control">
+        </div>-->
+        <div class="form-group" fields>
+            <label>Maximum Order Size(One-Time Earnings)</label>
+            <input type="text" name="maxProductLimit" placeholder="Maximum Order Size" ng-model="data.maxBonusLimit" class="form-control">
+        </div>
+        <div class="sec" ng-if="data.accessLevel!='Customer'">
+            <div>
+                <a class="btn btn-primary pull-right" ng-click="modalAddNotes()">Add New</a>
+                <label>Price List<span ng-show="type.required">*</span></label>
+                <span style="float:right;width:200px;"><input type="search" class="form-control" placeholder="Search..." ng-model="search.text"> </span>
             </div>
-            <div class="form-group" fields>
-                <label>Minimum Order Size</label>
-                <input type="text" name="limit" placeholder="Minimum Order Size" ng-model="data.limit" class="form-control" >
-            </div>
-            <div class="form-group" fields>
-                <label>Per Product Earnings</label>
-                <input type="text" name="commission" placeholder="Per Product Earning" ng-model="data.commission" class="form-control" >
-            </div>
-            <div class="form-group" fields>
-                <label>Maximum Order Size(One-Time Earnings)</label>
-                <input type="text" name="maxProductLimit" placeholder="Maximum Order Size" ng-model="data.maxProductLimit" class="form-control" >
-            </div>
-            <div class="sec" ng-if="data.accessLevel!='Customer'">
-                <div>
-                    <a class="btn btn-primary pull-right" ng-click="modalAddNotes()">Add New</a>
-                    <label>Price List<span ng-show="type.required">*</span></label>
-                    <span style="float:right;width:200px;"><input type="search" class="form-control" placeholder="Search..." ng-model="search.text"> </span>
-                </div>
 
-                <div class="sec">
-                    <div>
-                        <table class="table table-input" ng-if="model.length != 0">
-                            <thead>
-                                <tr>
-                                    <th>Start Range</th>
-                                    <th>End Range</th>
-                                    <th>Price</th>
-                                    <!-- <th width="150px">Actions</th> -->
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="data in data.priceList | filter:search.text ">
-                                    <td>{{data.startRange}}</td>
-                                    <td>{{data.endRange}}</td>
-                                    <td>{{data.endRange}}</td>
-                                    <!-- <td>
+            <div class="sec">
+                <div>
+                    <table class="table table-input" ng-if="model.length != 0">
+                        <thead>
+                            <tr>
+                                <th>End Range</th>
+                                <th>Price</th>
+                                <!-- <th width="150px">Actions</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="priceL in data.priceList | filter:search.text ">
+                                <td>{{priceL.endRange}}</td>
+                                <td>{{priceL.price}}</td>
+                                <!-- <td>
                                         <a class="btn btn-primary" ng-click="editBox('Edit',data)">
                                           <i class="Fa fa-pencil"></i>
                                       </a>
@@ -105,18 +103,18 @@
                                           <i class="fa fa-trash"></i>
                                       </a>
                                     </td> -->
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
-
-
             </div>
 
 
         </div>
+
+
     </div>
+</div>
 </div>
 <div class="text-center mt20 odd-even-button">
     <button class="btn btn-default" type="button" ng-click="saveProduct(data)">Save</button>

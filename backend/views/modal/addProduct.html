@@ -9,8 +9,8 @@
                     <label>Product ID</label>
 
                     <select class="form-control" name="" ng-model="adddata.product">
-                        <option value="{{prod._id}}|{{prod.productID}}|{{prod.price}}" ng-repeat="prod in productData">{{prod.name}}</option>
-                     
+                         <option value="{{prod}}" ng-repeat="prod in productData">{{prod.name}}</option>
+
                     </select>
                 </div>
                 <div class="form-group" fields>

@@ -1,6 +1,4 @@
 var schema = new Schema({
-
-
         name: {
             type: String,
         },

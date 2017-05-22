@@ -42,6 +42,7 @@
         "placeholder": "category Image",
         "id": "catImage",
         "view": true,
+         "size": "250 x 300px",
         "disabled": true,
         "url": ""
     }],

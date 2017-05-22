@@ -54,7 +54,8 @@ var schema = new Schema({
         enum: ['Customer', 'Relationship Partner']
     },
     dateofjoin: Date,
-    rank: String,
+   
+    otp: String,
     lastRank:String,
     verification: {
         type: String,

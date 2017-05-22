@@ -42,6 +42,7 @@
         "tableRef": "catImage",
         "placeholder": "category Image",
         "id": "catImage",
+        "size": "250 x 300px",
         "view": true,
         "disabled": true,
         "url": ""

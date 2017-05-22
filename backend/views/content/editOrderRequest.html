@@ -52,18 +52,18 @@
 
             <div class="form-group" fields>
                 <label>Assigned Delivery Date:</label>{{data.deliverdate | date}}
-                <input type="date" name="name" placeholder="Assigned Delivery Date" ng-model="data.deliverdate" class="form-control">
+                <input type="date" name="name" placeholder="Assigned Delivery Date" ng-model="data.deliverdate" value="{{data.deliverdate | date}}" class="form-control">
 
             </div>
             <div class="form-group" fields>
-                <label>Assigned Delivery Time</label>
+                <label>Assigned Delivery Time :</label>{{data.delivertime |date:'HH:mm' }}
                 <input type="time" name="name" placeholder="Assigned Delivery Time" ng-model="data.delivertime" value="" class="form-control">
 
             </div>
 
-            <div class="form-group" ng-if="data.accessLevel=='Customer'">
-                <label>Status</label>
-                <select class="form-control" name="" ng-model="data.methodofjoin">
+            <div class="form-group">
+                <label>Delivery Status</label>
+                <select class="form-control" name="" ng-model="data.status" disabled>
               <option value="Delivery Scheduled">Delivery Scheduled</option>
               <option value="In Transit">In Transit</option>
               <option value="Full Delivery Successful">Full Delivery Successful</option>
@@ -90,6 +90,6 @@
 </div>
 <div class="text-center mt20 odd-even-button">
     <button class="btn btn-default" type="button" ng-click="saveDeliveryRequest(data)">Save</button>
-    <a class="btn btn-danger" href="#!/page/viewMasterReform//">Cancel</a>
+    <a class="btn btn-danger" href="#/page/viewOrderRequest//">Cancel</a>
 
 </div>
