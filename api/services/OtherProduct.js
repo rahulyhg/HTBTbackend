@@ -20,7 +20,10 @@ var schema = new Schema({
         type: String,
         default: "",
     },
-
+ addones: {
+        type: String,
+        default: "",
+    },
 
 
 

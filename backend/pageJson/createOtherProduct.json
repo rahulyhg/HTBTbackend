@@ -23,6 +23,18 @@
       "url": ""
 
    }, {
+              "name": "Add ones",
+        "type": "tags",
+        "tableRef": "addones",
+        "placeholder": "Enter Addones",
+        "id": "addones",
+        "validation": ["", "trim", ""],
+        "url": "",
+        "dropDownField": "",
+        "dropDownType": "single",
+        "onView": true,
+        "dropDown": ["Save Time", "Save Space"]
+    }, {
         "name": "Big Image",
         "type": "image",
         "tableRef": "bigImage",
@@ -60,7 +72,9 @@
                 "id": "viewOtherProduct"
             }
         }
+        
     }, {
+
         "name": "cancel",
         "sideMenuRedirect": true,
         "stateName": {
