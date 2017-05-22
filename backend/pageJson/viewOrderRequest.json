@@ -44,14 +44,7 @@
             "value": "_id"
         }
     }],
-    "button": [{
-
-        "name": "Create",
-        "icon": "plus",
-        "class": "btn-success",
-        "type": "editOrderRequest",
-        "action": "createOrder"
-    }],
+    "button": [],
     "apiCall": {
         "url": "DeliveryRequest/search",
         "params": "_id"

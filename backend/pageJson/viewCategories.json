@@ -34,7 +34,7 @@
         "type": "apiCallConfirm",
         "title": "Delete Categories",
         "content": "Are you sure you want to delete Categories?",
-        "api": "Categories/delete",
+        "api": "Categories/remove",
         "fieldsToSend": {
             "name": "_id",
             "value": "_id"
