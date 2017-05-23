@@ -53,16 +53,13 @@
         "disabled": true,
         "url": ""
       },{
-        "name": "Quantity",
-        "type": "text",
-        "tableRef": "quantity",
-        "placeholder": "Enter Quantity",
-        "id": "quantity",
-        "validation": ["", "trim", "unique"],
-        "onView": true,
-        "url": ""
-
-
+     "name": "Description",
+     "type": "text",
+     "tableRef": "description",
+     "placeholder": "Enter  description",
+     "id": "description",
+     "validation": ["", "trim", ""],
+     "url": ""
 
     }],
     "action": [{

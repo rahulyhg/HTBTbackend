@@ -1,5 +1,8 @@
 var schema = new Schema({
-    requestID: String,
+    requestID:{
+        type: String,
+        unique: true
+    },
     deliverdate: Date,
     delivertime: Date,
     status: {

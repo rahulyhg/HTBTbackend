@@ -853,7 +853,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             $scope.data = data;
             var modalInstance = $uibModal.open({
                 animation: $scope.animationsEnabled,
-                templateUrl: '/views/modal/modal.html',
+                templateUrl: '/backend/views/modal/modal.html',
                 size: 'lg',
                 scope: $scope
             });

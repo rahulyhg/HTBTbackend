@@ -1,5 +1,8 @@
 var schema = new Schema({
-    productID: String,
+    productID: {
+        type: String,
+        unique: true
+    },
     name: {
         type: String,
         required: true,

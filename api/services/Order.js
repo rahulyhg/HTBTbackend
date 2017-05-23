@@ -1,5 +1,8 @@
 var schema = new Schema({
-    orderID: String,
+    orderID: {
+        type: String,
+        unique: true
+    },
     product: [{
         product: {
             type: Schema.Types.ObjectId,

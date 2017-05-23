@@ -54,12 +54,12 @@
         "url": ""
 
     }, {
-     "name": "Quantity",
-     "type": "number",
-     "tableRef": "quantity",
-     "placeholder": "Enter  Quantity",
-     "id": "quantity",
-     "validation": ["", "trim", "unique"],
+     "name": "Description",
+     "type": "text",
+     "tableRef": "description",
+     "placeholder": "Enter  description",
+     "id": "description",
+     "validation": ["", "trim", ""],
      "url": ""
 
     }],

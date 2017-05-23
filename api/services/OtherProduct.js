@@ -24,7 +24,9 @@ var schema = new Schema({
         type: String,
         default: "",
     },
-
+ description: {
+        type: String
+    },
 
 
 });

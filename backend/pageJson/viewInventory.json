@@ -5,9 +5,9 @@
     "sendIdWithCreate": true,
     "urlFields": ["_id"],
     "fields": [{
-      "name": "Name",
+      "name": "Product ID",
       "isSort": "",
-      "tableRef": "name"
+      "tableRef": "productID"
     },{
       "name": "Opening Stock Account",
       "isSort": "",

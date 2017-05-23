@@ -6,12 +6,12 @@
     "pageType": "edit",
     "urlFields": ["_id"],
     "fields": [{
-      "name": "Name",
+      "name": "productID",
       "type": "readonly",
-      "tableRef": "name",
-      "placeholder": "Enter Name",
-      "id": "name",
-      "validation": ["", "trim", "unique"],
+      "tableRef": "productID",
+      "placeholder": "Enter productID",
+      "id": "productID",
+      "validation": ["", "trim", ""],
       "url": ""
     }, {
         "name": "Opening Stock Account",
