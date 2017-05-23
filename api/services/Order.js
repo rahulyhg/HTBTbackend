@@ -155,6 +155,7 @@ var model = {
                     }
                     data.orderID = orderID;
                     data.orderDate = new Date();
+                    data.balance=data.totalQuantity;
                     Order.saveData(data, function (err, savedData) {
                         if (err) {
                             callback(err, null);

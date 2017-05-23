@@ -88,19 +88,19 @@
             <div class="form-group" ng-if="data.accessLevel!=='Customer'">
                 <label>Block Earnings* <span ng-show="type.required">*</span></label>
 
-                <select class="form-control" name="" ng-model="data.status">
-              <option value="">Active</option>
-              <option value="">Inactive</option>
+                <select class="form-control" name="" ng-model="data.earningsBlock">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
             </select>
             </div>
             <div class="form-group" ng-if="data.accessLevel=='Customer'">
                 <label>Method Of Joining</label>
 
-                <select class="form-control" name="" ng-model="data.methodofjoin">
-              <option value="">Relationship Partner</option>
-              <option value="">App</option>
-              <option value="">Customer Representative</option>
-            </select>
+                <select class="form-control" name="" ng-model="data.methodofjoin" disabled>
+              <option value="Relationship Partner">Relationship Partner</option>
+              <option value="App">App</option>
+              <option value="Customer Representative">Customer Representative</option>
+            </select >
             </div>
             <div class="form-group" ng-if="data.accessLevel=='Customer'">
                 <label>Status</label>
@@ -203,7 +203,6 @@
                             <tr>
                                 <th>Order ID</th>
                                 <th>Order Date</th>
-                                <th>Delivery Date</th>
                                 <th>Total Amount</th>
 
 
@@ -214,7 +213,6 @@
                             <tr ng-repeat="data in OrderData | filter:search.text ">
                                 <td>{{data.orderID}}</td>
                                 <td>{{data.orderDate | date}}</td>
-                                <td>{{data.deliverdate | date }}</td>
                                 <td>{{data.totalAmount }}</td>
 
                             </tr>

@@ -70,56 +70,100 @@ var model = {
         });
     },
     saveDeliveryRequest: function (data, callback) {
-         if (data.Quantity > data.QuantityDelivered) {
-                data.status = "Partial Delivery Successful";
-            } else if (data.Quantity == data.QuantityDelivered) {
-                data.status = "Full Delivery Successful";
-            } else if (data.QuantityDelivered == 0) {
-                data.status = "Delivery Failed";
-            }
+        if (data.Quantity > data.QuantityDelivered) {
+            data.status = "Partial Delivery Successful";
+        } else if (data.Quantity == data.QuantityDelivered) {
+            data.status = "Full Delivery Successful";
+        } else if (data.QuantityDelivered == 0) {
+            data.status = "Delivery Failed";
+        }
         DeliveryRequest.saveData(data, function (err, savedData) {
             if (err) {
                 callback(err, null);
             } else {
-                Product.findOne({
-                    _id:data.product
-                }).exec(function (err, found) {
+                async.parallel([
+                    //Function to search event name
+                    function () {
+                        Product.findOne({
+                            _id: data.product
+                        }).exec(function (err, found) {
+                            if (err) {
+                                callback(err, null);
+                            } else {
+                                if (found) {
+                                    // callback(null, found);
+                                    found.quantity = found.quantity - data.QuantityDelivered;
+                                    Product.saveData(found, function (err, savedProd) {
+                                        if (err) {
+                                            console.log("err", err);
+                                        } else {
+                                            console.log("Product updated");
+                                        }
+                                    });
+                                } else {
+                                    console.log("not found");
+                                }
+                            }
+                        });
+
+                    },
+
+                    function (callback) {
+                        Order.findOne({
+                            _id: data.Order
+                        }).exec(function (err, foundOrder) {
+                            if (err) {
+                                callback(err, null);
+                            } else {
+                                if (foundOrder) {
+                                    // callback(null, found);
+                                    foundOrder.balance = foundOrder.balance - data.QuantityDelivered;
+                                    Order.saveData(foundOrder, function (err, savedOrder) {
+                                        if (err) {
+                                            console.log("err", err);
+                                        } else {
+                                            console.log("Product updated");
+                                        }
+                                    });
+                                } else {
+                                    console.log("not found");
+                                }
+                            }
+                        });
+                    }
+                ], function (error, data) {
+                    if (error) {
+                        console.log("designer >>> searchdesigner>>> async.parallel >>> final callback  >>> error", error);
+                        callback(error, null);
+                    } else {
+                        callback(null, savedData);
+                    }
+                }) //End of async.parallel
+                callback(null, savedData);
+
+            }
+        })
+    },
+    getDeliveryRequestByUser: function (data, callback) {
+        console.log("data", data)
+        DeliveryRequest.find({
+            customer: data._id
+        }).lean().sort({
+            _id: -1
+        }).exec(function (err, found) {
             if (err) {
                 callback(err, null);
             } else {
                 if (found) {
                     callback(null, found);
-                    found.quantity=found.quantity-data.QuantityDelivered
                 } else {
-                   console.log("not found");
+                    callback({
+                        message: "Invalid data!"
+                    }, null);
                 }
             }
 
         });
-                callback(null, savedData);
-            }
-        })
-    },
-      getDeliveryRequestByUser: function (data, callback) {
-        console.log("data", data)
-        DeliveryRequest.find({
-                customer: data._id
-            }).lean().sort({
-                _id: -1
-            }).exec(function (err, found) {
-                if (err) {
-                    callback(err, null);
-                } else {
-                    if (found) {
-                        callback(null, found);
-                    } else {
-                        callback({
-                            message: "Invalid data!"
-                        }, null);
-                    }
-                }
-
-            });
     },
 
 };

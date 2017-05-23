@@ -422,7 +422,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                         if (data.value === true) {
                             console.log("getOrderByUser", data.data);
                             $scope.deliverydata = data.data;
-                       
+
                         }
 
                     });
@@ -455,13 +455,18 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         };
 
         $scope.saveuser = function (notes) {
-
             NavigationService.apiCall("User/saveUserData", $scope.data, function (data) {
                 console.log("login", data.data);
             });
-            $state.go("page", {
-                id: "viewUser"
-            });
+            if ($scope.data.accessLevel == 'Customer') {
+                $state.go("page", {
+                    id: "viewCustomer"
+                });
+            } else {
+                $state.go("page", {
+                    id: "viewRelPartner"
+                });
+            }
 
         };
         $scope.modalAddNotes = function (data) {
@@ -605,17 +610,13 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
 
         });
         $scope.saveDeliveryRequest = function (data) {
-
-
             NavigationService.apiCall("DeliveryRequest/saveDeliveryRequest", data, function (data) {
-
                 if (data.value === true) {
                     console.log("Order---data saved ", data.data);
                     $state.go("page", {
                         id: "viewOrderRequest"
                     });
                 }
-
             });
         }
         if (!_.isEmpty($stateParams.keyword)) {
@@ -626,7 +627,6 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 if (data.value === true) {
                     console.log("login", data.data);
                     $scope.data = data.data;
-
                 }
             });
             //  $.jStorage.set('user', data.data);
@@ -634,7 +634,6 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         }
 
         $scope.addProduct = function (data) {
-
             var modalInstance = $uibModal.open({
                 animation: $scope.animationsEnabled,
                 templateUrl: '/backend/views/modal/addProduct.html',
@@ -653,17 +652,11 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         $scope.navigation = NavigationService.getnav();
         console.log("$stateParams---", JSON.stringify($stateParams.keyword));
         $scope.data = {};
-        $scope.data.priceList = [];
+        $scope.productData = {};
+        $scope.productData.commission = [];
+        $scope.productData.priceList = [];
         $scope.levels = {};
 
-        NavigationService.apiCall("PartnerLevel/search", {},
-            function (data) {
-                if (data.value === true) {
-                    console.log(data.data.results);
-                    $scope.levels = data.data.results;
-                }
-
-            });
         NavigationService.apiCall("categories/search",
             formData,
             function (data) {
@@ -675,7 +668,6 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                             if (_.isEqual(val1.product.subscription, 'yes')) {
                                 $scope.subscription = val;
                             }
-
                         })
                     })
                     console.log("$scope.subscription",
@@ -685,6 +677,25 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 }
 
             });
+              NavigationService.apiCall("PartnerLevel/search", {},
+                        function (data) {
+                            if (data.value === true) {
+                                var found = 'found';
+                                console.log(data.data.results);
+                                $scope.levels = data.data.results;
+                                var i = 0;
+                                console.log("$scope.productData.commission", $scope.productData.commission)
+                                _.forEach($scope.levels, function (val) {
+                                        var comm = {};
+                                        comm.commissionType = val;
+                                        console.log("commissionType", comm.commissionType);
+                                        $scope.productData.commission.push(comm);
+                                    
+                                })
+                                console.log("$scope.productData.commission---->>", $scope.productData.commission)
+                            }
+
+                        });
         if (!_.isEmpty($stateParams.keyword)) {
             $scope.data = {};
             var formData = {};
@@ -692,8 +703,42 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             NavigationService.apiCall("Product/getOne", formData, function (data) {
                 if (data.value === true) {
                     console.log("login", data.data);
-                    $scope.data = data.data;
+                    $scope.productData = data.data;
 
+                    NavigationService.apiCall("PartnerLevel/search", {},
+                        function (data) {
+                            if (data.value === true) {
+                                var found = 'found';
+                                console.log(data.data.results);
+                                $scope.levels = data.data.results;
+                                var i = 0;
+                                console.log("$scope.productData.commission", $scope.productData.commission)
+                                _.forEach($scope.levels, function (val) {
+                                    if ($scope.productData.commission[0]) {
+                                        found = _.find($scope.productData.commission, function (o) {
+                                            console.log(o.commissionType);
+                                            if(o.commissionType!=null){
+                                            return o.commissionType._id == val._id;
+                                            }
+                                        });
+                                        console.log("found", found);
+                                        if (found == undefined) {
+                                            var comm = {};
+                                            comm.commissionType = val;
+                                            console.log("commissionType", comm.commissionType);
+                                            $scope.productData.commission.push(comm);
+                                        }
+                                    } else {
+                                        var comm = {};
+                                        comm.commissionType = val;
+                                        console.log("commissionType", comm.commissionType);
+                                        $scope.productData.commission.push(comm);
+                                    }
+                                })
+                                console.log("$scope.productData.commission---->>", $scope.productData.commission)
+                            }
+
+                        });
                     NavigationService.apiCall("categories/search",
                         formData,
                         function (data) {
@@ -721,14 +766,14 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             });
         }
         $scope.addQuestion = function (notes) {
-            $scope.data.priceList.push(notes);
+            $scope.productData.priceList.push(notes);
         };
         $scope.saveProduct = function (formdata) {
             // noteWithTime._id=JSON.parse($stateParams.keyword)._id;
             NavigationService.apiCall("Product/saveProduct",
                 formdata,
                 function (data) {
-                    console.log("login", data.data);
+                    console.log("saveProduct", data.data);
                 });
             $state.go("page", {
                 id: "viewProduct"

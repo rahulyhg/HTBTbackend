@@ -89,8 +89,8 @@
 </div>
 </div>
 <div class="text-center mt20 odd-even-button">
-    <button ng-if="!data.QuantityDelivered" class="btn btn-default" type="button" ng-click="saveDeliveryRequest(data)">Save</button>
-      <button ng-if="data.QuantityDelivered" class="btn btn-default" type="button" ng-click="saveDeliveryRequest(data)" disabled>Save</button>
+    <button ng-if="data.status=='Delivery Scheduled'" class="btn btn-default" type="button" ng-click="saveDeliveryRequest(data)">Save</button>
+      <button ng-if="data.status!='Delivery Scheduled'" class="btn btn-default" type="button" ng-click="saveDeliveryRequest(data)" disabled>Save</button>
     <a class="btn btn-danger" href="#/page/viewOrderRequest//">Cancel</a>
 
 </div>

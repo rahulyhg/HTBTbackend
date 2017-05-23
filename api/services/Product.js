@@ -90,7 +90,7 @@ schema.plugin(timestamps);
 
 module.exports = mongoose.model('Product', schema);
 
-var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user category", "user category"));
+var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user category commission.commissionType", "user category commission.commissionType"));
 var model = {
 
     getAllFeaturedProduct: function (data, callback) {
