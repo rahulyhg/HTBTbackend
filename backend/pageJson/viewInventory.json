@@ -27,18 +27,6 @@
       "fieldsToSend": {
           "_id": "_id"
       }
-    }, {
-        "name": "delete",
-        "icon": "fa-trash",
-        "buttonClass": "btn-danger",
-        "type": "apiCallConfirm",
-        "title": "Delete Order",
-        "content": "Are you sure you want to delete Order?",
-        "api": "Order/delete",
-        "fieldsToSend": {
-            "name": "_id",
-            "value": "_id"
-        }
     }],
   
     "apiCall": {

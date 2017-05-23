@@ -129,12 +129,12 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="level in levels | filter:search.text ">
-                                <td>{{level.name}}</td>
+                                <td> <input type="text" name="rate" placeholder="Rate" ng-model="data.commission[$index].commissionType=level._id" class="form-control" ng-hide="true"> {{level.name}}</td>
                                 <td>
                                     <div class="col-md-6">
 
                                         <div class="form-group" fields>
-                                            <input type="text" name="rate" placeholder="Rate" ng-model="level.rate" class="form-control">
+                                            <input type="text" name="rate" placeholder="Rate" ng-model="data.commission[$index].rate" class="form-control">
                                         </div>
                                     </div>
                                 </td>
@@ -160,6 +160,6 @@
 </div>
 <div class="text-center mt20 odd-even-button">
     <button class="btn btn-default" type="button" ng-click="saveProduct(data)">Save</button>
-    <a class="btn btn-danger" href="#!/page/viewMasterReform//">Cancel</a>
+    <a class="btn btn-danger" href="#/page/viewMasterReform//">Cancel</a>
 
 </div>

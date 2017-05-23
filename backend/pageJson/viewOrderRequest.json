@@ -38,7 +38,7 @@
         "type": "apiCallConfirm",
         "title": "Delete Order",
         "content": "Are you sure you want to delete Order?",
-        "api": "Order/delete",
+        "api": "deliveryRequest/delete",
         "fieldsToSend": {
             "name": "_id",
             "value": "_id"

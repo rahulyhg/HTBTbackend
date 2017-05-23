@@ -23,10 +23,6 @@
             "name": "Status",
             "isSort": "",
             "tableRef": "status"
-        }, {
-            "name": "Payment Status",
-            "isSort": "",
-            "tableRef": "paymentStatus"
         }
     ],
     "action": [{

@@ -73,8 +73,8 @@
                 <label>Verification Status <span ng-show="type.required">*</span></label>
 
                 <select class="form-control" name="" ng-model="data.verification">
-              <option value="">Verified</option>
-              <option value="" selected>Not Verified</option>
+              <option value="Verified">Verified</option>
+              <option value="Not Verified">Not Verified</option>
             </select>
             </div>
             <div class="form-group" ng-if="data.accessLevel!=='Customer'">
@@ -203,6 +203,7 @@
                             <tr>
                                 <th>Order ID</th>
                                 <th>Order Date</th>
+                                <th>Delivery Date</th>
                                 <th>Total Amount</th>
 
 
@@ -213,6 +214,7 @@
                             <tr ng-repeat="data in OrderData | filter:search.text ">
                                 <td>{{data.orderID}}</td>
                                 <td>{{data.addedDate }}</td>
+                                <td>{{data.deliverdate }}</td>
                                 <td>{{data.totalAmount }}</td>
 
                             </tr>

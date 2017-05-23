@@ -62,7 +62,8 @@ var schema = new Schema({
     lastRank:String,
     verification: {
         type: String,
-        enum: ['Verified', 'Not Verified']
+        enum: ['Verified', 'Not Verified'],
+        default:'Not Verified'
     },
     levelstatus: {
         type: Schema.Types.ObjectId,
