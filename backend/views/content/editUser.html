@@ -95,12 +95,13 @@
             </div>
             <div class="form-group" ng-if="data.accessLevel=='Customer'">
                 <label>Method Of Joining</label>
+                <input type="text" name="methodofjoin" placeholder="Method Of Joining" ng-model="data.methodofjoin" class="form-control" readonly>
 
-                <select class="form-control" name="" ng-model="data.methodofjoin">
+                <!--<select class="form-control" name="" ng-model="data.methodofjoin">
               <option value="">Relationship Partner</option>
               <option value="">App</option>
               <option value="">Customer Representative</option>
-            </select>
+            </select>-->
             </div>
             <div class="form-group" ng-if="data.accessLevel=='Customer'">
                 <label>Status</label>

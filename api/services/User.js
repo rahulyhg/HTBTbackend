@@ -79,7 +79,8 @@ var schema = new Schema({
     },
     methodofjoin: {
         type: String,
-        enum: ['Relationship Partner', 'App', 'Customer Representative']
+        enum: ['Relationship Partner', 'App', 'Customer Representative'],
+        default:'Customer Representative'
     },
     notes: [{
         note: {
