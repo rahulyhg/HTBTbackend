@@ -41,7 +41,6 @@ var model = {
                     reqId = fdata[0].levelID;
                     console.log(reqId);
                     data.levelID = parseInt(fdata[0].levelID) +1;
-
                 } else {
                     console.log("no data");
                     reqID = 1;
