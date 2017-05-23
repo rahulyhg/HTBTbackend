@@ -38,7 +38,7 @@
         "type": "apiCallConfirm",
         "title": "Delete Product",
         "content": "Are you sure you want to delete Product?",
-        "api": "Product/delete",
+        "api": "Product/remove",
         "fieldsToSend": {
             "name": "_id",
             "value": "_id"
