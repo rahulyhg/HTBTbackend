@@ -724,7 +724,6 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             $scope.data.priceList.push(notes);
         };
         $scope.saveProduct = function (formdata) {
-
             // noteWithTime._id=JSON.parse($stateParams.keyword)._id;
             NavigationService.apiCall("Product/saveProduct",
                 formdata,
@@ -738,7 +737,6 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         };
 
         $scope.modalAddNotes = function (data) {
-
             var modalInstance = $uibModal.open({
                 animation: $scope.animationsEnabled,
                 templateUrl: '/backend/views/modal/addPrice.html',
