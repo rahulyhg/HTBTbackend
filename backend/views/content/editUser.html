@@ -213,8 +213,8 @@
                         <tbody>
                             <tr ng-repeat="data in OrderData | filter:search.text ">
                                 <td>{{data.orderID}}</td>
-                                <td>{{data.addedDate }}</td>
-                                <td>{{data.deliverdate }}</td>
+                                <td>{{data.orderDate | date}}</td>
+                                <td>{{data.deliverdate | date }}</td>
                                 <td>{{data.totalAmount }}</td>
 
                             </tr>
@@ -251,9 +251,9 @@
                         <tbody>
                             <tr ng-repeat="data in deliverydata | filter:search.text ">
                                 <td>{{data.requestID}}</td>
-                                <td>{{data.requestDate }}</td>
+                                <td>{{data.requestDate | date}}</td>
                                 <td>{{data.status }}</td>
-                                <td>{{data.deliverdate }}</td>
+                                <td>{{data.deliverdate | date}}</td>
                              
 
                             </tr>
