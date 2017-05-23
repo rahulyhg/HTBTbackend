@@ -99,6 +99,28 @@ var model = {
                 callback(null, savedData);
             }
         })
-    }
+    },
+      getDeliveryRequestByUser: function (data, callback) {
+        console.log("data", data)
+        DeliveryRequest.find({
+                customer: data._id
+            }).lean().sort({
+                _id: -1
+            }).exec(function (err, found) {
+                if (err) {
+                    callback(err, null);
+                } else {
+                    if (found) {
+                        callback(null, found);
+                    } else {
+                        callback({
+                            message: "Invalid data!"
+                        }, null);
+                    }
+                }
+
+            });
+    },
+
 };
 module.exports = _.assign(module.exports, exports, model);
