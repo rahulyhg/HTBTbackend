@@ -1,0 +1,325 @@
+<div class="heading-sec">
+    <div class="row">
+        <div class="col-md-12 column">
+            <div class="heading-profile">
+                <h2>{{data.accessLevel}}</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="widget">
+    <div class="form-elements-sec">
+        <div class="sec">
+            <div class="form-group" fields>
+                <label>{{data.accessLevel}} ID </label>
+                <input type="text" name="userID" placeholder="User ID" ng-model="data.userID" class="form-control" readonly>
+            </div>
+            <div class="form-group" fields>
+                <label>Name </label>
+                <input type="text" name="name" placeholder="name" ng-model="data.name" class="form-control">
+                <div class="error-msg" ng-show="name.$invalid && name.$touched">Please enter valid name</div>
+            </div>
+            <div class="form-group" fields>
+                <label>Email ID</label>
+                <input type="email" name="email" placeholder="email" ng-model="data.email" class="form-control">
+                <div class="error-msg" ng-show="email.$invalid && email.$touched">Please enter valid email</div>
+            </div>
+            <div class="form-group" fields>
+                <label>Mobile Number</label>
+                <input type="text" name="mobile" placeholder="Mobile Number" ng-model="data.mobile" class="form-control">
+                <div class="error-msg" ng-show="mobile.$invalid && mobile.$touched">Please enter valid Mobile Number</div>
+            </div>
+            <div class="form-group" fields>
+                <label>Landline Number</label>
+                <input type="text" name="mobile" placeholder="Landline Number" ng-model="data.landLine" class="form-control">
+                <div class="error-msg" ng-show="mobile.$invalid && mobile.$touched">Please enter valid Landline Number</div>
+            </div>
+            <div class="form-group" fields ng-if="data.accessLevel!=='Customer'">
+                <label>Establishment Name</label>
+                <input type="text" name="establishmentName" placeholder="Establishment Name" ng-model="data.establishmentName" class="form-control">
+                <div class="error-msg" ng-show="establishmentName.$invalid && establishmentName.$touched">Please enter valid Establishment Name</div>
+            </div>
+            <div class="form-group" fields>
+                <label><span ng-if="data.accessLevel!=='Customer'">Establishment</span> Address</label>
+                <input type="text" name="establishmentAddress" placeholder="Establishment Address" ng-model="data.establishmentAddress" class="form-control">
+                <div class="error-msg" ng-show="establishmentAddress.$invalid && establishmentAddress.$touched">Please enter valid Establishment Address</div>
+            </div>
+            <div class="form-group" fields>
+                <label>Pincode</label>
+                <input type="number" name="pincode" placeholder="Pincode" ng-model="data.pincode" class="form-control">
+                <div class="error-msg" ng-show="pincode.$invalid && pincode.$touched">Please enter valid Pincode</div>
+            </div>
+            <div class="form-group" ng-if="data.accessLevel!=='Customer'">
+                <label>Pan card </label>
+                <div class="clearFix"></div>
+
+                <div class="panImage">
+                    <img src="{{data.panCard | uploadpath}}" alt="">
+                </div>
+            </div>
+            <div class="form-group" ng-if="data.accessLevel!=='Customer'">
+                <label>Aadhar card </label>
+                <div class="clearFix"></div>
+
+                <div class="panImage">
+                    <img src="{{data.adharCard | uploadpath}}" alt="">
+                </div>
+            </div>
+            <div class="form-group" fields>
+                <label>Date Of Joining</label>
+                <input type="text" name="userID" placeholder="Date Of Joining" ng-model="data.dateofjoin | date" class="form-control" readonly>
+            </div>
+            <div class="form-group" ng-if="data.accessLevel!=='Customer'">
+                <label>Verification Status <span ng-show="type.required">*</span></label>
+
+                <select class="form-control" name="" ng-model="data.verification">
+              <option value="Verified">Verified</option>
+              <option value="Not Verified">Not Verified</option>
+            </select>
+            </div>
+            <div class="form-group" ng-if="data.accessLevel!=='Customer'">
+                <label>Status <span ng-show="type.required">*</span></label>
+
+                <select class="form-control" name="" ng-model="data.status">
+              <option value="">Active</option>
+              <option value="">Suspended</option>
+            </select>
+            </div>
+            <div class="form-group" ng-if="data.accessLevel!=='Customer'">
+                <label>Block Earnings* <span ng-show="type.required">*</span></label>
+
+                <select class="form-control" name="" ng-model="data.status">
+              <option value="">Active</option>
+              <option value="">Inactive</option>
+            </select>
+            </div>
+            <div class="form-group" ng-if="data.accessLevel=='Customer'">
+                <label>Method Of Joining</label>
+                <input type="text" name="methodofjoin" placeholder="Method Of Joining" ng-model="data.methodofjoin" class="form-control" readonly>
+
+                <!--<select class="form-control" name="" ng-model="data.methodofjoin">
+              <option value="">Relationship Partner</option>
+              <option value="">App</option>
+              <option value="">Customer Representative</option>
+            </select>-->
+            </div>
+            <div class="form-group" ng-if="data.accessLevel=='Customer'">
+                <label>Status</label>
+
+                <select class="form-control" name="" ng-model="data.status">
+              <option selected value="Inactive">Inactive</option>
+              <option value="Not Purchased Yet">Not Purchased Yet</option>
+              <option value="Active">Active</option>
+            </select>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="text-center mt20 odd-even-button">
+    <button class="btn btn-default" type="button" ng-click="saveuser(data)">Save</button>
+    <a class="btn btn-danger" href="#!/page/viewMasterReform//">Cancel</a>
+
+</div>
+</div>
+<div class="heading-sec">
+    <div class="row">
+        <div class="col-md-12 column">
+            <div class="heading-profile">
+                <h2>{{data.accessLevel}} Activity</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="widget">
+    <div class="form-elements-sec">
+        <div class="form-group" ng-if="data.accessLevel!='Customer'">
+            <label>Current Status:</label>
+                <input type="text" name="levelstatus" placeholder="Current Status" ng-model="data.levelstatus" class="form-control" readonly>
+<!--
+            <select class="form-control" name="" ng-model="data.levelstatus">
+           <option value="">Gold</option>
+           <option value="">Silver</option>
+           <option value="">Bronze</option>
+         </select>-->
+        </div>
+
+        <div class="form-group" fields ng-if="data.accessLevel!='Customer'">
+            <label>Earnings For This Month</label>
+            <input type="number" name="lastMonthEarnings" placeholder="Earnings For This Month" ng-model="data.lastMonthEarnings" class="form-control" readonly>
+            <div class="error-msg" ng-show="lastMonthEarnings.$invalid && lastMonthEarnings.$touched">Please enter valid Earnings For This Month</div>
+        </div>
+        <div class="sec" ng-if="data.accessLevel!='Customer'">
+            <div>
+                <!-- <a class="btn btn-primary pull-right" ng-click="modalAddNotes(data.notes)">Add New</a> -->
+                <label>List Of Customers<span ng-show="type.required">*</span></label>
+                <span style="float:right;width:200px;"><input type="search" class="form-control" placeholder="Search..." ng-model="search.text"> </span>
+            </div>
+
+            <div class="sec">
+                <div>
+                    <table class="table table-input" ng-if="model.length != 0">
+                        <thead>
+                            <tr>
+                                <th>Customer ID</th>
+                                <th>Customer Name</th>
+                                <!-- <th width="150px">Actions</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data in data.customer | filter:search.text ">
+                                <td>{{data.customerId}}</td>
+                                <td>{{data.name }}</td>
+                                <td>
+                                    <a class="btn btn-primary" ng-click="editBox('Edit',data)">
+                                      Reassign
+                                  </a>
+                                    <!-- <a class="btn btn-danger" ng-click="deleteBox($index, model)">
+                                      <i class="fa fa-trash"></i>
+                                  </a> -->
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="form-group" fields ng-if="data.accessLevel!='Customer'">
+            <label>Available Deposit</label>
+            <input type="number" name="deposit" placeholder="deposit" ng-model="data.deposit" class="form-control" readonly>
+            <div class="error-msg" ng-show="deposit.$invalid && deposit.$touched">Please enter valid deposit</div>
+        </div>
+
+        <div class="sec" ng-if="data.accessLevel=='Customer'">
+            <div>
+                <!-- <a class="btn btn-primary pull-right" ng-click="modalAddNotes(data.notes)">Add New</a> -->
+                <label>Order History   <span ng-show="type.required">*</span></label>
+                <span style="float:right;width:200px;"><input type="search" class="form-control" placeholder="Search..." ng-model="search.text"> </span>
+            </div>
+
+            <div class="sec">
+                <div>
+                    <table class="table table-input" ng-if="model.length != 0">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Order Date</th>
+                                <th>Delivery Date</th>
+                                <th>Total Amount</th>
+
+
+                                <!-- <th width="150px">Actions</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data in OrderData | filter:search.text ">
+                                <td>{{data.orderID}}</td>
+                                <td>{{data.orderDate | date}}</td>
+                                <td>{{data.deliverdate | date }}</td>
+                                <td>{{data.totalAmount }}</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="sec" ng-if="data.accessLevel=='Customer'">
+            <div>
+                <!-- <a class="btn btn-primary pull-right" ng-click="modalAddNotes(data.notes)">Add New</a> -->
+                <label>Delivery Request<span ng-show="type.required">*</span></label>
+                <span style="float:right;width:200px;"><input type="search" class="form-control" placeholder="Search..." ng-model="search.text"> </span>
+            </div>
+
+            <div class="sec">
+                <div>
+                    <table class="table table-input" ng-if="model.length != 0">
+                        <thead>
+                            <tr>
+                                <th> Request ID</th>
+                                <th>Request Date</th>
+                                <th>Status</th>
+                                <th>Delivery Date</th>
+                              
+
+
+                                <!-- <th width="150px">Actions</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data in deliverydata | filter:search.text ">
+                                <td>{{data.requestID}}</td>
+                                <td>{{data.requestDate | date}}</td>
+                                <td>{{data.status }}</td>
+                                <td>{{data.deliverdate | date}}</td>
+                             
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+        <div class="form-group" fields ng-if="data.accessLevel=='Customer'">
+            <label>Current Jar Balance</label>
+            <input type="text" name="jarbalance" placeholder="Current Jar Balance" ng-model="subscription.balance" class="form-control" readonly>
+        </div>
+        <div class="form-group" fields ng-if="data.accessLevel=='Customer'">
+            <label>Current Jar Deposit</label>
+            <input type="text" name="jardeposit" placeholder="Current Jar Balance" ng-model="subscription.totalQuantity" class="form-control" readonly>
+        </div>
+        <div class="form-group" ng-if="data.accessLevel=='Customer'">
+            <label>Last method of payment</label>
+            <input type="text" name="jardeposit" placeholder="Last method of payment" value="{{OrderData[OrderData.length-1].methodOfPayment}}" class="form-control" readonly>
+
+        </div>
+        <div class="sec">
+            <div>
+                <a class="btn btn-primary pull-right" ng-click="modalAddNotes(data.notes)">Add New</a>
+                <label>Notes<span ng-show="type.required">*</span></label>
+                <span style="float:right;width:200px;"><input type="search" class="form-control" placeholder="Search..." ng-model="search.text"> </span>
+            </div>
+
+            <div class="sec">
+                <div>
+                    <table class="table table-input" ng-if="model.length != 0">
+                        <thead>
+                            <tr>
+                                <th ng-repeat="field in fields">{{field.name}}</th>
+                                <!-- <th width="150px">Actions</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data in data.notes | filter:search.text ">
+                                <td>{{data.note}}</td>
+                                <td>{{data.notestime | date}}</td>
+                                <!-- <td>
+                                  <a class="btn btn-primary" ng-click="editBox('Edit',data)">
+                                      <i class="Fa fa-pencil"></i>
+                                  </a>
+                                  <a class="btn btn-danger" ng-click="deleteBox($index, model)">
+                                      <i class="fa fa-trash"></i>
+                                  </a>
+                              </td> -->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+<div class="text-center mt20 odd-even-button">
+    <button class="btn btn-default" type="button" ng-click="saveuser(data)">Save</button>
+    <a class="btn btn-danger" href="#!/page/viewMasterReform//">Cancel</a>
+
+</div>
+</div>
