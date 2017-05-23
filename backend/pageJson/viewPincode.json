@@ -27,7 +27,7 @@
         "type": "apiCallConfirm",
         "title": "Delete Pincode",
         "content": "Are you sure you want to delete Pincode?",
-        "api": "Pincode/delete",
+        "api": "Pincode/remove",
         "fieldsToSend": {
             "name": "_id",
             "value": "_id"
