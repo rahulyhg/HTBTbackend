@@ -242,7 +242,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         globalfunction.confDel = function (callback) {
             var modalInstance = $uibModal.open({
                 animation: $scope.animationsEnabled,
-                templateUrl: '/views/modal/conf-delete.html',
+                templateUrl: '/backend/views/modal/conf-delete.html',
                 size: 'sm',
                 scope: $scope
             });
@@ -255,7 +255,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         globalfunction.openModal = function (callback) {
             var modalInstance = $uibModal.open({
                 animation: $scope.animationsEnabled,
-                templateUrl: '/views/modal/modal.html',
+                templateUrl: '/backend/views/modal/modal.html',
                 size: 'lg',
                 scope: $scope
             });
@@ -1084,7 +1084,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             $scope.holdObject = holdobj;
             var modalInstance = $uibModal.open({
                 scope: $scope,
-                templateUrl: 'views/modal/' + filename + '.html',
+                templateUrl: 'backend/views/modal/' + filename + '.html',
                 size: 'lg'
             });
         };
@@ -1233,7 +1233,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             $scope.holdObject = holdobj;
             var modalInstance = $uibModal.open({
                 scope: $scope,
-                templateUrl: 'views/modal/' + filename + '.html',
+                templateUrl: 'backend/views/modal/' + filename + '.html',
                 size: 'lg'
             });
         };
