@@ -586,13 +586,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
 
         });
         $scope.saveDeliveryRequest = function (data) {
-            if (data.Quantity > data.QuantityDelivered) {
-                data.status = "Partial Delivery Successful";
-            } else if (data.Quantity == data.QuantityDelivered) {
-                data.status = "Full Delivery Successful";
-            } else if (data.QuantityDelivered == 0) {
-                data.status = "Delivery Failed";
-            }
+           
             NavigationService.apiCall("DeliveryRequest/save", data, function (data) {
                 if (data.value === true) {
                     console.log("Order---data saved ", data.data);
