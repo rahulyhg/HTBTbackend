@@ -41,27 +41,28 @@
 
             <div class="form-group">
                 <label>Method Of Ordering</label>
-
-                <select class="form-control" name="" ng-model="orderData.methodOfOrder" disabled>
+                 <input  ng-if="orderData._id" type="text" name="totalQuantity" placeholder="Method Of Ordering"ng-model="orderData.methodOfOrder" class="form-control" disabled>
+                  <input  ng-if="!orderData._id" type="text" name="totalQuantity" placeholder="Method Of Ordering" ng-model="orderData.methodOfOrder='Customer Representative'" class="form-control" disabled>
+                <!--<select class="form-control" name="" ng-model="orderData.methodOfOrder" disabled>
               <option value="Relationship Partner">Relationship Partner</option>
               <option value="App">App</option>
               <option value="Customer Representative">Customer Representative</option>
-            </select>
+            </select>-->
             </div>
-            <div ng-if="!orderData._id" class="form-group">
+            <div class="form-group">
                 <label>Method Of Payment</label>
                 <select class="form-control" name="" ng-model="orderData.methodOfPayment">
               <option value="Cash">Cash</option>
               <option value="Cheque">Cheque</option>
             </select>
             </div>
-            <div class="form-group">
+            <!--<div class="form-group">
                 <label>Method Of Payment</label>
                 <select class="form-control" name="" ng-model="orderData.paymentStatus">
               <option value="Paid">Paid</option>
               <option value="Unpaid">Unpaid</option>
             </select>
-            </div>
+            </div>-->
             <div class="form-group">
                 <label>Status</label>
                 <select class="form-control" name="" ng-model="orderData.status">
@@ -70,7 +71,6 @@
               <option value="Cancelled">Cancelled</option>
               <option value="Delivered">Delivered</option>
               <option value="delay">delay</option>
-              
             </select>
             </div>
             <!--<div class="form-group" fields>
@@ -141,9 +141,9 @@
                 <input type="text" name="name" placeholder="Total Payment" ng-model="orderData.totalAmount" class="form-control">
 
             </div>
-            <div class="form-group" fields>
+            <div ng-if="orderData._id" class="form-group" fields>
                 <label>Delivery date</label>
-                <input ng-if="orderData._id" type="text" name="deliverdate" placeholder="deliverdate" ng-model="orderData.deliverdate | date"
+                <input type="text" name="deliverdate" placeholder="deliverdate" ng-model="orderData.deliverdate | date"
                     class="form-control" ng-disabled="orderData._id">
                 <input type="date" name="deliverdate" placeholder="deliverdate" ng-if="!orderData._id" ng-model="orderData.deliverdate" class="form-control"
                     ng-disabled="orderData._id">
