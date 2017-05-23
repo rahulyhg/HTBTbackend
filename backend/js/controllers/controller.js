@@ -587,7 +587,9 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         });
         $scope.saveDeliveryRequest = function (data) {
 
-            NavigationService.apiCall("DeliveryRequest/save", data, function (data) {
+           
+            NavigationService.apiCall("DeliveryRequest/saveDeliveryRequest", data, function (data) {
+
                 if (data.value === true) {
                     console.log("Order---data saved ", data.data);
                     $state.go("page", {
