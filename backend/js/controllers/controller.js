@@ -511,6 +511,16 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
 
             });
         }
+        $scope.cancel = function (data) {
+            if (data == 'Cancelled') {
+                var modalInstance = $uibModal.open({
+                    animation: $scope.animationsEnabled,
+                    templateUrl: '/backend/views/modal/conf-cancel.html',
+                    size: 'lg',
+                    scope: $scope
+                });
+            }
+        };
 
         $scope.addProduct = function () {
             $scope.modalInstance = $uibModal.open({
@@ -587,7 +597,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         });
         $scope.saveDeliveryRequest = function (data) {
 
-           
+
             NavigationService.apiCall("DeliveryRequest/saveDeliveryRequest", data, function (data) {
 
                 if (data.value === true) {
@@ -717,15 +727,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             });
 
         };
-        $scope.cancel = function (data) {
 
-            var modalInstance = $uibModal.open({
-                animation: $scope.animationsEnabled,
-                templateUrl: '/backend/views/modal/conf-cancel.html',
-                size: 'lg',
-                scope: $scope
-            });
-        };
         $scope.modalAddNotes = function (data) {
 
             var modalInstance = $uibModal.open({
