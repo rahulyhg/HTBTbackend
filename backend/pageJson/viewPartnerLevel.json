@@ -5,12 +5,16 @@
     "sendIdWithCreate": true,
     "urlFields": ["_id"],
     "fields": [{
-        "name": "Partner Level",
-        "isSort": "",
-        "tableRef": "name"
-}
+            "name": "Level No",
+            "isSort": "",
+            "tableRef": "levelID"
+        }, {
+            "name": "Partner Level",
+            "isSort": "",
+            "tableRef": "name"
+        }
 
-  ],
+    ],
     "action": [{
         "name": "edit",
         "icon": "fa-pencil",
