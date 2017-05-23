@@ -11,7 +11,7 @@ var schema = new Schema({
     levelID: {
         type: String,
         unique: true
-    },
+    }
 
 });
 
@@ -23,18 +23,19 @@ schema.plugin(timestamps);
 
 module.exports = mongoose.model('PartnerLevel', schema);
 
-var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "PartnerLevel", "PartnerLevel"));
+var exports = _.cloneDeep(require("sails-wohlig-service")(schema));
 var model = {
 
-    saveData: function (data, callback) {
+    saveLevel: function (data, callback) {
         var reqID = '';
         PartnerLevel.find({}).sort({
             createdAt: -1
         }).exec(function (err, fdata) {
             if (err) {
                 console.log(err);
-                callback(err, null);
+               // callback(err, null);
             } else {
+                console.log("inside else");
                 if (fdata.length > 0) {
                     console.log(fdata[0]);
                     reqId = parseInt(fdata[0].levelID) + 1;
@@ -44,16 +45,19 @@ var model = {
                     console.log(reqID);
                 }
                 data.levelID = reqID;
+                console.log(data);
                 PartnerLevel.saveData(data, function (err, savedData) {
                     if (err) {
+                        console.log("err",err);
                         callback(err, null);
                     } else {
+                       console.log(savedData);
                         callback(null, savedData);
                     }
                 })
             }
         });
-    },
+    }
 
 };
 module.exports = _.assign(module.exports, exports, model);
