@@ -54,7 +54,7 @@
         }
     }],
     "apiCall": {
-        "url": "PartnerLevel/save",
+        "url": "PartnerLevel/saveData",
         "params": "_id"
     },
     "preApi": {

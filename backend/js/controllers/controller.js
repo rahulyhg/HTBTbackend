@@ -586,7 +586,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
 
         });
         $scope.saveDeliveryRequest = function (data) {
-           
+
             NavigationService.apiCall("DeliveryRequest/save", data, function (data) {
                 if (data.value === true) {
                     console.log("Order---data saved ", data.data);
@@ -631,16 +631,15 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         TemplateService.title = $scope.menutitle;
         $scope.navigation = NavigationService.getnav();
         console.log("$stateParams---", JSON.stringify($stateParams.keyword));
-  $scope.data={};
-  $scope.data.priceList=[];
-   $scope.levels={};
-   
-         NavigationService.apiCall("PartnerLevel/search",
-            {},
+        $scope.data = {};
+        $scope.data.priceList = [];
+        $scope.levels = {};
+
+        NavigationService.apiCall("PartnerLevel/search", {},
             function (data) {
                 if (data.value === true) {
                     console.log(data.data.results);
-                    $scope.levels=data.data.results;
+                    $scope.levels = data.data.results;
                 }
 
             });
@@ -701,7 +700,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             });
         }
         $scope.addQuestion = function (notes) {
-                $scope.data.priceList.push(notes);
+            $scope.data.priceList.push(notes);
         };
         $scope.saveProduct = function (formdata) {
 
@@ -715,6 +714,15 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 id: "viewProduct"
             });
 
+        };
+        $scope.cancel = function (data) {
+
+            var modalInstance = $uibModal.open({
+                animation: $scope.animationsEnabled,
+                templateUrl: '/backend/views/modal/conf-cancel.html',
+                size: 'lg',
+                scope: $scope
+            });
         };
         $scope.modalAddNotes = function (data) {
 
