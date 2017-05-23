@@ -639,7 +639,17 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         console.log("$stateParams---", JSON.stringify($stateParams.keyword));
   $scope.data={};
   $scope.data.priceList=[];
-  
+   $scope.levels={};
+   
+         NavigationService.apiCall("PartnerLevel/search",
+            {},
+            function (data) {
+                if (data.value === true) {
+                    console.log(data.data.results);
+                    $scope.levels=data.data.results;
+                }
+
+            });
         NavigationService.apiCall("categories/search",
             formData,
             function (data) {
