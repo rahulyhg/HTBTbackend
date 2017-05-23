@@ -54,6 +54,6 @@
         }
     }],
     "apiCall": {
-        "url": "PartnerLevel/saveData"
+        "url": "PartnerLevel/saveLevel"
     }
 }

@@ -1,6 +1,6 @@
 module.exports = _.cloneDeep(require("sails-wohlig-controller"));
 var controller = {
-saveData: function (req, res) {
+saveLevel: function (req, res) {
      if (req.body) {
          PartnerLevel.saveLevel(req.body, res.callback);
      } else {
