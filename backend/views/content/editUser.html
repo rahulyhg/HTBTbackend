@@ -133,12 +133,13 @@
     <div class="form-elements-sec">
         <div class="form-group" ng-if="data.accessLevel!='Customer'">
             <label>Current Status:</label>
-
+                <input type="text" name="levelstatus" placeholder="Current Status" ng-model="data.levelstatus" class="form-control" readonly>
+<!--
             <select class="form-control" name="" ng-model="data.levelstatus">
            <option value="">Gold</option>
            <option value="">Silver</option>
            <option value="">Bronze</option>
-         </select>
+         </select>-->
         </div>
 
         <div class="form-group" fields ng-if="data.accessLevel!='Customer'">
