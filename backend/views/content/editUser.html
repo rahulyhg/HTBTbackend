@@ -192,7 +192,7 @@
         <div class="sec" ng-if="data.accessLevel=='Customer'">
             <div>
                 <!-- <a class="btn btn-primary pull-right" ng-click="modalAddNotes(data.notes)">Add New</a> -->
-                <label>Order    <span ng-show="type.required">*</span></label>
+                <label>Order History   <span ng-show="type.required">*</span></label>
                 <span style="float:right;width:200px;"><input type="search" class="form-control" placeholder="Search..." ng-model="search.text"> </span>
             </div>
 
@@ -205,7 +205,6 @@
                                 <th>Order Date</th>
                                 <th>Delivery Date</th>
                                 <th>Total Amount</th>
-                                <th>status</th>
 
 
                                 <!-- <th width="150px">Actions</th> -->
@@ -214,10 +213,48 @@
                         <tbody>
                             <tr ng-repeat="data in OrderData | filter:search.text ">
                                 <td>{{data.orderID}}</td>
-                                <td>{{data.addedDate }}</td>
-                                <td>{{data.deliverdate }}</td>
+                                <td>{{data.orderDate | date}}</td>
+                                <td>{{data.deliverdate | date }}</td>
                                 <td>{{data.totalAmount }}</td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="sec" ng-if="data.accessLevel=='Customer'">
+            <div>
+                <!-- <a class="btn btn-primary pull-right" ng-click="modalAddNotes(data.notes)">Add New</a> -->
+                <label>Delivery Request<span ng-show="type.required">*</span></label>
+                <span style="float:right;width:200px;"><input type="search" class="form-control" placeholder="Search..." ng-model="search.text"> </span>
+            </div>
+
+            <div class="sec">
+                <div>
+                    <table class="table table-input" ng-if="model.length != 0">
+                        <thead>
+                            <tr>
+                                <th> Request ID</th>
+                                <th>Request Date</th>
+                                <th>Status</th>
+                                <th>Delivery Date</th>
+                              
+
+
+                                <!-- <th width="150px">Actions</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data in deliverydata | filter:search.text ">
+                                <td>{{data.requestID}}</td>
+                                <td>{{data.requestDate | date}}</td>
                                 <td>{{data.status }}</td>
+                                <td>{{data.deliverdate | date}}</td>
+                             
 
                             </tr>
                         </tbody>

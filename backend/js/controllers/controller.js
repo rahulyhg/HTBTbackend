@@ -417,6 +417,15 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                         }
 
                     });
+
+                    NavigationService.apiCall("DeliveryRequest/getDeliveryRequestByUser", formData, function (data) {
+                        if (data.value === true) {
+                            console.log("getOrderByUser", data.data);
+                            $scope.deliverydata = data.data;
+                       
+                        }
+
+                    });
                     //  $.jStorage.set('user', data.data);
                     //  $.jStorage.set("accessToken", data.data.accessToken[0]);
                 }
