@@ -34,7 +34,7 @@
         "type": "apiCallConfirm",
         "title": "Delete User",
         "content": "Are you sure you want to delete User?",
-        "api": "user/remove",
+        "api": "user/delete",
         "fieldsToSend": {
             "name": "_id",
             "value": "_id"

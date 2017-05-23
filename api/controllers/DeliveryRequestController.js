@@ -2,7 +2,7 @@ module.exports = _.cloneDeep(require("sails-wohlig-controller"));
 var controller = {
     saveDeliveryRequest: function (req, res) {
      if (req.body) {
-         PartnerLevel.saveDeliveryRequest(req.body, res.callback);
+         DeliveryRequest.saveDeliveryRequest(req.body, res.callback);
      } else {
          res.json({
              value: false,

@@ -35,7 +35,7 @@
         "type": "apiCallConfirm",
         "title": "Delete Coupon",
         "content": "Are you sure you want to delete Coupon?",
-        "api": "Coupon/remove",
+        "api": "Coupon/delete",
         "fieldsToSend": {
             "name": "_id",
             "value": "_id"

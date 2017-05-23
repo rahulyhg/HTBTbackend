@@ -31,7 +31,7 @@
         "type": "apiCallConfirm",
         "title": "Delete PartnerLevel",
         "content": "Are you sure you want to delete PartnerLevel?",
-        "api": "PartnerLevel/remove",
+        "api": "partnerLevel/delete",
         "fieldsToSend": {
             "name": "_id",
             "value": "_id"
