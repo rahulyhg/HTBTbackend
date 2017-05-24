@@ -36,6 +36,18 @@ var controller = {
          })
      }
  },
+   getAllActiveRelPartner: function (req, res) {
+     if (req.body) {
+         User.getAllActiveRelPartner(req.body, res.callback);
+     } else {
+         res.json({
+             value: false,
+             data: {
+                 message: "Invalid Request"
+             }
+         })
+     }
+ },
   saveUserData: function (req, res) {
      if (req.body) {
          User.saveUserData(req.body, res.callback);

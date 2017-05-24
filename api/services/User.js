@@ -226,7 +226,46 @@ var model = {
             .page(options, callback);
 
     },
+      getAllActiveRelPartner: function (data, callback) {
+      console.log("data", data)
+        var maxRow = Config.maxRow;
+
+        var page = 1;
+        if (data.page) {
+            page = data.page;
+        }
+        var field = data.field;
+
+        var options = {
+            field: data.field,
+            filters: {
+                keyword: {
+                    fields: ['name'],
+                    term: data.keyword
+                }
+            },
+            sort: {
+                asc: 'name'
+            },
+            start: (page - 1) * maxRow,
+            count: maxRow
+        };
+        User.find({
+                accessLevel: "Relationship Partner",
+                status:"Active"
+
+            }).order(options)
+            .keyword(options)
+            .page(options, callback);
+
+    },
     saveUserData: function (data, callback) {
+        if(data.accessLevel=="Customer"){
+            data.status="Not Purchased Yet";
+        }else{
+            data.status="Active";
+
+        }
         var year = new Date().getFullYear().toString().substr(2, 2);
         var month = new Date().getMonth();
         var strMon = '';

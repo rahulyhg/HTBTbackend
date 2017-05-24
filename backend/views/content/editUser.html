@@ -80,17 +80,17 @@
             <div class="form-group" ng-if="data.accessLevel!=='Customer'">
                 <label>Status <span ng-show="type.required">*</span></label>
 
-                <select class="form-control" name="" ng-model="data.status">
-              <option value="">Active</option>
-              <option value="">Suspended</option>
+                <select class="form-control" name="" ng-model="data.status" ng-change="reassignedmodal(data.userID,'',data.status)">
+              <option value="Active">Active</option>
+              <option value="Suspended">Suspended</option>
             </select>
             </div>
             <div class="form-group" ng-if="data.accessLevel!=='Customer'">
                 <label>Block Earnings* <span ng-show="type.required">*</span></label>
 
-                <select class="form-control" name="" ng-model="data.status">
-              <option value="">Active</option>
-              <option value="">Inactive</option>
+                <select class="form-control" name="" ng-model="data.earningsBlock">
+              <option value="Yes">Yes</option>
+              <option value="No">No</option>
             </select>
             </div>
             <div class="form-group" ng-if="data.accessLevel=='Customer'">
@@ -166,11 +166,11 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr ng-repeat="data in data.customer | filter:search.text ">
-                                <td>{{data.customerId}}</td>
-                                <td>{{data.name }}</td>
+                            <tr ng-repeat="data1 in data.customer | filter:search.text ">
+                                <td>{{data1.customerId}}</td>
+                                <td>{{data1.name }}</td>
                                 <td>
-                                    <a class="btn btn-primary" ng-click="editBox('Edit',data)">
+                                    <a class="btn btn-primary" ng-click="reassignedmodal(data.userID,data1,'Active')">
                                       Reassign
                                   </a>
                                     <!-- <a class="btn btn-danger" ng-click="deleteBox($index, model)">
