@@ -11,7 +11,8 @@ var schema = new Schema({
         "product-nameOnly": String,
         productQuantity: {
             type: String,
-        }
+        },
+        finalPrice:String
     }],
     plan: {
         type: String,

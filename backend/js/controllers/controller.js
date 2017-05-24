@@ -453,7 +453,21 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             });
 
         };
+        NavigationService.apiCall("User/getAllActiveRelPartner", {}, function (data) {
+            console.log("login", data.data);
+            $scope.activePartner = data.data.results;
+        });
+        $scope.reassignedmodal = function (rel, cust, status) {
+            if (status = "Suspend") {
+                var modalInstance = $uibModal.open({
+                    animation: $scope.animationsEnabled,
+                    templateUrl: '/backend/views/modal/reassigned.html',
+                    size: 'lg',
+                    scope: $scope
+                });
+            }
 
+        };
         $scope.saveuser = function (notes) {
             NavigationService.apiCall("User/saveUserData", $scope.data, function (data) {
                 console.log("login", data.data);
@@ -493,6 +507,9 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         $scope.data = {};
         $scope.orderData = {};
         $scope.orderData.product = [];
+        $scope.orderData.totalAmount = 0;
+        $scope.orderData.totalQuantity = 0;
+
         $scope.productList = [];
         NavigationService.apiCall("user/search", formData, function (data) {
             if (data.value === true) {
@@ -547,23 +564,59 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         $scope.saveProducts = function (data) {
             console.log("prod---", data.product)
             var arr = {};
-            var prodJson = JSON.parse(data.product)
+            var prodJson = JSON.parse(data.product);
+            var orderedPrice = _.orderBy(prodJson.priceList, ['endRange'], ['asc']);
+            console.log("orderedPrice", orderedPrice);
+            foundPrice = {};
+            _.each(orderedPrice, function (obj) {
+                if (parseInt(data.productQuantity) <= parseInt(obj.endRange)) {
+                    foundPrice = obj;
+                    return false;
+                }
+            });
+
+            console.log("foundPrice---", foundPrice);
             if ($scope.orderData.product.length > 0) {
                 if (_.isEqual(prodJson.category.subscription, 'Yes')) {
                     $scope.modalInstance.close("close");
                     toastr.error("Product can't be added with subscription", "Product can't be added with subscription");
                 } else {
                     arr.product = prodJson;
+                    arr.finalPrice = foundPrice.finalPrice;
                     arr.productQuantity = data.productQuantity
                     $scope.orderData.product.push(arr);
+                    $scope.orderData.totalAmount = parseInt($scope.orderData.totalAmount) + (parseInt(data.productQuantity) * parseInt(foundPrice.finalPrice));
+                    $scope.orderData.totalQuantity = parseInt($scope.orderData.totalQuantity) + parseInt(data.productQuantity);
+
                 }
             } else {
                 arr.product = prodJson;
+                arr.finalPrice = foundPrice.finalPrice;
                 arr.productQuantity = data.productQuantity
                 $scope.orderData.product.push(arr);
+                if (!_.isEqual(prodJson.category.subscription, 'Yes')) {
+                    $scope.orderData.totalQuantity = parseInt($scope.orderData.totalQuantity) + parseInt(data.productQuantity);
+                    $scope.orderData.totalAmount = parseInt($scope.orderData.totalAmount) + (parseInt(data.productQuantity) * parseInt(foundPrice.finalPrice));
+
+                }
             }
 
         };
+
+        $scope.planWisePrice = function (plan) {
+            if (_.isEqual(plan, "Monthly")) {
+                $scope.orderData.totalQuantity = 4 * parseInt($scope.orderData.product[0].productQuantity);
+                $scope.orderData.totalAmount = parseInt($scope.orderData.totalQuantity) * parseInt($scope.orderData.product[0].finalPrice);
+            }
+            if (_.isEqual(plan, "Quarterly")) {
+                $scope.orderData.totalQuantity = 12* parseInt($scope.orderData.product[0].productQuantity);
+                $scope.orderData.totalAmount = parseInt($scope.orderData.totalQuantity) * parseInt($scope.orderData.product[0].finalPrice);
+            }
+            if (_.isEqual(plan, "Onetime")) {
+                $scope.orderData.totalQuantity = parseInt($scope.orderData.product[0].productQuantity);
+                $scope.orderData.totalAmount = parseInt($scope.orderData.totalQuantity) * parseInt($scope.orderData.product[0].finalPrice);
+            }
+        }
         $scope.data1 = {};
         $scope.setcustomer = function (data) {
             $scope.orderData.customer = JSON.parse(data);
@@ -677,25 +730,25 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 }
 
             });
-              NavigationService.apiCall("PartnerLevel/search", {},
-                        function (data) {
-                            if (data.value === true) {
-                                var found = 'found';
-                                console.log(data.data.results);
-                                $scope.levels = data.data.results;
-                                var i = 0;
-                                console.log("$scope.productData.commission", $scope.productData.commission)
-                                _.forEach($scope.levels, function (val) {
-                                        var comm = {};
-                                        comm.commissionType = val;
-                                        console.log("commissionType", comm.commissionType);
-                                        $scope.productData.commission.push(comm);
-                                    
-                                })
-                                console.log("$scope.productData.commission---->>", $scope.productData.commission)
-                            }
+        NavigationService.apiCall("PartnerLevel/search", {},
+            function (data) {
+                if (data.value === true) {
+                    var found = 'found';
+                    console.log(data.data.results);
+                    $scope.levels = data.data.results;
+                    var i = 0;
+                    console.log("$scope.productData.commission", $scope.productData.commission)
+                    _.forEach($scope.levels, function (val) {
+                        var comm = {};
+                        comm.commissionType = val;
+                        console.log("commissionType", comm.commissionType);
+                        $scope.productData.commission.push(comm);
 
-                        });
+                    })
+                    console.log("$scope.productData.commission---->>", $scope.productData.commission)
+                }
+
+            });
         if (!_.isEmpty($stateParams.keyword)) {
             $scope.data = {};
             var formData = {};
@@ -717,8 +770,8 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                                     if ($scope.productData.commission[0]) {
                                         found = _.find($scope.productData.commission, function (o) {
                                             console.log(o.commissionType);
-                                            if(o.commissionType!=null){
-                                            return o.commissionType._id == val._id;
+                                            if (o.commissionType != null) {
+                                                return o.commissionType._id == val._id;
                                             }
                                         });
                                         console.log("found", found);

@@ -103,7 +103,7 @@
                                         <span>{{prod.product.productID}}</span>
                                     </td>
                                     <td>{{prod.productQuantity }}</td>
-                                    <td>{{prod.product.price }}</td>
+                                    <td>{{prod.finalPrice }}</td>
                                     <td> <span ng-if="prod.product.category.subscription=='Yes'">{{prod.product.AmtDeposit }}</span>
                                         <span ng-if="prod.product.category.subscription=='No'">N/A</span>
                                     </td>
@@ -124,13 +124,13 @@
             </div>
             <div ng-if="orderData.product[0].product.category.subscription=='Yes'" class="form-group">
                 <label>plan</label>
-                <select class="form-control" name="" ng-model="orderData.plan">
+                <select class="form-control" name="" ng-change="planWisePrice(orderData.plan)"  ng-model="orderData.plan">
               <option value="Monthly">Monthly</option>
               <option value="Quarterly">Quarterly</option>
               <option value="Onetime">Onetime</option>              
             </select>
             </div>
-            <div ng-if="orderData.product[0].product.category.subscription=='Yes'" class="form-group">
+            <div class="form-group">
                 <label>Total Quantity*</label>
                 <input ng-if="orderData._id" type="text" name="totalQuantity" placeholder="Total Quantity" ng-model="orderData.totalQuantity" class="form-control" disabled>
                  <input ng-if="!orderData._id" type="text" name="totalQuantity" placeholder="Total Quantity" ng-model="orderData.totalQuantity" class="form-control" required>
