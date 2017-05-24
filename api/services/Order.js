@@ -12,7 +12,7 @@ var schema = new Schema({
         productQuantity: {
             type: String,
         },
-        finalPrice:String
+        finalPrice: String
     }],
     plan: {
         type: String,
@@ -43,6 +43,10 @@ var schema = new Schema({
         type: String, //'Processing', 'Confirmed','Cancelled','Delivered','delay',
         default: "Processing"
     },
+    paidByRP: {
+        type: Boolean, //'true', 'false'
+        default: false
+    },
     orderDate: Date,
     methodOfOrder: String,
     methodOfPayment: String,
@@ -55,7 +59,7 @@ var schema = new Schema({
         address: String,
         pincode: Number
     },
-        transactionNo: String
+    transactionNo: String
 
 });
 

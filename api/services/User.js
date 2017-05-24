@@ -167,13 +167,11 @@ var model = {
     getAllCustomer: function (data, callback) {
         console.log("data", data)
         var maxRow = Config.maxRow;
-
         var page = 1;
         if (data.page) {
             page = data.page;
         }
         var field = data.field;
-
         var options = {
             field: data.field,
             filters: {
@@ -193,7 +191,6 @@ var model = {
             }).order(options)
             .keyword(options)
             .page(options, callback);
-
     },
     getAllRelPartner: function (data, callback) {
         console.log("data", data)
@@ -226,8 +223,8 @@ var model = {
             .page(options, callback);
 
     },
-      getAllActiveRelPartner: function (data, callback) {
-      console.log("data", data)
+    getAllActiveRelPartner: function (data, callback) {
+        console.log("data", data)
         var maxRow = Config.maxRow;
 
         var page = 1;
@@ -252,7 +249,7 @@ var model = {
         };
         User.find({
                 accessLevel: "Relationship Partner",
-                status:"Active"
+                status: "Active"
 
             }).order(options)
             .keyword(options)
@@ -260,10 +257,10 @@ var model = {
 
     },
     saveUserData: function (data, callback) {
-        if(data.accessLevel=="Customer"){
-            data.status="Not Purchased Yet";
-        }else{
-            data.status="Active";
+        if (data.accessLevel == "Customer") {
+            data.status = "Not Purchased Yet";
+        } else {
+            data.status = "Active";
 
         }
         var year = new Date().getFullYear().toString().substr(2, 2);

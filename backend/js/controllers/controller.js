@@ -511,9 +511,9 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         $scope.orderData.totalQuantity = 0;
 
         $scope.productList = [];
-        NavigationService.apiCall("user/search", formData, function (data) {
+        NavigationService.apiCall("user/getAllCustomer", formData, function (data) {
             if (data.value === true) {
-                console.log("login", data.data);
+                console.log("getAllCustomer", data.data);
                 $scope.userData = data.data.results;
                 //  $.jStorage.set('user', data.data);
                 //  $.jStorage.set("accessToken", data.data.accessToken[0]);
