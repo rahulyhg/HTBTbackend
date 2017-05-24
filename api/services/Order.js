@@ -45,7 +45,16 @@ var schema = new Schema({
     orderDate: Date,
     methodOfOrder: String,
     methodOfPayment: String,
-    paidByCustomer: Boolean
+    paidByCustomer: Boolean,
+    billingAddress: {
+        address: String,
+        pincode: Number
+    },
+    shippingAddress: {
+        address: String,
+        pincode: Number
+    },
+        transactionNo: String
 
 });
 
@@ -57,7 +66,7 @@ schema.plugin(deepPopulate, {
         'product.product': {
             select: ''
         },
-         'product.product.category': {
+        'product.product.category': {
             select: ''
         }
     }
@@ -155,7 +164,7 @@ var model = {
                     }
                     data.orderID = orderID;
                     data.orderDate = new Date();
-                    data.balance=data.totalQuantity;
+                    data.balance = data.totalQuantity;
                     Order.saveData(data, function (err, savedData) {
                         if (err) {
                             callback(err, null);

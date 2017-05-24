@@ -118,11 +118,13 @@ var model = {
                                 if (foundOrder) {
                                     // callback(null, found);
                                     foundOrder.balance = foundOrder.balance - data.QuantityDelivered;
+                                    foundOrder.deliverdate = data.deliverdate;
+                                    foundOrder.delivertime = data.delivertime;
                                     Order.saveData(foundOrder, function (err, savedOrder) {
                                         if (err) {
                                             console.log("err", err);
                                         } else {
-                                            console.log("Product updated");
+                                            console.log("Order updated");
                                         }
                                     });
                                 } else {
@@ -133,7 +135,7 @@ var model = {
                     }
                 ], function (error, data) {
                     if (error) {
-                        console.log("designer >>> searchdesigner>>> async.parallel >>> final callback  >>> error", error);
+                        console.log(" async.parallel >>> final callback  >>> error", error);
                         callback(error, null);
                     } else {
                         callback(null, savedData);

@@ -59,6 +59,10 @@ var schema = new Schema({
         type: String,
         default: "",
     },
+    maxBonusEarning: {
+        type: String,
+        default: "",
+    },
     quantity: {
         type: String,
         default: "",

@@ -57,13 +57,13 @@ var schema = new Schema({
         enum: ['Customer', 'Relationship Partner']
     },
     dateofjoin: Date,
-   
+
     otp: String,
-    lastRank:String,
+    lastRank: String,
     verification: {
         type: String,
         enum: ['Verified', 'Not Verified'],
-        default:'Not Verified'
+        default: 'Not Verified'
     },
     levelstatus: {
         type: Schema.Types.ObjectId,
@@ -80,7 +80,7 @@ var schema = new Schema({
     methodofjoin: {
         type: String,
         enum: ['Relationship Partner', 'App', 'Customer Representative'],
-        default:'Customer Representative'
+        default: 'Customer Representative'
     },
     notes: [{
         note: {
@@ -109,6 +109,15 @@ var schema = new Schema({
             type: String,
         }
     }],
+    cartProducts: [{
+        type: Schema.Types.ObjectId,
+        ref: 'Product',
+        index: true
+    }],
+    cart: {
+        totalAmount: String,
+        DiscountAmount: String
+    },
 
 });
 
