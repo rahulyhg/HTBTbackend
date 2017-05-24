@@ -10,6 +10,9 @@ var schema = new Schema({
     tag: {
         type: String,
     },
+    description: {
+        type: String,
+    },
     price: {
         type: String,
     },
