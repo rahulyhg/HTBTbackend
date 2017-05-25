@@ -178,36 +178,43 @@ var model = {
                             if (data.product) {
                                 console.log("inside Delivery req create", data.product);
                                 var deliveryReqData = {};
+                                var planChecked = true;
                                 _.forEach(data.product, function (val) {
                                     console.log("val--", val);
-                                    DeliveryRequest.find({}).sort({
-                                        createdAt: -1
-                                    }).exec(function (err, fdata) {
-                                        if (err) {
-                                            console.log(err);
-                                            callback(err, null);
-                                        } else {
-                                            if (fdata.length > 0) {
-                                                if (fdata[0].requestID) {
-                                                    reqId = parseInt(fdata[0].requestID) + 1;
-                                                }
-                                            } else {
-                                                reqId = 1;
-                                            }
-                                            deliveryReqData.product = val.product;
-                                            deliveryReqData.Quantity = val.productQuantity;
-                                            deliveryReqData.deliverdate = data.deliverdate;
-                                            deliveryReqData.Order = savedData._id;
-                                            deliveryReqData.requestDate = new Date();
-                                            deliveryReqData.methodOfRequest = data.methodOfOrder;
-                                            deliveryReqData.requestID = reqId;
-                                            deliveryReqData.customer = data.customer
-                                            console.log("deliveryReqData--", deliveryReqData);
-                                            DeliveryRequest.saveData(deliveryReqData, function () {});
-
+                                    if (_.isEqual(val.product.category.subscription, 'Yes')) {
+                                        if (!_.isEqual(data.plan, 'Onetime')) {
+                                            planChecked = false;
                                         }
-                                    });
+                                    }
+                                    if (planChecked) {
+                                        DeliveryRequest.find({}).sort({
+                                            createdAt: -1
+                                        }).exec(function (err, fdata) {
+                                            if (err) {
+                                                console.log(err);
+                                                callback(err, null);
+                                            } else {
+                                                if (fdata.length > 0) {
+                                                    if (fdata[0].requestID) {
+                                                        reqId = parseInt(fdata[0].requestID) + 1;
+                                                    }
+                                                } else {
+                                                    reqId = 1;
+                                                }
+                                                deliveryReqData.product = val.product;
+                                                deliveryReqData.Quantity = val.productQuantity;
+                                                deliveryReqData.deliverdate = data.deliverdate;
+                                                deliveryReqData.Order = savedData._id;
+                                                deliveryReqData.requestDate = new Date();
+                                                deliveryReqData.methodOfRequest = data.methodOfOrder;
+                                                deliveryReqData.requestID = reqId;
+                                                deliveryReqData.customer = data.customer
+                                                console.log("deliveryReqData--", deliveryReqData);
+                                                DeliveryRequest.saveData(deliveryReqData, function () {});
 
+                                            }
+                                        });
+                                    }
                                 })
                             }
                             callback(null, savedData);

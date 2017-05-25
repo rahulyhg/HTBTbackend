@@ -80,7 +80,7 @@ var model = {
         DeliveryRequest.saveData(data, function (err, savedData) {
             if (err) {
                 callback(err, null);
-            } else {
+            } else { //9323840946
                 async.parallel([
                     //Function to search event name
                     function () {
@@ -108,7 +108,7 @@ var model = {
 
                     },
 
-                    function (callback) {
+                    function () {
                         Order.findOne({
                             _id: data.Order
                         }).exec(function (err, foundOrder) {
@@ -132,6 +132,48 @@ var model = {
                                 }
                             }
                         });
+                    },
+                    function () {
+                        console.log("inside earning calculation");
+                        if (data.customer.relationshipId) {
+                            _.forEach(commission, function (val) {
+                                if (_.isEqual(val.commissionType, data.customer.relationshipId)) {
+                                    Earnings.findOne({
+                                        order: data.Order
+                                    }).exec(function (err, foundEarnings) {
+                                        if (err) {
+                                            //callback(err, null);
+                                        } else {
+                                            if (foundEarnings) {
+                                                foundEarnings.earnings = parseInt(foundEarnings.earnings) + parseInt(val.rate)
+                                                Earnings.saveData(foundEarnings, function (err, savedEarnings) {
+                                                    if (err) {
+                                                        console.log("err", err);
+                                                    } else {
+                                                        console.log("foundEarnings updated");
+                                                    }
+                                                });
+                                            } else {
+                                                var newEarning={};
+                                                newEarning.order=data.order;
+                                                newEarning.relationshipPartner=data.customer.relationshipId;
+                                                newEarning.earnings=parseInt(val.rate);
+                                                   Earnings.saveData(newEarning, function (err, savedEarnings) {
+                                                    if (err) {
+                                                        console.log("err", err);
+                                                    } else {
+                                                        console.log("newEarning saved");
+                                                    }
+                                                });
+                                                console.log("not found");
+                                            }
+                                        }
+                                    });
+                                }
+                            })
+                            console.log("relationshipId not found");
+                        }
+
                     }
                 ], function (error, data) {
                     if (error) {
