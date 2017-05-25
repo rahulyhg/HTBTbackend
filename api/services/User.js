@@ -110,9 +110,15 @@ var schema = new Schema({
         }
     }],
     cartProducts: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Product',
-        index: true
+        product: {
+            type: Schema.Types.ObjectId,
+            ref: 'Product',
+        },
+        "product-nameOnly": String,
+        productQuantity: {
+            type: String,
+        },
+        finalPrice: String
     }],
     cart: {
         totalAmount: String,
