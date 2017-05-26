@@ -36,7 +36,7 @@
             </div>
             <div class="form-group" fields>
                 <label>Customer Mobile Number</label>
-                <input type="number" name="mobile" placeholder="Mobile Number" ng-model="data.customer.mobile" class="form-control" disabled>
+                <input type="text" name="mobile" placeholder="Mobile Number" ng-model="data.customer.mobile" class="form-control" disabled>
                
             </div>
             <div class="form-group" fields>
@@ -80,7 +80,7 @@
     
         <div class="form-group" fields>
             <label>Quantity Delivered</label>
-            <input type="text" name="name" only-digits placeholder="Total Payment" ng-model="data.QuantityDelivered" class="form-control">
+            <input type="text" name="name" only-digits ng-change="compareQuantity(data.Quantity,data.QuantityDelivered)" placeholder="Total Payment" ng-model="data.QuantityDelivered" class="form-control">
 
         </div>
 

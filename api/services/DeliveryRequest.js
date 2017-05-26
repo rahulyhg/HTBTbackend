@@ -92,7 +92,7 @@ var model = {
                             } else {
                                 if (found) {
                                     // callback(null, found);
-                                    found.quantity = found.quantity - data.QuantityDelivered;
+                                    found.quantity = parseInt(found.quantity) - parseInt(data.QuantityDelivered);
                                     Product.saveData(found, function (err, savedProd) {
                                         if (err) {
                                             console.log("err", err);
@@ -136,42 +136,62 @@ var model = {
                     function () {
                         console.log("inside earning calculation");
                         if (data.customer.relationshipId) {
-                            _.forEach(commission, function (val) {
-                                if (_.isEqual(val.commissionType, data.customer.relationshipId)) {
-                                    Earnings.findOne({
-                                        order: data.Order
-                                    }).exec(function (err, foundEarnings) {
-                                        if (err) {
-                                            //callback(err, null);
-                                        } else {
-                                            if (foundEarnings) {
-                                                foundEarnings.earnings = parseInt(foundEarnings.earnings) + parseInt(val.rate)
-                                                Earnings.saveData(foundEarnings, function (err, savedEarnings) {
+                            User.findOne({
+                                _id: data.customer.relationshipId
+                            }).exec(function (err, foundUser) {
+                                if (err) {
+                                    //callback(err, null);
+                                } else {
+                                    if (foundUser) {
+                                        console.log("foundUser--", foundUser);
+                                        _.forEach(data.product.commission, function (val) {
+                                        console.log("val.commissionType--", val.commissionType,"foundUser.levelstatus",foundUser.levelstatus,val.commissionType==foundUser.levelstatus);
+                                            
+                                            if (val.commissionType==foundUser.levelstatus) {
+                                                console.log("commisiontype matched",data.Order);
+                                                Earnings.findOne({
+                                                    order: data.Order._id
+                                                }).exec(function (err, foundEarnings) {
                                                     if (err) {
-                                                        console.log("err", err);
-                                                    } else {
-                                                        console.log("foundEarnings updated");
+                                                        console.log("Earnings",err);
+                                                        //callback(err, null);
+                                                    } else {                                                    console.log("foundEarnings ",foundEarnings);
+                                                        if (foundEarnings) {
+                                                            console.log(" foundEarnings----inside if ");
+                                                            foundEarnings.earnings = parseInt(foundEarnings.earnings) + (parseInt(val.rate) * parseInt(data.QuantityDelivered))
+                                                            Earnings.saveData(foundEarnings, function (err, savedEarnings) {
+                                                                if (err) {
+                                                                    console.log("err", err);
+                                                                } else {
+                                                                    console.log("foundEarnings updated");
+                                                                }
+                                                            });
+                                                        } else {
+                                                            console.log(" foundEarnings----inside else ");
+                                                            var newEarning = {};
+                                                            newEarning.order = data.Order._id;
+                                                            newEarning.relationshipPartner = data.customer.relationshipId;
+                                                            newEarning.earnings = parseInt(val.rate) * parseInt(data.QuantityDelivered);
+                                                            Earnings.saveData(newEarning, function (err, savedEarnings) {
+                                                                if (err) {
+                                                                    console.log("err", err);
+                                                                } else {
+                                                                    console.log("newEarning saved");
+                                                                }
+                                                            });
+                                                            console.log("not found");
+                                                        }
                                                     }
                                                 });
-                                            } else {
-                                                var newEarning={};
-                                                newEarning.order=data.order;
-                                                newEarning.relationshipPartner=data.customer.relationshipId;
-                                                newEarning.earnings=parseInt(val.rate);
-                                                   Earnings.saveData(newEarning, function (err, savedEarnings) {
-                                                    if (err) {
-                                                        console.log("err", err);
-                                                    } else {
-                                                        console.log("newEarning saved");
-                                                    }
-                                                });
-                                                console.log("not found");
                                             }
-                                        }
-                                    });
+                                        })
+                                    } else {
+                                        console.log("relationshipId not found");
+
+                                    }
                                 }
                             })
-                            console.log("relationshipId not found");
+
                         }
 
                     }

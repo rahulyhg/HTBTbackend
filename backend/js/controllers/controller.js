@@ -389,7 +389,12 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         $scope.navigation = NavigationService.getnav();
         console.log("$stateParams---", JSON.stringify($stateParams.keyword));
         console.log("$stateParams-json--", JSON.parse($stateParams.keyword)._id);
-
+        NavigationService.apiCall("PartnerLevel/search", formData, function (data) {
+            if (data.value === true) {
+                console.log("getOrderByUser", data.data);
+                $scope.partnerLevel = data.data.results;
+            }
+        });
         if (!_.isEmpty($stateParams.keyword)) {
             $scope.data = {};
             var formData = {};
@@ -448,7 +453,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             console.log($scope.data.notes);
             // noteWithTime._id=JSON.parse($stateParams.keyword)._id;
             $scope.data.notes.push(noteWithTime);
-            NavigationService.apiCall("User/saveUserData", $scope.data, function (data) {
+            NavigationService.apiCall("User/save", $scope.data, function (data) {
                 console.log("login", data.data);
             });
 
@@ -469,7 +474,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
 
         };
         $scope.saveuser = function (notes) {
-            NavigationService.apiCall("User/saveUserData", $scope.data, function (data) {
+            NavigationService.apiCall("User/save", $scope.data, function (data) {
                 console.log("login", data.data);
             });
             if ($scope.data.accessLevel == 'Customer') {
@@ -609,7 +614,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 $scope.orderData.totalAmount = parseInt($scope.orderData.totalQuantity) * parseInt($scope.orderData.product[0].finalPrice);
             }
             if (_.isEqual(plan, "Quarterly")) {
-                $scope.orderData.totalQuantity = 12* parseInt($scope.orderData.product[0].productQuantity);
+                $scope.orderData.totalQuantity = 12 * parseInt($scope.orderData.product[0].productQuantity);
                 $scope.orderData.totalAmount = parseInt($scope.orderData.totalQuantity) * parseInt($scope.orderData.product[0].finalPrice);
             }
             if (_.isEqual(plan, "Onetime")) {
@@ -694,6 +699,12 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 scope: $scope
             });
         };
+        $scope.compareQuantity = function (data1, data2) {
+            console.log("data1,data2", data1, data2);
+            if(data1<data2){
+                alert("limit exceeds");
+            }
+        }
 
     })
     .controller('EditProductCtrl', function ($scope, TemplateService,

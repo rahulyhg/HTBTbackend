@@ -183,7 +183,7 @@ var model = {
                                     console.log("val--", val);
                                     if (_.isEqual(val.product.category.subscription, 'Yes')) {
                                         if (!_.isEqual(data.plan, 'Onetime')) {
-                                            planChecked = false;
+                                            planChecked = true;
                                         }
                                     }
                                     if (planChecked) {
