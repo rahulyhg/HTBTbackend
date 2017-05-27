@@ -14,13 +14,24 @@ var schema = new Schema({
         },
         finalPrice: String
     }],
+    otherProduct: [{
+        product: {
+            type: Schema.Types.ObjectId,
+            ref: 'OtherProduct',
+        },
+        "product-nameOnly": String,
+        productQuantity: {
+            type: String,
+        },
+        finalPrice: String
+    }],
     plan: {
         type: String,
         enum: ['Monthly', 'Quarterly', 'Onetime']
     },
     orderFor: {
         type: String,
-        enum: ['customer', 'self']
+        enum: ['CustomerForSelf', 'RMForCustomer']
     },
     customer: {
         type: Schema.Types.ObjectId,
@@ -43,13 +54,16 @@ var schema = new Schema({
         type: String, //'Processing', 'Confirmed','Cancelled','Delivered','delay',
         default: "Processing"
     },
-    paidByRP: {
-        type: Boolean, //'true', 'false'
-        default: false
-    },
+    // paidByRP: {
+    //     type: Boolean, //'true', 'false'
+    //     default: false
+    // },
     orderDate: Date,
     methodOfOrder: String,
-    methodOfPayment: String,
+    methodOfPayment: {
+        type: String,
+        enum: ['Cash', 'Credits']
+    },
     paidByCustomer: Boolean,
     billingAddress: {
         address: String,
@@ -59,7 +73,8 @@ var schema = new Schema({
         address: String,
         pincode: Number
     },
-    transactionNo: String
+    transactionNo: String,
+    razorpay_payment_id:String
 
 });
 

@@ -60,7 +60,54 @@ var controller = {
             })
         }
     },
-  
+  addToCart:function (req, res) {
+        if (req.body) {
+            User.addToCart(req.body, res.callback);
+        } else {
+            res.json({
+                value: false,
+                data: {
+                    message: "Invalid Request"
+                }
+            })
+        }
+    },
+    removeFromCart:function (req, res) {
+        if (req.body) {
+            User.removeFromCart(req.body, res.callback);
+        } else {
+            res.json({
+                value: false,
+                data: {
+                    message: "Invalid Request"
+                }
+            })
+        }
+    },
+    showCart:function (req, res) {
+        if (req.body) {
+            User.showCart(req.body, res.callback);
+        } else {
+            res.json({
+                value: false,
+                data: {
+                    message: "Invalid Request"
+                }
+            })
+        }
+    },
+    showCartQuantity:function (req, res) {
+        if (req.body) {
+            User.showCartQuantity(req.body, res.callback);
+        } else {
+            res.json({
+                value: false,
+                data: {
+                    message: "Invalid Request"
+                }
+            })
+        }
+    },
     pdf: function (req, res) {
 
         var html = fs.readFileSync('./views/pdf/demo.ejs', 'utf8');

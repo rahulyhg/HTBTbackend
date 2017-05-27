@@ -10,7 +10,13 @@ myApp.factory('apiService', function ($http, $q, $timeout) {
             }).success(callback);
         },
         // This is a demo Service for POST Method.
+        apiCall: function (url, formData, callback) {
+            $http.post(adminurl + url, formData).then(function (data) {
+                data = data.data;
+                callback(data);
 
+            });
+        },
 
     };
 });

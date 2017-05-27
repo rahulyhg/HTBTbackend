@@ -21,7 +21,7 @@ var schema = new Schema({
             type: Schema.Types.ObjectId,
             ref: 'PartnerLevel'
         },
-        rate: String
+        rate: Number
     }],
     // goldCommission: {
     //     type: String,

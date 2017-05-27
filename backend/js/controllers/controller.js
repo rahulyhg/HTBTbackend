@@ -668,15 +668,24 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
 
         });
         $scope.saveDeliveryRequest = function (data) {
-            NavigationService.apiCall("DeliveryRequest/saveDeliveryRequest", data, function (data) {
-                if (data.value === true) {
-                    console.log("Order---data saved ", data.data);
-                    $state.go("page", {
-                        id: "viewOrderRequest"
+
+            if (data.Quantity < data.QuantityDelivered) {
+                toastr.error("Quantity Delivered exceeds the total Quantity.");
+            } else {
+                if (data.product.quantity < data.QuantityDelivered) {
+                    toastr.error("Inventory for this product is low.");
+                } else {
+                    NavigationService.apiCall("DeliveryRequest/saveDeliveryRequest", data, function (data) {
+                        if (data.value === true) {
+                            console.log("Order---data saved ", data.data);
+                            $state.go("page", {
+                                id: "viewOrderRequest"
+                            });
+                        }
                     });
                 }
-            });
-        }
+            }
+        };
         if (!_.isEmpty($stateParams.keyword)) {
             $scope.data = {};
             var formData = {};
@@ -689,7 +698,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             });
             //  $.jStorage.set('user', data.data);
             //  $.jStorage.set("accessToken", data.data.accessToken[0]);
-        }
+        };
 
         $scope.addProduct = function (data) {
             var modalInstance = $uibModal.open({
@@ -699,11 +708,51 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 scope: $scope
             });
         };
-        $scope.compareQuantity = function (data1, data2) {
-            console.log("data1,data2", data1, data2);
-            if(data1<data2){
-                alert("limit exceeds");
+        $scope.compareQuantity = function (data) {
+            console.log("data1,data2", data.Quantity, data.QuantityDelivered);
+            if (data.Quantity < data.QuantityDelivered) {
+                toastr.error("Quantity Delivered exceeds the total Quantity.");
             }
+        };
+
+        $scope.payNow = function () {
+            NavigationService.apiCall("Order/payNow", formData, function (data) {
+                if (data.value === true) {
+                    console.log("payNow");
+
+                }
+            });
+
+        };
+        $scope.options = {
+            'key': 'rzp_test_BrwXxB7w8pKsfS',
+            'amount': 100,
+            'name': '',
+            'description': 'Pay for Order #2323',
+            'image': '',
+            'handler': function (transaction) {
+                $scope.transactionHandler(transaction);
+            },
+            'prefill': {
+                'name': '',
+                'email': '',
+                'contact': ''
+            },
+            theme: {
+                color: '#3399FF'
+            }
+        };
+
+        $scope.pay = function () {
+            $.getScript('https://checkout.razorpay.com/v1/checkout.js', function () {
+                var rzp1 = new Razorpay($scope.options);
+                rzp1.open();
+
+            });
+        };
+      
+        $scope.transactionHandler=function(success){
+            console.log("transaction",success);
         }
 
     })

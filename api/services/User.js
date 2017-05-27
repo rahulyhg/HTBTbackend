@@ -4,8 +4,7 @@ var schema = new Schema({
         unique: true
     },
     name: {
-        type: String,
-        required: true,
+        type: String
     },
     email: {
         type: String,
@@ -140,6 +139,9 @@ schema.plugin(deepPopulate, {
         },
         'levelstatus': {
             select: ''
+        },
+        'cartProducts.product': {
+            select: ''
         }
     }
 });
@@ -148,7 +150,7 @@ schema.plugin(timestamps);
 
 module.exports = mongoose.model('User', schema);
 
-var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user", "user", "customer", "customer"));
+var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user cartProducts.product customer", "user customer"));
 var model = {
 
     getProfile: function (data, callback) {
@@ -345,6 +347,100 @@ var model = {
             });
         }
 
-    }
+    },
+    addToCart: function (data, callback) {
+        console.log("data", data)
+        User.findOne({
+            _id: data.user
+        }).exec(function (err, found) {
+            if (err) {
+                callback(err, null);
+            } else {
+                if (found) {
+                    found.cartProducts = _.unionBy(data.products, found.cartProducts, function (n) {
+                        return n.product + "";
+                    });
+                    console.log("found.cartProducts--", found.cartProducts);
+                    found.save();
+                    var totalQuantity = _.sumBy(found.cartProducts, function (o) {
+                        return parseInt(o.productQuantity);
+                    });
+                    console.log("totalQuantity--",totalQuantity);
+                    callback(null, totalQuantity);
+                } else {
+                    callback({
+                        message: "Incorrect Credentials!"
+                    }, null);
+                }
+            }
+
+        });
+    },
+    removeFromCart: function (data, callback) {
+        console.log("data", data)
+        User.findOne({
+            _id: data.user
+        }).exec(function (err, found) {
+            if (err) {
+                callback(err, null);
+            } else {
+                if (found) {
+                    found.cartProducts = _.filter(found.cartProducts, function (n) {
+                        return (data.product != n.product);
+                    });
+                    found.save();
+                      var totalQuantity = _.sumBy(found.cartProducts, function (o) {
+                        return parseInt(o.productQuantity);
+                    });
+                    callback(null, totalQuantity);
+                } else {
+                    callback({
+                        message: "Incorrect Credentials!"
+                    }, null);
+                }
+            }
+
+        });
+    },
+     showCartQuantity: function (data, callback) {
+        console.log("data", data)
+        User.findOne({
+            _id: data.user
+        }).exec(function (err, found) {
+            if (err) {
+                callback(err, null);
+            } else {
+                if (found) {
+                    var totalQuantity = _.sumBy(found.cartProducts, function (o) {
+                        return parseInt(o.productQuantity);
+                    });
+                    callback(null, totalQuantity);
+                } else {
+                    callback({
+                        message: "Incorrect Credentials!"
+                    }, null);
+                }
+            }
+
+        });
+    },
+    showCart: function (data, callback) {
+        console.log("data", data)
+        User.findOne({
+            _id: data.user
+        }).deepPopulate('cartProducts.product').exec(function (err, found) {
+            if (err) {
+                callback(err, null);
+            } else {
+                if (found) {
+                    callback(null, found.cartProducts);
+                } else {
+                    callback({
+                        message: "Incorrect Credentials!"
+                    }, null);
+                }
+            }
+        });
+    },
 };
 module.exports = _.assign(module.exports, exports, model);

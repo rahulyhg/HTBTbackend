@@ -30,13 +30,13 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
         })
 
         .state('signup', {
-            url: "/signup",
+            url: "/signup/:orderId",
             templateUrl: tempateURL,
             controller: 'SignUpCtrl'
         })
 
         .state('review', {
-            url: "/review",
+            url: "/review/:orderId",
             templateUrl: tempateURL,
             controller: 'ReviewCtrl'
         });
