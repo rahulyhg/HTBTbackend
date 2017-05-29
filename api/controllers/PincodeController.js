@@ -11,6 +11,6 @@ getByPin: function (req, res) {
              }
          })
      }
- },
+ }
 };
 module.exports = _.assign(module.exports, controller);

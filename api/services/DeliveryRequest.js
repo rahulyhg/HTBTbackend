@@ -4,7 +4,7 @@ var schema = new Schema({
         unique: true
     },
     deliverdate: Date,
-    delivertime: Date,
+    delivertime: String,
     status: {
         type: String, //Delivery Scheduled ,In Transit,Full Delivery Successful,Partial Delivery Successful,Delivery Failed
         default: "Delivery Scheduled"

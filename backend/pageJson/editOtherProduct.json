@@ -82,11 +82,11 @@
         }
     }],
     "apiCall": {
-        "url": "OtherProduct/save",
+        "url": "Product/save",
         "params": "_id"
     },
     "preApi": {
-        "url": "OtherProduct/getOne",
+        "url": "Product/getOne",
         "params": "_id"
     }
 

@@ -14,17 +14,7 @@ var schema = new Schema({
         },
         finalPrice: String
     }],
-    otherProduct: [{
-        product: {
-            type: Schema.Types.ObjectId,
-            ref: 'OtherProduct',
-        },
-        "product-nameOnly": String,
-        productQuantity: {
-            type: String,
-        },
-        finalPrice: String
-    }],
+
     plan: {
         type: String,
         enum: ['Monthly', 'Quarterly', 'Onetime']
@@ -42,7 +32,7 @@ var schema = new Schema({
     couponCode: String,
     paymentStatus: {
         type: String,
-        enum: ['Paid', 'Unpaid'],
+        enum: ['Paid', 'Unpaid', 'Payment Failed'],
         default: "Unpaid"
     },
     balance: String,
@@ -64,7 +54,7 @@ var schema = new Schema({
         type: String,
         enum: ['Cash', 'Credits']
     },
-    paidByCustomer: Boolean,
+    // paidByCustomer: Boolean,
     billingAddress: {
         address: String,
         pincode: Number
@@ -74,7 +64,7 @@ var schema = new Schema({
         pincode: Number
     },
     transactionNo: String,
-    razorpay_payment_id:String
+    razorpay_payment_id: String
 
 });
 
@@ -121,8 +111,21 @@ var model = {
 
             });
     },
+    payAndCapture: function (data, callback) {
+        console.log("data----", data)
+        Order.saveData(data, function (err, savedData) {
+            if (err) {
+                callback(err, null);
+            } else {
+                console.log("savedData--", savedData);
+                callback(null, savedData)
+            }
+        });
+
+    },
 
     saveOrder: function (data, callback) {
+        console.log('inside save order', data);
         if (!data._id) {
             var year = new Date().getFullYear().toString().substr(2, 2);
             var month = new Date().getMonth();
@@ -148,7 +151,7 @@ var model = {
                     // var getmonth = 03;
                     // var strMon = 03;
 
-                    console.log(fdata.length);
+                    console.log("order length", fdata.length);
                     if (fdata.length > 0) {
                         console.log(fdata[0]);
                         var ID = parseInt(fdata[0].orderID.toString().substr(fdata[0].orderID.toString().length - 5, fdata[0].orderID.toString().length)) + 1;
@@ -187,6 +190,7 @@ var model = {
                     data.balance = data.totalQuantity;
                     Order.saveData(data, function (err, savedData) {
                         if (err) {
+                            console.log("err--", err);
                             callback(err, null);
                         } else {
                             console.log("savedData--", savedData);
@@ -283,6 +287,45 @@ var model = {
             })
         }
     },
+    saveOrderCheckout: function (data, callback) {
+        console.log(data);
+        var userData = {};
+        userData.name = data.customerName;
+        userData.mobile = data.customerMobile;
+        delete data.customerName;
+        delete data.customerMobile;
+        var data1 = {};
+        async.waterfall([
+            function saveCustomer(callback) {
+                console.log("inside user create", userData);
+                User.saveUserData(userData, function (err, savedData) {
+                    if (err) {
+                        callback(err, null);
+                    } else {
+                        console.log("savedData-- user", savedData);
+                        data1.customer = savedData._id;
+                        callback(null, data1)
+                    }
+                });
+            },
+            function callSaveOrder(data1, callback) {
+                data.customer = data1.customer;
+                console.log('calling savedOrder', data);
+                Order.saveOrder(data, function (err, savedOrder) {
+                    callback(null, savedOrder);
+                    red(savedOrder);
+                });
+            }
+        ], function asyncComplete(err, savedOrder) {
+            if (err) {
+                console.warn('Error updating Order JSON.', err);
+                callback(err, null);
+            } else {
+                console.log("succefully completed the waterfall");
+                callback(null, savedOrder);
+            }
+        });
+    }
 
 };
 module.exports = _.assign(module.exports, exports, model);

@@ -54,7 +54,7 @@
         "action": "createOtherProduct"
     }],
     "apiCall": {
-        "url": "OtherProduct/search",
+        "url": "Product/getAllOtherProduct",
         "params": "_id"
     }
 }

@@ -80,7 +80,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
           $scope.orderData = data.data;
           $scope.options = {
             'key': 'rzp_test_BrwXxB7w8pKsfS',
-            'amount': parseInt($scope.orderData.totalAmount)*100,
+            'amount': parseInt($scope.orderData.totalAmount) * 100,
             'name': $scope.orderData.customer.name,
             'description': 'Pay for Order ' + $scope.orderData.orderID,
             'image': '',
@@ -113,10 +113,15 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
 
     $scope.transactionHandler = function (success) {
       console.log("transaction", success);
-      if(success.razorpay_payment_id){
-        console.log(success.razorpay_payment_id);
+      if (success.razorpay_payment_id) {
+        $scope.orderData.razorpay_payment_id = success.razorpay_payment_id;
+        apiService.apiCall("Order/payAndCapture", $scope.orderData, function (data) {
+          if (data.value === true) {
+            console.log("payAndCapture");
+          }
+        });
       }
-    }
+    };
     $scope.terms = function () {
       $uibModal.open({
         animation: true,

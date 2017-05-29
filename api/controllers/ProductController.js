@@ -24,6 +24,18 @@ var controller = {
          })
      }
  },
+ getAllOtherProduct: function (req, res) {
+     if (req.body) {
+         Product.getAllOtherProduct(req.body, res.callback);
+     } else {
+         res.json({
+             value: false,
+             data: {
+                 message: "Invalid Request"
+             }
+         })
+     }
+ },
    saveProduct: function (req, res) {
      if (req.body) {
          Product.saveProduct(req.body, res.callback);
