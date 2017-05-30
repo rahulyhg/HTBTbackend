@@ -20,7 +20,7 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
     $stateProvider
         .state('home', {
             url: "/",
-            templateUrl: tempateURL,
+            templateUrl: "",
             controller: 'HomeCtrl'
         })
         .state('form', {
@@ -41,8 +41,8 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
             controller: 'ReviewCtrl'
         });
 
-     
-   
+
+
 
     $urlRouterProvider.otherwise("/signup");
     $locationProvider.html5Mode(isproduction);
@@ -50,7 +50,7 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
 
 
 
-    
+
 
 // For Language JS
 myApp.config(function ($translateProvider) {
