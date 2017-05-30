@@ -146,8 +146,9 @@
             <span class="termscolor checkme" ng-click="terms()">terms & conditions</span>
         </div>
 
+        <button ng-if="methodOfPayment!='Customer'" class="button" ng-click="orderConfirmation(orderData)">Confirm Order</button>
 
-        <button class="button " ng-click="pay(orderData)">Pay ₹ {{orderData.totalAmount}} /-</button>
+        <button ng-if="methodOfPayment=='Customer'" class="button" ng-click="pay(orderData)">Pay ₹ {{orderData.totalAmount}} /-</button>
 
     </div>
 

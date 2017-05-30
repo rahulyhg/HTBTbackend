@@ -52,14 +52,18 @@ var schema = new Schema({
     methodOfOrder: String,
     methodOfPayment: {
         type: String,
-        enum: ['Cash', 'Credits']
+        enum: ['Cash', 'Credits', 'Customer']
     },
     // paidByCustomer: Boolean,
     billingAddress: {
+        email: String,
+        companyName: String,
         address: String,
         pincode: Number
     },
     shippingAddress: {
+        email: String,
+        companyName: String,
         address: String,
         pincode: Number
     },
@@ -202,7 +206,7 @@ var model = {
                                     console.log("val--", val);
                                     if (_.isEqual(val.product.category.subscription, 'Yes')) {
                                         if (!_.isEqual(data.plan, 'Onetime')) {
-                                            planChecked = true;
+                                            planChecked = false;
                                         }
                                     }
                                     if (planChecked) {
@@ -290,21 +294,37 @@ var model = {
     saveOrderCheckout: function (data, callback) {
         console.log(data);
         var userData = {};
-        userData.name = data.customerName;
-        userData.mobile = data.customerMobile;
-        delete data.customerName;
-        delete data.customerMobile;
+        if (data.customerName && data.customerMobile) {
+            userData.name = data.customerName;
+            userData.mobile = data.customerMobile;
+            delete data.customerName;
+            delete data.customerMobile;
+        } else {
+            userData.name = data.customer.name;
+            userData.mobile = data.customer.mobile;
+        }
         var data1 = {};
         async.waterfall([
             function saveCustomer(callback) {
                 console.log("inside user create", userData);
-                User.saveUserData(userData, function (err, savedData) {
+                User.findOne({
+                    mobile: userData.mobile
+                }, function (err, data2) {
                     if (err) {
-                        callback(err, null);
+                        callback(err);
+                    } else if (_.isEmpty(data2)) {
+                        User.saveUserData(userData, function (err, savedData) {
+                            if (err) {
+                                callback(err, null);
+                            } else {
+                                console.log("savedData-- user", savedData);
+                                data1.customer = savedData._id;
+                                callback(null, data1)
+                            }
+                        });
                     } else {
-                        console.log("savedData-- user", savedData);
-                        data1.customer = savedData._id;
-                        callback(null, data1)
+                        data1.customer = data2._id;
+                        callback(null, data1);
                     }
                 });
             },
@@ -322,6 +342,7 @@ var model = {
                 callback(err, null);
             } else {
                 console.log("succefully completed the waterfall");
+                //send sms here;
                 callback(null, savedOrder);
             }
         });

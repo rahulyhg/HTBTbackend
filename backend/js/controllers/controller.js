@@ -520,8 +520,6 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             if (data.value === true) {
                 console.log("getAllCustomer", data.data);
                 $scope.userData = data.data.results;
-                //  $.jStorage.set('user', data.data);
-                //  $.jStorage.set("accessToken", data.data.accessToken[0]);
             }
 
         });
@@ -529,8 +527,6 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             if (data.value === true) {
                 console.log("login", data.data);
                 $scope.productData = data.data.results;
-                //  $.jStorage.set('user', data.data);
-                //  $.jStorage.set("accessToken", data.data.accessToken[0]);
             }
 
         });
@@ -541,8 +537,6 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 if (data.value === true) {
                     console.log("login", data.data);
                     $scope.orderData = data.data;
-                    //  $.jStorage.set('user', data.data);
-                    //  $.jStorage.set("accessToken", data.data.accessToken[0]);
                 }
 
             });

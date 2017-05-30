@@ -442,5 +442,105 @@ var model = {
             }
         });
     },
+
+    //To generate otp
+    generateOtp: function (data, callback) {
+        if (data.mobile) {
+
+            var randomNumber = Math.floor(1000 + Math.random() * 9000); //To generate four digit random number
+            var dataObj = {};
+            dataObj.mobile = data.mobile;
+            dataObj.otp = randomNumber;
+            dataObj.accessLevel = data.accessLevel;
+            User.findOne({
+                mobile: dataObj.mobile,
+                accessLevel: data.accessLevel
+            }).exec(function (error, created) {
+                if ((error || created == undefined) && created != null) {
+                    console.log("User >>> generateOtp >>> User.findOne >>> error >>>", error, created);
+                    callback(error, null);
+                } else {
+
+                    if (created == null) {
+                        dataObj._id = new mongoose.mongo.ObjectID();
+                    }
+
+                    User.findOneAndUpdate({
+                        mobile: dataObj.mobile,
+                        accessLevel: data.accessLevel
+                    }, dataObj, {
+                        new: true,
+                        upsert: true
+                    }).exec(function (err, updated) {
+                        if (err || updated == undefined) {
+                            console.log("User >>> generateOtp >>> User.findOne >>> User.findOneUpdate >>>", err);
+                            callback(err, null);
+                        } else {
+                            //Send SMS
+                            var smsMessage = "Welcome To The HaTa Family! Your OTP is " + dataObj.otp + "."
+                            var smsObj = {
+                                "message": "HTBT",
+                                "sender": "HATABT",
+                                "sms": [{
+                                    "to": dataObj.mobile,
+                                    "message": smsMessage,
+                                    "sender": "HATABT",
+                                }]
+                            };
+                            Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                if (error || SMSResponse == undefined) {
+                                    console.log("User >>> generateOtp >>> User.findOne >>> Config.sendSMS >>> error >>>", error);
+                                    callback(error, null);
+                                } else {
+                                    callback(null, {
+                                        message: "OTP sent"
+                                    });
+                                }
+                            })
+                        }
+                    })
+
+                    // } else {
+                    //     callback(null, {
+                    //         message: "Unable to send OTP"
+                    //     });
+                    // }
+                }
+            })
+        } else {
+            callback(null, {
+                message: "Please provide mobile number"
+            });
+        }
+
+    },
+
+    //To verfiy OTP
+    verifyOTP: function (data, callback) {
+        if (data.mobile && data.otp) {
+            User.findOne({
+                mobile: data.mobile,
+                otp: data.otp,
+                accessLevel: data.accessLevel
+            }).exec(function (error, found) {
+                if (error || found == undefined) {
+                    console.log("User >>> verifyOTP >>> User.findOne >>> error >>>", error);
+                    callback(error, null);
+                } else {
+                    if (_.isEmpty(found)) {
+                        callback(null, {
+                            message: "No data found"
+                        });
+                    } else {
+                        callback(null, found);
+                    }
+                }
+            })
+        } else {
+            callback(null, {
+                message: "Please provide mobile number and otp"
+            });
+        }
+    }
 };
 module.exports = _.assign(module.exports, exports, model);

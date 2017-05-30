@@ -18,9 +18,6 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       i++;
       console.log("This is a button Click");
     };
-
-
-
   })
 
   .controller('FormCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
@@ -41,7 +38,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     });
   })
 
-  .controller('SignUpCtrl', function ($scope, TemplateService, $stateParams, apiService, NavigationService, $timeout) {
+  .controller('SignUpCtrl', function ($scope, TemplateService, $state, $stateParams, apiService, NavigationService, $timeout) {
     $scope.template = TemplateService.getHTML("content/signup.html");
     TemplateService.title = "Sign Up"; //This is the Title of the Website
     apiService.getDemo($scope.formData, function (data) {
@@ -53,12 +50,20 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       formData._id = $stateParams.orderId;
       apiService.apiCall("Order/getOne", formData, function (data) {
         if (data.value === true) {
-          console.log("login", data.data);
+          console.log("Order/getOne", data.data);
           $scope.orderData = data.data;
-          //  $.jStorage.set('user', data.data);
-          //  $.jStorage.set("accessToken", data.data.accessToken[0]);
         }
-
+      });
+    };
+    $scope.addShipBilDetails = function (orderData) {
+      //redirect them to cart summery and payment gateway
+      apiService.apiCall("Order/save", orderData, function (data) {
+        if (data.value === true) {
+          console.log("Order updated successfully---inside if---customer pay case");
+          $state.go("review", {
+            "orderId": orderData._id
+          });
+        }
       });
     }
   })
@@ -122,6 +127,16 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
         });
       }
     };
+    $scope.orderConfirmation = function (orderData) {
+      orderData.status = 'Confirmed';
+      apiService.apiCall("Order/save", orderData, function (data) {
+        if (data.value === true) {
+          console.log("Order confirmed successfully--- redirect to thank you page");
+
+        }
+      });
+    }
+
     $scope.terms = function () {
       $uibModal.open({
         animation: true,

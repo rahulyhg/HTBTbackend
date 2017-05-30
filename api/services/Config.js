@@ -379,6 +379,29 @@ var models = {
             });
         });
 
+    },
+
+      //To send SMS
+    sendSMS: function (data, callback) {
+        console.log("inside sendSMS");
+        // if (data.mobile) {
+        console.log("inside sendSMS if");
+        request.post({
+            url: "https://alerts.solutionsinfini.com/api/v4/?&method=sms.json&api_key=Ac555ac383ddd5541d925226f6d83592c&sender=HATABT",
+            json: data
+        }, function (err, http, body) {
+            console.log("inside sendSMS after request", body);
+            if (err) {
+                console.log(err, null);
+                callback(err, null);
+            } else {
+                callback(null, "Done");
+            }
+        });
+        // } else {
+        //     console.log("inside sendSMS else");
+        //     callback(null, "Error");
+        // }
     }
 };
 module.exports = _.assign(module.exports, models);
