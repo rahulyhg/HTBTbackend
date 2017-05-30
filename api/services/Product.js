@@ -18,7 +18,7 @@ var schema = new Schema({
     },
     addones: {
         type: String,
-        enum:['Save Space','Save Time']
+        enum: ['Save Space', 'Save Time']
     },
     commission: [{
         commissionType: {
@@ -102,7 +102,7 @@ var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user category
 var model = {
 
     getAllFeaturedProduct: function (data, callback) {
-        console.log("data", data)
+        console.log("data", data);
         Product.find({
             featuredProduct: true
         }).deepPopulate('category').exec(function (err, found) {
@@ -123,8 +123,8 @@ var model = {
 
 
     getAllOtherProduct: function (data, callback) {
-        console.log("data", data)
-             var maxRow = Config.maxRow;
+        console.log("data", data);
+        var maxRow = Config.maxRow;
         var page = 1;
         if (data.page) {
             page = data.page;
@@ -145,8 +145,12 @@ var model = {
             count: maxRow
         };
         Product.find({
-         $or:[ {'addones':'Save Space'}, {'addones':'Save Time'}]
-        }).deepPopulate('category').order(options)
+                $or: [{
+                    'addones': 'Save Space'
+                }, {
+                    'addones': 'Save Time'
+                }]
+            }).deepPopulate('category').order(options)
             .keyword(options)
             .page(options, callback);
     },
@@ -237,7 +241,7 @@ var model = {
                     } else {
                         callback(null, savedData);
                     }
-                })
+                });
             }
         });
     },
