@@ -387,7 +387,7 @@ var models = {
         // if (data.mobile) {
         console.log("inside sendSMS if");
         request.post({
-            url: "https://alerts.solutionsinfini.com/api/v4/?&method=sms.json&api_key=A7058012fca0e40317d2f6adc68b47276&sender=HATABT",
+            url: "https://alerts.solutionsinfini.com/api/v4/?&method=sms.json&api_key=A060b4f722659422f7b4d43e10104c29e&sender=HATABT",
             json: data
         }, function (err, http, body) {
             console.log("inside sendSMS after request", body);

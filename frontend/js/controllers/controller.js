@@ -83,6 +83,11 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
         if (data.value === true) {
           console.log("login", data.data);
           $scope.orderData = data.data;
+          var total = 0;
+          total = $scope.orderData.totalQuantity * $scope.orderData.product[0].finalPrice;
+          totalsave = $scope.orderData.totalQuantity * $scope.orderData.product[0].product.price;
+          $scope.diff = totalsave - total;
+          $scope.percent = total / totalsave * 100;
           $scope.options = {
             'key': 'rzp_test_BrwXxB7w8pKsfS',
             'amount': parseInt($scope.orderData.totalAmount) * 100,
@@ -106,7 +111,14 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
         }
       });
     }
-
+    $scope.calprice = function () {
+      var total = 0;
+      total = $scope.orderData.totalQuantity * $scope.orderData.product[0].finalPrice;
+      totalsave = $scope.orderData.totalQuantity * $scope.orderData.product[0].product.price;
+      var diff = totalsave - total;
+      $scope.percent = total / save * 100;
+      return diff;
+    }
 
     $scope.pay = function () {
       $.getScript('https://checkout.razorpay.com/v1/checkout.js', function () {
@@ -129,7 +141,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       }
     };
     $scope.orderConfirmation = function (orderData) {
-      orderData.onlyOrderConfirm=true;
+      orderData.onlyOrderConfirm = true;
       orderData.status = 'Confirmed';
       apiService.apiCall("Order/orderConfirmationOrPay", orderData, function (data) {
         if (data.value === true) {
@@ -242,117 +254,116 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
   })
 
 
-    .controller('NonSubCtrl', function ($scope, TemplateService, apiService, NavigationService, $uibModal, $timeout) {
-        $scope.template = TemplateService.getHTML("content/nonsub.html");
-        TemplateService.title = "NonSub"; //This is the Title of the Website
-        apiService.getDemo($scope.formData, function (data) {
-            console.log(data);
-        });
+  .controller('NonSubCtrl', function ($scope, TemplateService, apiService, NavigationService, $uibModal, $timeout) {
+    $scope.template = TemplateService.getHTML("content/nonsub.html");
+    TemplateService.title = "NonSub"; //This is the Title of the Website
+    apiService.getDemo($scope.formData, function (data) {
+      console.log(data);
+    });
 
-        $scope.terms = function(){
-            $uibModal.open({
-                animation:true,
-                templateUrl:"views/terms.html",
-                // $scope:scope
-            })
-            // $scope.template = TemplateService.getHTML("/terms.html");
-        }
-        $scope.today = function() {
-    $scope.dt = new Date();
-  };
-  $scope.today();
-
-  $scope.clear = function() {
-    $scope.dt = null;
-  };
-
-  $scope.inlineOptions = {
-    customClass: getDayClass,
-    minDate: new Date(),
-    showWeeks: true
-  };
-
-  $scope.dateOptions = {
-    dateDisabled: disabled,
-    formatYear: 'yy',
-    maxDate: new Date(2020, 5, 22),
-    minDate: new Date(),
-    startingDay: 1
-  };
-
-  // Disable weekend selection
-  function disabled(data) {
-    var date = data.date,
-      mode = data.mode;
-    return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
-  }
-
-  $scope.toggleMin = function() {
-    $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
-    $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
-  };
-
-  $scope.toggleMin();
-
-  $scope.open1 = function() {
-    $scope.popup1.opened = true;
-  };
-
-  $scope.open2 = function() {
-    $scope.popup2.opened = true;
-  };
-
-  $scope.setDate = function(year, month, day) {
-    $scope.dt = new Date(year, month, day);
-  };
-
-  $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
-  $scope.format = $scope.formats[0];
-  $scope.altInputFormats = ['M!/d!/yyyy'];
-
-  $scope.popup1 = {
-    opened: false
-  };
-
-  $scope.popup2 = {
-    opened: false
-  };
-
-  var tomorrow = new Date();
-  tomorrow.setDate(tomorrow.getDate() + 1);
-  var afterTomorrow = new Date();
-  afterTomorrow.setDate(tomorrow.getDate() + 1);
-  $scope.events = [
-    {
-      date: tomorrow,
-      status: 'full'
-    },
-    {
-      date: afterTomorrow,
-      status: 'partially'
+    $scope.terms = function () {
+      $uibModal.open({
+        animation: true,
+        templateUrl: "views/terms.html",
+        // $scope:scope
+      })
+      // $scope.template = TemplateService.getHTML("/terms.html");
     }
-  ];
+    $scope.today = function () {
+      $scope.dt = new Date();
+    };
+    $scope.today();
 
-  function getDayClass(data) {
-    var date = data.date,
-      mode = data.mode;
-    if (mode === 'day') {
-      var dayToCheck = new Date(date).setHours(0,0,0,0);
+    $scope.clear = function () {
+      $scope.dt = null;
+    };
 
-      for (var i = 0; i < $scope.events.length; i++) {
-        var currentDay = new Date($scope.events[i].date).setHours(0,0,0,0);
+    $scope.inlineOptions = {
+      customClass: getDayClass,
+      minDate: new Date(),
+      showWeeks: true
+    };
 
-        if (dayToCheck === currentDay) {
-          return $scope.events[i].status;
+    $scope.dateOptions = {
+      dateDisabled: disabled,
+      formatYear: 'yy',
+      maxDate: new Date(2020, 5, 22),
+      minDate: new Date(),
+      startingDay: 1
+    };
+
+    // Disable weekend selection
+    function disabled(data) {
+      var date = data.date,
+        mode = data.mode;
+      return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+    }
+
+    $scope.toggleMin = function () {
+      $scope.inlineOptions.minDate = $scope.inlineOptions.minDate ? null : new Date();
+      $scope.dateOptions.minDate = $scope.inlineOptions.minDate;
+    };
+
+    $scope.toggleMin();
+
+    $scope.open1 = function () {
+      $scope.popup1.opened = true;
+    };
+
+    $scope.open2 = function () {
+      $scope.popup2.opened = true;
+    };
+
+    $scope.setDate = function (year, month, day) {
+      $scope.dt = new Date(year, month, day);
+    };
+
+    $scope.formats = ['dd-MMMM-yyyy', 'yyyy/MM/dd', 'dd.MM.yyyy', 'shortDate'];
+    $scope.format = $scope.formats[0];
+    $scope.altInputFormats = ['M!/d!/yyyy'];
+
+    $scope.popup1 = {
+      opened: false
+    };
+
+    $scope.popup2 = {
+      opened: false
+    };
+
+    var tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    var afterTomorrow = new Date();
+    afterTomorrow.setDate(tomorrow.getDate() + 1);
+    $scope.events = [{
+        date: tomorrow,
+        status: 'full'
+      },
+      {
+        date: afterTomorrow,
+        status: 'partially'
+      }
+    ];
+
+    function getDayClass(data) {
+      var date = data.date,
+        mode = data.mode;
+      if (mode === 'day') {
+        var dayToCheck = new Date(date).setHours(0, 0, 0, 0);
+
+        for (var i = 0; i < $scope.events.length; i++) {
+          var currentDay = new Date($scope.events[i].date).setHours(0, 0, 0, 0);
+
+          if (dayToCheck === currentDay) {
+            return $scope.events[i].status;
+          }
         }
       }
+
+      return '';
     }
+  })
 
-    return '';
-  }
-    })
-
-    .controller('headerctrl', function($scope, TemplateService) {
+  .controller('headerctrl', function ($scope, TemplateService) {
     $scope.template = TemplateService;
     $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
       $(window).scrollTop(0);
