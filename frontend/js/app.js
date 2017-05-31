@@ -39,6 +39,12 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
             url: "/review",
             templateUrl: tempateURL,
             controller: 'ReviewCtrl'
+        })
+
+        .state('nonsub', {
+            url: "/nonsub",
+            templateUrl: tempateURL,
+            controller: 'NonSubCtrl'
         });
 
      
