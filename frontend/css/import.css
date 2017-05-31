@@ -9480,6 +9480,7 @@ header {
   width: 50%; }
 
 .subplan {
+  position: relative;
   background: #e1e1e1;
   text-align: center;
   margin: 0 0px 0px;
@@ -9605,9 +9606,11 @@ header {
 
 .crossimgdiv {
   position: absolute;
-  right: 32px;
-  top: 83px;
-  width: 6%; }
+  right: 0%;
+  top: 50%;
+  width: 6%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%); }
 
 .crossimgsize {
   width: 100%; }
@@ -9671,6 +9674,52 @@ header {
   position: absolute;
   top: 32px;
   right: 0px; }
+
+.rowbgcolorpos {
+  background: white !important;
+  margin: 0 0px;
+  position: relative; }
+
+.nonsubcross {
+  position: absolute;
+  right: 0%;
+  top: 10%;
+  width: 6%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%); }
+
+.nonsubaqua {
+  margin: 0px !important;
+  font-weight: 500;
+  vertical-align: middle;
+  display: inline-block; }
+
+.nonsub1ltr {
+  font-size: 18px;
+  vertical-align: middle; }
+
+.nonsubrs {
+  padding: 15px 0 0 0px !important;
+  margin: 0px !important;
+  font-weight: 400;
+  font-size: 16px; }
+
+.nonsubaquaimg {
+  width: 40%;
+  /* height: 50%; */
+  display: block;
+  margin: 0 auto;
+  padding-bottom: 10px; }
+  .nonsubaquaimg img {
+    width: 100%; }
+
+.nonsubborder {
+  height: 100%;
+  padding-top: 30px; }
+  .nonsubborder div {
+    width: 1px;
+    background: #278cce;
+    height: 100px; }
 
 #fancybox-loading,
 .fancybox-close,
