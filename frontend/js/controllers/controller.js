@@ -59,8 +59,8 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       //redirect them to cart summery and payment gateway
       apiService.apiCall("Order/save", orderData, function (data) {
         if (data.value === true) {
-          console.log("Order updated successfully---inside if---customer pay case");
-          $state.go("review", {
+          console.log("Order updated successfully---");
+          $state.go("payment", {
             "orderId": orderData._id
           });
         }
@@ -120,16 +120,18 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       console.log("transaction", success);
       if (success.razorpay_payment_id) {
         $scope.orderData.razorpay_payment_id = success.razorpay_payment_id;
-        apiService.apiCall("Order/payAndCapture", $scope.orderData, function (data) {
+        apiService.apiCall("Order/orderConfirmationOrPay", $scope.orderData, function (data) {
           if (data.value === true) {
             console.log("payAndCapture");
+            //redirect to thank you page
           }
         });
       }
     };
     $scope.orderConfirmation = function (orderData) {
+      orderData.onlyOrderConfirm=true;
       orderData.status = 'Confirmed';
-      apiService.apiCall("Order/save", orderData, function (data) {
+      apiService.apiCall("Order/orderConfirmationOrPay", orderData, function (data) {
         if (data.value === true) {
           console.log("Order confirmed successfully--- redirect to thank you page");
 

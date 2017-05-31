@@ -115,12 +115,13 @@ var schema = new Schema({
         },
         "product-nameOnly": String,
         productQuantity: {
-            type: String,
+            type: Number,
         },
-        finalPrice: String
+        finalPrice: Number
     }],
     cart: {
-        totalAmount: String,
+        totalAmount: Number,
+        totalQuantity:Number,
         DiscountAmount: String
     },
 

@@ -6,20 +6,23 @@ var key_id = 'rzp_test_BrwXxB7w8pKsfS'; // your `KEY_ID`
 var key_secret = 'Lccm56IPsufU4X3id7CqE1RS'; // your `KEY_SECRET`
 //})
 var controller = {
-    payAndCapture: function (req, res) {
+    orderConfirmationOrPay: function (req, res) {
         if (req.body) {
-            console.log("req.body.razorpay_payment_id", req.body.razorpay_payment_id);
-            request('https://' + key_id + ':' + key_secret + '@api.razorpay.com/v1/payments/' + req.body.razorpay_payment_id, function (error, response, body) {
-                console.log('Response:', body);
-                console.log('req.body:', req.body);
-                if (_.isEqual(body.status, 'authorized')) {
-                    req.body.paymentStatus = 'Paid';
-                    Order.payAndCapture(req.body, res.callback);
-                } else if (_.isEqual(body.status, 'failed')) {
-                    req.body.paymentStatus = 'Payment Failed';
-                    Order.payAndCapture(req.body, res.callback);
-                }
-            });
+            if (req.body.razorpay_payment_id) {
+                console.log("req.body.razorpay_payment_id", req.body.razorpay_payment_id);
+                request('https://' + key_id + ':' + key_secret + '@api.razorpay.com/v1/payments/' + req.body.razorpay_payment_id, function (error, response, body) {
+                    console.log('Response:', body);
+                    console.log('req.body:', req.body);
+                    if (_.isEqual(body.status, 'authorized')) {
+                        req.body.paymentStatus = 'Paid';
+                        Order.orderConfirmationOrPay(req.body, res.callback);
+                    } else if (_.isEqual(body.status, 'failed')) {
+                        req.body.paymentStatus = 'Payment Failed';
+                        Order.orderConfirmationOrPay(req.body, res.callback);
+                    }
+                });
+            }
+            Order.orderConfirmationOrPay(req.body, res.callback);
 
         } else {
             res.json({
@@ -45,6 +48,18 @@ var controller = {
     saveOrderCheckout: function (req, res) {
         if (req.body) {
             Order.saveOrderCheckout(req.body, res.callback);
+        } else {
+            res.json({
+                value: false,
+                data: {
+                    message: "Invalid Request"
+                }
+            })
+        }
+    },
+    saveOrderCheckoutCart: function (req, res) {
+        if (req.body) {
+            Order.saveOrderCheckoutCart(req.body, res.callback);
         } else {
             res.json({
                 value: false,
