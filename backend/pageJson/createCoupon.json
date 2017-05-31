@@ -30,17 +30,25 @@
         "validation": ["", "trim", "unique"],
         "url": ""
         }, {
-           "name": "status",
-           "type": "tags",
-           "tableRef": "status",
-           "placeholder": "Enter status",
-           "id": "status",
-           "validation": ["", "trim", ""],
-           "url": "",
-           "dropDownField": "",
-           "dropDownType": "single",
-           "onView": true,
-          "dropDown": [true,false]
+          "name": "Validity period",
+          "type": "text",
+          "tableRef": "validty",
+          "placeholder": "Enter Validity period",
+          "id": "validty",
+          "validation": ["", "trim", "unique"],
+          "url": ""
+          }, {
+             "name": "One time",
+             "type": "tags",
+             "tableRef": "onetime",
+             "placeholder": "Enter One-time",
+             "id": "status",
+             "validation": ["", "trim", ""],
+             "url": "",
+             "dropDownField": "",
+             "dropDownType": "single",
+             "onView": true,
+            "dropDown": ["Yes","No"]
 
 
 

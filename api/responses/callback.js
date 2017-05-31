@@ -7,7 +7,7 @@ module.exports = function(err, data) {
             error: err,
             value: false
         });
-    } else if (data) {
+    } else if (data || data==0) {
         res.json({
             data: data,
             value: true

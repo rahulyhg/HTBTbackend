@@ -1,0 +1,65 @@
+{
+    "title": "Edit PartnerLevel",
+    "name": "PartnerLevel",
+    "jsonPage": "viewPartnerLevel",
+    "desciption": "",
+    "pageType": "edit",
+    "urlFields": ["_id"],
+
+      "fields": [{
+        "name": "Level Name",
+        "type": "text",
+        "tableRef": "name",
+        "placeholder": "Enter Level Name",
+        "id": "name",
+        "validation": ["required", "trim", "unique"],
+        "url": ""
+    }, {
+        "name": "Description",
+        "type": "text",
+        "tableRef": "description",
+        "placeholder": "Enter Description",
+        "id": "description",
+        "validation": ["", "trim", "unique"],
+        "url": ""
+    }, {
+        "name": "Earnings Needed",
+        "type": "text",
+        "tableRef": "earrningsNeeded",
+        "placeholder": "Enter Earnings Needed",
+        "id": "earrningsNeeded",
+        "validation": ["", "trim", "unique"],
+        "url": ""
+
+
+
+    }],
+    "action": [{
+        "name": "submit",
+        "action": "submitPartnerLevel",
+        "stateName": {
+            "page": "page",
+            "json": {
+                "id": "viewPartnerLevel"
+            }
+        }
+    }, {
+        "name": "cancel",
+        "sideMenuRedirect": true,
+        "stateName": {
+            "page": "page",
+            "json": {
+                "id": "viewPartnerLevel"
+            }
+        }
+    }],
+    "apiCall": {
+        "url": "PartnerLevel/saveData",
+        "params": "_id"
+    },
+    "preApi": {
+        "url": "PartnerLevel/getOne",
+        "params": "_id"
+    }
+
+}

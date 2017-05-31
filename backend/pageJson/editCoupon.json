@@ -6,10 +6,10 @@
     "pageType": "edit",
     "urlFields": ["_id"],
     "fields": [{
-      "name": "couponCode",
+      "name": "Coupon Code",
       "type": "text",
       "tableRef": "couponCode",
-      "placeholder": "Enter couponCode",
+      "placeholder": "Enter Coupon Code",
       "id": "couponCode",
       "validation": ["required", "trim", "unique"],
       "url": ""
@@ -30,17 +30,25 @@
       "validation": ["", "trim", "unique"],
       "url": ""
       }, {
-         "name": "status",
+      "name": "Validity period",
+      "type": "text",
+      "tableRef": "validty",
+      "placeholder": "Enter Validity period",
+      "id": "validty",
+      "validation": ["", "trim", "unique"],
+      "url": ""
+      }, {
+         "name": "One time",
          "type": "tags",
-         "tableRef": "status",
-         "placeholder": "Enter status",
+         "tableRef": "onetime",
+         "placeholder": "Enter One-time",
          "id": "status",
          "validation": ["", "trim", ""],
          "url": "",
          "dropDownField": "",
          "dropDownType": "single",
          "onView": true,
-        "dropDown": [true,false]
+        "dropDown": ["Yes","No"]
 
 
 

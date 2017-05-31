@@ -1,34 +1,48 @@
 var schema = new Schema({
+    productID: {
+        type: String,
+        unique: true
+    },
     name: {
         type: String,
         required: true,
     },
-
     tag: {
+        type: String,
+    },
+    description: {
         type: String,
     },
     price: {
         type: String,
     },
-    commission: {
+    addones: {
         type: String,
+        enum: ['Save Space', 'Save Time']
     },
-    goldCommission: {
-        type: String,
-    },
-    silverCommission: {
-        type: String,
-    },
-    platinumCommission: {
-        type: String,
-    },
+    commission: [{
+        commissionType: {
+            type: Schema.Types.ObjectId,
+            ref: 'PartnerLevel'
+        },
+        rate: Number
+    }],
+    // goldCommission: {
+    //     type: String,
+    // },
+    // silverCommission: {
+    //     type: String,
+    // },
+    // platinumCommission: {
+    //     type: String,
+    // },
     priceList: [{
-        startRange: String,
         endRange: String,
         finalPrice: String
     }],
-    subscription: {
-        type: Boolean
+
+    deposit: {
+        type: String
     },
     AmtDeposit: {
         type: Number,
@@ -48,27 +62,34 @@ var schema = new Schema({
         type: String,
         default: "",
     },
+    maxBonusLimit: {
+        type: String,
+        default: "",
+    },
+    maxBonusEarning: {
+        type: String,
+        default: "",
+    },
     quantity: {
         type: String,
         default: "",
     },
     category: {
         type: Schema.Types.ObjectId,
-        ref: 'Categories',
-        index: true
+        ref: 'Categories'
     },
     featuredProduct: {
         type: Boolean
-    },
-
-
-
+    }
 });
 
 schema.plugin(deepPopulate, {
     populate: {
         'user': {
             select: 'name _id'
+        },
+        'category': {
+            select: ''
         }
     }
 });
@@ -77,14 +98,14 @@ schema.plugin(timestamps);
 
 module.exports = mongoose.model('Product', schema);
 
-var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "Product", "Products"));
+var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user category commission.commissionType", "user category commission.commissionType"));
 var model = {
 
     getAllFeaturedProduct: function (data, callback) {
-        console.log("data", data)
+        console.log("data", data);
         Product.find({
             featuredProduct: true
-        }).exec(function (err, found) {
+        }).deepPopulate('category').exec(function (err, found) {
             if (err) {
                 callback(err, null);
             } else {
@@ -100,11 +121,44 @@ var model = {
         });
     },
 
-    getAllCategoryProduct: function (data, callback) {
-        console.log("data", data)
+
+    getAllOtherProduct: function (data, callback) {
+        console.log("data", data);
+        var maxRow = Config.maxRow;
+        var page = 1;
+        if (data.page) {
+            page = data.page;
+        }
+        var field = data.field;
+        var options = {
+            field: data.field,
+            filters: {
+                keyword: {
+                    fields: ['name'],
+                    term: data.keyword
+                }
+            },
+            sort: {
+                asc: 'name'
+            },
+            start: (page - 1) * maxRow,
+            count: maxRow
+        };
         Product.find({
-          category: data.category
-        }).exec(function (err, found) {
+                $or: [{
+                    'addones': 'Save Space'
+                }, {
+                    'addones': 'Save Time'
+                }]
+            }).deepPopulate('category').order(options)
+            .keyword(options)
+            .page(options, callback);
+    },
+    getAllCategoryProduct: function (data, callback) {
+        console.log("data", data);
+        Product.find({
+            category: data.category
+        }).deepPopulate('category').exec(function (err, found) {
             if (err) {
                 callback(err, null);
             } else {
@@ -120,7 +174,77 @@ var model = {
         });
     },
 
+    saveProduct: function (data, callback) {
+        if (!data._id) {
+            var year = new Date().getFullYear().toString().substr(2, 2);
+            var month = new Date().getMonth();
+            var strMon = '';
+            console.log(month.toString().length, year);
 
+            if (month.toString().length > 1) {
+                console.log(month.length);
+                strMon = month;
+            } else {
+                strMon = "0" + month;
+            }
+            var productID = '';
+        }
+        Product.find({}).sort({
+            createdAt: -1
+        }).exec(function (err, fdata) {
+            if (err) {
+                console.log(err);
+                callback(err, null);
+            } else {
+                // var getmonth = fdata[fdata.length-1].productID.toString().substr(fdata[fdata.length-1].productID.toString().length-7,fdata[fdata.length-1].productID.toString().length);
+                // var getmonth = 03;
+                // var strMon = 03;
+                if (!data._id) {
+                    console.log(fdata.length);
+                    if (fdata.length > 0) {
+                        console.log(fdata[0]);
+                        var ID = parseInt(fdata[0].productID.toString().substr(fdata[0].productID.toString().length - 5, fdata[0].productID.toString().length)) + 1;
+                        console.log(ID);
+                        if (ID.toString().length == 5) {
+                            productID = "productID" + year + strMon + ID;
+                            console.log("5", productID);
+
+                        } else if (ID.toString().length == 4) {
+                            productID = "productID" + year + strMon + "0" + ID;
+                            console.log("4", productID);
+
+                        } else if (ID.toString().length == 3) {
+                            productID = "productID" + year + strMon + "00" + ID;
+                            console.log("3", productID);
+
+                        } else if (ID.toString().length == 2) {
+                            productID = "productID" + year + strMon + "000" + ID;
+                            console.log("2", productID);
+
+                        } else {
+                            productID = "productID" + year + strMon + "0000" + ID;
+                            console.log("1", productID);
+                        }
+                        // productID="cust"+year+strMon+ID;
+                        // console.log(productID);
+                    } else {
+                        console.log("hello");
+                        productID = "productID" + year + strMon + "00001";
+                        console.log(productID);
+                    }
+                    data.productID = productID;
+                    data.dateofjoin = new Date();
+                }
+                Product.saveData(data, function (err, savedData) {
+                    if (err) {
+                        callback(err, null);
+                    } else {
+                        callback(null, savedData);
+                    }
+                });
+            }
+        });
+    },
 
 
 };

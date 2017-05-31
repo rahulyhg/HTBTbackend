@@ -1,0 +1,20 @@
+<form name="modalForm">
+    <div class="modal-header">
+        <h4 class="modal-title">Notes</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Notes</label>
+                    <input type="text" name="notes" ng-model="notes.note" class="form-control" required>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-disabled="modalForm.$invalid" ng-click="addQuestion(notes);$dismiss();">Save Notes</button>
+    </div>
+</form>

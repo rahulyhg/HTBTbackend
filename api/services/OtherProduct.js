@@ -15,13 +15,18 @@ var schema = new Schema({
     bigImage: {
         type: String,
         default: "",
-},
+    },
     quantity: {
         type: String,
         default: "",
     },
-
-
+    addones: {
+        type: String,
+        default: "",
+    },
+    description: {
+        type: String
+    },
 
 
 });
@@ -64,7 +69,7 @@ var model = {
     getAllCategoryOtherProduct: function (data, callback) {
         console.log("data", data)
         OtherProduct.find({
-          category: data.category
+            category: data.category
         }).exec(function (err, found) {
             if (err) {
                 callback(err, null);
@@ -79,10 +84,7 @@ var model = {
             }
 
         });
-    },
-
-
-
+    }
 
 };
 module.exports = _.assign(module.exports, exports, model);

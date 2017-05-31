@@ -7,16 +7,21 @@ var uploadurl = imgurl;
 
 myApp.factory('NavigationService', function ($http) {
     var navigation = [{
-        name: "Users",
+        name: "Users’ Summary",
         classis: "active",
         sref: "#/page/viewUser//",
         icon: "phone"
     },{
-    //     name: "Customer",
-    //     classis: "active",
-    //     sref: "#/page/viewCustomer//",
-    //     icon: "phone"
-    // },{
+        name: "Customer",
+        classis: "active",
+        sref: "#/page/viewCustomer//",
+        icon: "phone"
+    },{
+        name: "Relationship Partner",
+        classis: "active",
+        sref: "#/page/viewRelPartner//",
+        icon: "phone"
+    },{
         name: "Categories",
         classis: "active",
         sref: "#/page/viewCategories//",
@@ -42,9 +47,24 @@ myApp.factory('NavigationService', function ($http) {
         sref: "#/page/viewCoupon//",
         icon: "phone"
     },{
+        name: "Levels",
+        classis: "active",
+        sref: "#/page/viewPartnerLevel//",
+        icon: "phone"
+    },{
         name: "Order",
         classis: "active",
         sref: "#/page/viewOrder//",
+        icon: "phone"
+    },{
+        name: "Delivery Request",
+        classis: "active",
+        sref: "#/page/viewOrderRequest//",
+        icon: "phone"
+    },{
+        name: "Inventory",
+        classis: "active",
+        sref: "#/page/viewInventory//",
         icon: "phone"
     }];
 

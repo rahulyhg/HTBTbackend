@@ -1,0 +1,29 @@
+<form name="modalForm">
+    <div class="modal-header">
+        <h4 class="modal-title">Products Purchased</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Product ID</label>
+
+                    <select class="form-control" name="" ng-model="adddata.product">
+                         <option value="{{prod}}" ng-repeat="prod in productData">{{prod.name}}</option>
+
+                    </select>
+                </div>
+                <div class="form-group" fields>
+                    <label>Quantity</label>
+                    <input type="text" name="Quantity" placeholder="Quantity" ng-model="adddata.productQuantity" class="form-control">
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-disabled="modalForm.$invalid" ng-click="saveProducts(adddata);$dismiss();">Save Product</button>
+    </div>
+</form>

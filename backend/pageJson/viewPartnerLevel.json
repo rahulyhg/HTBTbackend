@@ -1,0 +1,52 @@
+{
+    "title": "Relationship Partner Level",
+    "description": "List of Relationship Partner Level",
+    "pageType": "view",
+    "sendIdWithCreate": true,
+    "urlFields": ["_id"],
+    "fields": [{
+            "name": "Level No",
+            "isSort": "",
+            "tableRef": "levelID"
+        }, {
+            "name": "Partner Level",
+            "isSort": "",
+            "tableRef": "name"
+        }
+
+    ],
+    "action": [{
+        "name": "edit",
+        "icon": "fa-pencil",
+        "buttonClass": "btn-primary",
+        "type": "page",
+        "action": "editPartnerLevel",
+        "fieldsToSend": {
+            "_id": "_id"
+        }
+    }, {
+        "name": "delete",
+        "icon": "fa-trash",
+        "buttonClass": "btn-danger",
+        "type": "apiCallConfirm",
+        "title": "Delete PartnerLevel",
+        "content": "Are you sure you want to delete PartnerLevel?",
+        "api": "partnerLevel/delete",
+        "fieldsToSend": {
+            "name": "_id",
+            "value": "_id"
+        }
+    }],
+    "button": [{
+
+        "name": "Create",
+        "icon": "plus",
+        "class": "btn-success",
+        "type": "page",
+        "action": "createPartnerLevel"
+    }],
+    "apiCall": {
+        "url": "PartnerLevel/search",
+        "params": "_id"
+    }
+}

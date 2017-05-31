@@ -1,7 +1,10 @@
 var schema = new Schema({
-    name: {
+    userID: {
         type: String,
-        required: true,
+        unique: true
+    },
+    name: {
+        type: String
     },
     email: {
         type: String,
@@ -50,16 +53,40 @@ var schema = new Schema({
     },
     accessLevel: {
         type: String,
-        enum: ['Customer', 'Distributor']
+        enum: ['Customer', 'Relationship Partner']
     },
+    dateofjoin: Date,
+
+    otp: String,
+    lastRank: String,
     verification: {
-        type: Boolean,
-        default:false
+        type: String,
+        enum: ['Verified', 'Not Verified'],
+        default: 'Not Verified'
     },
-    suspend: {
-        type: Boolean,
-        default:false
+    levelstatus: {
+        type: Schema.Types.ObjectId,
+        ref: 'PartnerLevel'
     },
+    status: {
+        type: String,
+        enum: ['Active', 'Suspended', 'Inactive', 'Not Purchased Yet']
+    },
+    earningsBlock: {
+        type: String,
+        enum: ['Yes', 'No']
+    },
+    methodofjoin: {
+        type: String,
+        enum: ['Relationship Partner', 'App', 'Customer Representative'],
+        default: 'Customer Representative'
+    },
+    notes: [{
+        note: {
+            type: String
+        },
+        notestime: Date
+    }],
     customer: [{
         customrId: {
             type: Schema.Types.ObjectId,
@@ -72,11 +99,30 @@ var schema = new Schema({
         }
 
     }],
-    coupon:[{
-      name:{
-        type: String,
-    }}
-  ],
+    relationshipId: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
+    },
+    coupon: [{
+        name: {
+            type: String,
+        }
+    }],
+    cartProducts: [{
+        product: {
+            type: Schema.Types.ObjectId,
+            ref: 'Product',
+        },
+        "product-nameOnly": String,
+        productQuantity: {
+            type: String,
+        },
+        finalPrice: String
+    }],
+    cart: {
+        totalAmount: String,
+        DiscountAmount: String
+    },
 
 });
 
@@ -84,6 +130,18 @@ schema.plugin(deepPopulate, {
     populate: {
         'user': {
             select: 'name _id'
+        },
+        'customer': {
+            select: ''
+        },
+        'relationshipId': {
+            select: ''
+        },
+        'levelstatus': {
+            select: ''
+        },
+        'cartProducts.product': {
+            select: ''
         }
     }
 });
@@ -92,46 +150,397 @@ schema.plugin(timestamps);
 
 module.exports = mongoose.model('User', schema);
 
-var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user", "user"));
+var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user cartProducts.product customer", "user customer"));
 var model = {
-  getProfile: function (data, callback) {
-      console.log("data", data)
-      User.findOne({
-          _id: data._id
-      }).exec(function (err, found) {
-          if (err) {
-              callback(err, null);
-          } else {
-              if (found) {
-                  callback(null, found);
-              } else {
-                  callback({
-                      message: "Incorrect Credentials!"
-                  }, null);
-              }
-          }
 
-      });
-  },
-  getAllCustomer: function (data, callback) {
-      console.log("data", data)
-      User.find({
-          accessLevel:"Customer"
-      }).exec(function (err, found) {
-          if (err) {
-              callback(err, null);
-          } else {
-              if (found) {
-                  callback(null, found);
-              } else {
-                  callback({
-                      message: "Incorrect Credentials!"
-                  }, null);
-              }
-          }
+    getProfile: function (data, callback) {
+        console.log("data", data)
+        User.findOne({
+            _id: data._id
+        }).exec(function (err, found) {
+            if (err) {
+                callback(err, null);
+            } else {
+                if (found) {
+                    callback(null, found);
+                } else {
+                    callback({
+                        message: "Incorrect Credentials!"
+                    }, null);
+                }
+            }
 
-      });
-  },
+        });
+    },
+    getAllCustomer: function (data, callback) {
+        console.log("data", data)
+        var maxRow = Config.maxRow;
+        var page = 1;
+        if (data.page) {
+            page = data.page;
+        }
+        var field = data.field;
+        var options = {
+            field: data.field,
+            filters: {
+                keyword: {
+                    fields: ['name'],
+                    term: data.keyword
+                }
+            },
+            sort: {
+                asc: 'name'
+            },
+            start: (page - 1) * maxRow,
+            count: maxRow
+        };
+        User.find({
+                accessLevel: "Customer"
+            }).order(options)
+            .keyword(options)
+            .page(options, callback);
+    },
+    getAllRelPartner: function (data, callback) {
+        console.log("data", data)
+        var maxRow = Config.maxRow;
 
+        var page = 1;
+        if (data.page) {
+            page = data.page;
+        }
+        var field = data.field;
+
+        var options = {
+            field: data.field,
+            filters: {
+                keyword: {
+                    fields: ['name'],
+                    term: data.keyword
+                }
+            },
+            sort: {
+                asc: 'name'
+            },
+            start: (page - 1) * maxRow,
+            count: maxRow
+        };
+        User.find({
+                accessLevel: "Relationship Partner"
+            }).order(options)
+            .keyword(options)
+            .page(options, callback);
+
+    },
+    getAllActiveRelPartner: function (data, callback) {
+        console.log("data", data)
+        var maxRow = Config.maxRow;
+
+        var page = 1;
+        if (data.page) {
+            page = data.page;
+        }
+        var field = data.field;
+
+        var options = {
+            field: data.field,
+            filters: {
+                keyword: {
+                    fields: ['name'],
+                    term: data.keyword
+                }
+            },
+            sort: {
+                asc: 'name'
+            },
+            start: (page - 1) * maxRow,
+            count: maxRow
+        };
+        User.find({
+                accessLevel: "Relationship Partner",
+                status: "Active"
+
+            }).order(options)
+            .keyword(options)
+            .page(options, callback);
+
+    },
+    saveUserData: function (data, callback) {
+        if (data._id) {
+            User.saveData(data, function (err, savedData) {
+                if (err) {
+                    callback(err, null);
+                } else {
+                    callback(null, savedData);
+                }
+            })
+        } else {
+            if (data.accessLevel == "Customer") {
+                data.status = "Not Purchased Yet";
+            } else {
+                data.status = "Active";
+
+            }
+            var year = new Date().getFullYear().toString().substr(2, 2);
+            var month = new Date().getMonth();
+            var strMon = '';
+            console.log(month.toString().length, year);
+
+            if (month.toString().length > 1) {
+                console.log(month.length);
+                strMon = month;
+            } else {
+                strMon = "0" + month;
+            }
+            var userID = '';
+            User.find({}).sort({
+                createdAt: -1
+            }).exec(function (err, fdata) {
+                if (err) {
+                    console.log(err);
+                    callback(err, null);
+                } else {
+                    // var getmonth = fdata[fdata.length-1].userID.toString().substr(fdata[fdata.length-1].userID.toString().length-7,fdata[fdata.length-1].userID.toString().length);
+                    // var getmonth = 03;
+                    // var strMon = 03;
+
+                    console.log(fdata.length);
+                    if (fdata.length > 0) {
+                        console.log("fdata[0]", fdata[0]);
+                        var ID = parseInt(fdata[0].userID.toString().substr(fdata[0].userID.toString().length - 5, fdata[0].userID.toString().length)) + 1;
+                        console.log(ID);
+                        if (ID.toString().length == 5) {
+                            userID = "UserID" + year + strMon + ID;
+                            console.log("5", userID);
+
+                        } else if (ID.toString().length == 4) {
+                            userID = "UserID" + year + strMon + "0" + ID;
+                            console.log("4", userID);
+
+                        } else if (ID.toString().length == 3) {
+                            userID = "UserID" + year + strMon + "00" + ID;
+                            console.log("3", userID);
+
+                        } else if (ID.toString().length == 2) {
+                            userID = "UserID" + year + strMon + "000" + ID;
+                            console.log("2", userID);
+
+                        } else {
+                            userID = "UserID" + year + strMon + "0000" + ID;
+                            console.log("1", userID);
+                        }
+
+                    } else {
+                        console.log("hello");
+                        userID = "UserID" + year + strMon + "00001";
+                        console.log(userID);
+                    }
+                    data.userID = userID;
+                    data.dateofjoin = new Date();
+                    User.saveData(data, function (err, savedData) {
+                        if (err) {
+                            callback(err, null);
+                        } else {
+                            callback(null, savedData);
+                        }
+                    })
+                }
+            });
+        }
+
+    },
+    addToCart: function (data, callback) {
+        console.log("data", data)
+        User.findOne({
+            _id: data.user
+        }).exec(function (err, found) {
+            if (err) {
+                callback(err, null);
+            } else {
+                if (found) {
+                    found.cartProducts = _.unionBy(data.products, found.cartProducts, function (n) {
+                        return n.product + "";
+                    });
+                    console.log("found.cartProducts--", found.cartProducts);
+                    found.save();
+                    var totalQuantity = _.sumBy(found.cartProducts, function (o) {
+                        return parseInt(o.productQuantity);
+                    });
+                    console.log("totalQuantity--",totalQuantity);
+                    callback(null, totalQuantity);
+                } else {
+                    callback({
+                        message: "Incorrect Credentials!"
+                    }, null);
+                }
+            }
+
+        });
+    },
+    removeFromCart: function (data, callback) {
+        console.log("data", data)
+        User.findOne({
+            _id: data.user
+        }).exec(function (err, found) {
+            if (err) {
+                callback(err, null);
+            } else {
+                if (found) {
+                    found.cartProducts = _.filter(found.cartProducts, function (n) {
+                        return (data.product != n.product);
+                    });
+                    found.save();
+                      var totalQuantity = _.sumBy(found.cartProducts, function (o) {
+                        return parseInt(o.productQuantity);
+                    });
+                    callback(null, totalQuantity);
+                } else {
+                    callback({
+                        message: "Incorrect Credentials!"
+                    }, null);
+                }
+            }
+
+        });
+    },
+     showCartQuantity: function (data, callback) {
+        console.log("data", data)
+        User.findOne({
+            _id: data.user
+        }).exec(function (err, found) {
+            if (err) {
+                callback(err, null);
+            } else {
+                if (found) {
+                    var totalQuantity = _.sumBy(found.cartProducts, function (o) {
+                        return parseInt(o.productQuantity);
+                    });
+                    callback(null, totalQuantity);
+                } else {
+                    callback({
+                        message: "Incorrect Credentials!"
+                    }, null);
+                }
+            }
+
+        });
+    },
+    showCart: function (data, callback) {
+        console.log("data", data)
+        User.findOne({
+            _id: data.user
+        }).deepPopulate('cartProducts.product').exec(function (err, found) {
+            if (err) {
+                callback(err, null);
+            } else {
+                if (found) {
+                    callback(null, found.cartProducts);
+                } else {
+                    callback({
+                        message: "Incorrect Credentials!"
+                    }, null);
+                }
+            }
+        });
+    },
+
+    //To generate otp
+    generateOtp: function (data, callback) {
+        if (data.mobile) {
+
+            var randomNumber = Math.floor(1000 + Math.random() * 9000); //To generate four digit random number
+            var dataObj = {};
+            dataObj.mobile = data.mobile;
+            dataObj.otp = randomNumber;
+            dataObj.accessLevel = data.accessLevel;
+            User.findOne({
+                mobile: dataObj.mobile,
+                accessLevel: data.accessLevel
+            }).exec(function (error, created) {
+                if ((error || created == undefined) && created != null) {
+                    console.log("User >>> generateOtp >>> User.findOne >>> error >>>", error, created);
+                    callback(error, null);
+                } else {
+
+                    if (created == null) {
+                        dataObj._id = new mongoose.mongo.ObjectID();
+                    }
+
+                    User.findOneAndUpdate({
+                        mobile: dataObj.mobile,
+                        accessLevel: data.accessLevel
+                    }, dataObj, {
+                        new: true,
+                        upsert: true
+                    }).exec(function (err, updated) {
+                        if (err || updated == undefined) {
+                            console.log("User >>> generateOtp >>> User.findOne >>> User.findOneUpdate >>>", err);
+                            callback(err, null);
+                        } else {
+                            //Send SMS
+                            var smsMessage = "Welcome To The HaTa Family! Your OTP is " + dataObj.otp + "."
+                            var smsObj = {
+                                "message": "HTBT",
+                                "sender": "HATABT",
+                                "sms": [{
+                                    "to": dataObj.mobile,
+                                    "message": smsMessage,
+                                    "sender": "HATABT",
+                                }]
+                            };
+                            Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                if (error || SMSResponse == undefined) {
+                                    console.log("User >>> generateOtp >>> User.findOne >>> Config.sendSMS >>> error >>>", error);
+                                    callback(error, null);
+                                } else {
+                                    callback(null, {
+                                        message: "OTP sent"
+                                    });
+                                }
+                            })
+                        }
+                    })
+
+                    // } else {
+                    //     callback(null, {
+                    //         message: "Unable to send OTP"
+                    //     });
+                    // }
+                }
+            })
+        } else {
+            callback(null, {
+                message: "Please provide mobile number"
+            });
+        }
+
+    },
+
+    //To verfiy OTP
+    verifyOTP: function (data, callback) {
+        if (data.mobile && data.otp) {
+            User.findOne({
+                mobile: data.mobile,
+                otp: data.otp,
+                accessLevel: data.accessLevel
+            }).exec(function (error, found) {
+                if (error || found == undefined) {
+                    console.log("User >>> verifyOTP >>> User.findOne >>> error >>>", error);
+                    callback(error, null);
+                } else {
+                    if (_.isEmpty(found)) {
+                        callback(null, {
+                            message: "No data found"
+                        });
+                    } else {
+                        callback(null, found);
+                    }
+                }
+            })
+        } else {
+            callback(null, {
+                message: "Please provide mobile number and otp"
+            });
+        }
+    }
 };
 module.exports = _.assign(module.exports, exports, model);

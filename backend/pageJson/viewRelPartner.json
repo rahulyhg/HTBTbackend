@@ -1,0 +1,46 @@
+{
+    "title": "Relationship Partner",
+    "description": "List of Relationship Partner",
+    "pageType": "view",
+    "sendIdWithCreate": true,
+    "urlFields": ["_id"],
+    "fields": [{
+        "name": "Name",
+        "isSort": "",
+        "tableRef": "name"
+    }, {
+        "name": "Email",
+        "isSort": "",
+        "tableRef": "email"
+    }, {
+        "name": "Mobile Number",
+        "isSort": "",
+        "tableRef": "mobile"
+    }],
+    "action": [{
+      "name": "edit",
+      "icon": "fa-pencil",
+      "buttonClass": "btn-primary",
+      "type": "editUser",
+      "fieldsToSend": {
+          "_id": "_id"
+      }
+    }, {
+        "name": "delete",
+        "icon": "fa-trash",
+        "buttonClass": "btn-danger",
+        "type": "apiCallConfirm",
+        "title": "Delete User",
+        "content": "Are you sure you want to delete User?",
+        "api": "user/delete",
+        "fieldsToSend": {
+            "name": "_id",
+            "value": "_id"
+        }
+    }],
+
+    "apiCall": {
+        "url": "User/getAllRelPartner",
+        "params": "_id"
+    }
+}

@@ -16,19 +16,18 @@
         "name": "Small Image",
         "isSort": "",
         "tableRef": "smallImage",
-        "type":"image"
+        "type": "image"
     }, {
         "name": "Big Image",
         "isSort": "",
         "tableRef": "bigImage",
-        "type":"image"
+        "type": "image"
     }],
     "action": [{
         "name": "edit",
         "icon": "fa-pencil",
         "buttonClass": "btn-primary",
-        "type": "page",
-        "action": "editProduct",
+        "type": "editProduct",
         "fieldsToSend": {
             "_id": "_id"
         }
@@ -39,7 +38,7 @@
         "type": "apiCallConfirm",
         "title": "Delete Product",
         "content": "Are you sure you want to delete Product?",
-        "api": "Product/delete",
+        "api": "product/delete",
         "fieldsToSend": {
             "name": "_id",
             "value": "_id"
@@ -50,8 +49,8 @@
         "name": "Create",
         "icon": "plus",
         "class": "btn-success",
-        "type": "page",
-        "action": "createProduct"
+        "type": "editProduct"
+
     }],
     "apiCall": {
         "url": "Product/search",

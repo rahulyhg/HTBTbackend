@@ -1,0 +1,101 @@
+<div class="heading-sec">
+    <div class="row">
+        <div class="col-md-12 column">
+            <div class="heading-profile">
+                <h2>Delivery Request</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="widget">
+    <div class="form-elements-sec">
+        <div class="sec">
+            <div ng-if="data.requestDate" class="form-group" fields>
+                <label>Date Of Request</label>
+                <input type="text" name="userID" placeholder="Date Of Request" ng-model="data.requestDate | date" class="form-control" readonly>
+            </div>
+            <div ng-if="data.requestID" class="form-group" fields>
+                <label>Request ID </label>
+                <input type="text" name="userID" placeholder="Request ID" ng-model="data.requestID" class="form-control" readonly>
+            </div>
+            <div class="form-group" fields>
+                <label>Order ID </label>
+                <input type="text" name="userID" placeholder="Order ID" ng-model="data.Order.orderID" class="form-control" readonly>
+            </div>
+            <div class="form-group" fields>
+                <label>Product ID </label>
+                <input type="text" name="userID" placeholder="Product ID" ng-model="data.product.productID" class="form-control" readonly>
+            </div>
+            <div class="form-group" fields>
+                <label>Customer ID </label>
+                <input type="text" name="userID" placeholder="Customer ID " ng-model="data.customer.userID" class="form-control" readonly>
+            </div>
+            <div class="form-group" fields>
+                <label>Customer Name </label>
+                <input type="text" name="name" placeholder="name" ng-model="data.customer.name" class="form-control" disabled>
+            </div>
+            <div class="form-group" fields>
+                <label>Customer Mobile Number</label>
+                <input type="text" name="mobile" placeholder="Mobile Number" ng-model="data.customer.mobile" class="form-control" disabled>
+
+            </div>
+            <div class="form-group" fields>
+                <label>Customer Address </label>
+                <input type="text" name="name" placeholder="establishmentAddress" ng-model="data.customer.establishmentAddress" class="form-control"
+                    disabled>
+
+            </div>
+            <div class="form-group" fields>
+                <label>Customer Pincode </label>
+                <input type="text" name="pincode" placeholder="pincode" ng-model="data.customer.pincode" class="form-control" disabled>
+
+            </div>
+
+            <div class="form-group" fields>
+                <label>Assigned Delivery Date:</label>{{data.deliverdate | date}}
+                <input type="date" name="name" placeholder="Assigned Delivery Date" ng-model="data.deliverdate" value="{{data.deliverdate | date}}"
+                    class="form-control">
+
+            </div>
+            <div class="form-group" fields>
+                <label>Assigned Delivery Time :</label>{{data.delivertime |date:'HH:mm' }}
+                <input type="time" name="name" placeholder="Assigned Delivery Time" ng-model="data.delivertime" value="" class="form-control">
+
+            </div>
+
+            <div class="form-group">
+                <label>Delivery Status</label>
+                <select class="form-control" name="" ng-model="data.status">
+              <option value="Delivery Scheduled">Delivery Scheduled</option>
+              <option value="In Transit">In Transit</option>
+              <option value="Full Delivery Successful">Full Delivery Successful</option>
+              <option value="Partial Delivery Successful">Partial Delivery Successful</option>
+               <option value="Delivery Failed">Delivery Failed</option>
+            </select>
+            </div>
+        </div>
+
+        <div class="form-group" fields>
+            <label>Quantity</label>
+            <input type="text" only-digits name="name" placeholder="Quantity" ng-model="data.Quantity" value="" class="form-control"
+                disabled>
+        </div>
+
+        <div class="form-group" fields>
+            <label>Quantity Delivered</label>
+            <input type="text" name="name" only-digits ng-change="compareQuantity(data)" placeholder="Total Payment" ng-model="data.QuantityDelivered"
+                class="form-control">
+
+        </div>
+
+
+    </div>
+</div>
+</div>
+<div class="text-center mt20 odd-even-button">
+    <button ng-if="data.status=='Delivery Scheduled'" class="btn btn-default" type="button" ng-click="saveDeliveryRequest(data)">Save</button>
+    <button ng-if="data.status!='Delivery Scheduled'" class="btn btn-default" type="button" ng-click="saveDeliveryRequest(data)"
+        disabled>Save</button>
+    <a class="btn btn-danger" href="#/page/viewOrderRequest//">Cancel</a>
+   <button ng-click="pay()">Click to Pay</button>
+</div>

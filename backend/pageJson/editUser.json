@@ -6,6 +6,26 @@
     "pageType": "edit",
     "urlFields": ["_id"],
     "fields": [{
+        "name": "Type",
+        "type": "tags",
+        "tableRef": "accessLevel",
+        "placeholder": "Enter Type",
+        "id": "status",
+        "validation": ["", "trim", ""],
+        "url": "",
+        "dropDownField": "",
+        "dropDownType": "single",
+        "onView": true,
+        "dropDown": ["Customer", "Relationship Partner"]
+    }, {
+        "name": "User ID",
+        "type": "readonly",
+        "tableRef": "userID",
+        "placeholder": "Enter User ID",
+        "id": "userID",
+        "validation": ["required", "trim", "unique"],
+        "url": ""
+    }, {
         "name": "Name",
         "type": "text",
         "tableRef": "name",
@@ -13,133 +33,39 @@
         "id": "name",
         "validation": ["required", "trim", "unique"],
         "url": ""
-    }, {
-        "name": "Email",
-        "type": "text",
-        "tableRef": "email",
-        "placeholder": "Enter Email",
-        "id": "email",
-        "validation": ["", "trim", "unique"],
-        "url": ""
-    }, {
-        "name": "Establishment Name",
-        "type": "text",
-        "tableRef": "establishmentName",
-        "placeholder": "Enter Establishment Name",
-        "id": "establishmentName",
-        "validation": ["", "trim", "unique"],
-        "url": ""
-    }, {
-        "name": "Establishment Address",
-        "type": "text",
-        "tableRef": "establishmentAddress",
-        "placeholder": "Enter Establishment Address",
-        "id": "establishmentAddress",
-        "validation": ["", "trim", "unique"],
-        "url": ""
-    }, {
-        "name": "Pincode",
-        "type": "text",
-        "tableRef": "pincode",
-        "placeholder": "Enter Pincode",
-        "id": "pincode",
-        "validation": ["", "trim", "unique"],
-        "url": ""
-    }, {
-        "name": "Deposit",
-        "type": "text",
-        "tableRef": "deposit",
-        "placeholder": "Enter Deposit",
-        "id": "deposit",
-        "validation": ["", "trim", "unique"],
-        "url": ""
-    }, {
-        "name": "Earnings",
-        "type": "text",
-        "tableRef": "earnings",
-        "placeholder": "Enter Earnings",
-        "id": "earnings",
-        "validation": ["", "trim", "unique"],
-        "url": ""
-    }, {
-        "name": "Last Month Earnings",
-        "type": "text",
-        "tableRef": "lastMonthEarnings",
-        "placeholder": "Enter Last Month Earnings",
-        "id": "lastMonthEarnings",
-        "validation": ["", "trim", "unique"],
-        "url": ""
-    }, {
 
-        "name": "Pan Card",
-        "type": "image",
-        "tableRef": "panCard",
-        "placeholder": "Pan Card",
-        "id": "panCard",
-        "view": true,
-        "disabled": true,
-        "url": ""
     }, {
-        "name": "Adhar Card",
-        "type": "image",
-        "tableRef": "adharCard",
-        "placeholder": "Adhar Card",
-        "id": "adharCard",
-        "view": true,
-        "disabled": true,
-        "url": ""
-    }, {
-
-        "name": "Mobile No.",
-        "type": "text",
-        "tableRef": "mobile",
-        "placeholder": "Enter mobile No.",
-        "id": "mobile",
-        "url": ""
-    }, {
-        "name": "Landline No.",
-        "type": "text",
-        "tableRef": "landLine",
-        "placeholder": "Enter Landline No.",
-        "id": "landLine",
-        "url": ""
-    }, {
-
-        "name": "AccessLevel",
+        "name": "Status",
         "type": "tags",
-        "tableRef": "accessLevel",
-        "placeholder": "Enter Title",
+        "tableRef": "status",
+        "placeholder": "Enter Status",
         "id": "status",
         "validation": ["", "trim", ""],
         "url": "",
         "dropDownField": "",
         "dropDownType": "single",
         "onView": true,
-        "dropDown": ["Customer", "Distributor"]
+        "dropDown": ["Active", "Suspended", "Inactive", "Not Purchased Yet"]
+
     }, {
-       "name": "verification",
-       "type": "tags",
-       "tableRef": "verification",
-       "placeholder": "Enter verification",
-       "id": "verification",
-       "validation": ["", "trim", ""],
-       "url": "",
-       "dropDownField": "",
-       "dropDownType": "single",
-       "onView": true,
-      "dropDown": [true,false]
-    },{
-      "name": "Suspend",
-      "type": "tags",
-      "tableRef": "suspend",
-      "placeholder": "Enter suspend",
-      "id": "suspend",
-      "validation": ["", "trim", ""],
-      "url": "",
-      "dropDownField": "",
-      "dropDownType": "single",
-      "onView": true,
-     "dropDown": [true,false]
+
+        "name": "Email ID",
+        "type": "text",
+        "tableRef": "email",
+        "placeholder": "Enter Email ID",
+        "id": "email",
+        "validation": ["", "trim", "unique"],
+        "url": ""
+
+    }, {
+        "name": "Mobile Number",
+        "type": "text",
+        "tableRef": "mobile",
+        "placeholder": "Enter mobile Number",
+        "id": "mobile",
+        "url": ""
+
+
 
     }],
     "action": [{

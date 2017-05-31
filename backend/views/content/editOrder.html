@@ -1,0 +1,178 @@
+<div class="heading-sec">
+    <div class="row">
+        <div class="col-md-12 column">
+            <div class="heading-profile">
+                <h2>Order</h2>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="widget">
+    <div class="form-elements-sec">
+        <div class="sec">
+            <div class="form-group" fields>
+                <label>Date Of Order</label>
+                <input ng-if="orderData._id" type="text" name="userID" placeholder="Date Of Joining" ng-model="orderData.orderDate | date"
+                    class="form-control" ng-disabled="orderData._id">
+                <input type="date" name="userID" placeholder="Date Of Joining" ng-if="!orderData._id" ng-model="orderData.orderDate" class="form-control"
+                    ng-disabled="orderData._id">
+            </div>
+            <div ng-if="orderData._id" class="form-group" fields>
+                <label>Order ID </label>
+                <input type="text" name="userID" placeholder="User ID" ng-model="orderData.orderID" class="form-control" ng-disabled="orderData._id">
+            </div>
+
+            <div class="form-group" fields>
+                <label>Customer ID :</label>{{orderData.customer.userID}}
+                <select class="form-control" name="" ng-model="orderData.customer" ng-change="setcustomer(orderData.customer)">
+              <option value="{{users}}" ng-repeat="users in userData" >{{users.userID}}</option>
+            </select>
+            </div>
+            <div class="form-group" fields>
+                <label>Customer Name </label>
+                <input type="text" name="name" placeholder="name" ng-model="orderData.customer.name" class="form-control">
+                <div class="error-msg" ng-show="name.$invalid && name.$touched">Please enter valid Customer name</div>
+            </div>
+            <div class="form-group" fields>
+                <label>Customer Mobile Number</label>
+                <input type="text" name="mobile" placeholder="Mobile Number" ng-model="orderData.customer.mobile" class="form-control">
+
+            </div>
+
+            <div class="form-group">
+                <label>Method Of Ordering</label>
+                 <input  ng-if="orderData._id" type="text" name="methodOfOrder" placeholder="Method Of Ordering"ng-model="orderData.methodOfOrder" class="form-control" disabled>
+                  <input  ng-if="!orderData._id" type="text" name="methodOfOrder" placeholder="Method Of Ordering" ng-model="orderData.methodOfOrder='Customer Representative'" class="form-control" disabled>
+                <!--<select class="form-control" name="" ng-model="orderData.methodOfOrder" disabled>
+              <option value="Relationship Partner">Relationship Partner</option>
+              <option value="App">App</option>
+              <option value="Customer Representative">Customer Representative</option>
+            </select>-->
+            </div>
+            <div class="form-group">
+                <label>Method Of Payment</label>
+                <select class="form-control" name="" ng-model="orderData.methodOfPayment">
+              <option value="Cash">Cash</option>
+              <option value="Cheque">Cheque</option>
+            </select>
+            </div>
+            <!--<div class="form-group">
+                <label>Method Of Payment</label>
+                <select class="form-control" name="" ng-model="orderData.paymentStatus">
+              <option value="Paid">Paid</option>
+              <option value="Unpaid">Unpaid</option>
+            </select>
+            </div>-->
+            <div class="form-group">
+                <label>Status</label>
+                <select class="form-control" name="" ng-model="orderData.status" ng-change="cancel(orderData.status)">
+              <option value="Processing">Processing</option>
+              <option value="Confirmed">Confirmed</option>
+              <option value="Cancelled">Cancelled</option>
+              <option value="Delivered">Delivered</option>
+              <option value="delay">delay</option>
+            </select>
+            </div>
+            <!--<div class="form-group" fields>
+                <label>Subscription</label>
+                <input type="text" name="name" placeholder="Subscription" ng-model="orderData.name" class="form-control">
+
+            </div>-->
+            <div class="sec">
+                <div ng-if="orderData.product[0].product.category.subscription!='Yes'">
+                    <a class="btn btn-primary pull-right" ng-click="addProduct()">Add New</a>
+                    <label>Products Purchased<span ng-show="type.required">*</span></label>
+                    <span style="float:right;width:200px;"><input type="search" class="form-control" placeholder="Search..." ng-model="search.text"> </span>
+                </div>
+
+                <div class="sec">
+                    <div>
+                        <table class="table table-input" ng-if="orderData.product.length != 0">
+                            <thead>
+                                <tr>
+                                    <th>Product ID</th>
+                                    <th>Quantity</th>
+                                    <th>Price</th>
+                                    <th>Jar Deposit</th>
+                                    <!-- <th width="150px">Actions</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="prod in orderData.product | filter:search.text ">
+                                    <td>
+                                        <span>{{prod.product.productID}}</span>
+                                    </td>
+                                    <td>{{prod.productQuantity }}</td>
+                                    <td>{{prod.finalPrice }}</td>
+                                    <td> <span ng-if="prod.product.category.subscription=='Yes'">{{prod.product.AmtDeposit }}</span>
+                                        <span ng-if="prod.product.category.subscription=='No'">N/A</span>
+                                    </td>
+
+                                    <!-- <td>
+                                  <a class="btn btn-primary" ng-click="editBox('Edit',data)">
+                                      <i class="Fa fa-pencil"></i>
+                                  </a>
+                                  <a class="btn btn-danger" ng-click="deleteBox($index, model)">
+                                      <i class="fa fa-trash"></i>
+                                  </a>
+                              </td> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="orderData.product[0].product.category.subscription=='Yes'" class="form-group">
+                <label>plan</label>
+                <select class="form-control" name="" ng-change="planWisePrice(orderData.plan)"  ng-model="orderData.plan">
+              <option value="Monthly">Monthly</option>
+              <option value="Quarterly">Quarterly</option>
+              <option value="Onetime">Onetime</option>              
+            </select>
+            </div>
+            <div class="form-group">
+                <label>Total Quantity*</label>
+                <input ng-if="orderData._id" type="text" name="totalQuantity" placeholder="Total Quantity" ng-model="orderData.totalQuantity" class="form-control" disabled>
+                 <input ng-if="!orderData._id" type="text" name="totalQuantity" placeholder="Total Quantity" ng-model="orderData.totalQuantity" class="form-control" required>
+
+            </div>
+            <div class="form-group" fields>
+                <label>Total Payment</label>
+                <input type="text" name="name" placeholder="Total Payment" ng-model="orderData.totalAmount" class="form-control">
+
+            </div>
+             <div class="form-group" fields>
+                <label>Billing Address</label>
+                <input type="text" name="name" placeholder="Billing Address" ng-model="orderData.billingAddress.address" class="form-control">
+            </div>
+             <div class="form-group" fields>
+                <label>Pincode</label>
+                <input type="number" name="name" placeholder="Pincode" ng-model="orderData.billingAddress.pincode" class="form-control">
+
+            </div>
+             <div class="form-group" fields>
+                <label>Shipping Address</label>
+                <input type="text" name="name" placeholder="Shipping Address" ng-model="orderData.shippingAddress.address" class="form-control">
+
+            </div>
+             <div class="form-group" fields>
+                <label>Pincode</label>
+                <input type="number" name="name" placeholder="Pincode" ng-model="orderData.shippingAddress.pincode" class="form-control">
+
+            </div>
+            <div ng-if="orderData._id" class="form-group" fields>
+                <label>Delivery date</label>
+                <input type="text" name="deliverdate" placeholder="deliverdate" ng-model="orderData.deliverdate | date"
+                    class="form-control" ng-disabled="orderData._id">
+                <input type="date" name="deliverdate" placeholder="deliverdate" ng-if="!orderData._id" ng-model="orderData.deliverdate" class="form-control"
+                    ng-disabled="orderData._id">
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="text-center mt20 odd-even-button">
+    <button class="btn btn-default" type="button" ng-click="saveOrder(orderData)">Save</button>
+    <a class="btn btn-danger" href="#/page/viewOrder//">Cancel</a>
+
+</div>

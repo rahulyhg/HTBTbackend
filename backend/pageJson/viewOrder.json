@@ -5,30 +5,31 @@
     "sendIdWithCreate": true,
     "urlFields": ["_id"],
     "fields": [{
-      "name": "User name",
-      "isSort": "",
-      "tableRef": "user",
-      "type":"selectFromTable"
-    },{
-      "name": "Deliver date",
-      "isSort": "",
-      "tableRef": "deliverdate",
-      "type":"date"
-    },{
-      "name": "Status",
-      "isSort": "",
-      "tableRef": "status"
-    },{
-      "name": "Payment Status",
-      "isSort": "",
-      "tableRef": "paymentStatus"
-      }],
+            "name": "Order ID",
+            "tableRef": "orderID"
+        },
+        {
+            "name": "User name",
+            "isSort": "",
+            "tableRef": "customer",
+            "fieldToBeShown": "userID",
+            "type": "fkListView"
+        }, {
+            "name": "Deliver date",
+            "isSort": "",
+            "tableRef": "deliverdate",
+            "type": "date"
+        }, {
+            "name": "Status",
+            "isSort": "",
+            "tableRef": "status"
+        }
+    ],
     "action": [{
         "name": "edit",
         "icon": "fa-pencil",
         "buttonClass": "btn-primary",
-        "type": "page",
-        "action": "editOrder",
+        "type": "editOrder",
         "fieldsToSend": {
             "_id": "_id"
         }
@@ -50,8 +51,7 @@
         "name": "Create",
         "icon": "plus",
         "class": "btn-success",
-        "type": "page",
-        "action": "createOrder"
+        "type": "editOrder"
     }],
     "apiCall": {
         "url": "Order/search",

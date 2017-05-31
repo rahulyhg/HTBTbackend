@@ -1,0 +1,62 @@
+{
+    "title": "Edit Inventory",
+    "name": "Inventory",
+    "jsonPage": "viewInventory",
+    "desciption": "",
+    "pageType": "edit",
+    "urlFields": ["_id"],
+    "fields": [{
+      "name": "productID",
+      "type": "readonly",
+      "tableRef": "productID",
+      "placeholder": "Enter productID",
+      "id": "productID",
+      "validation": ["", "trim", ""],
+      "url": ""
+    }, {
+        "name": "Opening Stock Account",
+        "type": "text",
+        "tableRef": "quantity",
+        "placeholder": "Enter Opening Stock Account",
+        "id": "quantity",
+        "validation": ["", "trim", "unique"],
+        "url": ""
+    }, {
+
+        "name": "Balance",
+        "type": "readonly",
+        "tableRef": "quantity",
+        "placeholder": "Enter Balance",
+        "id": "quantity",
+        "view": true,
+        "url": ""
+    }],
+    "action": [{
+        "name": "submit",
+        "action": "submitInventory",
+        "stateName": {
+            "page": "page",
+            "json": {
+                "id": "viewInventory"
+            }
+        }
+    }, {
+        "name": "cancel",
+        "sideMenuRedirect": true,
+        "stateName": {
+            "page": "page",
+            "json": {
+                "id": "viewInventory"
+            }
+        }
+    }],
+    "apiCall": {
+        "url": "Product/save",
+        "params": "_id"
+    },
+    "preApi": {
+        "url": "Product/getOne",
+        "params": "_id"
+    }
+
+}

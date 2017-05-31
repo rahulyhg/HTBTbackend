@@ -3,7 +3,9 @@ var schema = new Schema({
         type: String,
         default: ""
     },
-
+    subscription: {
+        type: String
+    },
     description: {
         type: String,
         default: ""
@@ -17,7 +19,7 @@ var schema = new Schema({
 });
 
 schema.plugin(deepPopulate, {
-  
+
 });
 schema.plugin(uniqueValidator);
 schema.plugin(timestamps);
@@ -26,6 +28,22 @@ module.exports = mongoose.model('Categories', schema);
 
 var exports = _.cloneDeep(require("sails-wohlig-service")(schema));
 var model = {
+    getCategories: function (data, callback) {
+        console.log("data", data)
+        Categories.find({}).exec(function (err, found) {
+            if (err) {
+                callback(err, null);
+            } else {
+                if (found) {
+                    callback(null, found);
+                } else {
+                    callback({
+                        message: "Incorrect Credentials!"
+                    }, null);
+                }
+            }
 
+        });
+    },
 };
 module.exports = _.assign(module.exports, exports, model);

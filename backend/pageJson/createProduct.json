@@ -98,22 +98,11 @@
                  "validation": ["", "trim", ""]
              }]
      }, {
-       "name": "Subscription",
-       "type": "tags",
-       "tableRef": "subscription",
-       "placeholder": "Enter Subscription",
-       "id": "subscription",
-       "validation": ["", "trim", ""],
-       "url": "",
-       "dropDownField": "",
-       "dropDownType": "single",
-       "onView": true,
-       "dropDown": [true,false]
-   }, {
         "name": "Big Image",
         "type": "image",
         "tableRef": "bigImage",
         "placeholder": "Big Image",
+         "size": "300 x 450px",
         "id": "bigImage",
         "view": true,
         "disabled": true,
@@ -123,6 +112,7 @@
         "type": "image",
         "tableRef": "smallImage",
         "placeholder": "Small Card",
+        "size": "250 x 300px",
         "id": "smallImage",
         "view": true,
         "disabled": true,
@@ -184,6 +174,6 @@
         }
     }],
     "apiCall": {
-        "url": "Product/save"
+        "url": "Product/saveProduct"
     }
 }

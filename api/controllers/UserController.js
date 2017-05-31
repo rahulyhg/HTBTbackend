@@ -1,30 +1,113 @@
 module.exports = _.cloneDeep(require("sails-wohlig-controller"));
 var controller = {
-  getProfile: function (req, res) {
-     if (req.body) {
-         User.getProfile(req.body, res.callback);
-     } else {
-         res.json({
-             value: false,
-             data: {
-                 message: "Invalid Request"
-             }
-         })
-     }
- },
-  getAllCustomer: function (req, res) {
-     if (req.body) {
-         User.getAllCustomer(req.body, res.callback);
-     } else {
-         res.json({
-             value: false,
-             data: {
-                 message: "Invalid Request"
-             }
-         })
-     }
- },
-
+    getProfile: function (req, res) {
+        if (req.body) {
+            User.getProfile(req.body, res.callback);
+        } else {
+            res.json({
+                value: false,
+                data: {
+                    message: "Invalid Request"
+                }
+            })
+        }
+    },
+    getAllCustomer: function (req, res) {
+        if (req.body) {
+            User.getAllCustomer(req.body, res.callback);
+        } else {
+            res.json({
+                value: false,
+                data: {
+                    message: "Invalid Request"
+                }
+            })
+        }
+    },
+    getAllRelPartner: function (req, res) {
+        if (req.body) {
+            User.getAllRelPartner(req.body, res.callback);
+        } else {
+            res.json({
+                value: false,
+                data: {
+                    message: "Invalid Request"
+                }
+            })
+        }
+    },
+    getAllActiveRelPartner: function (req, res) {
+        if (req.body) {
+            User.getAllActiveRelPartner(req.body, res.callback);
+        } else {
+            res.json({
+                value: false,
+                data: {
+                    message: "Invalid Request"
+                }
+            })
+        }
+    },
+    saveUserData: function (req, res) {
+        if (req.body) {
+            User.saveUserData(req.body, res.callback);
+        } else {
+            res.json({
+                value: false,
+                data: {
+                    message: "Invalid Request"
+                }
+            })
+        }
+    },
+  addToCart:function (req, res) {
+        if (req.body) {
+            User.addToCart(req.body, res.callback);
+        } else {
+            res.json({
+                value: false,
+                data: {
+                    message: "Invalid Request"
+                }
+            })
+        }
+    },
+    removeFromCart:function (req, res) {
+        if (req.body) {
+            User.removeFromCart(req.body, res.callback);
+        } else {
+            res.json({
+                value: false,
+                data: {
+                    message: "Invalid Request"
+                }
+            })
+        }
+    },
+    showCart:function (req, res) {
+        if (req.body) {
+            User.showCart(req.body, res.callback);
+        } else {
+            res.json({
+                value: false,
+                data: {
+                    message: "Invalid Request"
+                }
+            })
+        }
+    },
+    showCartQuantity:function (req, res) {
+        if (req.body) {
+            User.showCartQuantity(req.body, res.callback);
+        } else {
+            res.json({
+                value: false,
+                data: {
+                    message: "Invalid Request"
+                }
+            })
+        }
+    },
     pdf: function (req, res) {
 
         var html = fs.readFileSync('./views/pdf/demo.ejs', 'utf8');

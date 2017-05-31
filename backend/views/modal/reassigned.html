@@ -1,0 +1,27 @@
+<form name="modalForm">
+    <div class="modal-header">
+        <h4 class="modal-title">Reassigned Relationship Partner</h4>
+    </div>
+    <div class="modal-body">
+   <div class="form-group">
+
+    <label>Relationship Partner <span ng-show="type.required">*</span></label>
+    <ui-select 
+        name="activePartner" ng-model="formData[type.tableRef]" theme="bootstrap" ng-required="true" 
+ >
+        <ui-select-match placeholder="RelationShip">
+            <sapn>RelationShip</sapn>
+        </ui-select-match>
+        <ui-select-choices repeat="tag in activePartner | filter:$select.search" refresh-delay="0" refresh="refreshTags($select.search)">
+            <span >{{tag.name}}</span>
+        </ui-select-choices>
+    </ui-select>
+
+    <div class="error-msg" ng-show="detailForm[type.tableRef].$invalid && detailForm[type.tableRef].$touched && type.required">Please enter valid {{type.name}}</div>
+</div>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-disabled="modalForm.$invalid" ng-click="addQuestion(notes);$dismiss();">Reassigned</button>
+    </div>
+</form>

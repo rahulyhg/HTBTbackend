@@ -2,7 +2,12 @@ var schema = new Schema({
     couponCode: String,
     discountPercent: Number,
     discountAmount: Number,
-    status:Boolean
+    validty: Number,
+    status:Boolean,
+    onetime: {
+        type: String,
+        enum: ['Yes', 'No']
+    }
     // startDate:Date,
     // endDate:Date,
 

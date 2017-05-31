@@ -7,13 +7,13 @@
     "urlFields": ["_id"],
 
       "fields": [{
-        "name": "user",
+        "name": "customer",
         "type": "selectFromTable",
-        "tableRef": "user",
-        "tableValue": "user",
+        "tableRef": "customer",
+        "tableValue": "customer",
         "dropDownType": "single",
         "searchApi": "searchCall",
-        "placeholder": "Enter user",
+        "placeholder": "Enter customer",
         "id": "input1",
         "onView": true,
         "validation": ["", "trim", ""],
@@ -149,7 +149,7 @@
         }
     }],
     "apiCall": {
-        "url": "Order/save",
+        "url": "Order/saveOrder",
         "params": "_id"
     },
     "preApi": {

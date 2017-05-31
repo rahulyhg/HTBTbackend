@@ -1,0 +1,36 @@
+{
+    "title": "Inventory Management",
+    "description": "List of Product",
+    "pageType": "view",
+    "sendIdWithCreate": true,
+    "urlFields": ["_id"],
+    "fields": [{
+      "name": "Product ID",
+      "isSort": "",
+      "tableRef": "productID"
+    },{
+      "name": "Opening Stock Account",
+      "isSort": "",
+      "tableRef": "quantity"
+    },{
+      "name": "Balance",
+      "isSort": "",
+      "tableRef": "quantity"
+
+      }],
+    "action": [{
+      "name": "edit",
+      "icon": "fa-pencil",
+      "buttonClass": "btn-primary",
+      "type": "page",
+      "action": "editInventory",
+      "fieldsToSend": {
+          "_id": "_id"
+      }
+    }],
+  
+    "apiCall": {
+        "url": "Product/search",
+        "params": "_id"
+    }
+}

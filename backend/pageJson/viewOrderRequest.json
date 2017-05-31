@@ -1,0 +1,52 @@
+{
+    "title": "Delivery Request",
+    "description": "List of Delivery Request",
+    "pageType": "view",
+    "sendIdWithCreate": true,
+    "urlFields": ["_id"],
+    "fields": [{
+      "name": "Date Of Request",
+      "isSort": "",
+      "tableRef": "requestDate"
+    },{
+      "name": "Request ID ",
+      "isSort": "",
+      "tableRef": "requestID"
+    },
+  
+    {
+      "name": "Status",
+      "isSort": "",
+      "tableRef": "status"
+    },{
+      "name": "Payment Status",
+      "isSort": "",
+      "tableRef": "paymentStatus"
+      }],
+    "action": [{
+        "name": "edit",
+      "icon": "fa-pencil",
+      "buttonClass": "btn-primary",
+      "type": "editOrderRequest",
+      "fieldsToSend": {
+          "_id": "_id"
+      }
+    }, {
+        "name": "delete",
+        "icon": "fa-trash",
+        "buttonClass": "btn-danger",
+        "type": "apiCallConfirm",
+        "title": "Delete Order",
+        "content": "Are you sure you want to delete Order?",
+        "api": "deliveryRequest/delete",
+        "fieldsToSend": {
+            "name": "_id",
+            "value": "_id"
+        }
+    }],
+    "button": [],
+    "apiCall": {
+        "url": "DeliveryRequest/search",
+        "params": "_id"
+    }
+}

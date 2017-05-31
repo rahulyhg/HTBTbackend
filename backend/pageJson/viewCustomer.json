@@ -13,19 +13,18 @@
         "isSort": "",
         "tableRef": "email"
     }, {
-        "name": "Mobile",
+        "name": "Mobile Number",
         "isSort": "",
         "tableRef": "mobile"
     }],
     "action": [{
-        "name": "edit",
-        "icon": "fa-pencil",
-        "buttonClass": "btn-primary",
-        "type": "page",
-        "action": "editUser",
-        "fieldsToSend": {
-            "_id": "_id"
-        }
+      "name": "edit",
+      "icon": "fa-pencil",
+      "buttonClass": "btn-primary",
+      "type": "editUser",
+      "fieldsToSend": {
+          "_id": "_id"
+      }
     }, {
         "name": "delete",
         "icon": "fa-trash",
@@ -39,14 +38,7 @@
             "value": "_id"
         }
     }],
-    "button": [{
 
-        "name": "Create",
-        "icon": "plus",
-        "class": "btn-success",
-        "type": "page",
-        "action": "createUser"
-    }],
     "apiCall": {
         "url": "User/getAllCustomer",
         "params": "_id"

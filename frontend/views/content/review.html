@@ -121,7 +121,7 @@
                             Delivering on friday
                         </h4>
                         <div>
-                         
+
                             <input type="text" class="form-control display-none" uib-datepicker-popup ng-model="dt" is-open="popup2.opened" datepicker-options="dateOptions" ng-required="true" close-text="Close" />
           <span class="input-group-btn t">
             <button type="button" class="btn btn-default  cal-on-click" ng-click="open2()">Click here to change!  </button>
@@ -133,7 +133,7 @@
                     </div>
                     <i class="fa fa-chevron-right arrow" aria-hidden="true"></i>
                     <div class="custarr">
-                       
+
                     </div>
                 </div>
 
@@ -146,8 +146,11 @@
             <span class="termscolor checkme" ng-click="terms()">terms & conditions</span>
         </div>
 
+        <button ng-if="methodOfPayment!='Customer'" class="button" ng-click="orderConfirmation(orderData)">Confirm Order</button>
 
-        <button class="button " ui-sref="review">Pay ₹ 5,020 /-</button>
+
+        <button ng-if="methodOfPayment=='Customer'" class="button" ng-click="pay(orderData)">Pay ₹ {{orderData.totalAmount}} /-</button>
+
 
     </div>
 

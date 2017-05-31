@@ -102,5 +102,35 @@ myApp.directive('img', function ($compile, $parse) {
         };
     })
 
+.directive('onlyDigits', function () {
+    return {
+        require: 'ngModel',
+        restrict: 'A',
+        link: function (scope, element, attr, ctrl) {
+            var digits;
+
+            function inputValue(val) {
+                if (val) {
+                    var otherVal = val + "";
+                    if (attr.type == "text") {
+                        digits = otherVal.replace(/[^0-9\-\.\\]/g, '');
+                    } else {
+                        digits = otherVal.replace(/[^0-9\-\.\\]/g, '');
+                    }
+
+
+                    if (digits !== val) {
+                        ctrl.$setViewValue(digits);
+                        ctrl.$render();
+                    }
+                    return parseInt(digits, 10);
+                }
+                return undefined;
+            }
+            ctrl.$parsers.push(inputValue);
+        }
+    };
+});
+
 
 ;
