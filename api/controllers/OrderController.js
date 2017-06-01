@@ -22,7 +22,9 @@ var controller = {
                     }
                 });
             }
+            else{
             Order.orderConfirmationOrPay(req.body, res.callback);
+            }
 
         } else {
             res.json({
@@ -72,6 +74,18 @@ var controller = {
     saveOrder: function (req, res) {
         if (req.body) {
             Order.saveOrder(req.body, res.callback);
+        } else {
+            res.json({
+                value: false,
+                data: {
+                    message: "Invalid Request"
+                }
+            })
+        }
+    },
+    getCurrentMonthOrder: function (req, res) {
+        if (req.body) {
+            Order.getCurrentMonthOrder(req.body, res.callback);
         } else {
             res.json({
                 value: false,

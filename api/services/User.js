@@ -32,6 +32,7 @@ var schema = new Schema({
     mobile: {
         type: String,
         default: "",
+        unique: true
     },
     landLine: {
         type: String,
@@ -54,6 +55,10 @@ var schema = new Schema({
         enum: ['Customer', 'Relationship Partner']
     },
     dateofjoin: Date,
+    jarBalance: {
+        type:Number,
+        default: 0
+    },
 
     otp: String,
     lastRank: String,
@@ -151,7 +156,7 @@ module.exports = mongoose.model('User', schema);
 
 var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user cartProducts.product customer", "user customer"));
 var model = {
-
+    //to get specific user profile
     getProfile: function (data, callback) {
         console.log("data", data)
         User.findOne({
@@ -171,6 +176,7 @@ var model = {
 
         });
     },
+    //to get all customers
     getAllCustomer: function (data, callback) {
         console.log("data", data)
         var maxRow = Config.maxRow;
@@ -199,6 +205,7 @@ var model = {
             .keyword(options)
             .page(options, callback);
     },
+    //to get all partners
     getAllRelPartner: function (data, callback) {
         console.log("data", data)
         var maxRow = Config.maxRow;
@@ -230,6 +237,7 @@ var model = {
             .page(options, callback);
 
     },
+    //to get all active partners
     getAllActiveRelPartner: function (data, callback) {
         console.log("data", data)
         var maxRow = Config.maxRow;
@@ -263,6 +271,7 @@ var model = {
             .page(options, callback);
 
     },
+    //to save user data
     saveUserData: function (data, callback) {
         if (data._id) {
             User.saveData(data, function (err, savedData) {
@@ -347,6 +356,7 @@ var model = {
         }
 
     },
+    //to add products in a cart of perticular user
     addToCart: function (data, callback) {
         console.log("data", data)
         User.findOne({
@@ -375,6 +385,7 @@ var model = {
 
         });
     },
+    //to remove products from cart of perticular user
     removeFromCart: function (data, callback) {
         console.log("data", data)
         User.findOne({
@@ -401,6 +412,7 @@ var model = {
 
         });
     },
+    //to get the cart quantity of perticular user
     showCartQuantity: function (data, callback) {
         console.log("data", data)
         User.findOne({
@@ -423,6 +435,7 @@ var model = {
 
         });
     },
+    //to get the cart value of perticular user
     showCart: function (data, callback) {
         console.log("data", data)
         User.findOne({
@@ -459,7 +472,6 @@ var model = {
                     console.log("User >>> generateOtp >>> User.findOne >>> error >>>", error, created);
                     callback(error, null);
                 } else {
-
                     if (created == null) {
                         // dataObj._id = new mongoose.mongo.ObjectID();
                         User.saveUserData(dataObj, function (error, getData) {
@@ -521,9 +533,9 @@ var model = {
                                             message: "OTP sent"
                                         });
                                     }
-                                })
+                                });
                             }
-                        })
+                        });
                     }
 
                     // } else {
@@ -543,6 +555,7 @@ var model = {
 
     //To verfiy OTP
     verifyOTP: function (data, callback) {
+        console.log("inside verifyOTP", data);
         if (data.mobile && data.otp) {
             User.findOne({
                 mobile: data.mobile,
