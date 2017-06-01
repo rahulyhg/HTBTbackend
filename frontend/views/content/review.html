@@ -44,7 +44,7 @@
                 </div>
             </div>
         </div>
-       
+
         <div class="row rowbgcolor " ng-if="orderData.product[0].jarDeposit">
             <div class="col-xs-8 bgchkoutcol50Quant">
                 <div>
@@ -61,35 +61,33 @@
                 </div>
             </div>
         </div>
-        <div class="row rowbgcolor ">
+        <div class="row rowbgcolor " ng-repeat="product in orderData.product">
             <div class="col-xs-8 bgchkoutcol50Quant">
                 <div>
-                    <label class="bottlemain" for="">Jar Plan
-
-                </label>
+                    <label class="bottlemain" for="">{{product.product.name}}</label>
                     <br>
-                    <span class="qntlbl" > {{orderData.totalQuantity}} Jars x ₹ {{orderData.product[0].finalPrice}} /Jar </span>
+                    <span class="qntlbl"> {{product.productQuantity}} Jars x ₹ {{product.product.price}} /Jar </span>
 
                 </div>
             </div>
             <div class="col-xs-4 bgchkoutcol502">
                 <div>
-                    <label class="rs" for="">₹  {{orderData.totalQuantity * orderData.product[0].finalPrice}}</label>
+                    <label class="rs" for="">₹  {{product.productQuantity * product.product.price}}</label>
                 </div>
             </div>
         </div>
         <div class="row rowbgcolor">
             <div class="col-xs-8 savingscol501 ">
                 <div>
-                    <label class="saving" for="">Your Total savings
+                    <label class="saving" for="">Total 
 
                 </label>
                 </div>
             </div>
             <div class="col-xs-4 savingamtdiv">
                 <div>
-                    <label class="savingrs" for="">₹  {{diff}}</label>
-                    <span>({{percent | number :2 }}%)</span>
+                    <label class="savingrs" for="">₹  {{amountToBePaid}}</label>
+                    <!--<span>({{percent | number :2 }}%)</span>-->
                 </div>
             </div>
         </div>
@@ -97,9 +95,9 @@
             <div class="col-xs-2">
                 <div class="datemonth text-center">
                     <div class="datediv pad-10 date">
-                        10
+                        {{dt|date:'dd'}}
                     </div>
-                    <div class="monthdiv date">FEB</div>
+                    <div class="monthdiv date">{{dt|date:'MMM'}}</div>
                 </div>
             </div>
             <div class="col-xs-1">
@@ -141,7 +139,7 @@
                         <button ng-if="orderData.methodOfPayment!='Customer'" class="button" ng-click="orderConfirmation(orderData)">Confirm Order</button>
 
 
-                        <button ng-if="orderData.methodOfPayment=='Customer'" class="button" ng-click="pay()">Pay ₹ {{orderData.totalAmount}} /-</button>
+                        <button ng-if="orderData.methodOfPayment=='Customer'" class="button" ng-click="pay()">Pay ₹ {{amountToBePaid}} /-</button>
 
 
                     </div>
