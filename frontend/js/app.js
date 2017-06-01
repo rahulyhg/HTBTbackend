@@ -29,14 +29,14 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
             controller: 'FormCtrl'
         })
 
-        .state('signup', {
-            url: "/signup/:orderId",
+        .state('orderconfirmation', {
+            url: "/orderconfirmation/:orderId",
             templateUrl: tempateURL,
             controller: 'SignUpCtrl'
         })
 
-        .state('review', {
-            url: "/review/:orderId",
+        .state('payment', {
+            url: "/payment/:orderId",
             templateUrl: tempateURL,
             controller: 'ReviewCtrl'
         })
@@ -55,13 +55,15 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
         })
 
 
+
 .state('sorry', {
             url: "/sorry",
             templateUrl: tempateURL,
             controller: 'SorryCtrl'
         });
 
-    $urlRouterProvider.otherwise("/signup");
+    $urlRouterProvider.otherwise("/orderconfirmation");
+
     $locationProvider.html5Mode(isproduction);
 })
 

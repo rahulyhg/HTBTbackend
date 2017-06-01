@@ -170,6 +170,16 @@ var controller = {
         } else {
             res.callback("Access Denied for Database Backup");
         }
-    }
+    },
+
+    //To generate OTP
+    generateOtp: function (req, res) {
+        User.generateOtp(req.body, res.callback);
+    },
+
+    //To verify OTP
+    verifyOTP: function (req, res) {
+        User.verifyOTP(req.body, res.callback);
+    },
 };
 module.exports = _.assign(module.exports, controller);

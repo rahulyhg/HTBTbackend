@@ -1,15 +1,13 @@
 var schema = new Schema({
     userID: {
-        type: String,
-        unique: true
+        type: String
     },
     name: {
         type: String
     },
     email: {
         type: String,
-        validate: validators.isEmail(),
-        unique: true
+        validate: validators.isEmail()
     },
     establishmentName: {
         type: String,
@@ -115,12 +113,13 @@ var schema = new Schema({
         },
         "product-nameOnly": String,
         productQuantity: {
-            type: String,
+            type: Number,
         },
-        finalPrice: String
+        finalPrice: Number
     }],
     cart: {
-        totalAmount: String,
+        totalAmount: Number,
+        totalQuantity: Number,
         DiscountAmount: String
     },
 
@@ -365,7 +364,7 @@ var model = {
                     var totalQuantity = _.sumBy(found.cartProducts, function (o) {
                         return parseInt(o.productQuantity);
                     });
-                    console.log("totalQuantity--",totalQuantity);
+                    console.log("totalQuantity--", totalQuantity);
                     callback(null, totalQuantity);
                 } else {
                     callback({
@@ -389,7 +388,7 @@ var model = {
                         return (data.product != n.product);
                     });
                     found.save();
-                      var totalQuantity = _.sumBy(found.cartProducts, function (o) {
+                    var totalQuantity = _.sumBy(found.cartProducts, function (o) {
                         return parseInt(o.productQuantity);
                     });
                     callback(null, totalQuantity);
@@ -402,7 +401,7 @@ var model = {
 
         });
     },
-     showCartQuantity: function (data, callback) {
+    showCartQuantity: function (data, callback) {
         console.log("data", data)
         User.findOne({
             _id: data.user
@@ -462,43 +461,70 @@ var model = {
                 } else {
 
                     if (created == null) {
-                        dataObj._id = new mongoose.mongo.ObjectID();
-                    }
+                        // dataObj._id = new mongoose.mongo.ObjectID();
+                        User.saveUserData(dataObj, function (error, getData) {
+                            if (error || getData == undefined) {
 
-                    User.findOneAndUpdate({
-                        mobile: dataObj.mobile,
-                        accessLevel: data.accessLevel
-                    }, dataObj, {
-                        new: true,
-                        upsert: true
-                    }).exec(function (err, updated) {
-                        if (err || updated == undefined) {
-                            console.log("User >>> generateOtp >>> User.findOne >>> User.findOneUpdate >>>", err);
-                            callback(err, null);
-                        } else {
-                            //Send SMS
-                            var smsMessage = "Welcome To The HaTa Family! Your OTP is " + dataObj.otp + "."
-                            var smsObj = {
-                                "message": "HTBT",
-                                "sender": "HATABT",
-                                "sms": [{
-                                    "to": dataObj.mobile,
-                                    "message": smsMessage,
+                            } else {
+                                //Send SMS
+                                var smsMessage = "Welcome To The HaTa Family! Your OTP is " + dataObj.otp + "."
+                                var smsObj = {
+                                    "message": "HTBT",
                                     "sender": "HATABT",
-                                }]
-                            };
-                            Config.sendSMS(smsObj, function (error, SMSResponse) {
-                                if (error || SMSResponse == undefined) {
-                                    console.log("User >>> generateOtp >>> User.findOne >>> Config.sendSMS >>> error >>>", error);
-                                    callback(error, null);
-                                } else {
-                                    callback(null, {
-                                        message: "OTP sent"
-                                    });
-                                }
-                            })
-                        }
-                    })
+                                    "sms": [{
+                                        "to": dataObj.mobile,
+                                        "message": smsMessage,
+                                        "sender": "HATABT",
+                                    }]
+                                };
+                                Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                    if (error || SMSResponse == undefined) {
+                                        console.log("User >>> generateOtp >>> User.findOne >>> Config.sendSMS >>> error >>>", error);
+                                        callback(error, null);
+                                    } else {
+                                        callback(null, {
+                                            message: "OTP sent"
+                                        });
+                                    }
+                                })
+                            }
+                        })
+                    } else {
+                        User.findOneAndUpdate({
+                            mobile: dataObj.mobile,
+                            accessLevel: data.accessLevel
+                        }, dataObj, {
+                            new: true,
+                            upsert: true
+                        }).exec(function (err, updated) {
+                            if (err || updated == undefined) {
+                                console.log("User >>> generateOtp >>> User.findOne >>> User.findOneUpdate >>>", err);
+                                callback(err, null);
+                            } else {
+                                //Send SMS
+                                var smsMessage = "Welcome To The HaTa Family! Your OTP is " + dataObj.otp + "."
+                                var smsObj = {
+                                    "message": "HTBT",
+                                    "sender": "HATABT",
+                                    "sms": [{
+                                        "to": dataObj.mobile,
+                                        "message": smsMessage,
+                                        "sender": "HATABT",
+                                    }]
+                                };
+                                Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                    if (error || SMSResponse == undefined) {
+                                        console.log("User >>> generateOtp >>> User.findOne >>> Config.sendSMS >>> error >>>", error);
+                                        callback(error, null);
+                                    } else {
+                                        callback(null, {
+                                            message: "OTP sent"
+                                        });
+                                    }
+                                })
+                            }
+                        })
+                    }
 
                     // } else {
                     //     callback(null, {
