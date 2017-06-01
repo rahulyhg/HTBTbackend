@@ -50569,102 +50569,107 @@ var myApp = angular.module('myApp', [
     'ui.sortable'
 ]);
 
-myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider) {
+myApp.config(function($stateProvider, $urlRouterProvider, $httpProvider, $locationProvider) {
     // for http request with session
     $httpProvider.defaults.withCredentials = true;
     $stateProvider
 
         .state('dashboard', {
-            url: "/dashboard",
-            templateUrl: "views/template.html",
-            controller: 'DashboardCtrl',
-        })
+        url: "/dashboard",
+        templateUrl: "views/template.html",
+        controller: 'DashboardCtrl',
+    })
 
-        .state('login', {
-            url: "/login",
-            templateUrl: "views/login.html",
-            controller: 'LoginCtrl'
-        })
+    .state('login', {
+        url: "/login",
+        templateUrl: "views/login.html",
+        controller: 'LoginCtrl'
+    })
 
-        .state('page', {
-            url: "/page/:id/{page:.*}/{keyword:.*}",
-            templateUrl: "views/template.html",
-            controller: 'PageJsonCtrl'
-        })
+    .state('page', {
+        url: "/page/:id/{page:.*}/{keyword:.*}",
+        templateUrl: "views/template.html",
+        controller: 'PageJsonCtrl'
+    })
 
 
-        //  .state('page.viewUser', {
-        //     url: "/viewUser",
-        //     templateUrl: "views/template.html",
-        //     controller: 'PageJsonCtrl'
-        // })
+    //  .state('page.viewUser', {
+    //     url: "/viewUser",
+    //     templateUrl: "views/template.html",
+    //     controller: 'PageJsonCtrl'
+    // })
 
-        .state('loginapp', {
+    .state('loginapp', {
             url: "/login/:id",
             templateUrl: "views/login.html",
             controller: 'LoginCtrl'
         })
         .state('editUser', {
-           url: "/edituser/:id/{page:.*}/{keyword:.*}",
-           templateUrl: "views/template.html",
-          controller: 'EditUserCtrl',
-      })
-   .state('editOrder', {
-           url: "/editOrder/:id/{page:.*}/{keyword:.*}",
-           templateUrl: "views/template.html",
-          controller: 'EditOrderCtrl',
-      })
-   .state('editOrderRequest', {
-           url: "/editOrderRequest/:id/{page:.*}/{keyword:.*}",
-           templateUrl: "views/template.html",
-          controller: 'editOrderRequestCtrl',
-      })
-
-        .state('country-list', {
-            url: "/country-list/{page:.*}/{keyword:.*}",
+            url: "/edituser/:id/{page:.*}/{keyword:.*}",
             templateUrl: "views/template.html",
-            controller: 'CountryCtrl',
-            params: {
-                page: "1",
-                keyword: ""
-            }
+            controller: 'EditUserCtrl',
+        })
+        .state('editOrder', {
+            url: "/editOrder/:id/{page:.*}/{keyword:.*}",
+            templateUrl: "views/template.html",
+            controller: 'EditOrderCtrl',
+        })
+        .state('editOrderRequest', {
+            url: "/editOrderRequest/:id/{page:.*}/{keyword:.*}",
+            templateUrl: "views/template.html",
+            controller: 'EditOrderRequestCtrl',
+        })
+        .state('editProduct', {
+            url: "/editProduct/:id/{page:.*}/{keyword:.*}",
+            templateUrl: "views/template.html",
+            controller: 'EditProductCtrl',
         })
 
-        .state('createcountry', {
-            url: "/country-create",
-            templateUrl: "views/template.html",
-            controller: 'CreateCountryCtrl'
-        })
+    .state('country-list', {
+        url: "/country-list/{page:.*}/{keyword:.*}",
+        templateUrl: "views/template.html",
+        controller: 'CountryCtrl',
+        params: {
+            page: "1",
+            keyword: ""
+        }
+    })
 
-        .state('editcountry', {
-            url: "/country-edit/:id",
-            templateUrl: "views/template.html",
-            controller: 'EditCountryCtrl'
-        })
+    .state('createcountry', {
+        url: "/country-create",
+        templateUrl: "views/template.html",
+        controller: 'CreateCountryCtrl'
+    })
 
-        .state('schema-creator', {
-            url: "/schema-creator",
-            templateUrl: "views/template.html",
-            controller: 'SchemaCreatorCtrl'
-        })
+    .state('editcountry', {
+        url: "/country-edit/:id",
+        templateUrl: "views/template.html",
+        controller: 'EditCountryCtrl'
+    })
 
-        .state('excel-upload', {
-            url: "/excel-upload/:model",
-            templateUrl: "views/template.html",
-            controller: 'ExcelUploadCtrl'
-        })
+    .state('schema-creator', {
+        url: "/schema-creator",
+        templateUrl: "views/template.html",
+        controller: 'SchemaCreatorCtrl'
+    })
 
-        .state('jagz', {
-            url: "/jagz",
-            templateUrl: "views/jagz.html",
-            controller: 'JagzCtrl'
-        });
+    .state('excel-upload', {
+        url: "/excel-upload/:model",
+        templateUrl: "views/template.html",
+        controller: 'ExcelUploadCtrl'
+    })
+
+    .state('jagz', {
+        url: "/jagz",
+        templateUrl: "views/jagz.html",
+        controller: 'JagzCtrl'
+    });
 
     $urlRouterProvider.otherwise("/dashboard");
     $locationProvider.html5Mode(isproduction);
 });
 
-myApp.config(function ($translateProvider) {
+myApp.config(function($translateProvider) {
     $translateProvider.translations('en', LanguageEnglish);
     $translateProvider.translations('hi', LanguageHindi);
     $translateProvider.preferredLanguage('en');
@@ -51114,6 +51119,7 @@ myApp.directive('viewField', function ($http, $filter) {
             value: "=value"
         },
         link: function ($scope, element, attrs) {
+            console.log("VIEW FIELD");
             if (!$scope.type.type) {
                 $scope.type.type = "text";
             }
@@ -51135,9 +51141,10 @@ myApp.directive('viewField', function ($http, $filter) {
                 $scope.objectDepth();
 
             } else {
+                // if (_.isObject($scope.value) && $scope.value[$scope.type.tableRef]) {
                 $scope.form.model = $scope.value[$scope.type.tableRef];
+                // }
             }
-
             $scope.template = "views/viewField/" + $scope.type.type + ".html";
         }
     };
@@ -51458,6 +51465,16 @@ myApp.service('JsonService', function ($http, TemplateService, $state, toastr, $
          sendTo.keyword = JSON.stringify(keyword);
        }
        $state.go("editOrderRequest", sendTo);
+     }
+     else if (action && action.type == "editProduct") {
+       if (action.fieldsToSend) {
+         var keyword = {};
+         _.each(action.fieldsToSend, function (n, key) {
+           keyword[key] = value[n];
+         });
+         sendTo.keyword = JSON.stringify(keyword);
+       }
+       $state.go("editProduct", sendTo);
      }
  else if (action && action.type == "apiCallConfirm") {
         globalfunction.confDel(function (value2) {
@@ -51902,7 +51919,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         globalfunction.confDel = function (callback) {
             var modalInstance = $uibModal.open({
                 animation: $scope.animationsEnabled,
-                templateUrl: '/views/modal/conf-delete.html',
+                templateUrl: '/backend/views/modal/conf-delete.html',
                 size: 'sm',
                 scope: $scope
             });
@@ -51915,7 +51932,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         globalfunction.openModal = function (callback) {
             var modalInstance = $uibModal.open({
                 animation: $scope.animationsEnabled,
-                templateUrl: '/views/modal/modal.html',
+                templateUrl: '/backend/views/modal/modal.html',
                 size: 'lg',
                 scope: $scope
             });
@@ -52049,7 +52066,12 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         $scope.navigation = NavigationService.getnav();
         console.log("$stateParams---", JSON.stringify($stateParams.keyword));
         console.log("$stateParams-json--", JSON.parse($stateParams.keyword)._id);
-
+        NavigationService.apiCall("PartnerLevel/search", formData, function (data) {
+            if (data.value === true) {
+                console.log("getOrderByUser", data.data);
+                $scope.partnerLevel = data.data.results;
+            }
+        });
         if (!_.isEmpty($stateParams.keyword)) {
             $scope.data = {};
             var formData = {};
@@ -52077,6 +52099,15 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                         }
 
                     });
+
+                    NavigationService.apiCall("DeliveryRequest/getDeliveryRequestByUser", formData, function (data) {
+                        if (data.value === true) {
+                            console.log("getOrderByUser", data.data);
+                            $scope.deliverydata = data.data;
+
+                        }
+
+                    });
                     //  $.jStorage.set('user', data.data);
                     //  $.jStorage.set("accessToken", data.data.accessToken[0]);
                 }
@@ -52099,9 +52130,39 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             console.log($scope.data.notes);
             // noteWithTime._id=JSON.parse($stateParams.keyword)._id;
             $scope.data.notes.push(noteWithTime);
-            NavigationService.apiCall("User/saveUserData", $scope.data, function (data) {
+            NavigationService.apiCall("User/save", $scope.data, function (data) {
                 console.log("login", data.data);
             });
+
+        };
+        NavigationService.apiCall("User/getAllActiveRelPartner", {}, function (data) {
+            console.log("login", data.data);
+            $scope.activePartner = data.data.results;
+        });
+        $scope.reassignedmodal = function (rel, cust, status) {
+            if (status = "Suspend") {
+                var modalInstance = $uibModal.open({
+                    animation: $scope.animationsEnabled,
+                    templateUrl: '/backend/views/modal/reassigned.html',
+                    size: 'lg',
+                    scope: $scope
+                });
+            }
+
+        };
+        $scope.saveuser = function (notes) {
+            NavigationService.apiCall("User/save", $scope.data, function (data) {
+                console.log("login", data.data);
+            });
+            if ($scope.data.accessLevel == 'Customer') {
+                $state.go("page", {
+                    id: "viewCustomer"
+                });
+            } else {
+                $state.go("page", {
+                    id: "viewRelPartner"
+                });
+            }
 
         };
         $scope.modalAddNotes = function (data) {
@@ -52124,42 +52185,144 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         TemplateService.title = $scope.menutitle;
         $scope.navigation = NavigationService.getnav();
         console.log("$stateParams---", JSON.stringify($stateParams.keyword));
-        console.log("$stateParams-json--", JSON.parse($stateParams.keyword)._id);
+        var formData = {};
+        $scope.data = {};
+        $scope.orderData = {};
+        $scope.orderData.product = [];
+        $scope.orderData.totalAmount = 0;
+        $scope.orderData.totalQuantity = 0;
 
+        $scope.productList = [];
+        NavigationService.apiCall("user/getAllCustomer", formData, function (data) {
+            if (data.value === true) {
+                console.log("getAllCustomer", data.data);
+                $scope.userData = data.data.results;
+            }
+
+        });
+        NavigationService.apiCall("product/search", formData, function (data) {
+            if (data.value === true) {
+                console.log("login", data.data);
+                $scope.productData = data.data.results;
+            }
+
+        });
         if (!_.isEmpty($stateParams.keyword)) {
-            $scope.data = {};
             var formData = {};
             formData._id = JSON.parse($stateParams.keyword)._id;
             NavigationService.apiCall("Order/getOne", formData, function (data) {
                 if (data.value === true) {
                     console.log("login", data.data);
-                    $scope.data = data.data;
-                    //  $.jStorage.set('user', data.data);
-                    //  $.jStorage.set("accessToken", data.data.accessToken[0]);
+                    $scope.orderData = data.data;
                 }
 
             });
-        } else {
-            $scope.data = {};
-            $scope.data.notes = [];
         }
-        $scope.fields = [{
-            name: "Notes"
-        }, {
-            name: "Time"
-        }];
-        $scope.addProduct = function (data) {
+        $scope.cancel = function (data) {
+            if (data == 'Cancelled') {
+                var modalInstance = $uibModal.open({
+                    animation: $scope.animationsEnabled,
+                    templateUrl: '/backend/views/modal/conf-cancel.html',
+                    size: 'lg',
+                    scope: $scope
+                });
+            }
+        };
 
-            var modalInstance = $uibModal.open({
+        $scope.addProduct = function () {
+            $scope.modalInstance = $uibModal.open({
                 animation: $scope.animationsEnabled,
                 templateUrl: '/backend/views/modal/addProduct.html',
                 size: 'lg',
                 scope: $scope
             });
         };
+        $scope.saveProducts = function (data) {
+            console.log("prod---", data.product)
+            var arr = {};
+            var prodJson = JSON.parse(data.product);
+            var orderedPrice = _.orderBy(prodJson.priceList, ['endRange'], ['asc']);
+            console.log("orderedPrice", orderedPrice);
+            foundPrice = {};
+            _.each(orderedPrice, function (obj) {
+                if (parseInt(data.productQuantity) <= parseInt(obj.endRange)) {
+                    foundPrice = obj;
+                    return false;
+                }
+            });
+
+            console.log("foundPrice---", foundPrice);
+            if ($scope.orderData.product.length > 0) {
+                if (_.isEqual(prodJson.category.subscription, 'Yes')) {
+                    $scope.modalInstance.close("close");
+                    toastr.error("Product can't be added with subscription", "Product can't be added with subscription");
+                } else {
+                    arr.product = prodJson;
+                    arr.finalPrice = foundPrice.finalPrice;
+                    arr.productQuantity = data.productQuantity
+                    $scope.orderData.product.push(arr);
+                    $scope.orderData.totalAmount = parseInt($scope.orderData.totalAmount) + (parseInt(data.productQuantity) * parseInt(foundPrice.finalPrice));
+                    $scope.orderData.totalQuantity = parseInt($scope.orderData.totalQuantity) + parseInt(data.productQuantity);
+
+                }
+            } else {
+                arr.product = prodJson;
+                arr.finalPrice = foundPrice.finalPrice;
+                arr.productQuantity = data.productQuantity
+                $scope.orderData.product.push(arr);
+                if (!_.isEqual(prodJson.category.subscription, 'Yes')) {
+                    $scope.orderData.totalQuantity = parseInt($scope.orderData.totalQuantity) + parseInt(data.productQuantity);
+                    $scope.orderData.totalAmount = parseInt($scope.orderData.totalAmount) + (parseInt(data.productQuantity) * parseInt(foundPrice.finalPrice));
+
+                }
+            }
+
+        };
+
+        $scope.planWisePrice = function (plan) {
+            if (_.isEqual(plan, "Monthly")) {
+                $scope.orderData.totalQuantity = 4 * parseInt($scope.orderData.product[0].productQuantity);
+                $scope.orderData.totalAmount = parseInt($scope.orderData.totalQuantity) * parseInt($scope.orderData.product[0].finalPrice);
+            }
+            if (_.isEqual(plan, "Quarterly")) {
+                $scope.orderData.totalQuantity = 12 * parseInt($scope.orderData.product[0].productQuantity);
+                $scope.orderData.totalAmount = parseInt($scope.orderData.totalQuantity) * parseInt($scope.orderData.product[0].finalPrice);
+            }
+            if (_.isEqual(plan, "Onetime")) {
+                $scope.orderData.totalQuantity = parseInt($scope.orderData.product[0].productQuantity);
+                $scope.orderData.totalAmount = parseInt($scope.orderData.totalQuantity) * parseInt($scope.orderData.product[0].finalPrice);
+            }
+        }
+        $scope.data1 = {};
+        $scope.setcustomer = function (data) {
+            $scope.orderData.customer = JSON.parse(data);
+        };
+        $scope.saveOrder = function (data) {
+            if (!data._id) {
+                data.methodOfOrder = "Relationship Partner";
+            }
+            if (_.isEqual(data.product[0].product.category.subscription, 'Yes')) {
+                if (_.isEqual(data.plan, "Monthly")) {
+                    data.totalQuantity = 4 * Number(data.product[0].productQuantity)
+                } else if (_.isEqual(data.plan, "Quarterly")) {
+                    data.totalQuantity = 12 * Number(data.product[0].productQuantity)
+                } else {
+                    data.totalQuantity = data.productQuantity
+                }
+            }
+            console.log("saved data", data.product[0].length);
+            NavigationService.apiCall("Order/saveOrder", data, function (data) {
+                if (data.value === true) {
+                    console.log("Order---data saved ", data.data);
+                }
+            });
+            $state.go("page", {
+                id: "viewOrder"
+            });
+        };
 
     })
-    .controller('editOrderRequestCtrl', function ($scope, TemplateService, NavigationService, JsonService, $timeout, $state, $stateParams, $uibModal, toastr) {
+    .controller('EditOrderRequestCtrl', function ($scope, $state, TemplateService, NavigationService, JsonService, $timeout, $state, $stateParams, $uibModal, toastr) {
         $scope.template = TemplateService.changecontent("editOrderRequest");
         $scope.menutitle = NavigationService.makeactive("editOrderRequest");
         TemplateService.title = $scope.menutitle;
@@ -52175,45 +52338,243 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             }
 
         });
-        $scope.saveDeliveryRequest = function (formdata) {
-            NavigationService.apiCall("DeliveryRequest/save", formData, function (data) {
-                if (data.value === true) {
-                    console.log("Order---data saved ", data.data);
+        $scope.saveDeliveryRequest = function (data) {
 
+            if (data.Quantity < data.QuantityDelivered) {
+                toastr.error("Quantity Delivered exceeds the total Quantity.");
+            } else {
+                if (data.product.quantity < data.QuantityDelivered) {
+                    toastr.error("Inventory for this product is low.");
+                } else {
+                    NavigationService.apiCall("DeliveryRequest/saveDeliveryRequest", data, function (data) {
+                        if (data.value === true) {
+                            console.log("Order---data saved ", data.data);
+                            $state.go("page", {
+                                id: "viewOrderRequest"
+                            });
+                        }
+                    });
                 }
-
-            });
-        }
+            }
+        };
         if (!_.isEmpty($stateParams.keyword)) {
             $scope.data = {};
             var formData = {};
             formData._id = JSON.parse($stateParams.keyword)._id;
-            NavigationService.apiCall("Order/getOne", formData, function (data) {
+            NavigationService.apiCall("DeliveryRequest/getOne", formData, function (data) {
                 if (data.value === true) {
                     console.log("login", data.data);
                     $scope.data = data.data;
-                    //  $.jStorage.set('user', data.data);
-                    //  $.jStorage.set("accessToken", data.data.accessToken[0]);
                 }
-
             });
-        } else {
-            $scope.data = {};
-            $scope.data.notes = [];
-        }
-        $scope.fields = [{
-            name: "Notes"
-        }, {
-            name: "Time"
-        }];
-        $scope.addProduct = function (data) {
+            //  $.jStorage.set('user', data.data);
+            //  $.jStorage.set("accessToken", data.data.accessToken[0]);
+        };
 
+        $scope.addProduct = function (data) {
             var modalInstance = $uibModal.open({
                 animation: $scope.animationsEnabled,
                 templateUrl: '/backend/views/modal/addProduct.html',
                 size: 'lg',
                 scope: $scope
             });
+        };
+        $scope.compareQuantity = function (data) {
+            console.log("data1,data2", data.Quantity, data.QuantityDelivered);
+            if (data.Quantity < data.QuantityDelivered) {
+                toastr.error("Quantity Delivered exceeds the total Quantity.");
+            }
+        };
+
+        $scope.payNow = function () {
+            NavigationService.apiCall("Order/payNow", formData, function (data) {
+                if (data.value === true) {
+                    console.log("payNow");
+
+                }
+            });
+
+        };
+        $scope.options = {
+            'key': 'rzp_test_BrwXxB7w8pKsfS',
+            'amount': 100,
+            'name': '',
+            'description': 'Pay for Order #2323',
+            'image': '',
+            'handler': function (transaction) {
+                $scope.transactionHandler(transaction);
+            },
+            'prefill': {
+                'name': '',
+                'email': '',
+                'contact': ''
+            },
+            theme: {
+                color: '#3399FF'
+            }
+        };
+
+        $scope.pay = function () {
+            $.getScript('https://checkout.razorpay.com/v1/checkout.js', function () {
+                var rzp1 = new Razorpay($scope.options);
+                rzp1.open();
+
+            });
+        };
+      
+        $scope.transactionHandler=function(success){
+            console.log("transaction",success);
+        }
+
+    })
+    .controller('EditProductCtrl', function ($scope, TemplateService,
+        NavigationService, JsonService, $timeout, $state, $stateParams,
+        $uibModal, toastr) {
+        $scope.template = TemplateService.changecontent("editProduct");
+        $scope.menutitle = NavigationService.makeactive("editProduct");
+        TemplateService.title = $scope.menutitle;
+        $scope.navigation = NavigationService.getnav();
+        console.log("$stateParams---", JSON.stringify($stateParams.keyword));
+        $scope.data = {};
+        $scope.productData = {};
+        $scope.productData.commission = [];
+        $scope.productData.priceList = [];
+        $scope.levels = {};
+
+        NavigationService.apiCall("categories/search",
+            formData,
+            function (data) {
+                if (data.value === true) {
+                    console.log("getOrderByUser", data.data);
+                    $scope.cat = data.data.results;
+                    _.forEach($scope.OrderData, function (val) {
+                        _.forEach(val.product, function (val1) {
+                            if (_.isEqual(val1.product.subscription, 'yes')) {
+                                $scope.subscription = val;
+                            }
+                        })
+                    })
+                    console.log("$scope.subscription",
+                        $scope.subscription);
+                    //  $.jStorage.set('user', data.data);
+                    //  $.jStorage.set("accessToken",
+                }
+
+            });
+        NavigationService.apiCall("PartnerLevel/search", {},
+            function (data) {
+                if (data.value === true) {
+                    var found = 'found';
+                    console.log(data.data.results);
+                    $scope.levels = data.data.results;
+                    var i = 0;
+                    console.log("$scope.productData.commission", $scope.productData.commission)
+                    _.forEach($scope.levels, function (val) {
+                        var comm = {};
+                        comm.commissionType = val;
+                        console.log("commissionType", comm.commissionType);
+                        $scope.productData.commission.push(comm);
+
+                    })
+                    console.log("$scope.productData.commission---->>", $scope.productData.commission)
+                }
+
+            });
+        if (!_.isEmpty($stateParams.keyword)) {
+            $scope.data = {};
+            var formData = {};
+            formData._id = JSON.parse($stateParams.keyword)._id;
+            NavigationService.apiCall("Product/getOne", formData, function (data) {
+                if (data.value === true) {
+                    console.log("login", data.data);
+                    $scope.productData = data.data;
+
+                    NavigationService.apiCall("PartnerLevel/search", {},
+                        function (data) {
+                            if (data.value === true) {
+                                var found = 'found';
+                                console.log(data.data.results);
+                                $scope.levels = data.data.results;
+                                var i = 0;
+                                console.log("$scope.productData.commission", $scope.productData.commission)
+                                _.forEach($scope.levels, function (val) {
+                                    if ($scope.productData.commission[0]) {
+                                        found = _.find($scope.productData.commission, function (o) {
+                                            console.log(o.commissionType);
+                                            if (o.commissionType != null) {
+                                                return o.commissionType._id == val._id;
+                                            }
+                                        });
+                                        console.log("found", found);
+                                        if (found == undefined) {
+                                            var comm = {};
+                                            comm.commissionType = val;
+                                            console.log("commissionType", comm.commissionType);
+                                            $scope.productData.commission.push(comm);
+                                        }
+                                    } else {
+                                        var comm = {};
+                                        comm.commissionType = val;
+                                        console.log("commissionType", comm.commissionType);
+                                        $scope.productData.commission.push(comm);
+                                    }
+                                })
+                                console.log("$scope.productData.commission---->>", $scope.productData.commission)
+                            }
+
+                        });
+                    NavigationService.apiCall("categories/search",
+                        formData,
+                        function (data) {
+                            if (data.value === true) {
+                                console.log("getOrderByUser", data.data);
+                                $scope.cat = data.data.results;
+                                _.forEach($scope.OrderData, function (val) {
+                                    _.forEach(val.product, function (val1) {
+                                        if (_.isEqual(val1.product.subscription, 'yes')) {
+                                            $scope.subscription = val;
+                                        }
+
+                                    })
+                                })
+                                console.log("$scope.subscription",
+                                    $scope.subscription);
+                                //  $.jStorage.set('user', data.data);
+                                //  $.jStorage.set("accessToken",
+                            }
+
+                        });
+                    //  $.jStorage.set('user', data.data);
+                    //  $.jStorage.set("accessToken", data.data.accessToken[0]);
+                }
+            });
+        }
+        $scope.addQuestion = function (notes) {
+            $scope.productData.priceList.push(notes);
+        };
+        $scope.saveProduct = function (formdata) {
+            // noteWithTime._id=JSON.parse($stateParams.keyword)._id;
+            NavigationService.apiCall("Product/saveProduct",
+                formdata,
+                function (data) {
+                    console.log("saveProduct", data.data);
+                });
+            $state.go("page", {
+                id: "viewProduct"
+            });
+
+        };
+
+        $scope.modalAddNotes = function (data) {
+            var modalInstance = $uibModal.open({
+                animation: $scope.animationsEnabled,
+                templateUrl: '/backend/views/modal/addPrice.html',
+                size: 'lg',
+                scope: $scope
+            });
+        };
+        $scope.deleteAnswer = function (indexItem) {
+            $scope.notes.notes.splice(indexItem, 1);
         };
 
     })
@@ -52223,7 +52584,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         }
         $scope.json = JsonService;
         $scope.tags = {};
-        $scope.model = [];
+        $scope.model = $scope.formData[$scope.type.tableRef];
         $scope.tagNgModel = {};
         // $scope.boxModel
         if ($scope.type.validation) {
@@ -52319,9 +52680,11 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         }
         if ($scope.type.type == "box") {
 
-            if (!_.isArray($scope.formData[$scope.type.tableRef]) && $scope.formData[$scope.type.tableRef] === '') {
+            if (_.isEmpty($scope.formData[$scope.type.tableRef])) {
                 $scope.formData[$scope.type.tableRef] = [];
-                $scope.model = [];
+                $scope.model = $scope.formData[$scope.type.tableRef];
+
+
             } else {
                 if ($scope.formData[$scope.type.tableRef]) {
                     $scope.model = $scope.formData[$scope.type.tableRef];
@@ -52342,7 +52705,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             $scope.data = data;
             var modalInstance = $uibModal.open({
                 animation: $scope.animationsEnabled,
-                templateUrl: '/views/modal/modal.html',
+                templateUrl: '/backend/views/modal/modal.html',
                 size: 'lg',
                 scope: $scope
             });
@@ -52557,7 +52920,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             $scope.holdObject = holdobj;
             var modalInstance = $uibModal.open({
                 scope: $scope,
-                templateUrl: 'views/modal/' + filename + '.html',
+                templateUrl: 'backend/views/modal/' + filename + '.html',
                 size: 'lg'
             });
         };
@@ -52706,7 +53069,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             $scope.holdObject = holdobj;
             var modalInstance = $uibModal.open({
                 scope: $scope,
-                templateUrl: 'views/modal/' + filename + '.html',
+                templateUrl: 'backend/views/modal/' + filename + '.html',
                 size: 'lg'
             });
         };
