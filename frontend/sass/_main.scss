@@ -607,3 +607,40 @@ content: '\f053';
     }
     
 }
+
+//thankyou
+
+.reldiv{
+    position: relative;
+    height: 100vh;
+}
+
+.thankyou{
+        font-size: 32px;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    top: 50%;
+}
+
+.declinetext{
+       font-size: 21px;
+    width: 100%;
+    text-align: center;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, 64%);
+    top: 50%;
+    left: 50%;
+    position: absolute;
+}
+
+.successful{
+       font-size: 21px;
+    width: 100%;
+    text-align: center;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, 64%);
+    top: 48%;
+    left: 50%;
+    position: absolute;
+}
