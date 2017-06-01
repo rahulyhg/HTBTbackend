@@ -41,9 +41,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
   .controller('SignUpCtrl', function ($scope, TemplateService, $state, $stateParams, apiService, NavigationService, $timeout) {
     $scope.template = TemplateService.getHTML("content/signup.html");
     TemplateService.title = "Sign Up"; //This is the Title of the Website
-    apiService.getDemo($scope.formData, function (data) {
-      console.log(data);
-    });
+
     if ($stateParams.orderId) {
       console.log("orderId", $stateParams.orderId);
       var formData = {};
