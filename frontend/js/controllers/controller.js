@@ -1,5 +1,5 @@
 myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
-    $scope.template = TemplateService.getHTML("content/home.html");
+    // $scope.template = TemplateService.getHTML("content/home.html");
     TemplateService.title = "Home"; //This is the Title of the Website
     $scope.navigation = NavigationService.getNavigation();
 
