@@ -45,12 +45,25 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
             url: "/nonsub",
             templateUrl: tempateURL,
             controller: 'NonSubCtrl'
+        })
+
+
+          .state('thankyou', {
+            url: "/thankyou",
+            templateUrl: tempateURL,
+            controller: 'ThankYouCtrl'
+        })
+
+
+
+.state('sorry', {
+            url: "/sorry",
+            templateUrl: tempateURL,
+            controller: 'SorryCtrl'
         });
 
+    $urlRouterProvider.otherwise("/orderconfirmation");
 
-
-
-    $urlRouterProvider.otherwise("/signup/");
     $locationProvider.html5Mode(isproduction);
 })
 

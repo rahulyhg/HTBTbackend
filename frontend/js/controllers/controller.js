@@ -364,7 +364,21 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     }
   })
 
+
+
+    .controller('ThankYouCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
+        $scope.template = TemplateService.getHTML("content/thankyou.html");
+        TemplateService.title = "thankyou"; //This is the Title of the Website
+    })
+
+    .controller('SorryCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
+        $scope.template = TemplateService.getHTML("content/Sorry.html");
+        TemplateService.title = "Sorry"; //This is the Title of the Website
+    })
+
+
   .controller('headerctrl', function ($scope, TemplateService) {
+
     $scope.template = TemplateService;
     $scope.$on('$stateChangeSuccess', function (event, toState, toParams, fromState, fromParams) {
       $(window).scrollTop(0);
@@ -374,4 +388,6 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       isFirstOpen: true,
       isFirstDisabled: false
     };
+
   });
+   
