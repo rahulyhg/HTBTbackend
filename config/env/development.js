@@ -22,6 +22,6 @@ module.exports = {
     // }
     port: 1337,
     realHost: "http://localhost:1337",
-    frontend: "http://wohlig.io:8081",
+  frontend: "http://htbt.wohlig.co.in",
     emails: ["chintan@wohlig.com", "jagruti@wohlig.com", "tushar@wohlig.com", "chirag@wohlig.com", "harsh@wohlig.com"]
 };

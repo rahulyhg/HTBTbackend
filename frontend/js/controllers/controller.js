@@ -121,6 +121,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     }
 
     $scope.pay = function () {
+      console.log("inside payment");
       $.getScript('https://checkout.razorpay.com/v1/checkout.js', function () {
         var rzp1 = new Razorpay($scope.options);
         rzp1.open();
@@ -132,6 +133,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       console.log("transaction", success);
       if (success.razorpay_payment_id) {
         $scope.orderData.razorpay_payment_id = success.razorpay_payment_id;
+         $scope.orderData.status = 'Confirmed';
         apiService.apiCall("Order/orderConfirmationOrPay", $scope.orderData, function (data) {
           if (data.value === true) {
             console.log("payAndCapture");
@@ -141,7 +143,6 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       }
     };
     $scope.orderConfirmation = function (orderData) {
-      orderData.onlyOrderConfirm = true;
       orderData.status = 'Confirmed';
       apiService.apiCall("Order/orderConfirmationOrPay", orderData, function (data) {
         if (data.value === true) {

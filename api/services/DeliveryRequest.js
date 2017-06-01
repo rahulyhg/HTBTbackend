@@ -39,7 +39,7 @@ module.exports = mongoose.model('DeliveryRequest', schema);
 
 var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "product Order customer", "product Order customer"));
 var model = {
-
+    //to schedule the delivery 
     scheduleDelivery: function (data, callback) {
         var reqID = '';
         DeliveryRequest.find({}).sort({
@@ -69,6 +69,7 @@ var model = {
             }
         });
     },
+    //to update the delivery request after product is delivered 
     saveDeliveryRequest: function (data, callback) {
         if (data.Quantity > data.QuantityDelivered) {
             data.status = "Partial Delivery Successful";
@@ -109,22 +110,20 @@ var model = {
                     },
 
                     function () {
-                        Order.findOne({
-                            _id: data.Order
-                        }).exec(function (err, foundOrder) {
+                        User.findOne({
+                            _id: data.customer._id
+                        }).exec(function (err, foundcust) {
                             if (err) {
                                 callback(err, null);
                             } else {
-                                if (foundOrder) {
+                                if (foundcust) {
                                     // callback(null, found);
-                                    foundOrder.balance = foundOrder.balance - data.QuantityDelivered;
-                                    foundOrder.deliverdate = data.deliverdate;
-                                    foundOrder.delivertime = data.delivertime;
-                                    Order.saveData(foundOrder, function (err, savedOrder) {
+                                    foundcust.balance = foundcust.balance - data.QuantityDelivered;
+                                    User.saveData(foundcust, function (err, savedCust) {
                                         if (err) {
                                             console.log("err", err);
                                         } else {
-                                            console.log("Order updated");
+                                            console.log("Customer updated");
                                         }
                                     });
                                 } else {
@@ -208,6 +207,7 @@ var model = {
             }
         })
     },
+    //to get perticular user's delivery request
     getDeliveryRequestByUser: function (data, callback) {
         console.log("data", data)
         DeliveryRequest.find({
