@@ -9,7 +9,7 @@
   </div>
 
   <label class=" item-input inputField">
-    <input class="inputsize" type="text" placeholder="Name"  ng-model="orderData.customer.name" name="name" required disabled>
+    <input class="inputsize" type="text" placeholder="Name"  ng-model="orderData.customer.name" name="name" required>
     <p class="error-msg" ng-show="userForm.name.$error.required && userForm.name.$touched">Please Enter Your Name.</p>
   </label>
   <label class=" item-input inputField">
@@ -44,32 +44,32 @@
   </div>
 
 
-<div ng-if="!showaddr"> 
+  <div ng-if="!showaddr">
 
-  <label class=" item-input inputField">
+    <label class=" item-input inputField">
     <input class="inputsize" type="text" placeholder="Name"  ng-model="orderData.customer.name" name="name" required>
     <p class="error-msg" ng-show="userForm.name.$error.required && userForm.name.$touched">Please Enter Your Name.</p>
   </label>
-  <label class=" item-input inputField">
+    <label class=" item-input inputField">
     <input class="inputsize" type="text" only-digits ng-model="orderData.customer.mobile" placeholder="Mobile Number" disabled>
   </label>
-  <label class=" item-input inputField">
+    <label class=" item-input inputField">
     <input class="inputsize" type="text" ng-model="orderData.billingAddress.email" placeholder="Email ID" >
   </label>
-  <label class=" item-input inputField">
+    <label class=" item-input inputField">
     <input class="inputsize" type="number" ng-model="orderData.billingAddress.companyName"  placeholder="Company Name (Optional)" >
   </label>
-  <label class=" item-input inputField">
+    <label class=" item-input inputField">
     <input class="inputsize" type="text" ng-model="orderData.billingAddress.address" placeholder="Shipping Address" >
   </label>
-  <label class=" item-input inputField">
+    <label class=" item-input inputField">
     <input class="inputsize" type="text" placeholder="" diasbled>
   </label>
-  <label class=" item-input inputField">
+    <label class=" item-input inputField">
     <input class="inputsize" type="number" ng-model="orderData.billingAddress.pincode" placeholder="Pincode" >
   </label>
-</div>
-  
+  </div>
+
   <button class="button" ng-click="addShipBilDetails(orderData)">Place Order</button>
 
 </div>
