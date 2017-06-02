@@ -111,12 +111,11 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
 
     $scope.pay = function () {
       console.log("inside payment");
-      $state.go("thankyou");
-      // $.getScript('https://checkout.razorpay.com/v1/checkout.js', function () {
-      //   var rzp1 = new Razorpay($scope.options);
-      //   rzp1.open();
+      $.getScript('https://checkout.razorpay.com/v1/checkout.js', function () {
+        var rzp1 = new Razorpay($scope.options);
+        rzp1.open();
 
-      // });
+      });
     };
 
     $scope.transactionHandler = function (success) {

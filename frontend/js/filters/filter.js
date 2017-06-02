@@ -1,5 +1,4 @@
 // JavaScript Document
-var adminurl = "http://192.168.0.117:1337/api/"; //server
 var imgurl = adminurl + "upload/";
 
 var imgpath = imgurl + "readFile";
