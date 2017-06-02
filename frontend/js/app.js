@@ -5,8 +5,6 @@ var myApp = angular.module('myApp', [
     'angulartics',
     'angulartics.google.analytics',
     'ui.bootstrap',
-    'ngAnimate',
-    'ngSanitize',
     'angular-flexslider',
     'ui.swiper'
 ]);
@@ -48,19 +46,19 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
         })
 
 
-          .state('thankyou', {
+        .state('thankyou', {
             url: "/thankyou",
             templateUrl: tempateURL,
             controller: 'ThankYouCtrl'
         })
 
-.state('linkexpire', {
+        .state('linkexpire', {
             url: "/linkexpire",
             templateUrl: tempateURL,
             controller: 'LinkExpireCtrl'
         })
 
-.state('sorry', {
+        .state('sorry', {
             url: "/sorry",
             templateUrl: tempateURL,
             controller: 'SorryCtrl'

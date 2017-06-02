@@ -43,16 +43,23 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     TemplateService.title = "Sign Up"; //This is the Title of the Website
 
     if ($stateParams.orderId) {
-      console.log("orderId", $stateParams.orderId);
+
       var formData = {};
       formData._id = $stateParams.orderId;
       apiService.apiCall("Order/getOne", formData, function (data) {
         if (data.value === true) {
-          console.log("Order/getOne", data.data);
           $scope.orderData = data.data;
-          console.log($scope.orderData);
         }
       });
+    }
+    $scope.addSameBillingDetails = function (showaddr) {
+      console.log($scope.orderData.billingAddress);
+      if (showaddr) {
+        $scope.orderData.billingAddress = _.cloneDeep($scope.orderData.shippingAddress);
+      } else {
+        $scope.orderData.billingAddress = {};
+      }
+
     };
     $scope.addShipBilDetails = function (orderData) {
       //redirect them to cart summery and payment gateway
@@ -128,7 +135,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
           if (data.value === true) {
             console.log("payAndCapture");
             //redirect to thank you page
-            
+
           }
         });
       }
@@ -138,7 +145,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       apiService.apiCall("Order/orderConfirmationOrPay", orderData, function (data) {
         if (data.value === true) {
           console.log("Order confirmed successfully--- redirect to thank you page");
-           $state.go("thankyou");
+          $state.go("thankyou");
         }
       });
     }
@@ -360,7 +367,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     TemplateService.title = "thankyou"; //This is the Title of the Website
   })
 
- .controller('LinkExpireCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
+  .controller('LinkExpireCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
     $scope.template = TemplateService.getHTML("content/linkexpire.html");
     TemplateService.title = "linkexpire"; //This is the Title of the Website
   })

@@ -14,12 +14,12 @@
       <div>
         <label class="bottlemain" for="">{{product.product.name}}</label>
         <br>
-        <span class="qntlbl"> {{product.productQuantity}} Jars x ₹ {{product.product.price}} /Jar </span>
+        <span class="qntlbl"> {{product.productQuantity}} Jars x ₹ {{product.finalPrice}} /Jar </span>
       </div>
     </div>
     <div class="col-xs-4 bgchkoutcol502">
       <div>
-        <label class="rs" for="">₹  {{product.productQuantity * product.product.price}}</label>
+        <label class="rs" for="">₹  {{product.productQuantity * product.finalPrice}}</label>
       </div>
     </div>
   </div>
@@ -31,72 +31,84 @@
     </div>
     <div class="col-xs-4 savingamtdiv">
       <div>
-        <label class="savingrs" for="">₹  {{amountToBePaid}}</label>
+        <label class="savingrs" for="">₹  {{orderData.totalPrice}}</label>
       </div>
     </div>
   </div>
-
-  <div class="centeralign">
-    <div class="topimgdiv">
-      <img src="img/mainscreenlogo.png" alt="">
+  <form name="userForm">
+    <div class="centeralign">
+      <div class="topimgdiv">
+        <img src="img/mainscreenlogo.png" alt="">
+      </div>
+      <div class="header-label">
+        <label for="">Enter Shipping Details</label>
+      </div>
     </div>
-    <div class="header-label">
-      <label for="">Enter Shipping Details</label>
-    </div>
-  </div>
-  <label class=" item-input inputField">
-    <input class="inputsize" type="text" placeholder="Name"  ng-model="orderData.customer.name" name="name" required>
-    <p class="error-msg" ng-show="userForm.name.$error.required && userForm.name.$touched">Please Enter Your Name.</p>
-  </label>
-  <label class=" item-input inputField">
-    <input class="inputsize" type="text" only-digits ng-model="orderData.customer.mobile" placeholder="Mobile Number" disabled>
-  </label>
-  <label class=" item-input inputField">
-    <input class="inputsize" type="text" ng-model="orderData.shippingAddress.email" placeholder="Email ID" >
-  </label>
-  <label class=" item-input inputField">
-    <input class="inputsize" type="text" ng-model="orderData.customer.establishmentName" placeholder="Company Name (Optional)" >
-  </label>
-  <label class=" item-input inputField">
-    <input class="inputsize" type="text" ng-model="orderData.shippingAddress.address" placeholder="Shipping Address" >
-  </label>
-  <label class=" item-input inputField">
-    <input class="inputsize" type="text" placeholder="" diasbled>
-  </label>
-  <label class=" item-input inputField">
-    <input class="inputsize" type="number" ng-model="orderData.shippingAddress.pincode" placeholder="Pincode" >
-  </label>
-
-  <div class="custom-checkbox">
-    <input type="checkbox" id="checkme" ng-model="showaddr">
-    <label for="checkme">My billing address is same as my shipping address</label>
-  </div>
-
-
-  <div ng-if="!showaddr">
-
     <label class=" item-input inputField">
     <input class="inputsize" type="text" placeholder="Name"  ng-model="orderData.customer.name" name="name" required>
     <p class="error-msg" ng-show="userForm.name.$error.required && userForm.name.$touched">Please Enter Your Name.</p>
   </label>
     <label class=" item-input inputField">
-    <input class="inputsize" type="text" only-digits ng-model="orderData.customer.mobile" placeholder="Mobile Number" disabled>
+    <input class="inputsize" type="text" ng-model="orderData.customer.mobile" placeholder="Mobile Number" disabled>
   </label>
     <label class=" item-input inputField">
-    <input class="inputsize" type="text" ng-model="orderData.billingAddress.email" placeholder="Email ID" >
+    <input class="inputsize" type="text" ng-model="orderData.customer.email" placeholder="Email ID" required name="email">
+        <p class="error-msg"  ng-show="userForm.email.$error.required && userForm.email.$touched">Please Enter Your Email.</p>
   </label>
     <label class=" item-input inputField">
-    <input class="inputsize" type="number" ng-model="orderData.billingAddress.companyName"  placeholder="Company Name (Optional)" >
+    <input class="inputsize" type="text" ng-model="orderData.shippingAddress.establishmentName" placeholder="Company Name (Optional)" >
+    
   </label>
     <label class=" item-input inputField">
-    <input class="inputsize" type="text" ng-model="orderData.billingAddress.address" placeholder="Shipping Address" >
+    <input class="inputsize" type="text" ng-model="orderData.shippingAddress.address" placeholder="Shipping Address" required name="shippingAddress">
+    <p class="error-msg"  ng-show="userForm.shippingAddress.$error.required && userForm.shippingAddress.$touched">Please Enter Shipping Address.</p>
   </label>
     <label class=" item-input inputField">
-    <input class="inputsize" type="text" placeholder="" diasbled>
+    <input class="inputsize" type="text" ng-model="orderData.shippingAddress.address2" placeholder="..." >
   </label>
     <label class=" item-input inputField">
-    <input class="inputsize" type="number" ng-model="orderData.billingAddress.pincode" placeholder="Pincode" >
+    <input class="inputsize" ng-min="100000" ng-max="999999"  type="number" only-digits  ng-model="orderData.shippingAddress.pincode" placeholder="Pincode" required name="pincode" >
+     <p class="error-msg"  ng-show="userForm.pincode.$error.required && userForm.pincode.$touched">Please Enter Pincode.</p>
   </label>
-  </div>
-  <button class="button" ng-click="addShipBilDetails(orderData)">Place Order</button>
+
+    <div class="custom-checkbox">
+      <input type="checkbox" id="checkme" ng-model="showaddr" ng-click="addSameBillingDetails(showaddr)">
+      <label for="checkme">My billing address is same as my shipping address</label>
+    </div>
+
+
+    <div ng-if="!showaddr">
+      <div class="centeralign">
+        <div class="topimgdiv">
+          <img src="img/mainscreenlogo.png" alt="">
+        </div>
+        <div class="header-label">
+          <label for="">Enter Billing Details</label>
+        </div>
+      </div>
+      <label class=" item-input inputField">
+    <input class="inputsize" type="text" placeholder="Name"  ng-model="orderData.customer.name"  disabled>
+    <p class="error-msg" ng-show="userForm.name.$error.required && userForm.name.$touched">Please Enter Your Name.</p>
+  </label>
+      <label class=" item-input inputField">
+    <input class="inputsize" type="text"  ng-model="orderData.customer.mobile" placeholder="Mobile Number" disabled>
+  </label>
+
+      <label class=" item-input inputField">
+    <input class="inputsize" type="text" ng-model="orderData.billingAddress.companyName"  placeholder="Company Name (Optional)" >
+  </label>
+      <label class=" item-input inputField">
+    <input class="inputsize" type="text" ng-model="orderData.billingAddress.address" placeholder="Billing Address" name="billingAddress"> <p class="error-msg"  ng-show="userForm.billingAddress.$error.required && userForm.billingAddress.$touched">Please Enter Billing Address.</p>
+  </label>
+      <label class=" item-input inputField">
+    <input class="inputsize" type="text"  ng-model="orderData.billingAddress.address2"  placeholder="..." >
+  </label>
+      <label class=" item-input inputField">
+    <input class="inputsize" type="number" only-digits ng-model="orderData.billingAddress.pincode" placeholder="Pincode" name="pincodeBil" required>
+     <p class="error-msg" ng-min="100000" ng-max="999999" ng-show="userForm.pincodeBil.$error.required && userForm.pincodeBil.$touched">Please Enter Pincode.</p>
+  </label>
+
+    </div>
+    <button class="button" ng-disabled="userForm.$invalid" ng-click="addShipBilDetails(orderData)">Place Order</button>
+  </form>
 </div>
