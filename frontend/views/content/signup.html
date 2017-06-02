@@ -1,4 +1,41 @@
 <div class="">
+
+  <div class="centeralign">
+    <div class="topimgdiv">
+      <img src="img/mainscreenlogo.png" alt="">
+    </div>
+    <div class="header-label">
+      <label for="">Your Order</label>
+    </div>
+  </div>
+
+  <div class="row rowbgcolor " ng-repeat="product in orderData.product">
+    <div class="col-xs-8 bgchkoutcol50Quant">
+      <div>
+        <label class="bottlemain" for="">{{product.product.name}}</label>
+        <br>
+        <span class="qntlbl"> {{product.productQuantity}} Jars x ₹ {{product.product.price}} /Jar </span>
+      </div>
+    </div>
+    <div class="col-xs-4 bgchkoutcol502">
+      <div>
+        <label class="rs" for="">₹  {{product.productQuantity * product.product.price}}</label>
+      </div>
+    </div>
+  </div>
+  <div class="row rowbgcolor">
+    <div class="col-xs-8 savingscol501 ">
+      <div>
+        <label class="saving" for="">Total</label>
+      </div>
+    </div>
+    <div class="col-xs-4 savingamtdiv">
+      <div>
+        <label class="savingrs" for="">₹  {{amountToBePaid}}</label>
+      </div>
+    </div>
+  </div>
+
   <div class="centeralign">
     <div class="topimgdiv">
       <img src="img/mainscreenlogo.png" alt="">
@@ -7,7 +44,6 @@
       <label for="">Enter Shipping Details</label>
     </div>
   </div>
-
   <label class=" item-input inputField">
     <input class="inputsize" type="text" placeholder="Name"  ng-model="orderData.customer.name" name="name" required>
     <p class="error-msg" ng-show="userForm.name.$error.required && userForm.name.$touched">Please Enter Your Name.</p>
@@ -30,13 +66,6 @@
   <label class=" item-input inputField">
     <input class="inputsize" type="number" ng-model="orderData.shippingAddress.pincode" placeholder="Pincode" >
   </label>
-
-
-
-  <!--<div class="squaredThree checkbox">
-      <input type="checkbox" value="None" id="squaredThree" name="check" />
-      <label class="squaredThreelabel" for="squaredThree"></label>       
-    </div>-->
 
   <div class="custom-checkbox">
     <input type="checkbox" id="checkme" ng-model="showaddr">
@@ -69,11 +98,5 @@
     <input class="inputsize" type="number" ng-model="orderData.billingAddress.pincode" placeholder="Pincode" >
   </label>
   </div>
-
   <button class="button" ng-click="addShipBilDetails(orderData)">Place Order</button>
-
 </div>
-
-<!--<div class="signupbtn">
-      Get Started
-    </div>-->
