@@ -32,18 +32,16 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
   })
 
   //Example API Controller
-  .controller('DemoAPICtrl', function ($scope, TemplateService, apiService, NavigationService, $timeout) {
-    apiService.getDemo($scope.formData, function (data) {
-      console.log(data);
-    });
-  })
+  // .controller('DemoAPICtrl', function ($scope, TemplateService, apiService, NavigationService, $timeout) {
+  //   apiService.getDemo($scope.formData, function (data) {
+  //     console.log(data);
+  //   });
+  // })
 
   .controller('SignUpCtrl', function ($scope, TemplateService, $state, $stateParams, apiService, NavigationService, $timeout) {
     $scope.template = TemplateService.getHTML("content/signup.html");
     TemplateService.title = "Sign Up"; //This is the Title of the Website
-    apiService.getDemo($scope.formData, function (data) {
-      console.log(data);
-    });
+
     if ($stateParams.orderId) {
       console.log("orderId", $stateParams.orderId);
       var formData = {};
@@ -71,26 +69,25 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
   .controller('ReviewCtrl', function ($scope, $state, TemplateService, $stateParams, apiService, NavigationService, $uibModal, $timeout) {
     $scope.template = TemplateService.getHTML("content/review.html");
     TemplateService.title = "Review"; //This is the Title of the Website
-    apiService.getDemo($scope.formData, function (data) {
-      console.log(data);
-    });
+
     $scope.orderData = {};
+    $scope.amountToBePaid = 0;
     if ($stateParams.orderId) {
       console.log("orderId", $stateParams.orderId);
       var formData = {};
       formData._id = $stateParams.orderId;
       apiService.apiCall("Order/getOne", formData, function (data) {
         if (data.value === true) {
-          console.log("login", data.data);
+
           $scope.orderData = data.data;
-          var total = 0;
-          total = $scope.orderData.totalQuantity * $scope.orderData.product[0].finalPrice;
-          totalsave = $scope.orderData.totalQuantity * $scope.orderData.product[0].product.price;
-          $scope.diff = totalsave - total;
-          $scope.percent = total / totalsave * 100;
+          _.each($scope.orderData.product, function (n, key) {
+            $scope.amountToBePaid += parseFloat(n.product.price) * parseInt(n.productQuantity);
+          });
+
+
           $scope.options = {
             'key': 'rzp_test_BrwXxB7w8pKsfS',
-            'amount': parseInt($scope.orderData.totalAmount) * 100,
+            'amount': parseInt($scope.amountToBePaid) * 100,
             'name': $scope.orderData.customer.name,
             'description': 'Pay for Order ' + $scope.orderData.orderID,
             'image': '',
@@ -106,18 +103,9 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
               color: '#3399FF'
             }
           };
-          //  $.jStorage.set('user', data.data);
-          //  $.jStorage.set("accessToken", data.data.accessToken[0]);
+
         }
       });
-    }
-    $scope.calprice = function () {
-      var total = 0;
-      total = $scope.orderData.totalQuantity * $scope.orderData.product[0].finalPrice;
-      totalsave = $scope.orderData.totalQuantity * $scope.orderData.product[0].product.price;
-      var diff = totalsave - total;
-      $scope.percent = total / save * 100;
-      return diff;
     }
 
     $scope.pay = function () {
