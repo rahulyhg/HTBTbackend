@@ -1,5 +1,4 @@
 // JavaScript Document
-var adminurl = "http://htbt.wohlig.co.in/api/"; //server
 var imgurl = adminurl + "upload/";
 
 var imgpath = imgurl + "readFile";

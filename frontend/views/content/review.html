@@ -10,15 +10,39 @@
                 </div>
             </div>
 
-            <div class="subplan">
+            <div class="subplan" ng-if= "orderData.product[0].product.category.subscription == 'Yes'">
                 <label for="">Subscription Plan</label>
             </div>
-            <div class="row rowbgcolor">
+            <div class="row rowbgcolor ma0" ng-if= "orderData.product[0].product.category.subscription == 'Yes'">
 
                 <div class="col-xs-4 ">
                     <div class="mt10">
                         <div class="aquaimgdiv">
-                            <img class="browse-sliderImg " ng-src="{{orderData.product[0].product.bigImage | uploadpath}}" alt="">
+                            <img class="browse-sliderImg " ng-src="{{orderData.product[0].product.smallImage | uploadpath}}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-2  bordiv">
+                    <div class="bordiv">
+                    </div>
+                </div>
+
+                <div class="reviewcol6 ma0">
+                    <h4 class="aquamar">{{orderData.product[0].product.name}}</h4>
+                    <div for="" class="purecol">{{orderData.product[0].product.tag}}<img class="img-responsive infoimg" src="img/ic_info_black_24dp copy 3.png"
+                            alt=""></div>
+
+                    <div for="" class="desc">{{orderData.product[0].product.category.name}}</div>
+                    <div for="" class="desc">₹ {{orderData.product[0].finalPrice}}</div>
+
+                </div>
+            </div>
+            <div class="row rowbgcolor" ng-if= "orderData.product[0].product.category.subscription == 'No'" ng-repeat="pr in orderData.product">
+
+                <div class="col-xs-4 ">
+                    <div class="mt10">
+                        <div class="aquaimgdiv">
+                            <img class="browse-sliderImg " ng-src="{{pr.product.smallImage | uploadpath}}" alt="">
                         </div>
                     </div>
                 </div>
@@ -28,18 +52,18 @@
                 </div>
 
                 <div class="reviewcol6">
-                    <h3 class="aquamar">{{orderData.product[0].product.name}}</h3>
-                    <div for="" class="purecol">{{orderData.product[0].product.tag}}<img class="img-responsive infoimg" src="img/ic_info_black_24dp copy 3.png"
+                    <h4 class="aquamar">{{pr.product.name}}</h4>
+                    <div for="" class="purecol">{{pr.product.tag}}<img class="img-responsive infoimg" src="img/ic_info_black_24dp copy 3.png"
                             alt=""></div>
 
-                    <div for="" class="desc">{{orderData.product[0].product.category.name}}</div>
-                    <div for="" class="desc">₹ {{orderData.product[0].finalPrice}}</div>
+                    <div for="" class="desc">{{pr.product.category.name}}</div>
+                    <div for="" class="desc">₹ {{pr.finalPrice}}</div>
 
                 </div>
             </div>
         </div>
 
-        <div class="row rowbgcolor " ng-if="orderData.product[0].jarDeposit">
+        <div class="row rowbgcolor" ng-if="orderData.product[0].jarDeposit">
             <div class="col-xs-8 bgchkoutcol50Quant">
                 <div>
                     <label class="bottlemain" for="">One Time Bottle Deposit
@@ -55,7 +79,7 @@
                 </div>
             </div>
         </div>
-        <div class="row rowbgcolor " ng-repeat="product in orderData.product">
+        <div class="row rowbgcolor  " ng-repeat="product in orderData.product" ng-if="orderData.product[0].product.category.subscription == 'Yes'">
             <div class="col-xs-8 bgchkoutcol50Quant">
                 <div>
                     <label class="bottlemain" for="">{{product.product.name}}</label>
@@ -70,10 +94,11 @@
                 </div>
             </div>
         </div>
+
         <div class="row rowbgcolor">
             <div class="col-xs-8 savingscol501 ">
                 <div>
-                    <label class="saving" for="">Total 
+                    <label class="saving" for="">Total
 
                 </label>
                 </div>
@@ -104,15 +129,11 @@
                             Delivering on {{dt|date:'EEEE'}}
                         </h4>
                         <div>
-
                             <input type="text" class="form-control display-none" uib-datepicker-popup ng-model="dt" is-open="popup2.opened" datepicker-options="dateOptions"
                                 ng-required="true" close-text="Close" />
                             <span class="input-group-btn t">
-            <button type="button" class="btn btn-default  cal-on-click" ng-click="open2()">Click here to change!  </button>
+                            <button type="button" class="btn btn-default  cal-on-click" ng-click="open2()">Click here to change!  </button>
                         </div>
-
-
-
                         <!-- <input type="date" class="hidedate"> -->
                     </div>
                     <i class="fa fa-chevron-right arrow" aria-hidden="true"></i>

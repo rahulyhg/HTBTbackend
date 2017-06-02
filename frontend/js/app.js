@@ -42,7 +42,7 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
         })
 
         .state('nonsub', {
-            url: "/nonsub",
+            url: "/nonsub/:orderId",
             templateUrl: tempateURL,
             controller: 'NonSubCtrl'
         })

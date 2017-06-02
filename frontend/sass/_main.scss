@@ -1,19 +1,15 @@
-
 /* Bootstrap Variables Goes Here */
-
 $brand-primary: #0d9dff !default;
 $brand-success: #84ce3c !default;
 $brand-warning: #ffec39 !default;
 $brand-danger: #ff414d !default;
 $brand-info: #000072 !default;
 @import "../../bower_components/bootstrap-sass/assets/stylesheets/bootstrap";
-
 /* Bootstrap Variables Goes Here */
-
-@import "other/font-fix";
-// body {
+@import "other/font-fix"; // body {
 //     // padding-top: 70px;
 // }
+
 img.loading {
     text-align: center;
     opacity: 1;
@@ -36,6 +32,7 @@ img.doneLoading {
 
 .header-label {
     display: inline-block;
+
     label {
         display: inline-block;
         max-width: 100%;
@@ -50,8 +47,9 @@ img.doneLoading {
     width: 10%;
     display: inline-block;
     padding-top: 20px;
+
     img {
-        width: 100%
+        width: 100%;
     }
 }
 
@@ -59,34 +57,39 @@ img.doneLoading {
     width: 10%;
     display: inline-block;
     padding: 20px 0;
+
     img {
-        width: 100%
+        width: 100%;
     }
 }
-
 // custom checkbox
 .custom-checkbox {
     position: relative;
     left: 10px;
+
     input {
         -webkit-appearance: none;
     }
+
     input:checked+label:after {
         border: 1px solid #ff414d;
         background-color: #ff414d;
         transition: all 300ms linear;
     }
+
     input:checked+label:before {
         color: #fff;
         transition: all 300ms linear;
         opacity: 1;
     }
+
     label {
         display: inline-block;
         max-width: 100%;
         margin-bottom: 5px;
         font-weight: normal!important;
     }
+
     label:after {
         border: 1px solid red;
         content: '';
@@ -98,22 +101,23 @@ img.doneLoading {
         top: 2px;
         transition: all 300ms linear;
     }
+
     label:before {
         content: "\f00c";
         font: normal normal normal 14px/1 FontAwesome;
         position: absolute;
-        left: 0px;
+        left: 0;
         top: 4px;
         color: red;
         z-index: 1;
         opacity: 0;
         transition: all 300ms linear;
     }
+
     label {
         padding-left: 20px;
     }
 }
-
 // custom checkbox
 nav li:hover .dropdown-menu {
     display: block;
@@ -123,9 +127,9 @@ nav li:hover .dropdown-menu {
     opacity: 1;
 }
 
-a,
 .btn,
-[ui-sref] {
+[ui-sref],
+a {
     cursor: pointer;
     transition: all ease 300ms;
 }
@@ -134,18 +138,18 @@ footer {
     font-size: 12px;
     background-color: #eee;
     padding: 10px 0;
+
     p {
         margin: 0;
     }
 }
-
 //bootstrap forms
-.input-lg,
-.input-group-lg>.form-control,
-.input-group-lg>.input-group-addon,
-.input-group-lg>.input-group-btn>.btn,
 .btn,
-.form-control {
+.form-control,
+.input-group-lg > .form-control,
+.input-group-lg > .input-group-addon,
+.input-group-lg > .input-group-btn > .btn,
+.input-lg {
     border-radius: 0;
     box-shadow: none;
 }
@@ -162,9 +166,11 @@ footer {
 
 .form-invalid {
     color: $brand-danger;
+
     .form-control {
         border-color: $brand-danger;
         color: $brand-danger;
+
         &::-webkit-input-placeholder {
             color: $brand-danger;
         }
@@ -174,15 +180,16 @@ footer {
 .form-submission {
     min-height: 300px;
 }
-
 //FLEX SLIDER FIXES
 .flex-direction-nav {
     a {
         height: auto;
     }
+
     .flex-prev {
         left: 10px !important;
     }
+
     .flex-next {
         right: 10px !important;
     }
@@ -251,6 +258,7 @@ header {
     border: 1px solid #ff414d;
     //   display: inline;
     margin: 5px;
+
     .squaredThreelabel {
         width: 20px;
         height: 15px;
@@ -260,6 +268,7 @@ header {
         top: 0;
         left: 0;
         background: #ff414d;
+
         &:after {
             content: '';
             width: 15px;
@@ -274,6 +283,7 @@ header {
             opacity: 0;
             transform: rotate(-45deg);
         }
+
         &:checked {
             background: transparent;
         }
@@ -281,19 +291,18 @@ header {
         //   opacity: 0.3;
         // }
     }
+
     input[type=checkbox] {
         &:checked+label:after {
             opacity: 1;
         }
+
         input[type=checbox]:checked {
             background: #ff414d;
         }
     }
 }
-
-
 /* end .squaredThree */
-
 .billLbl {
     font-size: 14px;
     font-weight: 400;
@@ -314,30 +323,35 @@ header {
 }
 
 .subplan {
-        position: relative;
+    position: relative;
     background: #e1e1e1;
     text-align: center;
-    margin: 0 0px 0px;
+    margin: 0;
     height: 40px;
     line-height: 40px;
 }
 
 .mt10 {
-    margin: 20px 0 0 0;
+    margin: 20px 0 0;
 }
 
 .aquaimgdiv {
-    width: 100%;
+    max-width: 120px;
+    max-height: 120px;
+    margin: 30px auto;
+
     img {
-        display: block;
-        width: 70%;
-        margin: 0 auto;
+        width: 100%;
+        height: 100%;
     }
 }
-
+.ma0{
+  margin: 0!important;
+}
 .bordiv {
     height: 100%;
-    padding-top: 30px;
+    padding: 20px 0;
+
     div {
         width: 1px;
         background: #dbdbdb;
@@ -354,7 +368,7 @@ header {
 }
 
 .aquamar {
-    margin: 0px!important;
+    margin: 0 !important;
     font-weight: 500;
 }
 
@@ -365,21 +379,21 @@ header {
 
 .rowbgcolor {
     background: white;
-    margin: 0 0px;
+    margin: 10px 0;
 }
 
-
-.border-bottommar{
-         border-bottom: 1px solid #bcc1c4;
+.border-bottommar {
+    border-bottom: 1px solid #bcc1c4;
     margin-right: 10px;
 }
 
 .colipwid {
     text-align: left;
-    padding: 0!important;
-    margin: 0!important;
+    padding: 0 !important;
+    margin: 0 !important;
     //
     margin-right: 10px;
+
     input {
         text-align: left;
         width: 100%;
@@ -392,7 +406,7 @@ header {
 
 .rowbgcoupon {
     background: white;
-    margin: 10px 0px;
+    margin: 10px 0;
 }
 
 .colmd5copon {
@@ -400,40 +414,36 @@ header {
     line-height: 30px;
 }
 
-.rowbgcolor {
-    background: white;
-}
-
 .bottlemain {
-    padding: 15px 0 0 0px!important;
-    margin: 0px!important;
+    padding: 15px 0 0 !important;
+    margin: 0 !important;
     font-weight: 400;
     color: #949da0;
 }
 
 .qntlbl {
-    margin: 0px!important;
+    margin: 0 !important;
     font-weight: 400;
     color: #949da0;
 }
 
 .rs {
-    padding: 20px 0 0 0px!important;
-    margin: 0px!important;
+    padding: 20px 0 0 !important;
+    margin: 0 !important;
     font-weight: 400;
-    font-size: 16px
+    font-size: 16px;
 }
 
 .saving {
-    padding: 15px 0 15px 0px!important;
-    margin: 0px!important;
+    padding: 15px 0 !important;
+    margin: 0 !important;
     font-weight: 400;
     font-size: 16px;
 }
 
 .savingrs {
-    padding: 12px 0 0 0px!important;
-    margin: 0px!important;
+    padding: 12px 0 0 !important;
+    margin: 0 !important;
     font-weight: 400;
     font-size: 16px;
     color: #ff414d;
@@ -463,14 +473,14 @@ header {
 }
 
 .mar10 {
-    padding: 0!important;
-    margin: 15px 0 0 0!important;
-    color: #0d9b8e
+    padding: 0 !important;
+    margin: 15px 0 0 !important;
+    color: #0d9b8e;
 }
 
 .crossimgdiv {
-        position: absolute;
-    right: 0%;
+    position: absolute;
+    right: 0;
     top: 50%;
     width: 6%;
     transform: translate(-50%, -50%);
@@ -481,7 +491,7 @@ header {
 }
 
 .termscolor {
-    color: #ff414d
+    color: #ff414d;
 }
 
 .infoimg {
@@ -498,123 +508,122 @@ header {
     height: 90%!important;
     text-align: justify!important;
 }
-
 //date picker
 .full button span {
     background-color: limegreen;
     border-radius: 32px;
     color: black;
-  }
-  .partially button span {
+}
+
+.partially button span {
     background-color: orange;
     border-radius: 32px;
     color: black;
-  }
+}
 
-  .display-none{
-      display: none!important;
-  }
+.display-none {
+    display: none!important;
+}
 
-  .cal-on-click{
-          border: none;
+.cal-on-click {
+    border: none;
     padding: 0;
-    
     font-size: 14px;
     background: transparent!important;
     box-shadow: none!important;
     text-align: center!important;
-    
-  }
+}
 
-  .uib-datepicker-popup.dropdown-menu {
+.uib-datepicker-popup.dropdown-menu {
     display: block;
     float: left;
     margin: 0;
     left: -58px!important;
-  }
-
-  .glyphicon {
-font-family: 'Fontawesome';
 }
+
+.glyphicon {
+    font-family: 'Fontawesome';
+}
+
 .glyphicon-chevron-right:before {
-content: '\f054';
-}
-.glyphicon-chevron-left:before {
-content: '\f053';
+    content: '\f054';
 }
 
-.arrow{
-        font-size: 20px;
+.glyphicon-chevron-left:before {
+    content: '\f053';
+}
+
+.arrow {
+    font-size: 20px;
     color: #969696;
     padding-left: 8px;
-        position: absolute;
+    position: absolute;
     top: 32px;
-    right: 0px;
+    right: 0;
 }
-
 //nonsubscription
 .rowbgcolorpos {
     background: white!important;
-    margin: 0 0px;
+    margin: 0;
     position: relative;
 }
 
-.nonsubcross{
+.nonsubcross {
     position: absolute;
-    right: 0%;
+    right: 0;
     top: 10%;
     width: 6%;
     transform: translate(-50%, -50%);
 }
 
-.nonsubaqua{
-    margin: 0px !important;
+.nonsubaqua {
+    margin: 0 !important;
     font-weight: 500;
     vertical-align: middle;
     display: inline-block;
 }
-.nonsub1ltr{
-        font-size: 18px;
+
+.nonsub1ltr {
+    font-size: 18px;
     vertical-align: middle;
 }
 
-.nonsubrs{
-    padding: 15px 0 0 0px !important;
-    margin: 0px !important;
+.nonsubrs {
+    padding: 15px 0 0 !important;
+    margin: 0 !important;
     font-weight: 400;
     font-size: 16px;
 }
 
-
-.nonsubaquaimg{
+.nonsubaquaimg {
     width: 40%;
     /* height: 50%; */
     display: block;
     margin: 0 auto;
     padding-bottom: 10px;
-    img{
-            width: 100%;
+
+    img {
+        width: 100%;
     }
 }
 
-.nonsubborder{
-     height: 100%;
+.nonsubborder {
+    height: 100%;
     padding-top: 30px;
+
     div {
         width: 1px;
         background: #278cce;
         height: 100px;
     }
-    
 }
-
 //thankyou
-
-.reldiv{
+.reldiv {
     position: relative;
     height: 100vh;
     text-align: center;
 }
+
 
 .thankyou{
     font-size: 32px;
@@ -622,12 +631,13 @@ content: '\f053';
     text-align: center
 }
 
-.declinetext{
-       font-size: 21px;
+.declinetext {
+    font-size: 21px;
     width: 100%;
     text-align: center;
    
 }
+
 
 .orderplaced{
     font-size: 21px;
@@ -669,3 +679,4 @@ content: '\f053';
         font-weight: 500;
         color: #6d797e
     }
+

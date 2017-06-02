@@ -50,6 +50,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
         if (data.value === true) {
           console.log("Order/getOne", data.data);
           $scope.orderData = data.data;
+          console.log($scope.orderData);
         }
       });
     };
@@ -110,24 +111,24 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
 
     $scope.pay = function () {
       console.log("inside payment");
-      $state.go("thankyou");
-      // $.getScript('https://checkout.razorpay.com/v1/checkout.js', function () {
-      //   var rzp1 = new Razorpay($scope.options);
-      //   rzp1.open();
+      $.getScript('https://checkout.razorpay.com/v1/checkout.js', function () {
+        var rzp1 = new Razorpay($scope.options);
+        rzp1.open();
 
-      // });
+      });
     };
 
     $scope.transactionHandler = function (success) {
       console.log("transaction", success);
       if (success.razorpay_payment_id) {
+        $state.go("thankyou");
         $scope.orderData.razorpay_payment_id = success.razorpay_payment_id;
         $scope.orderData.status = 'Confirmed';
         apiService.apiCall("Order/orderConfirmationOrPay", $scope.orderData, function (data) {
           if (data.value === true) {
             console.log("payAndCapture");
             //redirect to thank you page
-            $state.go("thankyou");
+            
           }
         });
       }
@@ -248,6 +249,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
   .controller('NonSubCtrl', function ($scope, TemplateService, apiService, NavigationService, $uibModal, $timeout) {
     $scope.template = TemplateService.getHTML("content/nonsub.html");
     TemplateService.title = "NonSub"; //This is the Title of the Website
+
 
     $scope.terms = function () {
       $uibModal.open({

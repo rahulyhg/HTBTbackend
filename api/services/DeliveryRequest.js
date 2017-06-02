@@ -118,7 +118,7 @@ var model = {
                             } else {
                                 if (foundcust) {
                                     // callback(null, found);
-                                    foundcust.balance = foundcust.balance - data.QuantityDelivered;
+                                    foundcust.jarBalance = foundcust.jarBalance - data.QuantityDelivered;
                                     User.saveData(foundcust, function (err, savedCust) {
                                         if (err) {
                                             console.log("err", err);
@@ -156,7 +156,7 @@ var model = {
                                                         //callback(err, null);
                                                     } else {                                                    console.log("foundEarnings ",foundEarnings);
                                                         if (foundEarnings) {
-                                                            console.log(" foundEarnings----inside if ");
+                                                            console.log(" foundEarnings----inside if ",val.rate);
                                                             foundEarnings.earnings = parseInt(foundEarnings.earnings) + (parseInt(val.rate) * parseInt(data.QuantityDelivered))
                                                             Earnings.saveData(foundEarnings, function (err, savedEarnings) {
                                                                 if (err) {
@@ -166,7 +166,7 @@ var model = {
                                                                 }
                                                             });
                                                         } else {
-                                                            console.log(" foundEarnings----inside else ");
+                                                            console.log(" foundEarnings----inside else ",val.rate);
                                                             var newEarning = {};
                                                             newEarning.order = data.Order._id;
                                                             newEarning.relationshipPartner = data.customer.relationshipId;

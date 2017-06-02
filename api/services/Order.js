@@ -149,6 +149,24 @@ var model = {
                         })
                     }
                 });
+                if (data.razorpay_payment_id && _.isEqual(savedData.methodOfPayment, 'credits')) {
+                    User.findOne({
+                        _id: data.customer.relationshipId
+                    }).lean().exec(function (err, RPdata) {
+                        if (err) {
+                            callback(err, null);
+                        } else {
+                            RPdata.credits = parseInt(RPdata.credits) + parseInt(totalAmount);
+                            User.saveData(RPdata, function (err, savedUser) {
+                                if (err) {
+                                    callback(err, null);
+                                } else {
+                                    console.log("savedUser--", savedUser);
+                                }
+                            })
+                        }
+                    });
+                }
                 if (confirmationToRP && data.customer.relationshipId) {
                     var shortU;
                     // Shorten a long url and output the result
@@ -189,6 +207,28 @@ var model = {
                             })
                         }
                     });
+                }
+                if (data.customer.mobile) {
+                    var smsMessage = "Order "+data.orderID+" confirmed! Download the HaTa App or call on 022 - 33024910 to schedule your first delivery."
+                    var smsObj = {
+                        "message": "HTBT",
+                        "sender": "HATABT",
+                        "sms": [{
+                            "to": data.customer.mobile,
+                            "message": smsMessage,
+                            "sender": "HATABT",
+                        }]
+                    };
+                    Config.sendSMS(smsObj, function (error, SMSResponse) {
+                        if (error || SMSResponse == undefined) {
+                            console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
+                            callback(error, null);
+                        } else {
+                            callback(null, {
+                                message: "OTP sent"
+                            });
+                        }
+                    })
                 }
                 callback(null, data)
             }
@@ -439,6 +479,26 @@ var model = {
                                     callback(err, null);
                                 } else {
                                     console.log("savedData-- user", savedData);
+                                    User.findOne({
+                                        _id: savedData.relationshipId
+                                    }).lean().exec(function (err, RPdata) {
+                                        if (err) {
+                                            callback(err, null);
+                                        } else {
+                                            var cust = {};
+                                            cust.customer = savedData._id;
+                                            cust.addedDate = new Date();
+                                            cust.status = 'pending';
+                                            RPdata.customer.push(cust);
+                                            User.saveData(RPdata, function (err, updated) {
+                                                if (err) {
+                                                    console.log("error occured while adding customer");
+                                                } else {
+                                                    console.log("customer added successfully");
+                                                }
+                                            });
+                                        }
+                                    });
                                     data1.customer = savedData;
                                     callback(null, data1)
                                 }
@@ -570,6 +630,26 @@ var model = {
                                         callback(err, null);
                                     } else {
                                         console.log("savedData-- user", savedData);
+                                        User.findOne({
+                                            _id: savedData.relationshipId
+                                        }).lean().exec(function (err, RPdata) {
+                                            if (err) {
+                                                callback(err, null);
+                                            } else {
+                                                var cust = {};
+                                                cust.customer = savedData._id;
+                                                cust.addedDate = new Date();
+                                                cust.status = 'pending';
+                                                RPdata.customer.push(cust);
+                                                User.saveData(RPdata, function (err, updated) {
+                                                    if (err) {
+                                                        console.log("error occured while adding customer");
+                                                    } else {
+                                                        console.log("customer added successfully");
+                                                    }
+                                                });
+                                            }
+                                        });
                                         customerData = savedData;
                                         callback(null, customerData);
                                     }
@@ -703,7 +783,7 @@ var model = {
                 callback(err, null);
             } else {
                 console.log("found", found);
-                callback(null,found);
+                callback(null, found);
             }
         })
 
@@ -747,12 +827,12 @@ var model = {
                 callback(err, null);
             } else {
                 console.log("found", found);
-                callback(null,found);
+                callback(null, found);
             }
         })
 
     },
-      //to get Last Three month orders of RM
+    //to get Last Three month orders of RM
     // getLastThreeMonthOrder: function (data, callback) {
     //     console.log(ObjectId(data.user));
     //     var days = moment(new moment().subtract(1, 'months')).daysInMonth();
