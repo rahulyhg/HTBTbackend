@@ -54,7 +54,11 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
             controller: 'ThankYouCtrl'
         })
 
-
+.state('linkexpire', {
+            url: "/linkexpire",
+            templateUrl: tempateURL,
+            controller: 'LinkExpireCtrl'
+        })
 
 .state('sorry', {
             url: "/sorry",
