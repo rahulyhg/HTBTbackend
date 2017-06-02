@@ -59,10 +59,7 @@ var schema = new Schema({
         enum: ['Customer', 'Relationship Partner']
     },
     dateofjoin: Date,
-    jarBalance: {
-        type: Number,
-        default: 0
-    },
+
 
     otp: String,
     lastRank: String,
@@ -131,6 +128,16 @@ var schema = new Schema({
         totalQuantity: Number,
         DiscountAmount: String
     },
+    subscribedProd: [{
+        product: {
+            type: Schema.Types.ObjectId,
+            ref: 'Product',
+        },
+        jarBalance: {
+            type: Number,
+            default: 0
+        }
+    }],
 
 });
 
@@ -588,7 +595,7 @@ var model = {
     //to get specific user profile
     getNewCustomer: function (data, callback) {
         console.log("data", data)
-           var now = moment();
+        var now = moment();
         var days = moment(now).daysInMonth();
         var currMonth = moment(now).month();
         var dayOne = moment().date(1).month(currMonth).toDate();
@@ -600,13 +607,13 @@ var model = {
                 callback(err, null);
             } else {
                 if (found) {
-                    console.log("found",found);
+                    console.log("found", found);
                     var CurrentMonUser = _.filter(found.customer, function (o) {
-                        if(o.addedDate>dayOne && o.addedDate<=lastDay){
-                        return o;
+                        if (o.addedDate > dayOne && o.addedDate <= lastDay) {
+                            return o;
                         }
                     });
-                    console.log("CurrentMonUser",CurrentMonUser);
+                    console.log("CurrentMonUser", CurrentMonUser);
                     callback(null, CurrentMonUser);
                 } else {
                     callback({

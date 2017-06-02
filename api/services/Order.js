@@ -209,7 +209,27 @@ var model = {
                     });
                 }
                 if (data.customer.mobile) {
-                    var smsMessage = "Order "+data.orderID+" confirmed! Download the HaTa App or call on 022 - 33024910 to schedule your first delivery."
+                    User.findOne({
+                        _id: data.customer._id
+                    }).exec(function (err, userdata) {
+                        if (err) {
+                            callback(err, null);
+                        } else {
+                            if (!_.isEmpty(userdata.subscribedProd[0]) && userdata.subscribedProd[0].jarBalance) {
+                                userdata.subscribedProd[0].jarBalance = parseInt(userdata.subscribedProd[0].jarBalance) + parseInt(data.totalQuantity);
+                            } else {
+                                userdata.subscribedProd[0].jarBalance = parseInt(data.totalQuantity);
+                            }
+                            userdata.save(function (err, updated) {
+                                if (err) {
+                                    console.log("error occured in user update");
+                                } else {
+                                    console.log("user updated");
+                                }
+                            });
+                        }
+                    });
+                    var smsMessage = "Order " + data.orderID + " confirmed! Download the HaTa App or call on 022 - 33024910 to schedule your first delivery."
                     var smsObj = {
                         "message": "HTBT",
                         "sender": "HATABT",

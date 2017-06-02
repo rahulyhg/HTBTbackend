@@ -4,9 +4,13 @@ var schema = new Schema({
         unique: true
     },
     deliverdate: Date,
-    delivertime: String,
+    delivertime: {
+        type: String,
+        enum: ['8 AM to 1 PM', '1 PM to 6 PM']
+    },
     status: {
         type: String, //Delivery Scheduled ,In Transit,Full Delivery Successful,Partial Delivery Successful,Delivery Failed
+        enum: ['Delivery Scheduled', 'In Transit', 'Full Delivery Successful', 'Partial Delivery Successful', 'Delivery Failed','Cancelled'],
         default: "Delivery Scheduled"
     },
     Quantity: {
@@ -39,35 +43,50 @@ module.exports = mongoose.model('DeliveryRequest', schema);
 
 var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "product Order customer", "product Order customer"));
 var model = {
-    //to schedule the delivery 
+    //to schedule the delivery 'data.customer is required here'
     scheduleDelivery: function (data, callback) {
         var reqID = '';
-        DeliveryRequest.find({}).sort({
-            createdAt: -1
-        }).exec(function (err, fdata) {
+        User.findOne({
+            _id: data.customer
+        }).exec(function (err, userData) {
             if (err) {
                 console.log(err);
                 callback(err, null);
             } else {
-                if (fdata.length > 0) {
-                    console.log(fdata[0]);
-                    reqId = parseInt(fdata[0].requestID) + 1;
-                } else {
-                    console.log("no data");
-                    reqID = 1;
-                    console.log(reqID);
+                console.log("userData", userData);
+                if (userData.subscribedProd[0].jarBalance > data.Quantity) {
+                    data.product = userData.subscribedProd[0].product;
+                    DeliveryRequest.find({}).sort({
+                        createdAt: -1
+                    }).exec(function (err, fdata) {
+                        if (err) {
+                            console.log(err);
+                            callback(err, null);
+                        } else {
+                            if (fdata.length > 0) {
+                                console.log(fdata[0]);
+                                reqId = parseInt(fdata[0].requestID) + 1;
+                            } else {
+                                console.log("no data");
+                                reqID = 1;
+                                console.log(reqID);
+                            }
+                            data.requestID = reqID;
+                            data.requestDate = new Date();
+                            DeliveryRequest.saveData(data, function (err, savedData) {
+                                if (err) {
+                                    callback(err, null);
+                                } else {
+                                    callback(null, savedData);
+                                }
+                            })
+                        }
+                    });
                 }
-                data.requestID = reqID;
-                data.requestDate = new Date();
-                DeliveryRequest.saveData(data, function (err, savedData) {
-                    if (err) {
-                        callback(err, null);
-                    } else {
-                        callback(null, savedData);
-                    }
-                })
+
             }
-        });
+        })
+
     },
     //to update the delivery request after product is delivered 
     saveDeliveryRequest: function (data, callback) {
@@ -118,7 +137,7 @@ var model = {
                             } else {
                                 if (foundcust) {
                                     // callback(null, found);
-                                    foundcust.jarBalance = foundcust.jarBalance - data.QuantityDelivered;
+                                    foundcust.subscribedProd.jarBalance = foundcust.subscribedProd.jarBalance - data.QuantityDelivered;
                                     User.saveData(foundcust, function (err, savedCust) {
                                         if (err) {
                                             console.log("err", err);
@@ -144,19 +163,20 @@ var model = {
                                     if (foundUser) {
                                         console.log("foundUser--", foundUser);
                                         _.forEach(data.product.commission, function (val) {
-                                        console.log("val.commissionType--", val.commissionType,"foundUser.levelstatus",foundUser.levelstatus,val.commissionType==foundUser.levelstatus);
-                                            
-                                            if (val.commissionType==foundUser.levelstatus) {
-                                                console.log("commisiontype matched",data.Order);
+                                            console.log("val.commissionType--", val.commissionType, "foundUser.levelstatus", foundUser.levelstatus, val.commissionType == foundUser.levelstatus);
+
+                                            if (val.commissionType == foundUser.levelstatus) {
+                                                console.log("commisiontype matched", data.Order);
                                                 Earnings.findOne({
                                                     order: data.Order._id
                                                 }).exec(function (err, foundEarnings) {
                                                     if (err) {
-                                                        console.log("Earnings",err);
+                                                        console.log("Earnings", err);
                                                         //callback(err, null);
-                                                    } else {                                                    console.log("foundEarnings ",foundEarnings);
+                                                    } else {
+                                                        console.log("foundEarnings ", foundEarnings);
                                                         if (foundEarnings) {
-                                                            console.log(" foundEarnings----inside if ",val.rate);
+                                                            console.log(" foundEarnings----inside if ", val.rate);
                                                             foundEarnings.earnings = parseInt(foundEarnings.earnings) + (parseInt(val.rate) * parseInt(data.QuantityDelivered))
                                                             Earnings.saveData(foundEarnings, function (err, savedEarnings) {
                                                                 if (err) {
@@ -166,7 +186,7 @@ var model = {
                                                                 }
                                                             });
                                                         } else {
-                                                            console.log(" foundEarnings----inside else ",val.rate);
+                                                            console.log(" foundEarnings----inside else ", val.rate);
                                                             var newEarning = {};
                                                             newEarning.order = data.Order._id;
                                                             newEarning.relationshipPartner = data.customer.relationshipId;
@@ -227,6 +247,81 @@ var model = {
                 }
             }
 
+        });
+    },
+    //to get perticular user's delivery request
+    getLastJarScheduledByUser: function (data, callback) {
+        console.log("data", data)
+        User.findOne({
+            _id: data.customer
+        }).exec(function (err, found) {
+            if (err) {
+                callback(err, null);
+            } else {
+                if (found) {
+                    DeliveryRequest.find({
+                        customer: data._id,
+                        product: found.subscribedProd[0].product,
+                        status: 'Delivery Scheduled'
+                    }).lean().sort({
+                        _id: -1
+                    }).exec(function (err, found) {
+                        if (err) {
+                            callback(err, null);
+                        } else {
+                            if (found) {
+                                callback(null, found);
+                            } else {
+                                callback({
+                                    message: "No Data found!"
+                                }, null);
+                            }
+                        }
+                    });
+                }
+            }
+        });
+    },
+     cancelJarDelivery: function (data, callback) {
+        console.log("data", data)
+        User.findOne({
+            _id: data.customer
+        }).exec(function (err, found) {
+            if (err) {
+                callback(err, null);
+            } else {
+                if (found) {
+                    DeliveryRequest.find({
+                        deliverdate:{
+                            $lt:new Date
+                        },
+                        customer: found._id,
+                        product: found.subscribedProd[0].product,
+                        status: 'Delivery Scheduled'
+                    }).lean().sort({
+                        _id: -1
+                    }).exec(function (err, foundDelivery) {
+                        if (err) {
+                            callback(err, null);
+                        } else {
+                            if (foundDelivery) {
+                                foundDelivery.status='Cancelled';
+                                foundDelivery.save(function(err,data){
+                                    if(err){
+                                        console.log("error while cancelling the request");
+                                    }else{
+
+                                    }
+                                })
+                            } else {
+                                callback({
+                                    message: "No Data found!"
+                                }, null);
+                            }
+                        }
+                    });
+                }
+            }
         });
     },
 
