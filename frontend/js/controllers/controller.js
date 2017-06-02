@@ -121,13 +121,14 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     $scope.transactionHandler = function (success) {
       console.log("transaction", success);
       if (success.razorpay_payment_id) {
+        $state.go("thankyou");
         $scope.orderData.razorpay_payment_id = success.razorpay_payment_id;
         $scope.orderData.status = 'Confirmed';
         apiService.apiCall("Order/orderConfirmationOrPay", $scope.orderData, function (data) {
           if (data.value === true) {
             console.log("payAndCapture");
             //redirect to thank you page
-            $state.go("thankyou");
+            
           }
         });
       }
