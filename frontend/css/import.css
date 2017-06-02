@@ -9204,7 +9204,7 @@ img.doneLoading {
     content: "\f00c";
     font: normal normal normal 14px/1 FontAwesome;
     position: absolute;
-    left: 0px;
+    left: 0;
     top: 4px;
     color: red;
     z-index: 1;
@@ -9219,9 +9219,9 @@ nav li:hover .dropdown-menu {
 #map img {
   opacity: 1; }
 
-a,
 .btn,
-[ui-sref] {
+[ui-sref],
+a {
   cursor: pointer;
   transition: all ease 300ms; }
 
@@ -9232,14 +9232,15 @@ footer {
   footer p {
     margin: 0; }
 
-.input-lg, .input-group-lg > .form-control,
-.input-group-lg > .input-group-addon,
-.input-group-lg > .input-group-btn > .btn,
+.btn,
+.form-control,
 .input-group-lg > .form-control,
 .input-group-lg > .input-group-addon,
 .input-group-lg > .input-group-btn > .btn,
-.btn,
-.form-control {
+.input-lg,
+.input-group-lg > .form-control,
+.input-group-lg > .input-group-addon,
+.input-group-lg > .input-group-btn > .btn {
   border-radius: 0;
   box-shadow: none; }
 
@@ -9375,23 +9376,27 @@ header {
   position: relative;
   background: #e1e1e1;
   text-align: center;
-  margin: 0 0px 0px;
+  margin: 0;
   height: 40px;
   line-height: 40px; }
 
 .mt10 {
-  margin: 20px 0 0 0; }
+  margin: 20px 0 0; }
 
 .aquaimgdiv {
-  width: 100%; }
+  max-width: 120px;
+  max-height: 120px;
+  margin: 30px auto; }
   .aquaimgdiv img {
-    display: block;
-    width: 70%;
-    margin: 0 auto; }
+    width: 100%;
+    height: 100%; }
+
+.ma0 {
+  margin: 0 !important; }
 
 .bordiv {
   height: 100%;
-  padding-top: 30px; }
+  padding: 20px 0; }
   .bordiv div {
     width: 1px;
     background: #dbdbdb;
@@ -9404,7 +9409,7 @@ header {
   padding-top: 30px; }
 
 .aquamar {
-  margin: 0px !important;
+  margin: 0 !important;
   font-weight: 500; }
 
 .purecol {
@@ -9415,7 +9420,7 @@ header {
 
 .rowbgcolor {
   background: white;
-  margin: 0 0px; }
+  margin: 10px 0; }
 
 .border-bottommar {
   border-bottom: 1px solid #bcc1c4;
@@ -9435,41 +9440,38 @@ header {
 
 .rowbgcoupon {
   background: white;
-  margin: 10px 0px; }
+  margin: 10px 0; }
 
 .colmd5copon {
   font-size: 13px;
   line-height: 30px; }
 
-.rowbgcolor {
-  background: white; }
-
 .bottlemain {
-  padding: 15px 0 0 0px !important;
-  margin: 0px !important;
+  padding: 15px 0 0 !important;
+  margin: 0 !important;
   font-weight: 400;
   color: #949da0; }
 
 .qntlbl {
-  margin: 0px !important;
+  margin: 0 !important;
   font-weight: 400;
   color: #949da0; }
 
 .rs {
-  padding: 20px 0 0 0px !important;
-  margin: 0px !important;
+  padding: 20px 0 0 !important;
+  margin: 0 !important;
   font-weight: 400;
   font-size: 16px; }
 
 .saving {
-  padding: 15px 0 15px 0px !important;
-  margin: 0px !important;
+  padding: 15px 0 !important;
+  margin: 0 !important;
   font-weight: 400;
   font-size: 16px; }
 
 .savingrs {
-  padding: 12px 0 0 0px !important;
-  margin: 0px !important;
+  padding: 12px 0 0 !important;
+  margin: 0 !important;
   font-weight: 400;
   font-size: 16px;
   color: #ff414d; }
@@ -9495,12 +9497,12 @@ header {
 
 .mar10 {
   padding: 0 !important;
-  margin: 15px 0 0 0 !important;
+  margin: 15px 0 0 !important;
   color: #0d9b8e; }
 
 .crossimgdiv {
   position: absolute;
-  right: 0%;
+  right: 0;
   top: 50%;
   width: 6%;
   -webkit-transform: translate(-50%, -50%);
@@ -9568,23 +9570,23 @@ header {
   padding-left: 8px;
   position: absolute;
   top: 32px;
-  right: 0px; }
+  right: 0; }
 
 .rowbgcolorpos {
   background: white !important;
-  margin: 0 0px;
+  margin: 0;
   position: relative; }
 
 .nonsubcross {
   position: absolute;
-  right: 0%;
+  right: 0;
   top: 10%;
   width: 6%;
   -webkit-transform: translate(-50%, -50%);
           transform: translate(-50%, -50%); }
 
 .nonsubaqua {
-  margin: 0px !important;
+  margin: 0 !important;
   font-weight: 500;
   vertical-align: middle;
   display: inline-block; }
@@ -9594,8 +9596,8 @@ header {
   vertical-align: middle; }
 
 .nonsubrs {
-  padding: 15px 0 0 0px !important;
-  margin: 0px !important;
+  padding: 15px 0 0 !important;
+  margin: 0 !important;
   font-weight: 400;
   font-size: 16px; }
 

@@ -12,16 +12,16 @@
 
 module.exports = {
 
-    /***************************************************************************
-     * Set the default database connection for models in the development       *
-     * environment (see config/connections.js and config/models.js )           *
-     ***************************************************************************/
+  /***************************************************************************
+   * Set the default database connection for models in the development       *
+   * environment (see config/connections.js and config/models.js )           *
+   ***************************************************************************/
 
-    // models: {
-    //   connection: 'someMongodbServer'
-    // }
-    port: 1337,
-    realHost: "http://localhost:1337",
+  // models: {
+  //   connection: 'someMongodbServer'
+  // }
+  port: 1337,
+  realHost: "http://192.168.0.117:1337",
   frontend: "http://htbt.wohlig.co.in",
-    emails: ["chintan@wohlig.com", "jagruti@wohlig.com", "tushar@wohlig.com", "chirag@wohlig.com", "harsh@wohlig.com"]
+  emails: ["chintan@wohlig.com", "jagruti@wohlig.com", "tushar@wohlig.com", "chirag@wohlig.com", "harsh@wohlig.com"]
 };

@@ -50,6 +50,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
         if (data.value === true) {
           console.log("Order/getOne", data.data);
           $scope.orderData = data.data;
+          console.log($scope.orderData);
         }
       });
     };
@@ -248,9 +249,9 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
   .controller('NonSubCtrl', function ($scope, TemplateService, apiService, NavigationService, $uibModal, $timeout) {
     $scope.template = TemplateService.getHTML("content/nonsub.html");
     TemplateService.title = "NonSub"; //This is the Title of the Website
-    apiService.getDemo($scope.formData, function (data) {
-      console.log(data);
-    });
+    // apiService.getDemo($scope.formData, function (data) {
+    //   console.log(data);
+    // });
 
     $scope.terms = function () {
       $uibModal.open({
