@@ -621,34 +621,62 @@ header {
 .reldiv {
     position: relative;
     height: 100vh;
+    text-align: center;
 }
 
-.thankyou {
+
+.thankyou{
     font-size: 32px;
-    position: absolute;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    top: 50%;
+    padding: 10px;
+    text-align: center
 }
 
 .declinetext {
     font-size: 21px;
     width: 100%;
     text-align: center;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, 64%);
-    top: 50%;
-    left: 50%;
-    position: absolute;
+   
 }
 
-.successful {
+
+.orderplaced{
     font-size: 21px;
     width: 100%;
+    padding: 10px 10px 0 10px;
     text-align: center;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, 64%);
-    top: 48%;
-    left: 50%;
-    position: absolute;
+    color: #6d797e;
 }
+
+.img-div{
+   text-align: center;
+   img{
+ width: 200px;
+   } 
+}
+
+.position-center{
+     position: absolute;
+    transform: translate(-50%,-50%);
+    top: 50%;
+    left: 50%;
+    width: 100%;
+}
+
+.successful{
+    font-size: 35px;
+    color: #00a699;
+    font-weight: 500;
+}
+
+.sorrymsg{
+    padding: 10px;
+    font-size: 16px;
+    color: #6d797e
+   
+}
+
+ .sorryno{
+        font-weight: 500;
+        color: #6d797e
+    }
+

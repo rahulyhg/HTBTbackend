@@ -249,9 +249,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
   .controller('NonSubCtrl', function ($scope, TemplateService, apiService, NavigationService, $uibModal, $timeout) {
     $scope.template = TemplateService.getHTML("content/nonsub.html");
     TemplateService.title = "NonSub"; //This is the Title of the Website
-    // apiService.getDemo($scope.formData, function (data) {
-    //   console.log(data);
-    // });
+
 
     $scope.terms = function () {
       $uibModal.open({
@@ -360,6 +358,11 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
   .controller('ThankYouCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
     $scope.template = TemplateService.getHTML("content/thankyou.html");
     TemplateService.title = "thankyou"; //This is the Title of the Website
+  })
+
+ .controller('LinkExpireCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
+    $scope.template = TemplateService.getHTML("content/linkexpire.html");
+    TemplateService.title = "linkexpire"; //This is the Title of the Website
   })
 
   .controller('SorryCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
