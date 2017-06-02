@@ -1,4 +1,6 @@
 <div class="bgcolor">
+
+    <!--<pre>{{orderData|json}}</pre>-->
     <div class="container bgcolor">
         <div>
             <div class="centeralign">
@@ -10,107 +12,30 @@
                 </div>
             </div>
 
-            <div class="subplan" ng-if= "orderData.product[0].product.category.subscription == 'Yes'">
+            <div class="subplan" ng-if="orderData.type == 'Subscription'">
                 <label for="">Subscription Plan</label>
             </div>
-            <div class="row rowbgcolor ma0" ng-if= "orderData.product[0].product.category.subscription == 'Yes'">
+            <div class="row rowbgcolor" ng-repeat="pr in orderData.product">
 
-                <div class="col-xs-4 ">
-                    <div class="mt10">
-                        <div class="aquaimgdiv">
-                            <img class="browse-sliderImg " ng-src="{{orderData.product[0].product.smallImage | uploadpath}}" alt="">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-2  bordiv">
-                    <div class="bordiv">
-                    </div>
-                </div>
-
-                <div class="reviewcol6 ma0">
-                    <h4 class="aquamar">{{orderData.product[0].product.name}}</h4>
-                    <div for="" class="purecol">{{orderData.product[0].product.tag}}<img class="img-responsive infoimg" src="img/ic_info_black_24dp copy 3.png"
-                            alt=""></div>
-
-                    <div for="" class="desc">{{orderData.product[0].product.category.name}}</div>
-                    <div for="" class="desc">₹ {{orderData.product[0].finalPrice}}</div>
-
-                </div>
-            </div>
-            <div class="row rowbgcolor" ng-if= "orderData.product[0].product.category.subscription == 'No'" ng-repeat="pr in orderData.product">
-
-                <div class="col-xs-4 ">
+                <div class="col-xs-6 ">
                     <div class="mt10">
                         <div class="aquaimgdiv">
                             <img class="browse-sliderImg " ng-src="{{pr.product.smallImage | uploadpath}}" alt="">
                         </div>
                     </div>
                 </div>
-                <div class="col-xs-2  bordiv">
-                    <div class="bordiv">
-                    </div>
-                </div>
 
-                <div class="reviewcol6">
+                <div class=" col-xs-6 reviewcol6">
                     <h4 class="aquamar">{{pr.product.name}}</h4>
-                    <div for="" class="purecol">{{pr.product.tag}}<img class="img-responsive infoimg" src="img/ic_info_black_24dp copy 3.png"
-                            alt=""></div>
-
-                    <div for="" class="desc">{{pr.product.category.name}}</div>
-                    <div for="" class="desc">₹ {{pr.finalPrice}}</div>
-
+                    <div for="" class="desc">Quantity: <b>{{pr.productQuantity}}</b></div>
+                    <div for="" class="desc">Price: ₹ <b>{{pr.finalPrice}}</b></div>
+                    <div for="" class="desc">Total: ₹ <b>{{pr.finalPrice*pr.productQuantity}}</b></div>
                 </div>
             </div>
         </div>
 
-        <div class="row rowbgcolor" ng-if="orderData.product[0].jarDeposit">
-            <div class="col-xs-8 bgchkoutcol50Quant">
-                <div>
-                    <label class="bottlemain" for="">One Time Bottle Deposit
 
-                </label>
-                    <br>
-                    <label class="qntlbl"> {{orderData.product[0].productQuantity}} Jars x ₹ {{orderData.product[0].jarDeposit}} /Jar </label>
-                </div>
-            </div>
-            <div class="col-xs-4 bgchkoutcol502">
-                <div>
-                    <label class="rs" for="">₹  {{orderData.product[0].productQuantity * orderData.product[0].jarDeposit}}</label>
-                </div>
-            </div>
-        </div>
-        <div class="row rowbgcolor  " ng-repeat="product in orderData.product" ng-if="orderData.product[0].product.category.subscription == 'Yes'">
-            <div class="col-xs-8 bgchkoutcol50Quant">
-                <div>
-                    <label class="bottlemain" for="">{{product.product.name}}</label>
-                    <br>
-                    <span class="qntlbl"> {{product.productQuantity}} Jars x ₹ {{product.product.price}} /Jar </span>
-
-                </div>
-            </div>
-            <div class="col-xs-4 bgchkoutcol502">
-                <div>
-                    <label class="rs" for="">₹  {{product.productQuantity * product.product.price}}</label>
-                </div>
-            </div>
-        </div>
-
-        <div class="row rowbgcolor">
-            <div class="col-xs-8 savingscol501 ">
-                <div>
-                    <label class="saving" for="">Total
-
-                </label>
-                </div>
-            </div>
-            <div class="col-xs-4 savingamtdiv">
-                <div>
-                    <label class="savingrs" for="">₹  {{amountToBePaid}}</label>
-                    <!--<span>({{percent | number :2 }}%)</span>-->
-                </div>
-            </div>
-        </div>
-        <div class="row rowbgcalendar">
+        <div class="row rowbgcolor" ng-if="orderData.type != 'Subscription'">
             <div class="col-xs-2">
                 <div class="datemonth text-center">
                     <div class="datediv pad-10 date">
@@ -148,7 +73,7 @@
         <div class="custom-checkbox">
             <input type="checkbox" id="checkme">
             <label for="checkme">I have read & accept the</label>
-            <span class="termscolor checkme" ng-click="terms()">terms & conditions</span>
+            <span class="termscolor checkme" ng-click="terms()">Terms & Conditions</span>
                         </div>
 
                         <button ng-if="orderData.methodOfPayment!='Customer'" class="button" ng-click="orderConfirmation(orderData)">Confirm Order</button>
