@@ -39,8 +39,12 @@ var schema = new Schema({
         default: ""
     },
     earnings: {
-        type: String,
-        default: ""
+        type: Number,
+        default: 0
+    },
+    credits: {
+        type: Number,
+        default: 0
     },
     lastMonthEarnings: {
         type: String,
@@ -56,7 +60,7 @@ var schema = new Schema({
     },
     dateofjoin: Date,
     jarBalance: {
-        type:Number,
+        type: Number,
         default: 0
     },
 
@@ -580,6 +584,38 @@ var model = {
                 message: "Please provide mobile number and otp"
             });
         }
-    }
+    },
+    //to get specific user profile
+    getNewCustomer: function (data, callback) {
+        console.log("data", data)
+           var now = moment();
+        var days = moment(now).daysInMonth();
+        var currMonth = moment(now).month();
+        var dayOne = moment().date(1).month(currMonth).toDate();
+        var lastDay = moment().date(days).month(currMonth).toDate();
+        User.findOne({
+            _id: data.user
+        }).exec(function (err, found) {
+            if (err) {
+                callback(err, null);
+            } else {
+                if (found) {
+                    console.log("found",found);
+                    var CurrentMonUser = _.filter(found.customer, function (o) {
+                        if(o.addedDate>dayOne && o.addedDate<=lastDay){
+                        return o;
+                        }
+                    });
+                    console.log("CurrentMonUser",CurrentMonUser);
+                    callback(null, CurrentMonUser);
+                } else {
+                    callback({
+                        message: "Incorrect Credentials!"
+                    }, null);
+                }
+            }
+
+        });
+    },
 };
 module.exports = _.assign(module.exports, exports, model);

@@ -60,7 +60,7 @@ var controller = {
             })
         }
     },
-  addToCart:function (req, res) {
+    addToCart: function (req, res) {
         if (req.body) {
             User.addToCart(req.body, res.callback);
         } else {
@@ -72,7 +72,7 @@ var controller = {
             })
         }
     },
-    removeFromCart:function (req, res) {
+    removeFromCart: function (req, res) {
         if (req.body) {
             User.removeFromCart(req.body, res.callback);
         } else {
@@ -84,7 +84,7 @@ var controller = {
             })
         }
     },
-    showCart:function (req, res) {
+    showCart: function (req, res) {
         if (req.body) {
             User.showCart(req.body, res.callback);
         } else {
@@ -96,9 +96,21 @@ var controller = {
             })
         }
     },
-    showCartQuantity:function (req, res) {
+    showCartQuantity: function (req, res) {
         if (req.body) {
             User.showCartQuantity(req.body, res.callback);
+        } else {
+            res.json({
+                value: false,
+                data: {
+                    message: "Invalid Request"
+                }
+            })
+        }
+    },
+    getNewCustomer: function (req, res) {
+        if (req.body) {
+            User.getNewCustomer(req.body, res.callback);
         } else {
             res.json({
                 value: false,
@@ -180,6 +192,18 @@ var controller = {
     //To verify OTP
     verifyOTP: function (req, res) {
         User.verifyOTP(req.body, res.callback);
+    },
+    getDashboard: function (req, res) {
+        if (req.body) {
+            Earnings.dashboardApi(req.body, res.callback);
+        } else {
+            res.json({
+                value: false,
+                data: {
+                    message: "Invalid Request"
+                }
+            })
+        }
     },
 };
 module.exports = _.assign(module.exports, controller);
