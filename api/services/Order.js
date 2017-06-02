@@ -214,7 +214,7 @@ var model = {
                         "message": "HTBT",
                         "sender": "HATABT",
                         "sms": [{
-                            "to": data.mobile,
+                            "to": data.customer.mobile,
                             "message": smsMessage,
                             "sender": "HATABT",
                         }]
@@ -229,10 +229,6 @@ var model = {
                             });
                         }
                     })
-                } else {
-                    callback(null, {
-                        message: "Please provide mobile mumber"
-                    });
                 }
                 callback(null, data)
             }
