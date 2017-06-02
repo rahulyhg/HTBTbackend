@@ -437,9 +437,9 @@ var model = {
     },
     //to get the cart value of perticular user
     showCart: function (data, callback) {
-        console.log("data", data)
+        console.log("data----", data)
         User.findOne({
-            _id: data.user
+            _id: ObjectId(data.user)
         }).deepPopulate('cartProducts.product').exec(function (err, found) {
             if (err) {
                 callback(err, null);
@@ -448,7 +448,7 @@ var model = {
                     callback(null, found.cartProducts);
                 } else {
                     callback({
-                        message: "Incorrect Credentials!"
+                        message: "No Data Found!"
                     }, null);
                 }
             }

@@ -1,6 +1,5 @@
 var googl = require('goo.gl');
 googl.setKey('AIzaSyD_0eajXMXo7CNmSBr7XutL65p0rDWCw48');
-var ObjectId = Schema.ObjectId;
 var schema = new Schema({
     orderID: {
         type: String,
@@ -201,21 +200,25 @@ var model = {
         console.log("calculatePrice----", data)
         var prodList = data;
         _.forEach(prodList, function (val) {
-            var orderedPrice = _.orderBy(val.product.priceList, ['endRange'], ['asc']);
-            console.log("orderedPrice", orderedPrice);
-            foundPrice = {};
-            _.each(orderedPrice, function (obj) {
-                console.log("obj--", obj);
-                if (parseInt(val.productQuantity) <= parseInt(obj.endRange)) {
-                    foundPrice = obj;
-                    return false;
-                }
-            });
-            console.log("val.finalPrice--", foundPrice.finalPrice);
-            val.finalPrice = foundPrice.finalPrice;
-        })
+            if (val.product.priceList) {
+                var orderedPrice = _.orderBy(val.product.priceList, ['endRange'], ['asc']);
+                console.log("orderedPrice", orderedPrice);
+                foundPrice = {};
+                _.each(orderedPrice, function (obj) {
+                    console.log("obj--", obj);
+                    if (parseInt(val.productQuantity) <= parseInt(obj.endRange)) {
+                        foundPrice = obj;
+                        return false;
+                    }
+                });
+                console.log("val.finalPrice--", foundPrice.finalPrice);
+                val.finalPrice = foundPrice.finalPrice;
+            } else {
+                console.log("val.product.price--", val.product.pric);
+                val.finalPrice = val.product.price;
+            }
+        });
         return prodList;
-
     },
     //used for saving the order
     saveOrder: function (data, callback) {
@@ -417,6 +420,7 @@ var model = {
         } else {
             userData.name = data.customer.name;
             userData.mobile = data.customer.mobile;
+            makeAsyncCall();
         }
         var data1 = {};
 
@@ -548,6 +552,7 @@ var model = {
         } else {
             userData.name = data.customer.name;
             userData.mobile = data.customer.mobile;
+            makeAsyncCall();
         }
         //waterfall starts
         function makeAsyncCall() {
@@ -658,25 +663,22 @@ var model = {
     },
     //to get current month orders of RM
     getCurrentMonthOrder: function (data, callback) {
+        console.log(ObjectId(data.user));
         var now = moment();
         var days = moment(now).daysInMonth();
         var currMonth = moment(now).month();
-        console.log("month", currMonth);
-        console.log("days", days);
-
         var dayOne = moment().date(1).month(currMonth).toDate();
         var lastDay = moment().date(days).month(currMonth).toDate();
         console.log("dayOne", dayOne);
         console.log("lastDay", lastDay);
         Order.aggregate([{
-                "$match": {
-                    "orderDate": {
+                $match: {
+                    orderDate: {
                         $gte: dayOne,
                         $lt: lastDay
                     }
                 }
-            },
-            {
+            }, {
                 "$lookup": {
                     "from": "users",
                     "localField": "customer",
@@ -692,8 +694,7 @@ var model = {
             },
             {
                 $match: {
-                    "customer.relationshipId": ObjectId(data.user)
-
+                    'customer.relationshipId': ObjectId(data.user)
                 }
             }
         ]).exec(function (err, found) {
@@ -702,9 +703,98 @@ var model = {
                 callback(err, null);
             } else {
                 console.log("found", found);
+                callback(null,found);
             }
         })
 
-    }
+    },
+    //to get previous month orders of RM
+    getPreviousMonthOrder: function (data, callback) {
+        console.log(ObjectId(data.user));
+        var days = moment(new moment().subtract(1, 'months')).daysInMonth();
+        var prevMonthFirstDay = new moment().subtract(1, 'months').date(1).toDate();
+        var prevMonthLastDay = new moment().subtract(1, 'months').date(days).toDate();
+        console.log("prevMonthFirstDay", prevMonthFirstDay, prevMonthLastDay);
+        Order.aggregate([{
+                $match: {
+                    orderDate: {
+                        $gte: prevMonthFirstDay,
+                        $lt: prevMonthLastDay
+                    }
+                }
+            }, {
+                "$lookup": {
+                    "from": "users",
+                    "localField": "customer",
+                    "foreignField": "_id",
+                    "as": "customer"
+                }
+            },
+            {
+                $unwind: {
+                    path: "$customer",
+                    "preserveNullAndEmptyArrays": true
+                }
+            },
+            {
+                $match: {
+                    'customer.relationshipId': ObjectId(data.user)
+                }
+            }
+        ]).exec(function (err, found) {
+            if (err) {
+                console.log(err);
+                callback(err, null);
+            } else {
+                console.log("found", found);
+                callback(null,found);
+            }
+        })
+
+    },
+      //to get Last Three month orders of RM
+    // getLastThreeMonthOrder: function (data, callback) {
+    //     console.log(ObjectId(data.user));
+    //     var days = moment(new moment().subtract(1, 'months')).daysInMonth();
+    //     var prevMonthFirstDay = new moment().subtract(1, 'months').date(1).toDate();
+    //     var prevMonthLastDay = new moment().subtract(1, 'months').date(days).toDate();
+    //     console.log("prevMonthFirstDay", prevMonthFirstDay, prevMonthLastDay);
+    //     Order.aggregate([{
+    //             $match: {
+    //                 orderDate: {
+    //                     $gte: prevMonthFirstDay,
+    //                     $lt: prevMonthLastDay
+    //                 }
+    //             }
+    //         }, {
+    //             "$lookup": {
+    //                 "from": "users",
+    //                 "localField": "customer",
+    //                 "foreignField": "_id",
+    //                 "as": "customer"
+    //             }
+    //         },
+    //         {
+    //             $unwind: {
+    //                 path: "$customer",
+    //                 "preserveNullAndEmptyArrays": true
+    //             }
+    //         },
+    //         {
+    //             $match: {
+    //                 'customer.relationshipId': ObjectId(data.user)
+    //             }
+    //         }
+    //     ]).exec(function (err, found) {
+    //         if (err) {
+    //             console.log(err);
+    //             callback(err, null);
+    //         } else {
+    //             console.log("found", found);
+    //             callback(null,found);
+    //         }
+    //     })
+
+    // }
 };
 module.exports = _.assign(module.exports, exports, model);

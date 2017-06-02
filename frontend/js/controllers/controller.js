@@ -68,7 +68,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     }
   })
 
-  .controller('ReviewCtrl', function ($scope, TemplateService, $stateParams, apiService, NavigationService, $uibModal, $timeout) {
+  .controller('ReviewCtrl', function ($scope, $state, TemplateService, $stateParams, apiService, NavigationService, $uibModal, $timeout) {
     $scope.template = TemplateService.getHTML("content/review.html");
     TemplateService.title = "Review"; //This is the Title of the Website
     apiService.getDemo($scope.formData, function (data) {
@@ -122,22 +122,24 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
 
     $scope.pay = function () {
       console.log("inside payment");
-      $.getScript('https://checkout.razorpay.com/v1/checkout.js', function () {
-        var rzp1 = new Razorpay($scope.options);
-        rzp1.open();
+      $state.go("thankyou");
+      // $.getScript('https://checkout.razorpay.com/v1/checkout.js', function () {
+      //   var rzp1 = new Razorpay($scope.options);
+      //   rzp1.open();
 
-      });
+      // });
     };
 
     $scope.transactionHandler = function (success) {
       console.log("transaction", success);
       if (success.razorpay_payment_id) {
         $scope.orderData.razorpay_payment_id = success.razorpay_payment_id;
-         $scope.orderData.status = 'Confirmed';
+        $scope.orderData.status = 'Confirmed';
         apiService.apiCall("Order/orderConfirmationOrPay", $scope.orderData, function (data) {
           if (data.value === true) {
             console.log("payAndCapture");
             //redirect to thank you page
+            $state.go("thankyou");
           }
         });
       }
@@ -147,7 +149,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       apiService.apiCall("Order/orderConfirmationOrPay", orderData, function (data) {
         if (data.value === true) {
           console.log("Order confirmed successfully--- redirect to thank you page");
-
+           $state.go("thankyou");
         }
       });
     }
@@ -366,15 +368,15 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
 
 
 
-    .controller('ThankYouCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
-        $scope.template = TemplateService.getHTML("content/thankyou.html");
-        TemplateService.title = "thankyou"; //This is the Title of the Website
-    })
+  .controller('ThankYouCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
+    $scope.template = TemplateService.getHTML("content/thankyou.html");
+    TemplateService.title = "thankyou"; //This is the Title of the Website
+  })
 
-    .controller('SorryCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
-        $scope.template = TemplateService.getHTML("content/Sorry.html");
-        TemplateService.title = "Sorry"; //This is the Title of the Website
-    })
+  .controller('SorryCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
+    $scope.template = TemplateService.getHTML("content/Sorry.html");
+    TemplateService.title = "Sorry"; //This is the Title of the Website
+  })
 
 
   .controller('headerctrl', function ($scope, TemplateService) {
@@ -390,4 +392,3 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     };
 
   });
-   
