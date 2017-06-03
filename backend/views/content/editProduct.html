@@ -8,21 +8,24 @@
         </div>
     </div>
 </div>
+<form name="productForm" ng-submit="saveProduct(productData)">
 <div class="widget">
     <div class="form-elements-sec">
         <div class="sec">
             <div class="form-group" fields>
-                <label>Product Name</label>
-                <input type="text" name="name" placeholder="Product Name" ng-model="productData.name" class="form-control">
+                <label>Product Name*</label>
+                <input type="text" name="name" placeholder="Product Name" ng-model="productData.name" class="form-control" required>
+                   
+
             </div>
             <div class="form-group" fields>
-                <label>Tags</label>
-                <input type="text" name="name" placeholder="Product Tags" ng-model="productData.tag" class="form-control">
+                <label>Tags*</label>
+                <input type="text" name="name" placeholder="Product Tags" ng-model="productData.tag" class="form-control" required>
             </div>
             <div class="form-group">
-                <label>Category:</label>{{productData.category.name}}
-                <select class="form-control" name="" ng-model="productData.category">
-              <option value="{{cat1._id}}" ng-selected="{{productData.category.name==cat1.name}}" ng-repeat="cat1 in cat">{{cat1.name}}</option>
+                <label>Category*:</label>{{productData.category.name}}
+                <select class="form-control" name="name" ng-model="productData.category" required>
+              <option value="{{cat1._id}}" ng-selected="{{productData.category.name==cat1.name}}" ng-repeat="cat1 in cat" required>{{cat1.name}}</option>
             </select>
             </div>
             <div class="form-group" fields>
@@ -41,7 +44,7 @@
               <option value="">No</option>
             </select>
             </div>-->
-             <div class="form-group" fields>
+            <div class="form-group" fields>
                 <label>Description</label>
                 <input type="text" name="description" placeholder="Description" ng-model="productData.description" class="form-control">
             </div>
@@ -173,9 +176,10 @@
 
     </div>
 </div>
-</div>
+
 <div class="text-center mt20 odd-even-button">
-    <button class="btn btn-default" type="button" ng-click="saveProduct(productData)">Save</button>
+    <button class="btn btn-default" type="submit">Save</button>
     <a class="btn btn-danger" href="#/page/viewProduct//">Cancel</a>
 
 </div>
+</form>

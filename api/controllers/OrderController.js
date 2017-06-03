@@ -11,12 +11,12 @@ var controller = {
             if (req.body.razorpay_payment_id) {
                 console.log("req.body.razorpay_payment_id", req.body.razorpay_payment_id);
                 request('https://' + key_id + ':' + key_secret + '@api.razorpay.com/v1/payments/' + req.body.razorpay_payment_id, function (error, response, body) {
-                    console.log('Response:', body);
+                    console.log('Response:', JSON.parse(body).status);
                     console.log('req.body:', req.body);
-                    if (_.isEqual(body.status, 'authorized')) {
+                    if (_.isEqual(JSON.parse(body).status, 'authorized')) {
                         req.body.paymentStatus = 'Paid';
                         Order.orderConfirmationOrPay(req.body, res.callback);
-                    } else if (_.isEqual(body.status, 'failed')) {
+                    } else if (_.isEqual(JSON.parse(body).status, 'failed')) {
                         req.body.paymentStatus = 'Payment Failed';
                         Order.orderConfirmationOrPay(req.body, res.callback);
                     }

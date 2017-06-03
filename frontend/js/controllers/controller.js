@@ -55,6 +55,9 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
           $scope.orderData.shippingAddressEmail = $scope.orderData.customer.email;
           $scope.orderData.billingAddressName = $scope.orderData.customer.name;
           $scope.orderData.billingAddressMobile = $scope.orderData.customer.mobile;
+          if(_.isEqual($scope.orderData.paymentStatus,'Paid')){
+             $state.go("linkexpire");
+          }
           $scope.showaddr=true;
           $scope.addSameBillingDetails(true);
         }
@@ -96,6 +99,9 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
         if (data.value === true) {
 
           $scope.orderData = data.data;
+           if(_.isEqual($scope.orderData.paymentStatus,'Paid')){
+             $state.go("linkexpire");
+          }
           _.each($scope.orderData.product, function (n, key) {
             $scope.amountToBePaid += parseFloat(n.product.price) * parseInt(n.productQuantity);
           });

@@ -120,7 +120,34 @@ var model = {
 
         });
     },
-
+ getAllProduct: function (data, callback) {
+        console.log("data", data);
+        var maxRow = Config.maxRow;
+        var page = 1;
+        if (data.page) {
+            page = data.page;
+        }
+        var field = data.field;
+        var options = {
+            field: data.field,
+            filters: {
+                keyword: {
+                    fields: ['name'],
+                    term: data.keyword
+                }
+            },
+            sort: {
+                asc: 'name'
+            },
+            start: (page - 1) * maxRow,
+            count: maxRow
+        };
+        Product.find({
+               category:{ $ne: null }
+            }).deepPopulate('category').order(options)
+            .keyword(options)
+            .page(options, callback);
+    },
 
     getAllOtherProduct: function (data, callback) {
         console.log("data", data);

@@ -100,7 +100,7 @@ var model = {
         DeliveryRequest.saveData(data, function (err, savedData) {
             if (err) {
                 callback(err, null);
-            } else { //9323840946
+            } else { 
                 async.parallel([
                     //Function to search event name
                     function () {
@@ -137,7 +137,7 @@ var model = {
                             } else {
                                 if (foundcust) {
                                     // callback(null, found);
-                                    foundcust.subscribedProd.jarBalance = foundcust.subscribedProd.jarBalance - data.QuantityDelivered;
+                                    foundcust.subscribedProd[0].jarBalance = foundcust.subscribedProd[0].jarBalance - data.QuantityDelivered;
                                     User.saveData(foundcust, function (err, savedCust) {
                                         if (err) {
                                             console.log("err", err);
