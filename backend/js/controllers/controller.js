@@ -744,9 +744,9 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
 
             });
         };
-      
-        $scope.transactionHandler=function(success){
-            console.log("transaction",success);
+
+        $scope.transactionHandler = function (success) {
+            console.log("transaction", success);
         }
 
     })
@@ -877,14 +877,18 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         };
         $scope.saveProduct = function (formdata) {
             // noteWithTime._id=JSON.parse($stateParams.keyword)._id;
-            NavigationService.apiCall("Product/saveProduct",
-                formdata,
-                function (data) {
-                    console.log("saveProduct", data.data);
+            if (!formdata.category) {
+                toastr.error("Please select a perticular category.");
+            } else {
+                NavigationService.apiCall("Product/saveProduct",
+                    formdata,
+                    function (data) {
+                        console.log("saveProduct", data.data);
+                    });
+                $state.go("page", {
+                    id: "viewProduct"
                 });
-            $state.go("page", {
-                id: "viewProduct"
-            });
+            }
 
         };
 

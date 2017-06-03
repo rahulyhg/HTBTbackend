@@ -58,16 +58,16 @@ var schema = new Schema({
     },
     // paidByCustomer: Boolean,
     billingAddress: {
-        name:String,
-        mobile:String,
+        name: String,
+        mobile: String,
         email: String,
         companyName: String,
         address: String,
         pincode: Number
     },
     shippingAddress: {
-        name:String,
-        mobile:String,
+        name: String,
+        mobile: String,
         email: String,
         companyName: String,
         address: String,
@@ -123,7 +123,7 @@ var model = {
     },
     //call this while confirming the order or when payment is made 
     orderConfirmationOrPay: function (data, callback) {
-        console.log("data----", data)
+        console.log("data----", data.product[0].product.category);
         var confirmationToRP = false;
         if (!data.razorpay_payment_id) {
             confirmationToRP = true;
@@ -153,108 +153,129 @@ var model = {
                         })
                     }
                 });
-                if (data.razorpay_payment_id && _.isEqual(savedData.methodOfPayment, 'credits')) {
-                    User.findOne({
-                        _id: data.customer.relationshipId
-                    }).lean().exec(function (err, RPdata) {
-                        if (err) {
-                            callback(err, null);
-                        } else {
-                            RPdata.credits = parseInt(RPdata.credits) + parseInt(totalAmount);
-                            User.saveData(RPdata, function (err, savedUser) {
-                                if (err) {
-                                    callback(err, null);
-                                } else {
-                                    console.log("savedUser--", savedUser);
-                                }
-                            })
-                        }
-                    });
-                }
-                if (confirmationToRP && data.customer.relationshipId) {
-                    var shortU;
-                    // Shorten a long url and output the result
-                    googl.shorten(env.frontend + "/payment/" + data._id)
-                        .then(function (shortUrl) {
-                            shortU = shortUrl;
+                async.parallel([
+                    //Function to search event name
+                    function () {
+                        if (data.razorpay_payment_id && _.isEqual(data.methodOfPayment, 'credits')) {
                             User.findOne({
                                 _id: data.customer.relationshipId
-                            }).exec(function (err, RPdata) {
+                            }).lean().exec(function (err, RPdata) {
                                 if (err) {
                                     callback(err, null);
                                 } else {
-                                    var smsMessage = "Order has been confirmed from " + data.customer.name + " for order " + data.orderID + ". Please make the payment using url " + shortU
-
-                                    var smsObj = {
-                                        "message": "HTBT",
-                                        "sender": "HATABT",
-                                        "sms": [{
-                                            "to": RPdata.mobile,
-                                            "message": smsMessage,
-                                            "sender": "HATABT",
-                                        }]
-                                    };
-                                    Config.sendSMS(smsObj, function (error, SMSResponse) {
-                                        if (error || SMSResponse == undefined) {
-                                            console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
-                                            // callback(error, null);
+                                    RPdata.credits = parseInt(RPdata.credits) + parseInt(totalAmount);
+                                    User.saveData(RPdata, function (err, savedUser) {
+                                        if (err) {
+                                            callback(err, null);
                                         } else {
-                                            console.log("sms sent successfully");
-                                            // callback(null, {
-                                            //     message: "OTP sent"
-                                            // });
+                                            console.log("savedUser--", savedUser);
                                         }
                                     })
                                 }
                             });
-                        })
-                        .catch(function (err) {
-                            console.error(err.message);
-                        });
+                        }
+                    },
+                    function () {
+                        if (confirmationToRP && data.customer.relationshipId) {
+                            var shortU;
+                            // Shorten a long url and output the result
+                            googl.shorten(env.frontend + "/payment/" + data._id)
+                                .then(function (shortUrl) {
+                                    shortU = shortUrl;
+                                    User.findOne({
+                                        _id: data.customer.relationshipId
+                                    }).exec(function (err, RPdata) {
+                                        if (err) {
+                                            callback(err, null);
+                                        } else {
+                                            var smsMessage = "Order has been confirmed from " + data.customer.name + " for order " + data.orderID + ". Please make the payment using url " + shortU
 
-                }
-                if (data.customer.mobile) {
-                    User.findOne({
-                        _id: data.customer._id
-                    }).exec(function (err, userdata) {
-                        if (err) {
-                            callback(err, null);
-                        } else {
-                            if (!_.isEmpty(userdata.subscribedProd[0]) && userdata.subscribedProd[0].jarBalance) {
-                                userdata.subscribedProd[0].jarBalance = parseInt(userdata.subscribedProd[0].jarBalance) + parseInt(data.totalQuantity);
-                            } else {
-                                userdata.subscribedProd[0].jarBalance = parseInt(data.totalQuantity);
-                            }
-                            userdata.save(function (err, updated) {
+                                            var smsObj = {
+                                                "message": "HTBT",
+                                                "sender": "HATABT",
+                                                "sms": [{
+                                                    "to": RPdata.mobile,
+                                                    "message": smsMessage,
+                                                    "sender": "HATABT",
+                                                }]
+                                            };
+                                            Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                                if (error || SMSResponse == undefined) {
+                                                    console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
+                                                    // callback(error, null);
+                                                } else {
+                                                    console.log("sms sent successfully");
+                                                    // callback(null, {
+                                                    //     message: "OTP sent"
+                                                    // });
+                                                }
+                                            })
+                                        }
+                                    });
+                                })
+                                .catch(function (err) {
+                                    console.error(err.message);
+                                });
+
+                        }
+                    },
+                    function () {
+                        if (_.isEqual(data.product[0].product.category.subscription,'Yes')) {
+                            User.findOne({
+                                _id: data.customer._id
+                            }).exec(function (err, userdata) {
                                 if (err) {
-                                    console.log("error occured in user update");
+                                    callback(err, null);
                                 } else {
-                                    console.log("user updated");
+                                    if (!_.isEmpty(userdata.subscribedProd[0]) && userdata.subscribedProd[0].jarBalance) {
+                                        userdata.subscribedProd[0].jarBalance = parseInt(userdata.subscribedProd[0].jarBalance) + parseInt(data.totalQuantity);
+                                    } else {
+                                        var subProd = {};
+                                        subProd.product =data.product[0].product;
+                                        subProd.jarBalance=parseInt(data.totalQuantity)
+                                        userdata.subscribedProd.push(subProd);
+                                    }
+                                    userdata.save(function (err, updated) {
+                                        if (err) {
+                                            console.log("error occured in user update");
+                                        } else {
+                                            console.log("user updated");
+                                        }
+                                    });
                                 }
                             });
+                            var smsMessage = "Order " + data.orderID + " confirmed! Download the HaTa App or call on 022 - 33024910 to schedule your first delivery."
+                            var smsObj = {
+                                "message": "HTBT",
+                                "sender": "HATABT",
+                                "sms": [{
+                                    "to": data.customer.mobile,
+                                    "message": smsMessage,
+                                    "sender": "HATABT",
+                                }]
+                            };
+                            Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                if (error || SMSResponse == undefined) {
+                                    console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
+                                    callback(error, null);
+                                } else {
+                                    callback(null, {
+                                        message: "OTP sent"
+                                    });
+                                }
+                            })
                         }
-                    });
-                    var smsMessage = "Order " + data.orderID + " confirmed! Download the HaTa App or call on 022 - 33024910 to schedule your first delivery."
-                    var smsObj = {
-                        "message": "HTBT",
-                        "sender": "HATABT",
-                        "sms": [{
-                            "to": data.customer.mobile,
-                            "message": smsMessage,
-                            "sender": "HATABT",
-                        }]
-                    };
-                    Config.sendSMS(smsObj, function (error, SMSResponse) {
-                        if (error || SMSResponse == undefined) {
-                            console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
-                            callback(error, null);
-                        } else {
-                            callback(null, {
-                                message: "OTP sent"
-                            });
-                        }
-                    })
-                }
+                    }
+                ], function (error, data) {
+                    if (error) {
+                        console.log(" async.parallel >>> final callback  >>> error", error);
+                        callback(error, null);
+                    } else {
+                        callback(null, data);
+                    }
+                }) //End of async.parallel
+
+
                 callback(null, data)
             }
         });
@@ -650,7 +671,7 @@ var model = {
                             if (err) {
                                 callback(err);
                             } else if (_.isEmpty(data2)) {
-                               userData.accessLevel='Customer';
+                                userData.accessLevel = 'Customer';
                                 User.saveUserData(userData, function (err, savedData) {
                                     if (err) {
                                         callback(err, null);

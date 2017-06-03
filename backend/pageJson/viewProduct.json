@@ -53,7 +53,7 @@
 
     }],
     "apiCall": {
-        "url": "Product/search",
+        "url": "Product/getAllProduct",
         "params": "_id"
     }
 }
