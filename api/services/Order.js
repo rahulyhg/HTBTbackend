@@ -58,12 +58,16 @@ var schema = new Schema({
     },
     // paidByCustomer: Boolean,
     billingAddress: {
+        name:String,
+        mobile:String,
         email: String,
         companyName: String,
         address: String,
         pincode: Number
     },
     shippingAddress: {
+        name:String,
+        mobile:String,
         email: String,
         companyName: String,
         address: String,
@@ -173,40 +177,41 @@ var model = {
                     googl.shorten(env.frontend + "/payment/" + data._id)
                         .then(function (shortUrl) {
                             shortU = shortUrl;
+                            User.findOne({
+                                _id: data.customer.relationshipId
+                            }).exec(function (err, RPdata) {
+                                if (err) {
+                                    callback(err, null);
+                                } else {
+                                    var smsMessage = "Order has been confirmed from " + data.customer.name + " for order " + data.orderID + ". Please make the payment using url " + shortU
+
+                                    var smsObj = {
+                                        "message": "HTBT",
+                                        "sender": "HATABT",
+                                        "sms": [{
+                                            "to": RPdata.mobile,
+                                            "message": smsMessage,
+                                            "sender": "HATABT",
+                                        }]
+                                    };
+                                    Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                        if (error || SMSResponse == undefined) {
+                                            console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
+                                            // callback(error, null);
+                                        } else {
+                                            console.log("sms sent successfully");
+                                            // callback(null, {
+                                            //     message: "OTP sent"
+                                            // });
+                                        }
+                                    })
+                                }
+                            });
                         })
                         .catch(function (err) {
                             console.error(err.message);
                         });
-                    User.findOne({
-                        _id: data.customer.relationshipId
-                    }).exec(function (err, RPdata) {
-                        if (err) {
-                            callback(err, null);
-                        } else {
-                            var smsMessage = "Order has been confirmed from " + data.customer.name + " for order " + data.orderID + ". Please make the payment using url " + shortU
 
-                            var smsObj = {
-                                "message": "HTBT",
-                                "sender": "HATABT",
-                                "sms": [{
-                                    "to": RPdata.mobile,
-                                    "message": smsMessage,
-                                    "sender": "HATABT",
-                                }]
-                            };
-                            Config.sendSMS(smsObj, function (error, SMSResponse) {
-                                if (error || SMSResponse == undefined) {
-                                    console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
-                                    // callback(error, null);
-                                } else {
-                                    console.log("sms sent successfully");
-                                    // callback(null, {
-                                    //     message: "OTP sent"
-                                    // });
-                                }
-                            })
-                        }
-                    });
                 }
                 if (data.customer.mobile) {
                     User.findOne({
@@ -274,7 +279,7 @@ var model = {
                 console.log("val.finalPrice--", foundPrice.finalPrice);
                 val.finalPrice = foundPrice.finalPrice;
             } else {
-                console.log("val.product.price--", val.product.pric);
+                console.log("val.product.price--", val.product.price);
                 val.finalPrice = val.product.price;
             }
         });
@@ -612,7 +617,7 @@ var model = {
                         callback(err, null);
                     } else {
                         userData.relationshipId = RPdata._id;
-                        userData.cartProducts = RPdata.cartProducts
+                        userData.cartProducts = RPdata.cartProducts;
                         console.log("userData.cartProducts --", userData.cartProducts);
                         RPdata.cartProducts = [];
                         partnerName = RPdata.name;
@@ -645,6 +650,7 @@ var model = {
                             if (err) {
                                 callback(err);
                             } else if (_.isEmpty(data2)) {
+                               userData.accessLevel='Customer';
                                 User.saveUserData(userData, function (err, savedData) {
                                     if (err) {
                                         callback(err, null);
@@ -677,6 +683,9 @@ var model = {
                             } else {
                                 console.log("data2--", data2);
                                 customerData = data2;
+                                if (userData.cartProducts) {
+                                    customerData.cartProducts = userData.cartProducts;
+                                }
                                 callback(null, customerData);
                             }
                         });
@@ -689,7 +698,7 @@ var model = {
                                 callback(err, null);
                             } else {
                                 orderData.customer = foundUserData._id;
-                                orderData.product = foundUserData.cartProducts;
+                                orderData.product = customerData.cartProducts;
                                 Order.saveOrder(orderData, function (err, savedOrder) {
                                     if (err) {
                                         console.log("error while creating order");

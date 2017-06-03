@@ -45,10 +45,18 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     if ($stateParams.orderId) {
 
       var formData = {};
+
       formData._id = $stateParams.orderId;
       apiService.apiCall("Order/getOne", formData, function (data) {
         if (data.value === true) {
           $scope.orderData = data.data;
+          $scope.orderData.shippingAddressName = $scope.orderData.customer.name;
+          $scope.orderData.shippingAddressMobile = $scope.orderData.customer.mobile;
+          $scope.orderData.shippingAddressEmail = $scope.orderData.customer.email;
+          $scope.orderData.billingAddressName = $scope.orderData.customer.name;
+          $scope.orderData.billingAddressMobile = $scope.orderData.customer.mobile;
+          $scope.showaddr=true;
+          $scope.addSameBillingDetails(true);
         }
       });
     }
@@ -63,6 +71,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     };
     $scope.addShipBilDetails = function (orderData) {
       //redirect them to cart summery and payment gateway
+      $scope.orderData.shippingAddress.name = orderData.shippingAddressName;
       apiService.apiCall("Order/save", orderData, function (data) {
         if (data.value === true) {
           console.log("Order updated successfully---");
@@ -78,7 +87,6 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     $scope.template = TemplateService.getHTML("content/review.html");
     TemplateService.title = "Review"; //This is the Title of the Website
 
-    $scope.orderData = {};
     $scope.amountToBePaid = 0;
     if ($stateParams.orderId) {
       console.log("orderId", $stateParams.orderId);

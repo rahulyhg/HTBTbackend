@@ -10,7 +10,7 @@ var schema = new Schema({
     },
     status: {
         type: String, //Delivery Scheduled ,In Transit,Full Delivery Successful,Partial Delivery Successful,Delivery Failed
-        enum: ['Delivery Scheduled', 'In Transit', 'Full Delivery Successful', 'Partial Delivery Successful', 'Delivery Failed','Cancelled'],
+        enum: ['Delivery Scheduled', 'In Transit', 'Full Delivery Successful', 'Partial Delivery Successful', 'Delivery Failed', 'Cancelled'],
         default: "Delivery Scheduled"
     },
     Quantity: {
@@ -282,8 +282,9 @@ var model = {
             }
         });
     },
-     cancelJarDelivery: function (data, callback) {
-        console.log("data", data)
+    //to cancel the delivery
+    cancelJarDelivery: function (data, callback) {
+        console.log("data inside cancelJarDelivery", data)
         User.findOne({
             _id: data.customer
         }).exec(function (err, found) {
@@ -292,8 +293,8 @@ var model = {
             } else {
                 if (found) {
                     DeliveryRequest.find({
-                        deliverdate:{
-                            $lt:new Date
+                        deliverdate: {
+                            $gt: new Date()
                         },
                         customer: found._id,
                         product: found.subscribedProd[0].product,
@@ -305,11 +306,12 @@ var model = {
                             callback(err, null);
                         } else {
                             if (foundDelivery) {
-                                foundDelivery.status='Cancelled';
-                                foundDelivery.save(function(err,data){
-                                    if(err){
+                                foundDelivery.status = 'Cancelled';
+                                DeliveryRequest.saveData(foundDelivery, function (err, data) {
+                                    if (err) {
                                         console.log("error while cancelling the request");
-                                    }else{
+                                    } else {
+                                        console.log("DeliveryRequest request cance Successfully");
 
                                     }
                                 })

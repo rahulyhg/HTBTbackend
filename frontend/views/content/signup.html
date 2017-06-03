@@ -1,4 +1,4 @@
-<div class="">
+<div ng-show="orderData" class="">
 
   <div class="centeralign">
     <div class="topimgdiv">
@@ -45,14 +45,14 @@
       </div>
     </div>
     <label class=" item-input inputField">
-    <input class="inputsize" type="text" placeholder="Name"  ng-model="orderData.customer.name" name="name" required>
+    <input class="inputsize" type="text" placeholder="Name"  ng-model="orderData.shippingAddressName" name="name" required>
     <p class="error-msg" ng-show="userForm.name.$error.required && userForm.name.$touched">Please Enter Your Name.</p>
   </label>
     <label class=" item-input inputField">
-    <input class="inputsize" type="text" ng-model="orderData.customer.mobile" placeholder="Mobile Number" disabled>
+    <input class="inputsize" type="text" ng-model="orderData.shippingAddressMobile" placeholder="Mobile Number" disabled>
   </label>
     <label class=" item-input inputField">
-    <input class="inputsize" type="text" ng-model="orderData.customer.email" placeholder="Email ID" required name="email">
+    <input class="inputsize" type="email" ng-model="orderData.shippingAddressEmail" placeholder="Email ID" required name="email">
         <p class="error-msg"  ng-show="userForm.email.$error.required && userForm.email.$touched">Please Enter Your Email.</p>
   </label>
     <label class=" item-input inputField">
@@ -87,11 +87,11 @@
         </div>
       </div>
       <label class=" item-input inputField">
-    <input class="inputsize" type="text" placeholder="Name"  ng-model="orderData.customer.name"  disabled>
+    <input class="inputsize" type="text" placeholder="Name"  ng-model="orderData.billingAddressName"  disabled>
     <p class="error-msg" ng-show="userForm.name.$error.required && userForm.name.$touched">Please Enter Your Name.</p>
   </label>
       <label class=" item-input inputField">
-    <input class="inputsize" type="text"  ng-model="orderData.customer.mobile" placeholder="Mobile Number" disabled>
+    <input class="inputsize" type="text"  ng-model="orderData.billingAddressMobile" placeholder="Mobile Number" disabled>
   </label>
 
       <label class=" item-input inputField">
@@ -111,4 +111,7 @@
     </div>
     <button class="button" ng-disabled="userForm.$invalid" ng-click="addShipBilDetails(orderData)">Place Order</button>
   </form>
+</div>
+<div ng-hide="orderData" style="text-align:center;padding:20%;">
+<h3> Loading ... </h3> 
 </div>

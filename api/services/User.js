@@ -469,7 +469,6 @@ var model = {
     //To generate otp
     generateOtp: function (data, callback) {
         if (data.mobile) {
-
             var randomNumber = Math.floor(1000 + Math.random() * 9000); //To generate four digit random number
             var dataObj = {};
             dataObj.mobile = data.mobile;
@@ -485,6 +484,7 @@ var model = {
                 } else {
                     if (created == null) {
                         // dataObj._id = new mongoose.mongo.ObjectID();
+                        console.log("user data not found so creating new user");
                         User.saveUserData(dataObj, function (error, getData) {
                             if (error || getData == undefined) {
 
@@ -513,6 +513,8 @@ var model = {
                             }
                         })
                     } else {
+                        console.log("user data found so just updating");
+                        
                         User.findOneAndUpdate({
                             mobile: dataObj.mobile,
                             accessLevel: data.accessLevel
