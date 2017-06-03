@@ -39,6 +39,12 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
             controller: 'ReviewCtrl'
         })
 
+         .state('paymentRP', {
+            url: "/payment/:orderId/:rpId",
+            templateUrl: tempateURL,
+            controller: 'ReviewCtrl'
+        })
+
         .state('nonsub', {
             url: "/nonsub/:orderId",
             templateUrl: tempateURL,

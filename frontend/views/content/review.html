@@ -71,15 +71,18 @@
 
         </div>
         <div class="custom-checkbox">
-            <input type="checkbox" id="checkme">
+            <input type="checkbox" id="checkme" ng-model="orderData.terms">
             <label for="checkme">I have read & accept the</label>
             <span class="termscolor checkme" ng-click="terms()">Terms & Conditions</span>
                         </div>
+<div>
+    <!--<pre>{{template|json}}</pre>-->
+      <button ng-hide="template.isRP" ng-if="orderData.methodOfPayment!='Customer'" ng-disabled="!orderData.terms" class="button" ng-click="orderConfirmation(orderData)">Confirm Order</button>
 
-                        <button ng-if="orderData.methodOfPayment!='Customer'" class="button" ng-click="orderConfirmation(orderData)">Confirm Order</button>
 
-
-                        <button ng-if="orderData.methodOfPayment=='Customer'" class="button" ng-click="pay()">Pay ₹ {{amountToBePaid}} /-</button>
+                        <button ng-if="orderData.methodOfPayment=='Customer' || template.isRP" ng-disabled="!orderData.terms" class="button" ng-click="pay()">Pay ₹ {{orderData.totalPrice}} /-</button>
+</div>
+                      
 
 
                     </div>

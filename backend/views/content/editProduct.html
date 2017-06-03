@@ -107,21 +107,21 @@
                             <tr>
                                 <th>End Range</th>
                                 <th>Price</th>
-                                <!-- <th width="150px">Actions</th> -->
+                                 <th width="150px">Actions</th> 
                             </tr>
                         </thead>
                         <tbody>
                             <tr ng-repeat="priceL in productData.priceList | filter:search.text ">
                                 <td>{{priceL.endRange}}</td>
                                 <td>{{priceL.finalPrice}}</td>
-                                <!-- <td>
-                                        <a class="btn btn-primary" ng-click="editBox('Edit',productData)">
+                                 <td>
+                                        <!--<a class="btn btn-primary" ng-click="editBox('Edit',productData)">
                                           <i class="Fa fa-pencil"></i>
-                                      </a>
-                                        <a class="btn btn-danger" ng-click="deleteBox($index, model)">
+                                      </a>-->
+                                        <a class="btn btn-danger" ng-click="deletePrice($index)">
                                           <i class="fa fa-trash"></i>
                                       </a>
-                                    </td> -->
+                                    </td> 
                             </tr>
                         </tbody>
                     </table>

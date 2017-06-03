@@ -30,13 +30,12 @@ var schema = new Schema({
         default: ""
     },
     mobile: {
-        type: String,
-        default: "",
+        type: Number,
         unique: true
     },
     landLine: {
         type: String,
-        default: ""
+        default:""
     },
     earnings: {
         type: Number,
@@ -318,11 +317,6 @@ var model = {
                     console.log(err);
                     callback(err, null);
                 } else {
-                    // var getmonth = fdata[fdata.length-1].userID.toString().substr(fdata[fdata.length-1].userID.toString().length-7,fdata[fdata.length-1].userID.toString().length);
-                    // var getmonth = 03;
-                    // var strMon = 03;
-
-                    console.log(fdata.length);
                     if (fdata.length > 0) {
                         console.log("fdata[0]", fdata[0]);
                         var ID = parseInt(fdata[0].userID.toString().substr(fdata[0].userID.toString().length - 5, fdata[0].userID.toString().length)) + 1;
@@ -511,7 +505,7 @@ var model = {
                                     }
                                 })
                             }
-                        })
+                        });
                     } else {
                         console.log("user data found so just updating");
                         

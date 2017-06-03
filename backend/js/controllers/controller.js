@@ -784,25 +784,27 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 }
 
             });
-        NavigationService.apiCall("PartnerLevel/search", {},
-            function (data) {
-                if (data.value === true) {
-                    var found = 'found';
-                    console.log(data.data.results);
-                    $scope.levels = data.data.results;
-                    var i = 0;
-                    console.log("$scope.productData.commission", $scope.productData.commission)
-                    _.forEach($scope.levels, function (val) {
-                        var comm = {};
-                        comm.commissionType = val;
-                        console.log("commissionType", comm.commissionType);
-                        $scope.productData.commission.push(comm);
+        if (_.isEmpty($stateParams.keyword)) {
+            NavigationService.apiCall("PartnerLevel/search", {},
+                function (data) {
+                    if (data.value === true) {
+                        var found = 'found';
+                        console.log(data.data.results);
+                        $scope.levels = data.data.results;
+                        var i = 0;
+                        console.log("$scope.productData.commission", $scope.productData.commission)
+                        _.forEach($scope.levels, function (val) {
+                            var comm = {};
+                            comm.commissionType = val;
+                            console.log("commissionType", comm.commissionType);
+                            $scope.productData.commission.push(comm);
 
-                    })
-                    console.log("$scope.productData.commission---->>", $scope.productData.commission)
-                }
+                        })
+                        console.log("$scope.productData.commission---->>", $scope.productData.commission)
+                    }
 
-            });
+                });
+        }
         if (!_.isEmpty($stateParams.keyword)) {
             $scope.data = {};
             var formData = {};
@@ -872,10 +874,14 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 }
             });
         }
-        $scope.addQuestion = function (notes) {
+        $scope.addPrice = function (notes) {
             $scope.productData.priceList.push(notes);
         };
+        $scope.deletePrice = function (index) {
+            $scope.productData.priceList.splice(index, 1);
+        };
         $scope.saveProduct = function (formdata) {
+            console.log("productData--", formdata);
             // noteWithTime._id=JSON.parse($stateParams.keyword)._id;
             if (!formdata.category) {
                 toastr.error("Please select a perticular category.");

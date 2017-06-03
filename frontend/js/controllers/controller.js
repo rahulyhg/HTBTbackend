@@ -55,10 +55,10 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
           $scope.orderData.shippingAddressEmail = $scope.orderData.customer.email;
           $scope.orderData.billingAddressName = $scope.orderData.customer.name;
           $scope.orderData.billingAddressMobile = $scope.orderData.customer.mobile;
-          if(_.isEqual($scope.orderData.paymentStatus,'Paid')){
-             $state.go("linkexpire");
+          if (_.isEqual($scope.orderData.paymentStatus, 'Paid')) {
+            $state.go("linkexpire");
           }
-          $scope.showaddr=true;
+          $scope.showaddr = true;
           $scope.addSameBillingDetails(true);
         }
       });
@@ -89,7 +89,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
   .controller('ReviewCtrl', function ($scope, $state, TemplateService, $stateParams, apiService, NavigationService, $uibModal, $timeout) {
     $scope.template = TemplateService.getHTML("content/review.html");
     TemplateService.title = "Review"; //This is the Title of the Website
-
+    $scope.template.isRP = $stateParams.rpId;
     $scope.amountToBePaid = 0;
     if ($stateParams.orderId) {
       console.log("orderId", $stateParams.orderId);
@@ -99,8 +99,8 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
         if (data.value === true) {
 
           $scope.orderData = data.data;
-           if(_.isEqual($scope.orderData.paymentStatus,'Paid')){
-             $state.go("linkexpire");
+          if (_.isEqual($scope.orderData.paymentStatus, 'Paid')) {
+            $state.go("linkexpire");
           }
           _.each($scope.orderData.product, function (n, key) {
             $scope.amountToBePaid += parseFloat(n.product.price) * parseInt(n.productQuantity);
@@ -109,7 +109,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
 
           $scope.options = {
             'key': 'rzp_test_BrwXxB7w8pKsfS',
-            'amount': parseInt($scope.amountToBePaid) * 100,
+            'amount': parseInt($scope.orderData.totalPrice) * 100,
             'name': $scope.orderData.customer.name,
             'description': 'Pay for Order ' + $scope.orderData.orderID,
             'image': '',
@@ -158,8 +158,9 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       orderData.status = 'Confirmed';
       apiService.apiCall("Order/orderConfirmationOrPay", orderData, function (data) {
         if (data.value === true) {
-          console.log("Order confirmed successfully--- redirect to thank you page");
           $state.go("thankyou");
+          console.log("Order confirmed successfully--- redirect to thank you page");
+
         }
       });
     }
