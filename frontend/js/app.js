@@ -64,7 +64,7 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
             controller: 'SorryCtrl'
         });
 
-    $urlRouterProvider.otherwise("/orderconfirmation");
+    $urlRouterProvider.otherwise("/orderconfirmation/");
 
     $locationProvider.html5Mode(isproduction);
 })
