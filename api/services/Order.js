@@ -1,4 +1,3 @@
-var googl = require('goo.gl');
 googl.setKey('AIzaSyBNYn69YbFQ9ekRkMvoPlflR0pd7db1I7U');
 var Bitly = require('bitly');
 var bitly = new Bitly('e9bb882af8f22315f7da81f7965163b140b1bbfd');
@@ -175,7 +174,7 @@ var model = {
                                 console.log("val--", val, "index--", index);
                                 var deliveryReqData = {};
                                 var planChecked = true;
-                      val.reqId= 0;
+                                val.reqId = 0;
                                 if (index == 0 && val.product && val.product.category) {
                                     if (_.isEqual(val.product.category.subscription, 'Yes')) {
                                         if (!_.isEqual(data.plan, 'Onetime')) {
@@ -204,12 +203,12 @@ var model = {
                                             deliveryReqData.Order = data._id;
                                             deliveryReqData.requestDate = new Date();
                                             deliveryReqData.methodOfRequest = data.methodOfOrder;
-                                            deliveryReqData.requestID =  val.reqId;
+                                            deliveryReqData.requestID = val.reqId;
                                             deliveryReqData.customer = data.customer._id
                                             green("deliveryReqData--", deliveryReqData);
                                             DeliveryRequest.saveData(deliveryReqData, function (err, savedDelivery) {
                                                 if (err) {
-                                                    red("error while creating delivery",err);
+                                                    red("error while creating delivery", err);
                                                     // callback(err, null);
                                                 } else {
                                                     console.log("savedDelivery--", savedDelivery);
