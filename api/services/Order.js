@@ -221,7 +221,7 @@ var model = {
                         }
                     },
                     function () {
-                        if (confirmationToRP && data.customer.relationshipId && orderFor == 'RMForCustomer') {
+                        if (confirmationToRP && data.customer.relationshipId && data.orderFor == 'RMForCustomer') {
                             var shortU;
                             console.log("inside relationship Partner Payment msg");
                             // Shorten a long url and output the result
