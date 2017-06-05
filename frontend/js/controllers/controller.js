@@ -104,6 +104,8 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
             if (pinData.value === true) {
               $scope.daysByPincode = pinData.data;
               console.log($scope.daysByPincode.days);
+            } else {
+              $state.go("pincode");
             }
           });
           if (_.isEqual($scope.orderData.paymentStatus, 'Paid')) {
@@ -407,7 +409,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     TemplateService.title = "Sorry"; //This is the Title of the Website
   })
 
-.controller('PincodeCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
+  .controller('PincodeCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
     $scope.template = TemplateService.getHTML("content/Pincode.html");
     TemplateService.title = "Pincode"; //This is the Title of the Website
   })
