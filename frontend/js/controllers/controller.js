@@ -73,13 +73,14 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     };
     $scope.addShipBilDetails = function (orderData) {
       //redirect them to cart summery and payment gateway
+      orderData.shippingAddress = {};
       orderData.shippingAddress.name = orderData.shippingAddressName;
       orderData.shippingAddress.mobile = orderData.shippingAddressMobile;
-      orderData.shippingAddress.email = orderData.shippingAddressEmail;      
+      orderData.shippingAddress.email = orderData.shippingAddressEmail;
       orderData.billingAddress.name = orderData.billingAddressName;
       orderData.billingAddress.mobile = orderData.billingAddressMobile;
-      if($scope.showaddr){
-       orderData.billingAddress = _.cloneDeep(orderData.shippingAddress);
+      if ($scope.showaddr) {
+        orderData.billingAddress = _.cloneDeep(orderData.shippingAddress);
       }
       apiService.apiCall("Order/save", orderData, function (data) {
         if (data.value === true) {
