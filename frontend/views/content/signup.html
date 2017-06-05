@@ -56,7 +56,7 @@
         <p class="error-msg"  ng-show="userForm.email.$error.required && userForm.email.$touched">Please Enter Your Email.</p>
   </label>
     <label class=" item-input inputField">
-    <input class="inputsize" type="text" ng-model="orderData.shippingAddress.establishmentName" placeholder="Company Name (Optional)" >
+    <input class="inputsize" type="text" ng-model="orderData.shippingAddress.companyName" placeholder="Company Name (Optional)" >
 
   </label>
     <label class=" item-input inputField">
@@ -87,7 +87,7 @@
         </div>
       </div>
       <label class=" item-input inputField">
-    <input class="inputsize" type="text" placeholder="Name"  ng-model="orderData.billingAddressName"  disabled>
+    <input class="inputsize" type="text" placeholder="Name"  ng-model="orderData.billingAddressName"  >
     <p class="error-msg" ng-show="userForm.name.$error.required && userForm.name.$touched">Please Enter Your Name.</p>
   </label>
       <label class=" item-input inputField">
@@ -104,8 +104,8 @@
     <input class="inputsize" type="text"  ng-model="orderData.billingAddress.address2"  placeholder="..." >
   </label>
       <label class=" item-input inputField">
-    <input class="inputsize" type="number" only-digits ng-model="orderData.billingAddress.pincode" placeholder="Pincode" name="pincodeBil" required>
-     <p class="error-msg" ng-min="100000" ng-max="999999" ng-show="userForm.pincodeBil.$error.required && userForm.pincodeBil.$touched">Please Enter Pincode.</p>
+    <input class="inputsize" type="number" ng-min="100000" ng-max="999999" only-digits ng-model="orderData.billingAddress.pincode" placeholder="Pincode" name="pincodeBil" required>
+     <p class="error-msg" ng-show="userForm.pincodeBil.$error.required && userForm.pincodeBil.$touched">Please Enter Pincode.</p>
   </label>
 
     </div>

@@ -53,7 +53,10 @@ var schema = new Schema({
     //     default: false
     // },
     orderDate: Date,
-    methodOfOrder: String,
+    methodOfOrder: {
+        type: String,
+        enum: ['Customer Representative', 'Relationship Partner', 'Application']
+    },
     methodOfPayment: {
         type: String,
         enum: ['Cash', 'Credits', 'Customer']
@@ -135,37 +138,25 @@ var model = {
                 callback(err, null);
             } else {
                 console.log("savedData--", savedData);
-                DeliveryRequest.find({
-                    Order: data._id
-                }).lean().sort({
-                    _id: 1
-                }).exec(function (err, deliveryData) {
-                    if (err) {
-                        callback(err, null);
-                    } else {
-                        _.forEach(deliveryData, function (val) {
-                            val.deliverdate = data.deliverdate;
-                            DeliveryRequest.saveData(val, function (err, updated) {
-                                if (err) {
-                                    console.log("error occured in DeliveryRequest update");
-                                } else {
-                                    console.log("DeliveryRequest updated");
-                                }
-                            });
-                        })
-                    }
-                });
                 async.parallel([
                     //Function to search event name
                     function () {
-                        if (data.razorpay_payment_id && _.isEqual(data.methodOfPayment, 'credits')) {
+                        if (data.razorpay_payment_id && data.customer.relationshipId) {
+                            console.log("inside relationship Partner updation");
                             User.findOne({
                                 _id: data.customer.relationshipId
                             }).lean().exec(function (err, RPdata) {
                                 if (err) {
                                     callback(err, null);
                                 } else {
-                                    RPdata.credits = parseInt(RPdata.credits) + parseInt(totalAmount);
+                                    if (_.isEqual(data.methodOfPayment, 'credits')) {
+                                        RPdata.credits = parseInt(RPdata.credits) + parseInt(totalAmount);
+                                    }
+                                    _.forEach(RPdata.customer, function (val) {
+                                        if (_.isEqual(val.customer, data.customer._id)) {
+                                            val.status = 'Existing';
+                                        }
+                                    });
                                     User.saveData(RPdata, function (err, savedUser) {
                                         if (err) {
                                             callback(err, null);
@@ -178,10 +169,64 @@ var model = {
                         }
                     },
                     function () {
-                        if (confirmationToRP && data.customer.relationshipId) {
+                        if (data.razorpay_payment_id) {
+                            console.log("inside Delivery req create", data.product.length);
+                            _.forEach(data.product, function (val, index) {
+                                console.log("val--", val, "index--", index);
+                                var deliveryReqData = {};
+                                var planChecked = true;
+                      val.reqId= 0;
+                                if (index == 0 && val.product && val.product.category) {
+                                    if (_.isEqual(val.product.category.subscription, 'Yes')) {
+                                        if (!_.isEqual(data.plan, 'Onetime')) {
+                                            planChecked = false;
+                                        }
+                                    }
+                                }
+                                if (planChecked) {
+                                    DeliveryRequest.find({}).sort({
+                                        createdAt: -1
+                                    }).exec(function (err, fdata) {
+                                        if (err) {
+                                            console.log(err);
+                                            callback(err, null);
+                                        } else {
+                                            if (fdata.length > 0) {
+                                                if (fdata[0].requestID) {
+                                                    val.reqId = parseInt(fdata[0].requestID) + 1;
+                                                }
+                                            } else {
+                                                val.reqId = 1;
+                                            }
+                                            deliveryReqData.product = val.product._id;
+                                            deliveryReqData.Quantity = val.productQuantity;
+                                            deliveryReqData.deliverdate = data.deliverdate;
+                                            deliveryReqData.Order = data._id;
+                                            deliveryReqData.requestDate = new Date();
+                                            deliveryReqData.methodOfRequest = data.methodOfOrder;
+                                            deliveryReqData.requestID =  val.reqId;
+                                            deliveryReqData.customer = data.customer._id
+                                            green("deliveryReqData--", deliveryReqData);
+                                            DeliveryRequest.saveData(deliveryReqData, function (err, savedDelivery) {
+                                                if (err) {
+                                                    red("error while creating delivery",err);
+                                                    // callback(err, null);
+                                                } else {
+                                                    console.log("savedDelivery--", savedDelivery);
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                            });
+                        }
+                    },
+                    function () {
+                        if (confirmationToRP && data.customer.relationshipId && orderFor == 'RMForCustomer') {
                             var shortU;
+                            console.log("inside relationship Partner Payment msg");
                             // Shorten a long url and output the result
-                            bitly.shorten(env.frontend + "/payment/" + data._id+"/123")
+                            bitly.shorten(env.frontend + "/payment/" + data._id + "/123")
                                 .then(function (response) {
                                     console.log("shortUrl", response);
                                     shortU = response.data.url;
@@ -222,21 +267,25 @@ var model = {
                         }
                     },
                     function () {
-                        if (_.isEqual(data.product[0].product.category.subscription, 'Yes')) {
+                        if (_.isEqual(data.product[0].product.category.subscription, 'Yes') && data.razorpay_payment_id) {
+                            console.log("inside user updation");
+
                             User.findOne({
                                 _id: data.customer._id
                             }).exec(function (err, userdata) {
                                 if (err) {
                                     callback(err, null);
                                 } else {
-                                    if (!_.isEmpty(userdata.subscribedProd[0]) && userdata.subscribedProd[0].jarBalance) {
+                                    if (!_.isEmpty(userdata.subscribedProd[0])) {
                                         userdata.subscribedProd[0].jarBalance = parseInt(userdata.subscribedProd[0].jarBalance) + parseInt(data.totalQuantity);
                                     } else {
                                         var subProd = {};
+                                        subProd.recentOrder = data._id
                                         subProd.product = data.product[0].product;
                                         subProd.jarBalance = parseInt(data.totalQuantity)
                                         userdata.subscribedProd.push(subProd);
                                     }
+                                    userdata.status = 'Active';
                                     userdata.save(function (err, updated) {
                                         if (err) {
                                             console.log("error occured in user update");
@@ -377,58 +426,58 @@ var model = {
                             callback(err, null);
                         } else {
                             console.log("savedData--", savedData);
-                            User.findOne({
-                                _id: data.customer
-                            }).exec(function (err, foundUser) {
-                                if (err) {
-                                    console.log("error while updating user", err);
-                                    // callback(err, null);
-                                } else {
-                                    foundUser.balance = foundUser.balance + parseInt(data.totalQuantity);
-                                }
-                            });
-                            console.log("inside Delivery req create", data.product);
-                            var deliveryReqData = {};
-                            var planChecked = true;
-                            _.forEach(data.product, function (val, index) {
-                                console.log("val--", val, "index--", index);
-                                if (index == 0 && val.product && val.product.category) {
-                                    if (_.isEqual(val.product.category.subscription, 'Yes')) {
-                                        if (!_.isEqual(data.plan, 'Onetime')) {
-                                            planChecked = false;
-                                        }
-                                    }
-                                }
-                                if (planChecked) {
-                                    DeliveryRequest.find({}).sort({
-                                        createdAt: -1
-                                    }).exec(function (err, fdata) {
-                                        if (err) {
-                                            console.log(err);
-                                            callback(err, null);
-                                        } else {
-                                            if (fdata.length > 0) {
-                                                if (fdata[0].requestID) {
-                                                    reqId = parseInt(fdata[0].requestID) + 1;
-                                                }
-                                            } else {
-                                                reqId = 1;
-                                            }
-                                            deliveryReqData.product = val.product;
-                                            deliveryReqData.Quantity = val.productQuantity;
-                                            deliveryReqData.deliverdate = data.deliverdate;
-                                            deliveryReqData.Order = savedData._id;
-                                            deliveryReqData.requestDate = new Date();
-                                            deliveryReqData.methodOfRequest = data.methodOfOrder;
-                                            deliveryReqData.requestID = reqId;
-                                            deliveryReqData.customer = data.customer
-                                            console.log("deliveryReqData--", deliveryReqData);
-                                            DeliveryRequest.saveData(deliveryReqData, function () {});
+                            // User.findOne({
+                            //     _id: data.customer
+                            // }).exec(function (err, foundUser) {
+                            //     if (err) {
+                            //         console.log("error while updating user", err);
+                            //         // callback(err, null);
+                            //     } else {
+                            //         foundUser.balance = foundUser.balance + parseInt(data.totalQuantity);
+                            //     }
+                            // });
+                            // console.log("inside Delivery req create", data.product);
+                            // var deliveryReqData = {};
+                            // var planChecked = true;
+                            // _.forEach(data.product, function (val, index) {
+                            //     console.log("val--", val, "index--", index);
+                            //     if (index == 0 && val.product && val.product.category) {
+                            //         if (_.isEqual(val.product.category.subscription, 'Yes')) {
+                            //             if (!_.isEqual(data.plan, 'Onetime')) {
+                            //                 planChecked = false;
+                            //             }
+                            //         }
+                            //     }
+                            //     if (planChecked) {
+                            //         DeliveryRequest.find({}).sort({
+                            //             createdAt: -1
+                            //         }).exec(function (err, fdata) {
+                            //             if (err) {
+                            //                 console.log(err);
+                            //                 callback(err, null);
+                            //             } else {
+                            //                 if (fdata.length > 0) {
+                            //                     if (fdata[0].requestID) {
+                            //                         reqId = parseInt(fdata[0].requestID) + 1;
+                            //                     }
+                            //                 } else {
+                            //                     reqId = 1;
+                            //                 }
+                            //                 deliveryReqData.product = val.product;
+                            //                 deliveryReqData.Quantity = val.productQuantity;
+                            //                 deliveryReqData.deliverdate = data.deliverdate;
+                            //                 deliveryReqData.Order = savedData._id;
+                            //                 deliveryReqData.requestDate = new Date();
+                            //                 deliveryReqData.methodOfRequest = data.methodOfOrder;
+                            //                 deliveryReqData.requestID = reqId;
+                            //                 deliveryReqData.customer = data.customer
+                            //                 console.log("deliveryReqData--", deliveryReqData);
+                            //                 DeliveryRequest.saveData(deliveryReqData, function () {});
 
-                                        }
-                                    });
-                                }
-                            });
+                            //             }
+                            //         });
+                            //     }
+                            // });
                             callback(null, savedData);
                         }
                     });
@@ -676,7 +725,7 @@ var model = {
                         console.log("inside user create", userData);
                         User.findOne({
                             mobile: userData.mobile
-                        }, function (err, data2) {
+                        }).deepPopulate('cartProducts.product').lean().exec(function (err, data2) {
                             if (err) {
                                 callback(err);
                             } else if (_.isEmpty(data2)) {
@@ -692,7 +741,7 @@ var model = {
                                             if (err) {
                                                 callback(err, null);
                                             } else {
-                                                console.log("RPdata--",RPdata);
+                                                console.log("RPdata--", RPdata);
                                                 var cust = {};
                                                 cust.customer = savedData._id;
                                                 cust.addedDate = new Date();
@@ -728,7 +777,7 @@ var model = {
                             if (err) {
                                 callback(err, null);
                             } else {
-                                console.log("cartProducts.product---",foundUserData);
+                                console.log("cartProducts.product---", foundUserData);
                                 orderData.customer = foundUserData._id;
                                 orderData.product = customerData.cartProducts;
                                 Order.saveOrder(orderData, function (err, savedOrder) {

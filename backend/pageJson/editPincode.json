@@ -26,7 +26,7 @@
         "dropDownField": "",
         "dropDownType": "multiple",
         "onView": true,
-        "dropDown": ["Monday", "Tuesday", "Wednesday", "ThursDay", "Friday", "Saturday", "Sunday"]
+        "dropDown": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
 
     }, {
         "name": "Yearly Holidays",

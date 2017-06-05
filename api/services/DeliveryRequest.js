@@ -90,7 +90,7 @@ var model = {
     },
     //to update the delivery request after product is delivered 
     saveDeliveryRequest: function (data, callback) {
-        if (data.Quantity > data.QuantityDelivered) {
+        if (data.Quantity > data.QuantityDelivered && data.QuantityDelivered>0) {
             data.status = "Partial Delivery Successful";
         } else if (data.Quantity == data.QuantityDelivered) {
             data.status = "Full Delivery Successful";

@@ -128,6 +128,10 @@ var schema = new Schema({
         DiscountAmount: String
     },
     subscribedProd: [{
+         recentOrder: {
+            type: Schema.Types.ObjectId,
+            ref: 'Order',
+        },
         product: {
             type: Schema.Types.ObjectId,
             ref: 'Product',
@@ -156,6 +160,9 @@ schema.plugin(deepPopulate, {
         },
         'cartProducts.product': {
             select: ''
+        },
+        'subscribedProd.recentOrder':{
+            select:''
         }
     }
 });
@@ -164,7 +171,7 @@ schema.plugin(timestamps);
 
 module.exports = mongoose.model('User', schema);
 
-var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user cartProducts.product customer.customer relationshipId", "user cartProducts.product customer.customer relationshipId"));
+var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user cartProducts.product customer.customer relationshipId subscribedProd.recentOrder", "user cartProducts.product customer.customer relationshipId subscribedProd.recentOrder"));
 var model = {
     //to get specific user profile
     getProfile: function (data, callback) {
