@@ -91,7 +91,7 @@ var schema = new Schema({
         notestime: Date
     }],
     customer: [{
-        customrId: {
+        customer: {
             type: Schema.Types.ObjectId,
             ref: 'User'
         },
@@ -145,7 +145,7 @@ schema.plugin(deepPopulate, {
         'user': {
             select: 'name _id'
         },
-        'customer': {
+        'customer.customrId': {
             select: ''
         },
         'relationshipId': {
@@ -164,7 +164,7 @@ schema.plugin(timestamps);
 
 module.exports = mongoose.model('User', schema);
 
-var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user cartProducts.product customer", "user customer"));
+var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "user cartProducts.product customer.customer relationshipId", "user cartProducts.product customer.customer relationshipId"));
 var model = {
     //to get specific user profile
     getProfile: function (data, callback) {

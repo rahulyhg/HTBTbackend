@@ -99,6 +99,14 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
         if (data.value === true) {
 
           $scope.orderData = data.data;
+          var pinForm = {};
+          pinForm.pin = $scope.orderData.shippingAddress.pincode;
+          apiService.apiCall("Pincode/getByPin", pinForm, function (pinData) {
+            if (pinData.value === true) {
+              $scope.daysByPincode = pinData.data;
+              console.log("$scope.daysByPincode", $scope.daysByPincode);
+            }
+          });
           if (_.isEqual($scope.orderData.paymentStatus, 'Paid')) {
             $state.go("linkexpire");
           }

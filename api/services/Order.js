@@ -642,7 +642,7 @@ var model = {
             if (data.user) {
                 User.findOne({
                     _id: data.user
-                }).exec(function (err, RPdata) {
+                }).deepPopulate('cartProducts.product').exec(function (err, RPdata) {
                     if (err) {
                         callback(err, null);
                     } else {
@@ -688,10 +688,11 @@ var model = {
                                         console.log("savedData-- user", savedData);
                                         User.findOne({
                                             _id: savedData.relationshipId
-                                        }).deepPopulate('cartProducts.product').lean().exec(function (err, RPdata) {
+                                        }).lean().exec(function (err, RPdata) {
                                             if (err) {
                                                 callback(err, null);
                                             } else {
+                                                console.log("RPdata--",RPdata);
                                                 var cust = {};
                                                 cust.customer = savedData._id;
                                                 cust.addedDate = new Date();
