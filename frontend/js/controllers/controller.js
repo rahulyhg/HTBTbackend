@@ -107,7 +107,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
           $scope.orderData = data.data;
           var pinForm = {};
           pinForm.pin = $scope.orderData.shippingAddress.pincode;
-          apiService.apiCall("Pincode/getByPin", pinForm, function (pinData) {
+          apiService.getPinDetail(pinForm, function (pinData) {
             if (pinData.value === true) {
               $scope.daysByPincode = pinData.data;
               console.log($scope.daysByPincode.days);
