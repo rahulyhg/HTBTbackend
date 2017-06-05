@@ -97,14 +97,13 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       formData._id = $stateParams.orderId;
       apiService.apiCall("Order/getOne", formData, function (data) {
         if (data.value === true) {
-
           $scope.orderData = data.data;
           var pinForm = {};
           pinForm.pin = $scope.orderData.shippingAddress.pincode;
           apiService.apiCall("Pincode/getByPin", pinForm, function (pinData) {
             if (pinData.value === true) {
               $scope.daysByPincode = pinData.data;
-              console.log("$scope.daysByPincode", $scope.daysByPincode);
+              console.log($scope.daysByPincode.days);
             }
           });
           if (_.isEqual($scope.orderData.paymentStatus, 'Paid')) {
@@ -113,8 +112,6 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
           _.each($scope.orderData.product, function (n, key) {
             $scope.amountToBePaid += parseFloat(n.product.price) * parseInt(n.productQuantity);
           });
-
-
           $scope.options = {
             'key': 'rzp_test_BrwXxB7w8pKsfS',
             'amount': parseInt($scope.orderData.totalPrice) * 100,
@@ -133,7 +130,6 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
               color: '#3399FF'
             }
           };
-
         }
       });
     }
@@ -206,9 +202,20 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
 
     // Disable weekend selection
     function disabled(data) {
-      var date = data.date,
-        mode = data.mode;
-      return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+      var currentDay = _.upperCase(moment(data.date).format("dddd"));
+      var retVal = true;
+      _.each($scope.daysByPincode.days, function (n) {
+        var capN = _.upperCase(n);
+        if (capN == currentDay) {
+          retVal = false;
+        }
+      });
+      var diff = moment(data.date).diff(moment(), 'days')
+      console.log(a);
+      if (diff <= 0) {
+        retVal = true;
+      }
+      return retVal;
     }
 
     $scope.toggleMin = function () {
