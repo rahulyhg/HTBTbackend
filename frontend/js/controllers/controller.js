@@ -55,10 +55,10 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
           $scope.orderData.shippingAddressEmail = $scope.orderData.customer.email;
           $scope.orderData.billingAddressName = $scope.orderData.customer.name;
           $scope.orderData.billingAddressMobile = $scope.orderData.customer.mobile;
-          if(_.isEqual($scope.orderData.paymentStatus,'Paid')){
-             $state.go("linkexpire");
+          if (_.isEqual($scope.orderData.paymentStatus, 'Paid')) {
+            $state.go("linkexpire");
           }
-          $scope.showaddr=true;
+          $scope.showaddr = true;
           $scope.addSameBillingDetails(true);
         }
       });
@@ -89,7 +89,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
   .controller('ReviewCtrl', function ($scope, $state, TemplateService, $stateParams, apiService, NavigationService, $uibModal, $timeout) {
     $scope.template = TemplateService.getHTML("content/review.html");
     TemplateService.title = "Review"; //This is the Title of the Website
-
+    $scope.template.isRP = $stateParams.rpId;
     $scope.amountToBePaid = 0;
     if ($stateParams.orderId) {
       console.log("orderId", $stateParams.orderId);
@@ -97,19 +97,24 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       formData._id = $stateParams.orderId;
       apiService.apiCall("Order/getOne", formData, function (data) {
         if (data.value === true) {
-
           $scope.orderData = data.data;
-           if(_.isEqual($scope.orderData.paymentStatus,'Paid')){
-             $state.go("linkexpire");
+          var pinForm = {};
+          pinForm.pin = $scope.orderData.shippingAddress.pincode;
+          apiService.apiCall("Pincode/getByPin", pinForm, function (pinData) {
+            if (pinData.value === true) {
+              $scope.daysByPincode = pinData.data;
+              console.log($scope.daysByPincode.days);
+            }
+          });
+          if (_.isEqual($scope.orderData.paymentStatus, 'Paid')) {
+            $state.go("linkexpire");
           }
           _.each($scope.orderData.product, function (n, key) {
             $scope.amountToBePaid += parseFloat(n.product.price) * parseInt(n.productQuantity);
           });
-
-
           $scope.options = {
             'key': 'rzp_test_BrwXxB7w8pKsfS',
-            'amount': parseInt($scope.amountToBePaid) * 100,
+            'amount': parseInt($scope.orderData.totalPrice) * 100,
             'name': $scope.orderData.customer.name,
             'description': 'Pay for Order ' + $scope.orderData.orderID,
             'image': '',
@@ -125,7 +130,6 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
               color: '#3399FF'
             }
           };
-
         }
       });
     }
@@ -158,8 +162,9 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       orderData.status = 'Confirmed';
       apiService.apiCall("Order/orderConfirmationOrPay", orderData, function (data) {
         if (data.value === true) {
-          console.log("Order confirmed successfully--- redirect to thank you page");
           $state.go("thankyou");
+          console.log("Order confirmed successfully--- redirect to thank you page");
+
         }
       });
     }
@@ -197,9 +202,20 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
 
     // Disable weekend selection
     function disabled(data) {
-      var date = data.date,
-        mode = data.mode;
-      return mode === 'day' && (date.getDay() === 0 || date.getDay() === 6);
+      var currentDay = _.upperCase(moment(data.date).format("dddd"));
+      var retVal = true;
+      _.each($scope.daysByPincode.days, function (n) {
+        var capN = _.upperCase(n);
+        if (capN == currentDay) {
+          retVal = false;
+        }
+      });
+      var diff = moment(data.date).diff(moment(), 'days')
+      console.log(a);
+      if (diff <= 0) {
+        retVal = true;
+      }
+      return retVal;
     }
 
     $scope.toggleMin = function () {

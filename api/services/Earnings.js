@@ -47,10 +47,10 @@ var model = {
                         console.log(err);
                         callback(err, null);
                     } else {
-                        console.log("previousMonthEarning---", found);
+                       // console.log("previousMonthEarning---", found);
 
                         var earnings = _.sum(_.map(found, "earnings"));
-                        console.log("previousMonthEarning", earnings);
+                       // console.log("previousMonthEarning", earnings);
                         if (earnings) {
                             dashboardData.previousMonthEarning = earnings;
                         }
@@ -85,10 +85,10 @@ var model = {
                         console.log(err);
                         callback(err, null);
                     } else {
-                        console.log("currentMonthEarnings", found.credits);
+                       // console.log("currentMonthEarnings", found.credits);
                         dashboardData.currentMonthCredits = found.credits;
                         var earnings = _.sum(_.map(found, "earnings"));
-                        console.log("found", earnings);
+                       // console.log("found", earnings);
                         if (earnings) {
                             dashboardData.currentMonthEarnings = earnings;
 
@@ -111,13 +111,13 @@ var model = {
                         callback(err, null);
                     } else {
                         if (found) {
-                            console.log("CurrentMonUser---", found);
+                           // console.log("CurrentMonUser---", found);
                             var CurrentMonUser = _.filter(found.customer, function (o) {
                                 if (o.addedDate > dayOne && o.addedDate <= lastDay) {
                                     return o;
                                 }
                             });
-                            console.log("CurrentMonUser", CurrentMonUser);
+                           // console.log("CurrentMonUser", CurrentMonUser);
                             if (CurrentMonUser) {
                                 dashboardData.currentMonthUser = CurrentMonUser.length;
                             }

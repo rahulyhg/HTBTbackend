@@ -1,5 +1,7 @@
 var googl = require('goo.gl');
-googl.setKey('AIzaSyD_0eajXMXo7CNmSBr7XutL65p0rDWCw48');
+googl.setKey('AIzaSyBNYn69YbFQ9ekRkMvoPlflR0pd7db1I7U');
+var Bitly = require('bitly');
+var bitly = new Bitly('e9bb882af8f22315f7da81f7965163b140b1bbfd');
 var schema = new Schema({
     orderID: {
         type: String,
@@ -134,7 +136,7 @@ var model = {
             } else {
                 console.log("savedData--", savedData);
                 DeliveryRequest.find({
-                    Order: savedData._id
+                    Order: data._id
                 }).lean().sort({
                     _id: 1
                 }).exec(function (err, deliveryData) {
@@ -179,9 +181,10 @@ var model = {
                         if (confirmationToRP && data.customer.relationshipId) {
                             var shortU;
                             // Shorten a long url and output the result
-                            googl.shorten(env.frontend + "/payment/" + data._id)
-                                .then(function (shortUrl) {
-                                    shortU = shortUrl;
+                            bitly.shorten(env.frontend + "/payment/" + data._id+"/123")
+                                .then(function (response) {
+                                    console.log("shortUrl", response);
+                                    shortU = response.data.url;
                                     User.findOne({
                                         _id: data.customer.relationshipId
                                     }).exec(function (err, RPdata) {
@@ -212,15 +215,14 @@ var model = {
                                             })
                                         }
                                     });
-                                })
-                                .catch(function (err) {
-                                    console.error(err.message);
+                                }, function (error) {
+                                    console.log("error while shortnening url", error)
                                 });
 
                         }
                     },
                     function () {
-                        if (_.isEqual(data.product[0].product.category.subscription,'Yes')) {
+                        if (_.isEqual(data.product[0].product.category.subscription, 'Yes')) {
                             User.findOne({
                                 _id: data.customer._id
                             }).exec(function (err, userdata) {
@@ -231,8 +233,8 @@ var model = {
                                         userdata.subscribedProd[0].jarBalance = parseInt(userdata.subscribedProd[0].jarBalance) + parseInt(data.totalQuantity);
                                     } else {
                                         var subProd = {};
-                                        subProd.product =data.product[0].product;
-                                        subProd.jarBalance=parseInt(data.totalQuantity)
+                                        subProd.product = data.product[0].product;
+                                        subProd.jarBalance = parseInt(data.totalQuantity)
                                         userdata.subscribedProd.push(subProd);
                                     }
                                     userdata.save(function (err, updated) {
@@ -257,11 +259,11 @@ var model = {
                             Config.sendSMS(smsObj, function (error, SMSResponse) {
                                 if (error || SMSResponse == undefined) {
                                     console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
-                                    callback(error, null);
+                                    // callback(error, null);
                                 } else {
-                                    callback(null, {
-                                        message: "OTP sent"
-                                    });
+                                    // callback(null, {
+                                    //     message: "OTP sent"
+                                    // });
                                 }
                             })
                         }
@@ -286,7 +288,8 @@ var model = {
         console.log("calculatePrice----", data)
         var prodList = data;
         _.forEach(prodList, function (val) {
-            if (val.product.priceList) {
+            console.log("val in prodList", val);
+            if (!_.isEmpty(val.product.priceList)) {
                 var orderedPrice = _.orderBy(val.product.priceList, ['endRange'], ['asc']);
                 console.log("orderedPrice", orderedPrice);
                 foundPrice = {};
@@ -304,6 +307,7 @@ var model = {
                 val.finalPrice = val.product.price;
             }
         });
+
         return prodList;
     },
     //used for saving the order
@@ -364,6 +368,9 @@ var model = {
                     data.orderID = orderID;
                     data.orderDate = new Date();
                     data.product = Order.calculatePrice(data.product)
+                    data.totalAmount = _.sumBy(data.product, function (o) {
+                        return parseInt(o.finalPrice * o.productQuantity);
+                    });
                     Order.saveData(data, function (err, savedData) {
                         if (err) {
                             console.log("err--", err);
@@ -382,8 +389,8 @@ var model = {
                             });
                             console.log("inside Delivery req create", data.product);
                             var deliveryReqData = {};
+                            var planChecked = true;
                             _.forEach(data.product, function (val, index) {
-                                var planChecked = true;
                                 console.log("val--", val, "index--", index);
                                 if (index == 0 && val.product && val.product.category) {
                                     if (_.isEqual(val.product.category.subscription, 'Yes')) {
@@ -572,11 +579,14 @@ var model = {
                     console.log("succefully completed the waterfall");
                     //send sms here;
                     if (_.isEqual(savedOrder.orderFor, 'RMForCustomer')) {
+                        console.log("inside if----send msg to RM", savedOrder.orderID, partnerName);
                         var shortU;
                         // Shorten a long url and output the result
-                        googl.shorten(env.frontend + "/orderconfirmation/" + savedOrder._id)
-                            .then(function (shortUrl) {
-                                shortU = shortUrl;
+
+                        bitly.shorten(env.frontend + "/orderconfirmation/" + savedOrder._id)
+                            .then(function (response) {
+                                console.log("shortUrl", response);
+                                shortU = response.data.url;
                                 var smsMessage = "We are processing your order " + savedOrder.orderID + " received through our partner " + partnerName + ". Please confirm on url " + shortU
                                 var smsObj = {
                                     "message": "HTBT",
@@ -598,9 +608,8 @@ var model = {
                                         // });
                                     }
                                 })
-                            })
-                            .catch(function (err) {
-                                console.error(err.message);
+                            }, function (error) {
+                                console.log("error while shortnening url", error)
                             });
 
                     } else {
@@ -633,7 +642,7 @@ var model = {
             if (data.user) {
                 User.findOne({
                     _id: data.user
-                }).exec(function (err, RPdata) {
+                }).deepPopulate('cartProducts.product').exec(function (err, RPdata) {
                     if (err) {
                         callback(err, null);
                     } else {
@@ -683,6 +692,7 @@ var model = {
                                             if (err) {
                                                 callback(err, null);
                                             } else {
+                                                console.log("RPdata--",RPdata);
                                                 var cust = {};
                                                 cust.customer = savedData._id;
                                                 cust.addedDate = new Date();
@@ -718,6 +728,7 @@ var model = {
                             if (err) {
                                 callback(err, null);
                             } else {
+                                console.log("cartProducts.product---",foundUserData);
                                 orderData.customer = foundUserData._id;
                                 orderData.product = customerData.cartProducts;
                                 Order.saveOrder(orderData, function (err, savedOrder) {
@@ -751,9 +762,10 @@ var model = {
                         if (_.isEqual(savedOrder.orderFor, 'RMForCustomer')) {
                             var shortU;
                             // Shorten a long url and output the result
-                            googl.shorten(env.frontend + "/orderconfirmation/" + savedOrder._id)
-                                .then(function (shortUrl) {
-                                    shortU = shortUrl;
+                            bitly.shorten(env.frontend + "/orderconfirmation/" + savedOrder._id)
+                                .then(function (response) {
+                                    console.log("shortUrl", response);
+                                    shortU = response.data.url;
                                     var smsMessage = "We are processing your order " + savedOrder.orderID + " received through our partner " + partnerName + ". Please confirm on url " + shortU
                                     console.log("smsMessage--\n", smsMessage);
                                     var smsObj = {
@@ -776,9 +788,8 @@ var model = {
                                             // });
                                         }
                                     })
-                                })
-                                .catch(function (err) {
-                                    console.error(err.message);
+                                }, function (error) {
+                                    console.log("error while shortnening url", error)
                                 });
                         } else {
                             console.log("Please provide mobile mumber");
