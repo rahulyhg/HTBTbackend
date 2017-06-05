@@ -9682,6 +9682,26 @@ header {
   font-weight: 500;
   color: #6d797e; }
 
+.pin-msg {
+  font-size: 22px;
+  padding: 10px;
+  color: #6d797e; }
+
+.pin-head {
+  font-size: 32px;
+  padding: 10px;
+  text-align: center;
+  color: #ff414d; }
+
+.pin-close {
+  position: absolute;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  top: 0px;
+  right: 0px;
+  font-size: 30px;
+  font-weight: 400; }
+
 #fancybox-loading,
 .fancybox-close,
 .fancybox-next span,

@@ -391,6 +391,11 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     TemplateService.title = "Sorry"; //This is the Title of the Website
   })
 
+.controller('PincodeCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
+    $scope.template = TemplateService.getHTML("content/Pincode.html");
+    TemplateService.title = "Pincode"; //This is the Title of the Website
+  })
+
 
   .controller('headerctrl', function ($scope, TemplateService) {
 

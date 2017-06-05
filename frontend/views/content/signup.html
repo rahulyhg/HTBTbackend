@@ -104,7 +104,7 @@
     <input class="inputsize" type="text"  ng-model="orderData.billingAddress.address2"  placeholder="..." >
   </label>
       <label class=" item-input inputField">
-    <input class="inputsize" type="number" only-digits ng-model="orderData.billingAddress.pincode" placeholder="Pincode" name="pincodeBil" required>
+    <input class="inputsize" type="number" only-digits ng-model="orderData.billingAddress.pincode" placeholder="Pincode" name="pincodeBil" required limit-to="6">
      <p class="error-msg" ng-min="100000" ng-max="999999" ng-show="userForm.pincodeBil.$error.required && userForm.pincodeBil.$touched">Please Enter Pincode.</p>
   </label>
 
