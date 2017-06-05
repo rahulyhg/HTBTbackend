@@ -1,4 +1,4 @@
-<div ng-show="orderData" class="">
+<!--<div ng-show="orderData" class="">-->
 
   <div class="centeralign">
     <div class="topimgdiv">
@@ -66,7 +66,7 @@
     <input class="inputsize" type="text" ng-model="orderData.shippingAddress.address2" placeholder="..." >
   </label>
     <label class=" item-input inputField">
-    <input class="inputsize" ng-min="100000" ng-max="999999"  type="number" only-digits  ng-model="orderData.shippingAddress.pincode" placeholder="Pincode" required name="pincode" >
+    <input class="inputsize" ng-min="100000" ng-max="999999"  type="number"   ng-model="orderData.shippingAddress.pincode" placeholder="Pincode" required name="pincode" limit-to="6">
      <p class="error-msg"  ng-show="userForm.pincode.$error.required && userForm.pincode.$touched">Please Enter Pincode.</p>
   </label>
 
@@ -110,7 +110,7 @@
     </div>
     <button class="button" ng-disabled="userForm.$invalid" ng-click="addShipBilDetails(orderData)">Place Order</button>
   </form>
-</div>
-<div ng-hide="orderData" style="text-align:center;padding:20%;">
+<!--</div>-->
+<!--<div ng-hide="orderData" style="text-align:center;padding:20%;">
   <h3> Loading ... </h3>
-</div>
+</div>-->
