@@ -1,4 +1,4 @@
-<div ng-show="orderData" class="">
+<!--<div ng-show="orderData" class="">-->
 
   <div class="centeralign">
     <div class="topimgdiv">
@@ -8,7 +8,6 @@
       <label for="">Your Order</label>
     </div>
   </div>
-
   <div class="row rowbgcolor " ng-repeat="product in orderData.product">
     <div class="col-xs-8 bgchkoutcol50Quant">
       <div>
@@ -67,7 +66,7 @@
     <input class="inputsize" type="text" ng-model="orderData.shippingAddress.address2" placeholder="..." >
   </label>
     <label class=" item-input inputField">
-    <input class="inputsize" ng-min="100000" ng-max="999999"  type="number" only-digits  ng-model="orderData.shippingAddress.pincode" placeholder="Pincode" required name="pincode" >
+    <input class="inputsize" ng-min="100000" ng-max="999999"  type="number"   ng-model="orderData.shippingAddress.pincode" placeholder="Pincode" required name="pincode" limit-to="6">
      <p class="error-msg"  ng-show="userForm.pincode.$error.required && userForm.pincode.$touched">Please Enter Pincode.</p>
   </label>
 
@@ -104,14 +103,14 @@
     <input class="inputsize" type="text"  ng-model="orderData.billingAddress.address2"  placeholder="..." >
   </label>
       <label class=" item-input inputField">
-    <input class="inputsize" type="number" ng-min="100000" ng-max="999999" only-digits ng-model="orderData.billingAddress.pincode" placeholder="Pincode" name="pincodeBil" required>
-     <p class="error-msg" ng-show="userForm.pincodeBil.$error.required && userForm.pincodeBil.$touched">Please Enter Pincode.</p>
+    <input class="inputsize" type="number" only-digits ng-model="orderData.billingAddress.pincode" placeholder="Pincode" name="pincodeBil" required limit-to="6">
+     <p class="error-msg" ng-min="100000" ng-max="999999" ng-show="userForm.pincodeBil.$error.required && userForm.pincodeBil.$touched">Please Enter Pincode.</p>
   </label>
 
     </div>
     <button class="button" ng-disabled="userForm.$invalid" ng-click="addShipBilDetails(orderData)">Place Order</button>
   </form>
-</div>
-<div ng-hide="orderData" style="text-align:center;padding:20%;">
-<h3> Loading ... </h3>
-</div>
+<!--</div>-->
+<!--<div ng-hide="orderData" style="text-align:center;padding:20%;">
+  <h3> Loading ... </h3>
+</div>-->
