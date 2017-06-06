@@ -165,8 +165,8 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="data1 in data.customer | filter:search.text ">
-                                <td>{{data1.customerId}}</td>
-                                <td>{{data1.name }}</td>
+                                <td>{{data1.customer.userID}}</td>
+                                <td>{{data1.customer.name }}</td>
                                 <td>
                                     <a class="btn btn-primary" ng-click="reassignedmodal(data.userID,data1,'Active')">
                                       Reassign
