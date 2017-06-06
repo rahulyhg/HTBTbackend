@@ -445,23 +445,26 @@ var model = {
         console.log("calculatePrice----", data)
         var prodList = data;
         _.forEach(prodList, function (val) {
+            var foundPrice = {};
             console.log("val in prodList", val);
-            if (!_.isEmpty(val.product.priceList)) {
-                var orderedPrice = _.orderBy(val.product.priceList, ['endRange'], ['asc']);
-                console.log("orderedPrice", orderedPrice);
-                foundPrice = {};
+            var orderedPrice = _.orderBy(val.product.priceList, function (n) {
+                return parseInt(n.endRange);
+            });
+
+            if (orderedPrice.length === 0) {
+                console.log("val.product.price--", val.product.price);
+                val.finalPrice = val.product.price;
+            } else {
                 _.each(orderedPrice, function (obj) {
-                    console.log("obj--", obj);
                     if (parseInt(val.productQuantity) <= parseInt(obj.endRange)) {
                         foundPrice = obj;
+                        val.finalPrice = obj.finalPrice;
                         return false;
                     }
                 });
-                console.log("val.finalPrice--", foundPrice.finalPrice);
-                val.finalPrice = foundPrice.finalPrice;
-            } else {
-                console.log("val.product.price--", val.product.price);
-                val.finalPrice = val.product.price;
+                if (val.productQuantity > parseInt(orderedPrice[orderedPrice.length - 1].endRange)) {
+                    val.finalPrice = orderedPrice[orderedPrice.length - 1].finalPrice;
+                }
             }
         });
 
@@ -597,41 +600,41 @@ var model = {
                     callback(err, null);
                 } else {
                     console.log("savedData--", savedData);
-                    if (data.product) {
-                        console.log("inside Delivery req create", data.product);
-                        var deliveryReqData = {};
-                        _.forEach(data.product, function (val) {
-                            console.log("val--", val);
-                            DeliveryRequest.find({}).sort({
-                                createdAt: -1
-                            }).exec(function (err, fdata) {
-                                if (err) {
-                                    console.log(err);
-                                    callback(err, null);
-                                } else {
-                                    if (fdata.length > 0) {
-                                        if (fdata[0].requestID) {
-                                            reqId = parseInt(fdata[0].requestID) + 1;
-                                        }
-                                    } else {
-                                        reqId = 1;
-                                    }
-                                    deliveryReqData.product = val.product;
-                                    deliveryReqData.Quantity = val.productQuantity;
-                                    deliveryReqData.deliverdate = data.deliverdate;
-                                    deliveryReqData.Order = savedData._id;
-                                    deliveryReqData.requestDate = new Date();
-                                    deliveryReqData.methodOfRequest = data.methodOfOrder;
-                                    deliveryReqData.requestID = reqId;
-                                    deliveryReqData.customer = data.customer
-                                    console.log("deliveryReqData--", deliveryReqData);
-                                    DeliveryRequest.saveData(deliveryReqData, function () {});
+                    // if (data.product) {
+                    //     console.log("inside Delivery req create", data.product);
+                    //     var deliveryReqData = {};
+                    //     _.forEach(data.product, function (val) {
+                    //         console.log("val--", val);
+                    //         DeliveryRequest.find({}).sort({
+                    //             createdAt: -1
+                    //         }).exec(function (err, fdata) {
+                    //             if (err) {
+                    //                 console.log(err);
+                    //                 callback(err, null);
+                    //             } else {
+                    //                 if (fdata.length > 0) {
+                    //                     if (fdata[0].requestID) {
+                    //                         reqId = parseInt(fdata[0].requestID) + 1;
+                    //                     }
+                    //                 } else {
+                    //                     reqId = 1;
+                    //                 }
+                    //                 deliveryReqData.product = val.product;
+                    //                 deliveryReqData.Quantity = val.productQuantity;
+                    //                 deliveryReqData.deliverdate = data.deliverdate;
+                    //                 deliveryReqData.Order = savedData._id;
+                    //                 deliveryReqData.requestDate = new Date();
+                    //                 deliveryReqData.methodOfRequest = data.methodOfOrder;
+                    //                 deliveryReqData.requestID = reqId;
+                    //                 deliveryReqData.customer = data.customer
+                    //                 console.log("deliveryReqData--", deliveryReqData);
+                    //                 DeliveryRequest.saveData(deliveryReqData, function () {});
 
-                                }
-                            });
+                    //             }
+                    //         });
 
-                        })
-                    }
+                    //     })
+                    // }
                     callback(null, savedData);
                 }
             })
@@ -642,7 +645,7 @@ var model = {
         console.log("inside saveOrderCheckout ", data);
         var userData = {};
         var partnerName;
-        userData.accessLevel='Customer';
+        userData.accessLevel = 'Customer';
         if (data.customerName && data.customerMobile) {
             userData.name = data.customerName;
             userData.mobile = data.customerMobile;
@@ -824,7 +827,7 @@ var model = {
         var customerData = {};
         var orderData = {};
         var partnerName;
-        userData.accessLevel='Customer';        
+        userData.accessLevel = 'Customer';
         if (data.methodOfPayment) {
             orderData.methodOfPayment = data.methodOfPayment;
         }
