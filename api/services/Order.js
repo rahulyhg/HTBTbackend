@@ -139,7 +139,7 @@ var model = {
                 async.parallel([
                     //Function to search event name
                     function () {
-                        if (data.razorpay_payment_id && data.customer.relationshipId) {
+                        if (data.status == 'Paid' && data.customer.relationshipId) {
                             console.log("inside relationship Partner updation");
                             User.findOne({
                                 _id: data.customer.relationshipId
@@ -168,8 +168,9 @@ var model = {
                         }
                     },
                     function () {
-                        if (data.razorpay_payment_id) {
+                        if (data.status == 'Paid') {
                             console.log("inside Delivery req create", data.product.length);
+                            var index = 0;
                             async.eachSeries(data.product, function (val, callback1) {
                                 var deliveryReqData = {};
                                 var planChecked = true;
@@ -180,102 +181,74 @@ var model = {
                                             planChecked = false;
                                         }
                                     }
-                                }
-                                if (planChecked) {
-                                    DeliveryRequest.find({}).sort({
-                                        createdAt: -1
-                                    }).exec(function (err, fdata) {
-                                        if (err) {
-                                            console.log(err);
-                                            callback(err, null);
-                                        } else {
-                                            if (fdata.length > 0) {
-                                                if (fdata[0].requestID) {
-                                                    val.reqId = parseInt(fdata[0].requestID) + 1;
-                                                }
+                                };
+                                index++;
+                                console.log("HHHHHHHHH");
+                                async.waterfall([
+                                    function createReqId(callback) {
+                                        console.log("inside DeliveryRequest create");
+                                        DeliveryRequest.find({}).sort({
+                                            createdAt: -1
+                                        }).exec(function (err, fdata) {
+                                            if (err) {
+                                                console.log(err);
+                                                callback(err, null);
                                             } else {
-                                                val.reqId = 1;
-                                            }
-                                            deliveryReqData.product = val.product._id;
-                                            deliveryReqData.Quantity = val.productQuantity;
-                                            deliveryReqData.deliverdate = data.deliverdate;
-                                            deliveryReqData.Order = data._id;
-                                            deliveryReqData.requestDate = new Date();
-                                            deliveryReqData.methodOfRequest = data.methodOfOrder;
-                                            deliveryReqData.requestID = val.reqId;
-                                            deliveryReqData.customer = data.customer._id
-                                            green("deliveryReqData--", deliveryReqData);
-                                            DeliveryRequest.saveData(deliveryReqData, function (err, savedDelivery) {
-                                                if (err) {
-                                                    red("error while creating delivery", err);
-                                                    // callback(err, null);
+                                                if (fdata.length > 0) {
+                                                    if (fdata[0].requestID) {
+                                                        reqId = parseInt(fdata[0].requestID) + 1;
+                                                    }
                                                 } else {
-                                                    console.log("savedDelivery--", savedDelivery);
+                                                    reqId = 1;
                                                 }
-                                            });
-                                        }
-                                    });
-                                }
-                                callback1([], null);
+
+                                                callback(null, reqId);
+                                            }
+                                        });
+                                    },
+                                    function saveDeliveryReq(reqId, callback) {
+                                        console.log("reqId--", reqId);
+                                        deliveryReqData.product = val.product._id;
+                                        deliveryReqData.Quantity = val.productQuantity;
+                                        deliveryReqData.deliverdate = data.deliverdate;
+                                        deliveryReqData.Order = data._id;
+                                        deliveryReqData.requestDate = new Date();
+                                        deliveryReqData.methodOfRequest = data.methodOfOrder;
+                                        deliveryReqData.requestID = reqId;
+                                        deliveryReqData.customer = data.customer._id
+                                        green("deliveryReqData--", deliveryReqData);
+                                        DeliveryRequest.saveData(deliveryReqData, function (err, savedDelivery) {
+                                            if (err) {
+                                                red("error while creating delivery", err);
+                                                 callback(err, null);
+                                            } else {
+                                                console.log("savedDelivery--", savedDelivery);
+                                                callback(null,[]);
+                                            }
+                                        });
+                                    }
+                                ], function asyncComplete(err, savedDelivery) {
+                                    if (err) {
+                                        console.warn('Error creating delivery request JSON.', err);
+                                        callback1();
+                                        // callback(err, null);
+                                    } else {
+                                        console.log("succefully completed the waterfall");
+                                        console.log("send callback1");
+                                        callback1();
+                                    }
+                                });
+
+
                             }, function (error, data) {
                                 if (err) {
                                     console.log("error found in doLogin.else callback1");
                                     // callback3(null, err);
                                 } else {
-
+                                    console.log("complted async series");
                                     // callback3(null, "updated");
                                 }
                             })
-
-
-                            _.forEach(data.product, function (val, index) {
-                                console.log("val--", val, "index--", index);
-                                var deliveryReqData = {};
-                                var planChecked = true;
-                                val.reqId = 0;
-                                if (index == 0 && val.product && val.product.category) {
-                                    if (_.isEqual(val.product.category.subscription, 'Yes')) {
-                                        if (!_.isEqual(data.plan, 'Onetime')) {
-                                            planChecked = false;
-                                        }
-                                    }
-                                }
-                                if (planChecked) {
-                                    DeliveryRequest.find({}).sort({
-                                        createdAt: -1
-                                    }).exec(function (err, fdata) {
-                                        if (err) {
-                                            console.log(err);
-                                            callback(err, null);
-                                        } else {
-                                            if (fdata.length > 0) {
-                                                if (fdata[0].requestID) {
-                                                    val.reqId = parseInt(fdata[0].requestID) + 1;
-                                                }
-                                            } else {
-                                                val.reqId = 1;
-                                            }
-                                            deliveryReqData.product = val.product._id;
-                                            deliveryReqData.Quantity = val.productQuantity;
-                                            deliveryReqData.deliverdate = data.deliverdate;
-                                            deliveryReqData.Order = data._id;
-                                            deliveryReqData.requestDate = new Date();
-                                            deliveryReqData.methodOfRequest = data.methodOfOrder;
-                                            deliveryReqData.requestID = val.reqId;
-                                            deliveryReqData.customer = data.customer._id
-                                            green("deliveryReqData--", deliveryReqData);
-                                            DeliveryRequest.saveData(deliveryReqData, function (err, savedDelivery) {
-                                                if (err) {
-                                                    red("error while creating delivery", err);
-                                                    // callback(err, null);
-                                                } else {
-                                                    console.log("savedDelivery--", savedDelivery);
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
                         }
                     },
                     function () {
@@ -324,8 +297,7 @@ var model = {
                         }
                     },
                     function () {
-                        if (_.isEqual(data.product[0].product.category.subscription, 'Yes') && data.razorpay_payment_id) {
-                            console.log("inside user updation");
+                        if (_.isEqual(data.product[0].product.category.subscription, 'Yes') && data.status == 'Paid') {
 
                             User.findOne({
                                 _id: data.customer._id
@@ -352,27 +324,55 @@ var model = {
                                     });
                                 }
                             });
-                            var smsMessage = "Order " + data.orderID + " confirmed! Download the HaTa App or call on 022 - 33024910 to schedule your first delivery."
-                            var smsObj = {
-                                "message": "HTBT",
-                                "sender": "HATABT",
-                                "sms": [{
-                                    "to": data.customer.mobile,
-                                    "message": smsMessage,
+                            if (!_.isEqual(data.methodOfPayment, 'Customer')) {
+                                console.log("When RP pays Customer will get this msg");
+                                var smsMessage = "Order " + data.orderID + " confirmed! Download the HaTa App or call on 022 - 33024910 to schedule your first delivery."
+                                var smsObj = {
+                                    "message": "HTBT",
                                     "sender": "HATABT",
-                                }]
-                            };
-                            Config.sendSMS(smsObj, function (error, SMSResponse) {
-                                if (error || SMSResponse == undefined) {
-                                    console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
-                                    // callback(error, null);
-                                } else {
-                                    // callback(null, {
-                                    //     message: "OTP sent"
-                                    // });
-                                }
-                            })
+                                    "sms": [{
+                                        "to": data.customer.mobile,
+                                        "message": smsMessage,
+                                        "sender": "HATABT",
+                                    }]
+                                };
+                                Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                    if (error || SMSResponse == undefined) {
+                                        console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
+                                        // callback(error, null);
+                                    } else {
+                                        // callback(null, {
+                                        //     message: "OTP sent"
+                                        // });
+                                    }
+                                })
+                            } else if (_.isEqual(data.methodOfPayment, 'Customer')) {
+                                console.log("when customer pays");
+                                var smsMessage = "Payment successful! Order " + data.orderID + " is confirmed. Download the HaTa App or call on 022 - 33024910 to schedule your first delivery."
+                                var smsObj = {
+                                    "message": "HTBT",
+                                    "sender": "HATABT",
+                                    "sms": [{
+                                        "to": data.customer.mobile,
+                                        "message": smsMessage,
+                                        "sender": "HATABT",
+                                    }]
+                                };
+                                Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                    if (error || SMSResponse == undefined) {
+                                        console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
+                                        // callback(error, null);
+                                    } else {
+                                        // callback(null, {
+                                        //     message: "OTP sent"
+                                        // });
+                                    }
+                                })
+
+                            }
+
                         }
+
                     }
                 ], function (error, data) {
                     if (error) {

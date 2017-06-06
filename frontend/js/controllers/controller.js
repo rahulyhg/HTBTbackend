@@ -73,7 +73,6 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     };
     $scope.addShipBilDetails = function (orderData) {
       //redirect them to cart summery and payment gateway
-      orderData.shippingAddress = {};
       orderData.shippingAddress.name = orderData.shippingAddressName;
       orderData.shippingAddress.mobile = orderData.shippingAddressMobile;
       orderData.shippingAddress.email = orderData.shippingAddressEmail;
@@ -108,8 +107,8 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
           var pinForm = {};
           pinForm.pin = $scope.orderData.shippingAddress.pincode;
           apiService.getPinDetail(pinForm, function (pinData) {
-            if (pinData.value === true) {
-              $scope.daysByPincode = pinData.data;
+            if (pinData.data.value === true) {
+              $scope.daysByPincode = pinData.data.data;
               console.log($scope.daysByPincode.days);
             } else {
               $state.go("pincode");
