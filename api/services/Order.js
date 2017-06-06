@@ -220,10 +220,10 @@ var model = {
                                         DeliveryRequest.saveData(deliveryReqData, function (err, savedDelivery) {
                                             if (err) {
                                                 red("error while creating delivery", err);
-                                                 callback(err, null);
+                                                callback(err, null);
                                             } else {
                                                 console.log("savedDelivery--", savedDelivery);
-                                                callback(null,[]);
+                                                callback(null, []);
                                             }
                                         });
                                     }
@@ -266,8 +266,8 @@ var model = {
                                         if (err) {
                                             callback(err, null);
                                         } else {
-                                            var smsMessage ="Your customer " + data.customer.name + " has confirmed the order  " + data.orderID + ". Click here to pay " + shortU
-                                        
+                                            var smsMessage = "Your customer " + data.customer.name + " has confirmed the order  " + data.orderID + ". Click here to pay " + shortU
+
                                             var smsObj = {
                                                 "message": "HTBT",
                                                 "sender": "HATABT",
@@ -305,16 +305,16 @@ var model = {
                                 if (err) {
                                     callback(err, null);
                                 } else {
-                                    if(_.isEqual(data.product[0].product.category.subscription, 'Yes')){
-                                    if (!_.isEmpty(userdata.subscribedProd[0])) {
-                                        userdata.subscribedProd[0].jarBalance = parseInt(userdata.subscribedProd[0].jarBalance) + parseInt(data.totalQuantity);
-                                    } else {
-                                        var subProd = {};
-                                        subProd.recentOrder = data._id
-                                        subProd.product = data.product[0].product;
-                                        subProd.jarBalance = parseInt(data.totalQuantity)
-                                        userdata.subscribedProd.push(subProd);
-                                    }
+                                    if (_.isEqual(data.product[0].product.category.subscription, 'Yes')) {
+                                        if (!_.isEmpty(userdata.subscribedProd[0])) {
+                                            userdata.subscribedProd[0].jarBalance = parseInt(userdata.subscribedProd[0].jarBalance) + parseInt(data.totalQuantity);
+                                        } else {
+                                            var subProd = {};
+                                            subProd.recentOrder = data._id
+                                            subProd.product = data.product[0].product;
+                                            subProd.jarBalance = parseInt(data.totalQuantity)
+                                            userdata.subscribedProd.push(subProd);
+                                        }
                                     }
                                     userdata.status = 'Active';
                                     userdata.save(function (err, updated) {
@@ -326,9 +326,9 @@ var model = {
                                     });
                                 }
                             });
-                            if (!_.isEqual(data.methodOfPayment, 'Customer')) {
+                            if (!_.isEqual(data.methodOfPayment, 'Customer') && _.isEqual(data.product[0].product.category.subscription, 'Yes')) {
                                 console.log("When RP pays Customer will get this msg");
-                                var smsMessage = "Order " + data.orderID + " confirmed! Download the HaTa App or call on 022 - 33024910 to schedule your first delivery."
+                                var smsMessage = "Order " + data.orderID + " confirmed! Download the HaTa App or call on 022 - 33024910 to schedule your first delivery.";
                                 var smsObj = {
                                     "message": "HTBT",
                                     "sender": "HATABT",
@@ -348,9 +348,58 @@ var model = {
                                         // });
                                     }
                                 })
-                            } else if (_.isEqual(data.methodOfPayment, 'Customer')) {
+                            } else if (!_.isEqual(data.methodOfPayment, 'Customer') && _.isEqual(data.product[0].product.category.subscription, 'No')) {
+                                console.log("when customer pays");
+                                var smsMessage = "Order " + data.orderID + " confirmed! Your delivery is scheduled for " + moment(data.deliverdate).format("dddd, MMM D");
+
+                                var smsObj = {
+                                    "message": "HTBT",
+                                    "sender": "HATABT",
+                                    "sms": [{
+                                        "to": data.customer.mobile,
+                                        "message": smsMessage,
+                                        "sender": "HATABT",
+                                    }]
+                                };
+                                Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                    if (error || SMSResponse == undefined) {
+                                        console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
+                                        // callback(error, null);
+                                    } else {
+                                        // callback(null, {
+                                        //     message: "OTP sent"
+                                        // });
+                                    }
+                                })
+
+                            } else if (_.isEqual(data.methodOfPayment, 'Customer') && _.isEqual(data.product[0].product.category.subscription, 'Yes')) {
                                 console.log("when customer pays");
                                 var smsMessage = "Payment successful! Order " + data.orderID + " is confirmed. Download the HaTa App or call on 022 - 33024910 to schedule your first delivery."
+
+                                var smsObj = {
+                                    "message": "HTBT",
+                                    "sender": "HATABT",
+                                    "sms": [{
+                                        "to": data.customer.mobile,
+                                        "message": smsMessage,
+                                        "sender": "HATABT",
+                                    }]
+                                };
+                                Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                    if (error || SMSResponse == undefined) {
+                                        console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
+                                        // callback(error, null);
+                                    } else {
+                                        // callback(null, {
+                                        //     message: "OTP sent"
+                                        // });
+                                    }
+                                })
+
+                            } else if (_.isEqual(data.methodOfPayment, 'Customer') && _.isEqual(data.product[0].product.category.subscription, 'No')) {
+                                console.log("when customer pays");
+                                var smsMessage = "Payment successful! Order " + data.orderID + " is confirmed. Your delivery is scheduled for " + moment(data.deliverdate).format("dddd, MMM D");
+
                                 var smsObj = {
                                     "message": "HTBT",
                                     "sender": "HATABT",
@@ -593,6 +642,7 @@ var model = {
         console.log("inside saveOrderCheckout ", data);
         var userData = {};
         var partnerName;
+        userData.accessLevel='Customer';
         if (data.customerName && data.customerMobile) {
             userData.name = data.customerName;
             userData.mobile = data.customerMobile;
@@ -686,7 +736,7 @@ var model = {
                 } else {
                     console.log("succefully completed the waterfall");
                     //send sms here;
-                    if (_.isEqual(savedOrder.orderFor, 'RMForCustomer')) {
+                    if (_.isEqual(savedOrder.orderFor, 'RMForCustomer') && _.isEqual(savedOrder.methodOfPayment, "Customer")) {
                         console.log("inside if----send msg to RM", savedOrder.orderID, partnerName);
                         var shortU;
                         // Shorten a long url and output the result
@@ -695,7 +745,43 @@ var model = {
                             .then(function (response) {
                                 console.log("shortUrl", response);
                                 shortU = response.data.url;
-                                var smsMessage = "We are processing your order " + savedOrder.orderID + " received through our partner " + partnerName + ". Please confirm on url " + shortU
+                                var smsMessage = "Welcome to the HaTa family! We have received your order " + savedOrder.orderID + " through our partner " + partnerName + ". You can confirm the order and pay here: " + shortU;
+
+                                var smsObj = {
+                                    "message": "HTBT",
+                                    "sender": "HATABT",
+                                    "sms": [{
+                                        "to": savedOrder.customer.mobile,
+                                        "message": smsMessage,
+                                        "sender": "HATABT",
+                                    }]
+                                };
+                                Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                    if (error || SMSResponse == undefined) {
+                                        console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
+                                        // callback(error, null);
+                                    } else {
+                                        console.log("sms sent successfully");
+                                        // callback(null, {
+                                        //     message: "OTP sent"
+                                        // });
+                                    }
+                                })
+                            }, function (error) {
+                                console.log("error while shortnening url", error)
+                            });
+
+                    } else if (_.isEqual(savedOrder.orderFor, 'RMForCustomer') && !_.isEqual(savedOrder.methodOfPayment, "Customer")) {
+                        console.log("inside if----send msg to RM", savedOrder.orderID, partnerName);
+                        var shortU;
+                        // Shorten a long url and output the result
+
+                        bitly.shorten(env.frontend + "/orderconfirmation/" + savedOrder._id)
+                            .then(function (response) {
+                                console.log("shortUrl", response);
+                                shortU = response.data.url;
+                                var smsMessage = "Welcome to the HaTa family! We have received your order " + savedOrder.orderID + " through our partner " + partnerName + ".Please confirm your order here: " + shortU;
+
                                 var smsObj = {
                                     "message": "HTBT",
                                     "sender": "HATABT",
@@ -738,6 +824,7 @@ var model = {
         var customerData = {};
         var orderData = {};
         var partnerName;
+        userData.accessLevel='Customer';        
         if (data.methodOfPayment) {
             orderData.methodOfPayment = data.methodOfPayment;
         }
@@ -867,15 +954,17 @@ var model = {
                     } else {
                         console.log("succefully completed the waterfall", savedOrder.customer.mobile);
                         //send sms here;
-                        if (_.isEqual(savedOrder.orderFor, 'RMForCustomer')) {
+                        if (_.isEqual(savedOrder.orderFor, 'RMForCustomer') && _.isEqual(savedOrder.methodOfPayment, "Customer")) {
+                            console.log("inside if----send msg to RM", savedOrder.orderID, partnerName);
                             var shortU;
                             // Shorten a long url and output the result
+
                             bitly.shorten(env.frontend + "/orderconfirmation/" + savedOrder._id)
                                 .then(function (response) {
                                     console.log("shortUrl", response);
                                     shortU = response.data.url;
-                                    var smsMessage = "We are processing your order " + savedOrder.orderID + " received through our partner " + partnerName + ". Please confirm on url " + shortU
-                                    console.log("smsMessage--\n", smsMessage);
+                                    var smsMessage = "Welcome to the HaTa family! We have received your order " + savedOrder.orderID + " through our partner " + partnerName + ". You can confirm the order and pay here: " + shortU;
+
                                     var smsObj = {
                                         "message": "HTBT",
                                         "sender": "HATABT",
@@ -899,6 +988,42 @@ var model = {
                                 }, function (error) {
                                     console.log("error while shortnening url", error)
                                 });
+
+                        } else if (_.isEqual(savedOrder.orderFor, 'RMForCustomer') && !_.isEqual(savedOrder.methodOfPayment, "Customer")) {
+                            console.log("inside if----send msg to RM", savedOrder.orderID, partnerName);
+                            var shortU;
+                            // Shorten a long url and output the result
+
+                            bitly.shorten(env.frontend + "/orderconfirmation/" + savedOrder._id)
+                                .then(function (response) {
+                                    console.log("shortUrl", response);
+                                    shortU = response.data.url;
+                                    var smsMessage = "Welcome to the HaTa family! We have received your order " + savedOrder.orderID + " through our partner " + partnerName + ".Please confirm your order here: " + shortU;
+
+                                    var smsObj = {
+                                        "message": "HTBT",
+                                        "sender": "HATABT",
+                                        "sms": [{
+                                            "to": savedOrder.customer.mobile,
+                                            "message": smsMessage,
+                                            "sender": "HATABT",
+                                        }]
+                                    };
+                                    Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                        if (error || SMSResponse == undefined) {
+                                            console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
+                                            // callback(error, null);
+                                        } else {
+                                            console.log("sms sent successfully");
+                                            // callback(null, {
+                                            //     message: "OTP sent"
+                                            // });
+                                        }
+                                    })
+                                }, function (error) {
+                                    console.log("error while shortnening url", error)
+                                });
+
                         } else {
                             console.log("Please provide mobile mumber");
                             // callback(null, {
