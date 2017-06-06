@@ -154,6 +154,7 @@ var model = {
                                     }
                                     _.forEach(RPdata.customer, function (val) {
                                         if (_.isEqual(val.customer, data.customer._id)) {
+                                            console.log("Matched customer");
                                             val.status = 'Existing';
                                         }
                                     });
@@ -171,11 +172,10 @@ var model = {
                     function () {
                         if (data.razorpay_payment_id) {
                             console.log("inside Delivery req create", data.product.length);
-                            _.forEach(data.product, function (val, index) {
-                                console.log("val--", val, "index--", index);
+                            async.eachSeries(data.product, function (val, callback1) {
                                 var deliveryReqData = {};
                                 var planChecked = true;
-                      val.reqId= 0;
+                                val.reqId = 0;
                                 if (index == 0 && val.product && val.product.category) {
                                     if (_.isEqual(val.product.category.subscription, 'Yes')) {
                                         if (!_.isEqual(data.plan, 'Onetime')) {
@@ -204,12 +204,71 @@ var model = {
                                             deliveryReqData.Order = data._id;
                                             deliveryReqData.requestDate = new Date();
                                             deliveryReqData.methodOfRequest = data.methodOfOrder;
-                                            deliveryReqData.requestID =  val.reqId;
+                                            deliveryReqData.requestID = val.reqId;
                                             deliveryReqData.customer = data.customer._id
                                             green("deliveryReqData--", deliveryReqData);
                                             DeliveryRequest.saveData(deliveryReqData, function (err, savedDelivery) {
                                                 if (err) {
-                                                    red("error while creating delivery",err);
+                                                    red("error while creating delivery", err);
+                                                    // callback(err, null);
+                                                } else {
+                                                    console.log("savedDelivery--", savedDelivery);
+                                                }
+                                            });
+                                        }
+                                    });
+                                }
+                                callback1([], null);
+                            }, function (error, data) {
+                                if (err) {
+                                    console.log("error found in doLogin.else callback1");
+                                    // callback3(null, err);
+                                } else {
+
+                                    // callback3(null, "updated");
+                                }
+                            })
+
+
+                            _.forEach(data.product, function (val, index) {
+                                console.log("val--", val, "index--", index);
+                                var deliveryReqData = {};
+                                var planChecked = true;
+                                val.reqId = 0;
+                                if (index == 0 && val.product && val.product.category) {
+                                    if (_.isEqual(val.product.category.subscription, 'Yes')) {
+                                        if (!_.isEqual(data.plan, 'Onetime')) {
+                                            planChecked = false;
+                                        }
+                                    }
+                                }
+                                if (planChecked) {
+                                    DeliveryRequest.find({}).sort({
+                                        createdAt: -1
+                                    }).exec(function (err, fdata) {
+                                        if (err) {
+                                            console.log(err);
+                                            callback(err, null);
+                                        } else {
+                                            if (fdata.length > 0) {
+                                                if (fdata[0].requestID) {
+                                                    val.reqId = parseInt(fdata[0].requestID) + 1;
+                                                }
+                                            } else {
+                                                val.reqId = 1;
+                                            }
+                                            deliveryReqData.product = val.product._id;
+                                            deliveryReqData.Quantity = val.productQuantity;
+                                            deliveryReqData.deliverdate = data.deliverdate;
+                                            deliveryReqData.Order = data._id;
+                                            deliveryReqData.requestDate = new Date();
+                                            deliveryReqData.methodOfRequest = data.methodOfOrder;
+                                            deliveryReqData.requestID = val.reqId;
+                                            deliveryReqData.customer = data.customer._id
+                                            green("deliveryReqData--", deliveryReqData);
+                                            DeliveryRequest.saveData(deliveryReqData, function (err, savedDelivery) {
+                                                if (err) {
+                                                    red("error while creating delivery", err);
                                                     // callback(err, null);
                                                 } else {
                                                     console.log("savedDelivery--", savedDelivery);
