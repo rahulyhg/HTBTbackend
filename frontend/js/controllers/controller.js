@@ -412,12 +412,12 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
   })
 
   .controller('SorryCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
-    $scope.template = TemplateService.getHTML("content/Sorry.html");
+    $scope.template = TemplateService.getHTML("content/sorry.html");
     TemplateService.title = "Sorry"; //This is the Title of the Website
   })
 
   .controller('PincodeCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
-    $scope.template = TemplateService.getHTML("content/Pincode.html");
+    $scope.template = TemplateService.getHTML("content/pincode.html");
     TemplateService.title = "Pincode"; //This is the Title of the Website
   })
 
