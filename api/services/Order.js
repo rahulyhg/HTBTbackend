@@ -148,7 +148,7 @@ var model = {
                                     callback(err, null);
                                 } else {
                                     if (_.isEqual(data.methodOfPayment, 'credits')) {
-                                        RPdata.credits = parseInt(RPdata.credits) + parseInt(totalAmount);
+                                        RPdata.credits = parseInt(RPdata.credits) + parseInt(data.totalAmount);
                                     }
                                     _.forEach(RPdata.customer, function (val) {
                                         if (_.isEqual(val.customer, data.customer._id)) {

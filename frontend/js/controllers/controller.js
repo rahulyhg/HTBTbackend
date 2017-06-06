@@ -225,7 +225,6 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
         }
       });
       var diff = moment(data.date).diff(moment(), 'days')
-      console.log("a");
       if (diff <= 0) {
         retVal = true;
       }
