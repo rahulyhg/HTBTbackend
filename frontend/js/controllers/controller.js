@@ -76,6 +76,9 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       if (!orderData.shippingAddress) {
         orderData.shippingAddress = {};
       }
+      if(!orderData.billingAddress){
+        orderData.billingAddress={};
+      }
       orderData.shippingAddress.name = orderData.shippingAddressName;
       orderData.shippingAddress.mobile = orderData.shippingAddressMobile;
       orderData.shippingAddress.email = orderData.shippingAddressEmail;
