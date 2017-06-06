@@ -73,13 +73,14 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     };
     $scope.addShipBilDetails = function (orderData) {
       //redirect them to cart summery and payment gateway
+      orderData.shippingAddress = {};
       orderData.shippingAddress.name = orderData.shippingAddressName;
       orderData.shippingAddress.mobile = orderData.shippingAddressMobile;
-      orderData.shippingAddress.email = orderData.shippingAddressEmail;      
+      orderData.shippingAddress.email = orderData.shippingAddressEmail;
       orderData.billingAddress.name = orderData.billingAddressName;
       orderData.billingAddress.mobile = orderData.billingAddressMobile;
-      if($scope.showaddr){
-       orderData.billingAddress = _.cloneDeep(orderData.shippingAddress);
+      if ($scope.showaddr) {
+        orderData.billingAddress = _.cloneDeep(orderData.shippingAddress);
       }
       apiService.apiCall("Order/save", orderData, function (data) {
         if (data.value === true) {
@@ -106,7 +107,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
           $scope.orderData = data.data;
           var pinForm = {};
           pinForm.pin = $scope.orderData.shippingAddress.pincode;
-          apiService.apiCall("Pincode/getByPin", pinForm, function (pinData) {
+          apiService.getPinDetail(pinForm, function (pinData) {
             if (pinData.value === true) {
               $scope.daysByPincode = pinData.data;
               console.log($scope.daysByPincode.days);

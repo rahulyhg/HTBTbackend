@@ -27,6 +27,11 @@ myApp.factory('apiService', function ($http, $q, $timeout, $state) {
                 callback(data);
             });
         },
+        getPinDetail: function (formData, callback) {
+            $http.post(adminurl + "Pincode/getByPin", formData).then(function (data) {
+                callback(data);
+            });
+        }
 
     };
 });

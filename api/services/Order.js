@@ -1,5 +1,3 @@
-var googl = require('goo.gl');
-googl.setKey('AIzaSyBNYn69YbFQ9ekRkMvoPlflR0pd7db1I7U');
 var Bitly = require('bitly');
 var bitly = new Bitly('e9bb882af8f22315f7da81f7965163b140b1bbfd');
 var schema = new Schema({
@@ -281,7 +279,7 @@ var model = {
                         }
                     },
                     function () {
-                        if (confirmationToRP && data.customer.relationshipId && orderFor == 'RMForCustomer') {
+                        if (confirmationToRP && data.customer.relationshipId && data.orderFor == 'RMForCustomer') {
                             var shortU;
                             console.log("inside relationship Partner Payment msg");
                             // Shorten a long url and output the result
