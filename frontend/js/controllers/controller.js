@@ -73,8 +73,8 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     };
     $scope.addShipBilDetails = function (orderData) {
       //redirect them to cart summery and payment gateway
-      if(!orderData.shippingAddress) {
-orderData.shippingAddress = {};
+      if (!orderData.shippingAddress) {
+        orderData.shippingAddress = {};
       }
       orderData.shippingAddress.name = orderData.shippingAddressName;
       orderData.shippingAddress.mobile = orderData.shippingAddressMobile;
