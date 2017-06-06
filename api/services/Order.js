@@ -266,8 +266,8 @@ var model = {
                                         if (err) {
                                             callback(err, null);
                                         } else {
-                                            var smsMessage = "Order has been confirmed from " + data.customer.name + " for order " + data.orderID + ". Please make the payment using url " + shortU
-
+                                            var smsMessage ="Your customer " + data.customer.name + " has confirmed the order  " + data.orderID + ". Click here to pay " + shortU
+                                        
                                             var smsObj = {
                                                 "message": "HTBT",
                                                 "sender": "HATABT",
@@ -297,7 +297,7 @@ var model = {
                         }
                     },
                     function () {
-                        if (_.isEqual(data.product[0].product.category.subscription, 'Yes') && data.status == 'Paid') {
+                        if (data.status == 'Paid') {
 
                             User.findOne({
                                 _id: data.customer._id
@@ -305,6 +305,7 @@ var model = {
                                 if (err) {
                                     callback(err, null);
                                 } else {
+                                    if(_.isEqual(data.product[0].product.category.subscription, 'Yes')){
                                     if (!_.isEmpty(userdata.subscribedProd[0])) {
                                         userdata.subscribedProd[0].jarBalance = parseInt(userdata.subscribedProd[0].jarBalance) + parseInt(data.totalQuantity);
                                     } else {
@@ -313,6 +314,7 @@ var model = {
                                         subProd.product = data.product[0].product;
                                         subProd.jarBalance = parseInt(data.totalQuantity)
                                         userdata.subscribedProd.push(subProd);
+                                    }
                                     }
                                     userdata.status = 'Active';
                                     userdata.save(function (err, updated) {
