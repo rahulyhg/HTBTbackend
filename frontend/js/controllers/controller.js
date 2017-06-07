@@ -131,12 +131,15 @@ myApp.controller('HomeCtrl', function($scope, TemplateService, NavigationService
         apiService.apiCall("Order/getOne", formData, function(data) {
             if (data.value === true) {
                 $scope.orderData = data.data;
+               
                 var pinForm = {};
                 pinForm.pin = $scope.orderData.shippingAddress.pincode;
                 apiService.getPinDetail(pinForm, function(pinData) {
                     if (pinData.data.value === true) {
                         $scope.daysByPincode = pinData.data.data;
-                        console.log($scope.daysByPincode.days);
+                        if(!$scope.orderData.deliverdate) {
+                          $scope.orderData.deliverdate = apiService.getNextDate($scope.daysByPincode.days);
+                        }
                     } else {
                         $state.go("pincode");
                         $scope.orderData.status = "Outside Delivery Zone";
@@ -248,14 +251,7 @@ myApp.controller('HomeCtrl', function($scope, TemplateService, NavigationService
             })
             // $scope.template = TemplateService.getHTML("/terms.html");
     }
-    $scope.today = function() {
-        $scope.dt = new Date();
-    };
-    $scope.today();
-
-    $scope.clear = function() {
-        $scope.dt = null;
-    };
+   
 
     $scope.inlineOptions = {
         customClass: getDayClass,
