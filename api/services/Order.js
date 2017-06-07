@@ -319,9 +319,6 @@ var model = {
                                         }
                                     }
                                     userdata.status = 'Active';
-                                    if (!userdata.email) {
-                                        userdata.email = data.shippingAddress.email;
-                                    }
                                     userdata.save(function (err, updated) {
                                         if (err) {
                                             console.log("error occured in user update");
