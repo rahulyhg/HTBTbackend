@@ -58,6 +58,12 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
             controller: 'ThankYouCtrl'
         })
 
+.state('paymentsuccess', {
+            url: "/paymentsuccess",
+            templateUrl: tempateURL,
+            controller: 'PaymentSuccessCtrl'
+        })
+
 .state('successconfirm', {
             url: "/successconfirm",
             templateUrl: tempateURL,
