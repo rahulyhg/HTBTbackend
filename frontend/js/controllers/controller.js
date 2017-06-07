@@ -97,6 +97,14 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       if ($scope.showaddr) {
         orderData.billingAddress = _.cloneDeep(orderData.shippingAddress);
       }
+      if(!$scope.orderData.customer.email){
+        $scope.orderData.customer.email=orderData.shippingAddressEmail;
+          apiService.apiCall("User/save", $scope.orderData.customer, function (data) {
+        if (data.value === true) {
+          console.log("User updated successfully---");
+        }
+      });
+      }
       apiService.apiCall("Order/save", orderData, function (data) {
         if (data.value === true) {
           console.log("Order updated successfully---");
