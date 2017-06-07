@@ -63,7 +63,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
             custForm._id = $scope.orderData.customer._id;
             apiService.apiCall("Order/getOrderByUser", custForm, function (data) {
               if (data.value === true) {
-                $scope.PreviousOrder = data.data[0];
+                $scope.PreviousOrder = data.data[1];
                 $scope.orderData.shippingAddress = $scope.PreviousOrder.shippingAddress;
               }
             });

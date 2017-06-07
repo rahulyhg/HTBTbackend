@@ -43,7 +43,7 @@ var schema = new Schema({
         type: String
     },
     status: {
-        type: String, //'Processing', 'Confirmed','Paid','Cancelled','Delivered','delay',
+        type: String, //'Processing', 'Confirmed','Paid','Cancelled','Delivered','delay','Outside Delivery Zone'
 
         default: "Processing"
     },
@@ -516,6 +516,9 @@ var model = {
                     data.totalAmount = _.sumBy(data.product, function (o) {
                         return parseInt(o.finalPrice * o.productQuantity);
                     });
+                    if (data.product[0].jarDeposit) {
+                        data.totalAmount = data.totalAmount + data.product[0].jarDeposit;
+                    }
                     console.log("totalAmount", data.totalAmount);
                     Order.saveData(data, function (err, savedData) {
                         if (err) {
@@ -631,7 +634,7 @@ var model = {
         console.log("inside saveOrderCheckout ", data);
         var userData = {};
         var partnerName;
-         if (data.methodofjoin) {
+        if (data.methodofjoin) {
             userData.methodofjoin = data.methodofjoin;
         }
         userData.accessLevel = 'Customer';
