@@ -9,11 +9,23 @@
     </div>
   </div>
   <div class="row rowbgcolor " ng-repeat="product in orderData.product">
-    <div class="col-xs-8 bgchkoutcol50Quant">
+    <div class="col-xs-8 bgchkoutcol50Quant" ng-if="product.jarDeposit">
+      <div>
+        <label class="bottlemain" for="">One time deposit</label>
+        <br>
+        <span class="qntlbl"> {{product.productQuantity}}{{product.unit}}   x ₹ {{product.product.deposit}}  </span>
+      </div>
+    </div>
+    <div class="col-xs-4 bgchkoutcol502">
+      <div>
+        <label class="rs" for="">₹  {{product.jarDeposit}}</label>
+      </div>
+    </div>
+    <div class="col-xs-8 bgchkoutcol50Quant" >
       <div>
         <label class="bottlemain" for="">{{product.product.name}}</label>
         <br>
-        <span class="qntlbl"> {{product.productQuantity}} Jars x ₹ {{product.finalPrice}} /Jar </span>
+        <span class="qntlbl"> {{product.productQuantity}} {{product.unit}} x ₹ {{product.finalPrice}} /{{product.unit}} </span>
       </div>
     </div>
     <div class="col-xs-4 bgchkoutcol502">
@@ -21,6 +33,7 @@
         <label class="rs" for="">₹  {{product.productQuantity * product.finalPrice}}</label>
       </div>
     </div>
+
   </div>
   <div class="row rowbgcolor">
     <div class="col-xs-8 savingscol501 ">
