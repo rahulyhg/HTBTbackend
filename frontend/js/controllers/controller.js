@@ -212,6 +212,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     };
     $scope.orderConfirmation = function (orderData) {
       orderData.status = 'Confirmed';
+      orderData.deliverdate = dt;
       apiService.apiCall("Order/orderConfirmationOrPay", orderData, function (data) {
         if (data.value === true) {
           $state.go("thankyoupage2");
