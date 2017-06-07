@@ -136,6 +136,10 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
               console.log($scope.daysByPincode.days);
             } else {
               $state.go("pincode");
+              $scope.orderData.status="Outside Delivery Zone";
+              apiService.apiCall("Order/save", $scope.orderData, function (data) {
+                console.log(data);
+});
             }
           });
           if (_.isEqual($scope.orderData.paymentStatus, 'Paid')) {
@@ -201,7 +205,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
         apiService.apiCall("Order/orderConfirmationOrPay", $scope.orderData, function (data) {
           if (data.value === true) {
        if ($stateParams.rpId == "")
-       
+
             $state.go("successconfirm",{orderId:$stateParams.orderId});
             console.log("payAndCapture");
             //redirect to thank you page
