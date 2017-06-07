@@ -43,7 +43,7 @@ myApp.controller('HomeCtrl', function($scope, TemplateService, NavigationService
     TemplateService.title = "Sign Up"; //This is the Title of the Website
 
     if ($stateParams.orderId) {
-        $scope.email = false;
+        $scope.emailDisable = false;
         var formData = {};
         $scope.orderData = {};
         $scope.orderData.shippingAddress = {};
@@ -52,7 +52,7 @@ myApp.controller('HomeCtrl', function($scope, TemplateService, NavigationService
             if (data.value === true) {
                 $scope.orderData = data.data;
                 if ($scope.orderData.customer.email) {
-                    $scope.email = true;
+                    $scope.emailDisable = true;
                 }
                 $scope.orderData.shippingAddressName = $scope.orderData.customer.name;
                 $scope.orderData.shippingAddressMobile = $scope.orderData.customer.mobile;
