@@ -41,9 +41,9 @@
             <div class="col-xs-2">
                 <div class="datemonth text-center">
                     <div class="datediv pad-10 date">
-                        {{dt|date:'dd'}}
+                        {{orderData.deliverdate|date:'dd'}}
                     </div>
-                    <div class="monthdiv date">{{dt|date:'MMM'}}</div>
+                    <div class="monthdiv date">{{orderData.deliverdate|date:'MMM'}}</div>
                 </div>
             </div>
             <div class="col-xs-1">
@@ -52,11 +52,12 @@
             <div class="col-xs-8">
                 <div class="rel">
                     <div class="mid-day text-center ">
+                        {{orderData.deliverdate}}
                         <h4 class="mar10">
-                            Delivering on {{dt|date:'EEEE'}}
+                            Delivering on {{orderData.deliverdate|date:'EEEE'}}
                         </h4>
                         <div>
-                            <input type="text" class="form-control display-none" uib-datepicker-popup ng-model="dt" is-open="popup2.opened" datepicker-options="dateOptions"
+                            <input type="text" class="form-control display-none" uib-datepicker-popup ng-model="orderData.deliverdate" is-open="popup2.opened" datepicker-options="dateOptions"
                                 ng-required="true" close-text="Close" />
                             <span class="input-group-btn t">
                             <button type="button" class="btn btn-default  cal-on-click" ng-click="open2()">Click here to change!  </button>

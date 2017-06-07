@@ -45,7 +45,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     if ($stateParams.orderId) {
 
       var formData = {};
-       $scope.orderData={};
+      $scope.orderData = {};
       $scope.orderData.shippingAddress = {};
       formData._id = $stateParams.orderId;
       apiService.apiCall("Order/getOne", formData, function (data) {
@@ -97,13 +97,13 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       if ($scope.showaddr) {
         orderData.billingAddress = _.cloneDeep(orderData.shippingAddress);
       }
-      if(!$scope.orderData.customer.email){
-        $scope.orderData.customer.email=orderData.shippingAddressEmail;
-          apiService.apiCall("User/save", $scope.orderData.customer, function (data) {
-        if (data.value === true) {
-          console.log("User updated successfully---");
-        }
-      });
+      if (!$scope.orderData.customer.email) {
+        $scope.orderData.customer.email = orderData.shippingAddressEmail;
+        apiService.apiCall("User/save", $scope.orderData.customer, function (data) {
+          if (data.value === true) {
+            console.log("User updated successfully---");
+          }
+        });
       }
       apiService.apiCall("Order/save", orderData, function (data) {
         if (data.value === true) {
@@ -155,11 +155,12 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
             apiService.apiCall("User/getOne", rpFormData, function (data) {
               if (data.value === true) {
                 $scope.rpData = data.data;
+                $scope.nameOnPayment = $scope.rpData.name;
+                $scope.emailOnPayment = $scope.rpData.email;
+                $scope.mobileOnPayment = $scope.rpData.mobile;
               }
             });
-            $scope.nameOnPayment = $scope.rpData.name;
-            $scope.emailOnPayment = $scope.rpData.email;
-            $scope.mobileOnPayment = $scope.rpData.mobile;
+
           }
           $scope.options = {
             'key': 'rzp_test_BrwXxB7w8pKsfS',
@@ -200,9 +201,11 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
         $scope.orderData.status = 'Confirmed';
         apiService.apiCall("Order/orderConfirmationOrPay", $scope.orderData, function (data) {
           if (data.value === true) {
-       if ($stateParams.rpId == "")
-       
-            $state.go("successconfirm",{orderId:$stateParams.orderId});
+            if ($stateParams.rpId == "")
+
+              $state.go("successconfirm", {
+                orderId: $stateParams.orderId
+              });
             console.log("payAndCapture");
             //redirect to thank you page
 
@@ -212,13 +215,13 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     };
     $scope.orderConfirmation = function (orderData) {
       orderData.status = 'Confirmed';
-      orderData.deliverdate = dt;
+      console.log($scope.dt);
       apiService.apiCall("Order/orderConfirmationOrPay", orderData, function (data) {
         if (data.value === true) {
           $state.go("thankyoupage2");
           console.log("Order confirmed successfully--- redirect to thank you page");
 
-        }else {
+        } else {
           $state.go("wrong");
         }
       });
