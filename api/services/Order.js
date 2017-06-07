@@ -44,7 +44,7 @@ var schema = new Schema({
     },
     status: {
         type: String, //'Processing', 'Confirmed','Paid','Cancelled','Delivered','delay',
-        
+
         default: "Processing"
     },
     // paidByRP: {
@@ -185,61 +185,61 @@ var model = {
                                 };
                                 index++;
                                 console.log("HHHHHHHHH");
-                                if(planChecked){
-                                async.waterfall([
-                                    function createReqId(callback) {
-                                        console.log("inside DeliveryRequest create");
-                                        DeliveryRequest.find({}).sort({
-                                            createdAt: -1
-                                        }).exec(function (err, fdata) {
-                                            if (err) {
-                                                console.log(err);
-                                                callback(err, null);
-                                            } else {
-                                                if (fdata.length > 0) {
-                                                    if (fdata[0].requestID) {
-                                                        reqId = parseInt(fdata[0].requestID) + 1;
-                                                    }
+                                if (planChecked) {
+                                    async.waterfall([
+                                        function createReqId(callback) {
+                                            console.log("inside DeliveryRequest create");
+                                            DeliveryRequest.find({}).sort({
+                                                createdAt: -1
+                                            }).exec(function (err, fdata) {
+                                                if (err) {
+                                                    console.log(err);
+                                                    callback(err, null);
                                                 } else {
-                                                    reqId = 1;
-                                                }
+                                                    if (fdata.length > 0) {
+                                                        if (fdata[0].requestID) {
+                                                            reqId = parseInt(fdata[0].requestID) + 1;
+                                                        }
+                                                    } else {
+                                                        reqId = 1;
+                                                    }
 
-                                                callback(null, reqId);
-                                            }
-                                        });
-                                    },
-                                    function saveDeliveryReq(reqId, callback) {
-                                        console.log("reqId--", reqId);
-                                        deliveryReqData.product = val.product._id;
-                                        deliveryReqData.Quantity = val.productQuantity;
-                                        deliveryReqData.deliverdate = data.deliverdate;
-                                        deliveryReqData.Order = data._id;
-                                        deliveryReqData.requestDate = new Date();
-                                        deliveryReqData.methodOfRequest = data.methodOfOrder;
-                                        deliveryReqData.requestID = reqId;
-                                        deliveryReqData.customer = data.customer._id
-                                        green("deliveryReqData--", deliveryReqData);
-                                        DeliveryRequest.saveData(deliveryReqData, function (err, savedDelivery) {
-                                            if (err) {
-                                                red("error while creating delivery", err);
-                                                callback(err, null);
-                                            } else {
-                                                console.log("savedDelivery--", savedDelivery);
-                                                callback(null, []);
-                                            }
-                                        });
-                                    }
-                                ], function asyncComplete(err, savedDelivery) {
-                                    if (err) {
-                                        console.warn('Error creating delivery request JSON.', err);
-                                        callback1();
-                                        // callback(err, null);
-                                    } else {
-                                        console.log("succefully completed the waterfall");
-                                        console.log("send callback1");
-                                        callback1();
-                                    }
-                                });
+                                                    callback(null, reqId);
+                                                }
+                                            });
+                                        },
+                                        function saveDeliveryReq(reqId, callback) {
+                                            console.log("reqId--", reqId);
+                                            deliveryReqData.product = val.product._id;
+                                            deliveryReqData.Quantity = val.productQuantity;
+                                            deliveryReqData.deliverdate = data.deliverdate;
+                                            deliveryReqData.Order = data._id;
+                                            deliveryReqData.requestDate = new Date();
+                                            deliveryReqData.methodOfRequest = data.methodOfOrder;
+                                            deliveryReqData.requestID = reqId;
+                                            deliveryReqData.customer = data.customer._id
+                                            green("deliveryReqData--", deliveryReqData);
+                                            DeliveryRequest.saveData(deliveryReqData, function (err, savedDelivery) {
+                                                if (err) {
+                                                    red("error while creating delivery", err);
+                                                    callback(err, null);
+                                                } else {
+                                                    console.log("savedDelivery--", savedDelivery);
+                                                    callback(null, []);
+                                                }
+                                            });
+                                        }
+                                    ], function asyncComplete(err, savedDelivery) {
+                                        if (err) {
+                                            console.warn('Error creating delivery request JSON.', err);
+                                            callback1();
+                                            // callback(err, null);
+                                        } else {
+                                            console.log("succefully completed the waterfall");
+                                            console.log("send callback1");
+                                            callback1();
+                                        }
+                                    });
                                 }
 
                             }, function (error, data) {
@@ -319,6 +319,9 @@ var model = {
                                         }
                                     }
                                     userdata.status = 'Active';
+                                    if (userdata.email) {
+                                        userdata.email = data.shippingAddress.email;
+                                    }
                                     userdata.save(function (err, updated) {
                                         if (err) {
                                             console.log("error occured in user update");
@@ -477,7 +480,7 @@ var model = {
         console.log('inside save order', data);
         if (!data._id) {
             var year = new Date().getFullYear().toString().substr(2, 2);
-            var month = new Date().getMonth()+1;
+            var month = new Date().getMonth() + 1;
             var strMon = '';
             console.log(month.toString().length, year);
             if (month.toString().length > 1) {
@@ -500,13 +503,13 @@ var model = {
                         console.log(fdata[0]);
                         var ID = parseInt(fdata[0].orderID.toString().substr(4, fdata[0].orderID.toString().length)) + 1;
                         console.log(ID);
-                            orderID = year + strMon + ID;
-                            console.log("calculated order id", orderID);
+                        orderID = year + strMon + ID;
+                        console.log("calculated order id", orderID);
                         // orderID="cust"+year+strMon+ID;
                         // console.log(orderID);
                     } else {
                         console.log("hello");
-                        orderID =  year + strMon + "1";
+                        orderID = year + strMon + "1";
                         console.log(orderID);
                     }
                     data.orderID = orderID;
@@ -515,7 +518,7 @@ var model = {
                     data.totalAmount = _.sumBy(data.product, function (o) {
                         return parseInt(o.finalPrice * o.productQuantity);
                     });
-                    console.log("totalAmount",data.totalAmount);
+                    console.log("totalAmount", data.totalAmount);
                     Order.saveData(data, function (err, savedData) {
                         if (err) {
                             console.log("err--", err);
@@ -813,8 +816,8 @@ var model = {
         var orderData = {};
         var partnerName;
         userData.accessLevel = 'Customer';
-        if(data.methodofjoin){
-           userData.methodofjoin= data.methodofjoin;
+        if (data.methodofjoin) {
+            userData.methodofjoin = data.methodofjoin;
         }
         if (data.methodOfPayment) {
             orderData.methodOfPayment = data.methodOfPayment;
