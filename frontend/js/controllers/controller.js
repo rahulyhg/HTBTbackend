@@ -70,11 +70,23 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       } else {
         $scope.orderData.billingAddress = {};
       }
-
     };
     $scope.addShipBilDetails = function (orderData) {
       //redirect them to cart summery and payment gateway
-      $scope.orderData.shippingAddress.name = orderData.shippingAddressName;
+      if (!orderData.shippingAddress) {
+        orderData.shippingAddress = {};
+      }
+      if(!orderData.billingAddress){
+        orderData.billingAddress={};
+      }
+      orderData.shippingAddress.name = orderData.shippingAddressName;
+      orderData.shippingAddress.mobile = orderData.shippingAddressMobile;
+      orderData.shippingAddress.email = orderData.shippingAddressEmail;
+      orderData.billingAddress.name = orderData.billingAddressName;
+      orderData.billingAddress.mobile = orderData.billingAddressMobile;
+      if ($scope.showaddr) {
+        orderData.billingAddress = _.cloneDeep(orderData.shippingAddress);
+      }
       apiService.apiCall("Order/save", orderData, function (data) {
         if (data.value === true) {
           console.log("Order updated successfully---");
@@ -100,9 +112,9 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
           $scope.orderData = data.data;
           var pinForm = {};
           pinForm.pin = $scope.orderData.shippingAddress.pincode;
-          apiService.apiCall("Pincode/getByPin", pinForm, function (pinData) {
-            if (pinData.value === true) {
-              $scope.daysByPincode = pinData.data;
+          apiService.getPinDetail(pinForm, function (pinData) {
+            if (pinData.data.value === true) {
+              $scope.daysByPincode = pinData.data.data;
               console.log($scope.daysByPincode.days);
             } else {
               $state.go("pincode");
@@ -213,7 +225,6 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
         }
       });
       var diff = moment(data.date).diff(moment(), 'days')
-      console.log(a);
       if (diff <= 0) {
         retVal = true;
       }
@@ -405,13 +416,14 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
   })
 
   .controller('SorryCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
-    $scope.template = TemplateService.getHTML("content/Sorry.html");
+    $scope.template = TemplateService.getHTML("content/sorry.html");
     TemplateService.title = "Sorry"; //This is the Title of the Website
   })
 
   .controller('PincodeCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
     $scope.template = TemplateService.getHTML("content/pincode.html");
     TemplateService.title = "pincode"; //This is the Title of the Website
+
   })
 
 

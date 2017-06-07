@@ -782,7 +782,6 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                     //  $.jStorage.set('user', data.data);
                     //  $.jStorage.set("accessToken",
                 }
-
             });
         if (_.isEmpty($stateParams.keyword)) {
             NavigationService.apiCall("PartnerLevel/search", {},
@@ -798,7 +797,6 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                             comm.commissionType = val;
                             console.log("commissionType", comm.commissionType);
                             $scope.productData.commission.push(comm);
-
                         })
                         console.log("$scope.productData.commission---->>", $scope.productData.commission)
                     }
