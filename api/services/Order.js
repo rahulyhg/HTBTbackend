@@ -308,13 +308,14 @@ var model = {
                                     callback(err, null);
                                 } else {
                                     if (_.isEqual(data.product[0].product.category.subscription, 'Yes')) {
+                                        console.log("subscription product-----if");
                                         if (!_.isEmpty(userdata.subscribedProd[0])) {
                                             userdata.subscribedProd[0].jarBalance = parseInt(userdata.subscribedProd[0].jarBalance) + parseInt(data.totalQuantity);
                                         } else {
                                             var subProd = {};
                                             subProd.recentOrder = data._id
                                             subProd.product = data.product[0].product;
-                                            subProd.jarBalance = parseInt(data.totalQuantity)
+                                            subProd.jarBalance = parseInt(data.product[0].productQuantity);
                                             userdata.subscribedProd.push(subProd);
                                         }
                                     }
