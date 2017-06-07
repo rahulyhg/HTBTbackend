@@ -200,6 +200,9 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
         $scope.orderData.status = 'Confirmed';
         apiService.apiCall("Order/orderConfirmationOrPay", $scope.orderData, function (data) {
           if (data.value === true) {
+       if ($stateParams.rpId == "")
+       
+            $state.go("successconfirm",{orderId:$stateParams.orderId});
             console.log("payAndCapture");
             //redirect to thank you page
 
@@ -214,6 +217,8 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
           $state.go("thankyoupage2");
           console.log("Order confirmed successfully--- redirect to thank you page");
 
+        }else {
+          $state.go("wrong");
         }
       });
     }
