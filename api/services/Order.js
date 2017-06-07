@@ -43,7 +43,7 @@ var schema = new Schema({
         type: String
     },
     status: {
-        type: String, //'Processing', 'Confirmed','Paid','Cancelled','Delivered','delay',
+        type: String, //'Processing', 'Confirmed','Paid','Cancelled','Delivered','delay','Outside Delivery Zone'
 
         default: "Processing"
     },
@@ -308,13 +308,14 @@ var model = {
                                     callback(err, null);
                                 } else {
                                     if (_.isEqual(data.product[0].product.category.subscription, 'Yes')) {
+                                        console.log("subscription product-----if");
                                         if (!_.isEmpty(userdata.subscribedProd[0])) {
                                             userdata.subscribedProd[0].jarBalance = parseInt(userdata.subscribedProd[0].jarBalance) + parseInt(data.totalQuantity);
                                         } else {
                                             var subProd = {};
                                             subProd.recentOrder = data._id
                                             subProd.product = data.product[0].product;
-                                            subProd.jarBalance = parseInt(data.totalQuantity)
+                                            subProd.jarBalance = parseInt(data.product[0].productQuantity);
                                             userdata.subscribedProd.push(subProd);
                                         }
                                     }
@@ -515,6 +516,9 @@ var model = {
                     data.totalAmount = _.sumBy(data.product, function (o) {
                         return parseInt(o.finalPrice * o.productQuantity);
                     });
+                    if (data.product[0].jarDeposit) {
+                        data.totalAmount = data.totalAmount + data.product[0].jarDeposit;
+                    }
                     console.log("totalAmount", data.totalAmount);
                     Order.saveData(data, function (err, savedData) {
                         if (err) {
@@ -630,7 +634,7 @@ var model = {
         console.log("inside saveOrderCheckout ", data);
         var userData = {};
         var partnerName;
-         if (data.methodofjoin) {
+        if (data.methodofjoin) {
             userData.methodofjoin = data.methodofjoin;
         }
         userData.accessLevel = 'Customer';

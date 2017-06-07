@@ -6,7 +6,8 @@ var schema = new Schema({
     deliverdate: Date,
     delivertime: {
         type: String,
-        enum: ['8 AM to 1 PM', '1 PM to 6 PM']
+        enum: ['8 AM to 1 PM', '1 PM to 6 PM'],
+        default:'1 PM to 6 PM'
     },
     status: {
         type: String, //Delivery Scheduled ,In Transit,Full Delivery Successful,Partial Delivery Successful,Delivery Failed

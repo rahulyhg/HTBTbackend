@@ -66,6 +66,10 @@ var schema = new Schema({
         type: String,
         default: "",
     },
+     unit: {
+        type: String,
+        default: "",
+    },
     maxBonusEarning: {
         type: String,
         default: "",

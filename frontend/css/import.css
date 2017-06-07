@@ -9651,7 +9651,6 @@ header {
 .orderplaced {
   font-size: 21px;
   width: 100%;
-  padding: 10px 10px 0 10px;
   text-align: center;
   color: #6d797e; }
 
@@ -9689,7 +9688,6 @@ header {
 
 .pin-head {
   font-size: 32px;
-  padding: 10px;
   text-align: center;
   color: #ff414d; }
 
