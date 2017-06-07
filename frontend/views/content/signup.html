@@ -64,7 +64,7 @@
     <input class="inputsize" type="text" ng-model="orderData.shippingAddressMobile" placeholder="Mobile Number" disabled>
   </label>
     <label class=" item-input inputField">
-    <input class="inputsize" type="email" ng-model="orderData.shippingAddressEmail" placeholder="Email ID" required name="email" disabled="orderData.shippingAddressEmail">
+    <input class="inputsize" type="email" ng-model="orderData.shippingAddressEmail" placeholder="Email ID" required name="email" ng-disabled="orderData.shippingAddressEmail">
         <p class="error-msg"  ng-show="userForm.email.$error.required && userForm.email.$touched">Please Enter Your Email.</p>
   </label>
     <label class=" item-input inputField">
