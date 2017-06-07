@@ -31,6 +31,21 @@ myApp.factory('apiService', function ($http, $q, $timeout, $state) {
             $http.post(adminurl + "Pincode/getByPin", formData).then(function (data) {
                 callback(data);
             });
+        },
+        getNextDate: function(stringArr) {
+            var objs = [];
+            _.each(stringArr,function(day) {
+                var dateDay = moment(day,"dddd").toDate();
+                objs.push(dateDay);
+            });
+            _.each(stringArr,function(day) {
+                var dateDay = moment(day,"dddd").add(1,"week").toDate();
+                objs.push(dateDay);
+            });
+            var remaining = _.filter(objs,function(dat) {
+                return !moment(dat).isSameOrBefore(moment(), 'day');
+            });
+            return remaining[0];
         }
 
     };
