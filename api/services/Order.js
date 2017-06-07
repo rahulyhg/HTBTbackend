@@ -353,7 +353,7 @@ var model = {
                                 })
                             } else if (!_.isEqual(data.methodOfPayment, 'Customer') && _.isEqual(data.product[0].product.category.subscription, 'No')) {
                                 console.log("when customer pays");
-                                var smsMessage = "Order " + data.orderID + " confirmed! Your delivery is scheduled for " + moment(data.deliverdate).format("dddd, MMM D");
+                                var smsMessage = "Order " + data.orderID + " confirmed! Your delivery is scheduled for " + moment(data.deliverdate).add(1,"day").format("dddd, MMM D");
 
                                 var smsObj = {
                                     "message": "HTBT",
