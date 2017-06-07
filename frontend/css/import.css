@@ -9701,6 +9701,11 @@ header {
   right: 0%;
   font-size: 30px; }
 
+.sorrymsg {
+  padding: 10px;
+  font-size: 16px;
+  color: #6d797e; }
+
 #fancybox-loading,
 .fancybox-close,
 .fancybox-next span,
