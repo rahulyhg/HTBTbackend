@@ -43,7 +43,8 @@ var schema = new Schema({
         type: String
     },
     status: {
-        type: String, //'Processing', 'Confirmed','Cancelled','Delivered','delay',
+        type: String, //'Processing', 'Confirmed','Paid','Cancelled','Delivered','delay',
+        
         default: "Processing"
     },
     // paidByRP: {
@@ -475,7 +476,7 @@ var model = {
         console.log('inside save order', data);
         if (!data._id) {
             var year = new Date().getFullYear().toString().substr(2, 2);
-            var month = new Date().getMonth();
+            var month = new Date().getMonth()+1;
             var strMon = '';
             console.log(month.toString().length, year);
             if (month.toString().length > 1) {
@@ -496,33 +497,15 @@ var model = {
                     console.log("order length", fdata.length);
                     if (fdata.length > 0) {
                         console.log(fdata[0]);
-                        var ID = parseInt(fdata[0].orderID.toString().substr(fdata[0].orderID.toString().length - 5, fdata[0].orderID.toString().length)) + 1;
+                        var ID = parseInt(fdata[0].orderID.toString().substr(4, fdata[0].orderID.toString().length)) + 1;
                         console.log(ID);
-                        if (ID.toString().length == 5) {
-                            orderID = "orderID" + year + strMon + ID;
-                            console.log("5", orderID);
-
-                        } else if (ID.toString().length == 4) {
-                            orderID = "orderID" + year + strMon + "0" + ID;
-                            console.log("4", orderID);
-
-                        } else if (ID.toString().length == 3) {
-                            orderID = "orderID" + year + strMon + "00" + ID;
-                            console.log("3", orderID);
-
-                        } else if (ID.toString().length == 2) {
-                            orderID = "orderID" + year + strMon + "000" + ID;
-                            console.log("2", orderID);
-
-                        } else {
-                            orderID = "orderID" + year + strMon + "0000" + ID;
-                            console.log("1", orderID);
-                        }
+                            orderID = year + strMon + ID;
+                            console.log("calculated order id", orderID);
                         // orderID="cust"+year+strMon+ID;
                         // console.log(orderID);
                     } else {
                         console.log("hello");
-                        orderID = "orderID" + year + strMon + "00001";
+                        orderID =  year + strMon + "1";
                         console.log(orderID);
                     }
                     data.orderID = orderID;
@@ -531,6 +514,7 @@ var model = {
                     data.totalAmount = _.sumBy(data.product, function (o) {
                         return parseInt(o.finalPrice * o.productQuantity);
                     });
+                    console.log("totalAmount",data.totalAmount);
                     Order.saveData(data, function (err, savedData) {
                         if (err) {
                             console.log("err--", err);
@@ -828,6 +812,9 @@ var model = {
         var orderData = {};
         var partnerName;
         userData.accessLevel = 'Customer';
+        if(data.methodofjoin){
+           userData.methodofjoin= data.methodofjoin;
+        }
         if (data.methodOfPayment) {
             orderData.methodOfPayment = data.methodOfPayment;
         }

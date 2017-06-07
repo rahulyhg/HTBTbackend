@@ -446,7 +446,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             name: "Time"
         }];
 
-        $scope.addQuestion = function (notes) {
+        $scope.addNotes = function (notes) {
             var noteWithTime = {};
             noteWithTime.note = notes.note;
             noteWithTime.notestime = new Date();
@@ -473,18 +473,32 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             }
 
         };
-        $scope.saveuser = function (notes) {
-            NavigationService.apiCall("User/save", $scope.data, function (data) {
-                console.log("login", data.data);
-            });
-            if ($scope.data.accessLevel == 'Customer') {
-                $state.go("page", {
-                    id: "viewCustomer"
-                });
+        $scope.saveuser = function (data) {
+            if (!_.isEqual(data.accessLevel, 'Customer')) {
+                if (!data.levelstatus) {
+                    toastr.error("Please assign level to Relationship partner.");
+                } else {
+                    NavigationService.apiCall("User/save", data, function (data) {
+                        console.log("login", data.data);
+                    });
+
+                    $state.go("page", {
+                        id: "viewRelPartner"
+                    });
+                }
             } else {
-                $state.go("page", {
-                    id: "viewRelPartner"
+                NavigationService.apiCall("User/save", data, function (data) {
+                    console.log("login", data.data);
                 });
+                if ($scope.data.accessLevel == 'Customer') {
+                    $state.go("page", {
+                        id: "viewCustomer"
+                    });
+                } else {
+                    $state.go("page", {
+                        id: "viewRelPartner"
+                    });
+                }
             }
 
         };
@@ -564,19 +578,29 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             console.log("prod---", data.product)
             var arr = {};
             var prodJson = JSON.parse(data.product);
-            var orderedPrice = _.orderBy(prodJson.priceList, ['endRange'], ['asc']);
+
+            var orderedPrice = _.orderBy(prodJson.priceList, function (n) {
+                return parseInt(n.endRange);
+            });
             console.log("orderedPrice", orderedPrice);
             foundPrice = {};
-            _.each(orderedPrice, function (obj) {
-                if (parseInt(data.productQuantity) <= parseInt(obj.endRange)) {
-                    foundPrice = obj;
-                    return false;
+            if (orderedPrice.length === 0) {
+                foundPrice.finalPrice = prodJson.price;
+            } else {
+                _.each(orderedPrice, function (obj) {
+                    if (parseInt(data.productQuantity) <= parseInt(obj.endRange)) {
+                        foundPrice = obj;
+                    }
+                });
+                if (data.productQuantity > parseInt(orderedPrice[orderedPrice.length - 1].endRange)) {
+                    foundPrice.finalPrice = orderedPrice[orderedPrice.length - 1].finalPrice;
                 }
-            });
+            }
+
 
             console.log("foundPrice---", foundPrice);
             if ($scope.orderData.product.length > 0) {
-                if (_.isEqual(prodJson.category.subscription, 'Yes')) {
+                if (prodJson.category && _.isEqual(prodJson.category.subscription, 'Yes')) {
                     $scope.modalInstance.close("close");
                     toastr.error("Product can't be added with subscription", "Product can't be added with subscription");
                 } else {
@@ -593,13 +617,12 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 arr.finalPrice = foundPrice.finalPrice;
                 arr.productQuantity = data.productQuantity
                 $scope.orderData.product.push(arr);
-                if (!_.isEqual(prodJson.category.subscription, 'Yes')) {
+                if (!prodJson.category || !_.isEqual(prodJson.category.subscription, 'Yes')) {
                     $scope.orderData.totalQuantity = parseInt($scope.orderData.totalQuantity) + parseInt(data.productQuantity);
                     $scope.orderData.totalAmount = parseInt($scope.orderData.totalAmount) + (parseInt(data.productQuantity) * parseInt(foundPrice.finalPrice));
 
                 }
             }
-
         };
 
         $scope.planWisePrice = function (plan) {

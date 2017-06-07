@@ -53,7 +53,9 @@
                 <label>Method Of Payment</label>
                 <select class="form-control" name="" ng-model="orderData.methodOfPayment">
               <option value="Cash">Cash</option>
-              <option value="Cheque">Cheque</option>
+              <option value="Credits">Wallet</option>
+              <option value="Customer">Online</option>
+              
             </select>
             </div>
             <!--<div class="form-group">
@@ -68,9 +70,8 @@
                 <select class="form-control" name="" ng-model="orderData.status" ng-change="cancel(orderData.status)">
               <option value="Processing">Processing</option>
               <option value="Confirmed">Confirmed</option>
+              <option value="Paid">Paid</option>
               <option value="Cancelled">Cancelled</option>
-              <option value="Delivered">Delivered</option>
-              <option value="delay">delay</option>
             </select>
             </div>
             <!--<div class="form-group" fields>
@@ -130,12 +131,12 @@
               <option value="Onetime">Onetime</option>              
             </select>
             </div>
-            <div ng-if="orderData.product[0].product.category.subscription=='Yes'" class="form-group">
+            <!--<div ng-if="orderData.product[0].product.category.subscription=='Yes'" class="form-group">
                 <label>Total Quantity*</label>
                 <input ng-if="orderData._id" type="text" name="totalQuantity" placeholder="Total Quantity" ng-model="orderData.totalQuantity" class="form-control" disabled>
                  <input ng-if="!orderData._id" type="text" name="totalQuantity" placeholder="Total Quantity" ng-model="orderData.totalQuantity" class="form-control" required>
 
-            </div>
+            </div>-->
             <div class="form-group" fields>
                 <label>Total Payment</label>
                 <input type="text" name="name" placeholder="Total Payment" ng-model="orderData.totalAmount" class="form-control">
@@ -160,13 +161,13 @@
                 <input type="number" name="name" placeholder="Pincode" ng-model="orderData.shippingAddress.pincode" class="form-control">
 
             </div>
-            <div ng-if="orderData._id" class="form-group" fields>
+            <!--<div ng-if="orderData._id" class="form-group" fields>
                 <label>Delivery date</label>
                 <input type="text" name="deliverdate" placeholder="deliverdate" ng-model="orderData.deliverdate | date"
                     class="form-control" ng-disabled="orderData._id">
                 <input type="date" name="deliverdate" placeholder="deliverdate" ng-if="!orderData._id" ng-model="orderData.deliverdate" class="form-control"
                     ng-disabled="orderData._id">
-            </div>
+            </div>-->
 
         </div>
     </div>

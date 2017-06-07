@@ -9,16 +9,18 @@
             "tableRef": "orderID"
         },
         {
-            "name": "User name",
+            "name": "Customer name",
             "isSort": "",
             "tableRef": "customer",
-            "fieldToBeShown": "userID",
+            "fieldToBeShown": "name",
             "type": "fkListView"
-        }, {
-            "name": "Deliver date",
+        },
+         {
+            "name": "Customer Mobile No.",
             "isSort": "",
-            "tableRef": "deliverdate",
-            "type": "date"
+            "tableRef": "customer",
+            "fieldToBeShown": "mobile",
+            "type": "fkListView"
         }, {
             "name": "Status",
             "isSort": "",
