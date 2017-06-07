@@ -319,7 +319,7 @@ var model = {
                                         }
                                     }
                                     userdata.status = 'Active';
-                                    if (userdata.email) {
+                                    if (!userdata.email) {
                                         userdata.email = data.shippingAddress.email;
                                     }
                                     userdata.save(function (err, updated) {
@@ -633,6 +633,9 @@ var model = {
         console.log("inside saveOrderCheckout ", data);
         var userData = {};
         var partnerName;
+         if (data.methodofjoin) {
+            userData.methodofjoin = data.methodofjoin;
+        }
         userData.accessLevel = 'Customer';
         if (data.customerName && data.customerMobile) {
             userData.name = data.customerName;
