@@ -28,8 +28,10 @@
                 <div class=" col-xs-6 reviewcol6">
                     <h4 class="aquamar">{{pr.product.name}}</h4>
                     <div for="" class="desc">Quantity: <b>{{pr.productQuantity}}</b></div>
+                    <div for="" class="desc" ng-if="pr.jarDeposit">Jar Deposit: <b>{{pr.jarDeposit}}</b></div>
                     <div for="" class="desc">Price: ₹ <b>{{pr.finalPrice}}</b></div>
-                    <div for="" class="desc">Total: ₹ <b>{{pr.finalPrice*pr.productQuantity}}</b></div>
+                    <div for="" class="desc" ng-if="pr.jarDeposit">Total: ₹ <b>{{(pr.finalPrice*pr.productQuantity + pr.jarDeposit)}}</b></div>
+                    <div for="" class="desc" ng-if="!pr.jarDeposit">Total: ₹ <b>{{pr.finalPrice*pr.productQuantity}}</b></div>
                 </div>
             </div>
         </div>
