@@ -43,7 +43,8 @@ var schema = new Schema({
         type: String
     },
     status: {
-        type: String, //'Processing', 'Confirmed','Cancelled','Delivered','delay',
+        type: String, //'Processing', 'Confirmed','Paid','Cancelled','Delivered','delay',
+
         default: "Processing"
     },
     // paidByRP: {
@@ -139,7 +140,7 @@ var model = {
                 async.parallel([
                     //Function to search event name
                     function () {
-                        if (data.razorpay_payment_id && data.customer.relationshipId) {
+                        if (data.status == 'Paid' && data.customer.relationshipId) {
                             console.log("inside relationship Partner updation");
                             User.findOne({
                                 _id: data.customer.relationshipId
@@ -148,7 +149,7 @@ var model = {
                                     callback(err, null);
                                 } else {
                                     if (_.isEqual(data.methodOfPayment, 'credits')) {
-                                        RPdata.credits = parseInt(RPdata.credits) + parseInt(totalAmount);
+                                        RPdata.credits = parseInt(RPdata.credits) + parseInt(data.totalAmount);
                                     }
                                     _.forEach(RPdata.customer, function (val) {
                                         if (_.isEqual(val.customer, data.customer._id)) {
@@ -168,8 +169,9 @@ var model = {
                         }
                     },
                     function () {
-                        if (data.razorpay_payment_id) {
+                        if (data.status == 'Paid') {
                             console.log("inside Delivery req create", data.product.length);
+                            var index = 0;
                             async.eachSeries(data.product, function (val, callback1) {
                                 var deliveryReqData = {};
                                 var planChecked = true;
@@ -180,102 +182,75 @@ var model = {
                                             planChecked = false;
                                         }
                                     }
-                                }
+                                };
+                                index++;
+                                console.log("HHHHHHHHH");
                                 if (planChecked) {
-                                    DeliveryRequest.find({}).sort({
-                                        createdAt: -1
-                                    }).exec(function (err, fdata) {
-                                        if (err) {
-                                            console.log(err);
-                                            callback(err, null);
-                                        } else {
-                                            if (fdata.length > 0) {
-                                                if (fdata[0].requestID) {
-                                                    val.reqId = parseInt(fdata[0].requestID) + 1;
+                                    async.waterfall([
+                                        function createReqId(callback) {
+                                            console.log("inside DeliveryRequest create");
+                                            DeliveryRequest.find({}).sort({
+                                                createdAt: -1
+                                            }).exec(function (err, fdata) {
+                                                if (err) {
+                                                    console.log(err);
+                                                    callback(err, null);
+                                                } else {
+                                                    if (fdata.length > 0) {
+                                                        if (fdata[0].requestID) {
+                                                            reqId = parseInt(fdata[0].requestID) + 1;
+                                                        }
+                                                    } else {
+                                                        reqId = 1;
+                                                    }
+
+                                                    callback(null, reqId);
                                                 }
-                                            } else {
-                                                val.reqId = 1;
-                                            }
+                                            });
+                                        },
+                                        function saveDeliveryReq(reqId, callback) {
+                                            console.log("reqId--", reqId);
                                             deliveryReqData.product = val.product._id;
                                             deliveryReqData.Quantity = val.productQuantity;
                                             deliveryReqData.deliverdate = data.deliverdate;
                                             deliveryReqData.Order = data._id;
                                             deliveryReqData.requestDate = new Date();
                                             deliveryReqData.methodOfRequest = data.methodOfOrder;
-                                            deliveryReqData.requestID = val.reqId;
+                                            deliveryReqData.requestID = reqId;
                                             deliveryReqData.customer = data.customer._id
                                             green("deliveryReqData--", deliveryReqData);
                                             DeliveryRequest.saveData(deliveryReqData, function (err, savedDelivery) {
                                                 if (err) {
                                                     red("error while creating delivery", err);
-                                                    // callback(err, null);
+                                                    callback(err, null);
                                                 } else {
                                                     console.log("savedDelivery--", savedDelivery);
+                                                    callback(null, []);
                                                 }
                                             });
                                         }
+                                    ], function asyncComplete(err, savedDelivery) {
+                                        if (err) {
+                                            console.warn('Error creating delivery request JSON.', err);
+                                            callback1();
+                                            // callback(err, null);
+                                        } else {
+                                            console.log("succefully completed the waterfall");
+                                            console.log("send callback1");
+                                            callback1();
+                                        }
                                     });
                                 }
-                                callback1([], null);
+
                             }, function (error, data) {
                                 if (err) {
                                     console.log("error found in doLogin.else callback1");
                                     // callback3(null, err);
                                 } else {
-
+                                    console.log("complted async series");
                                     // callback3(null, "updated");
                                 }
                             })
-
-
-                            _.forEach(data.product, function (val, index) {
-                                console.log("val--", val, "index--", index);
-                                var deliveryReqData = {};
-                                var planChecked = true;
-                                val.reqId = 0;
-                                if (index == 0 && val.product && val.product.category) {
-                                    if (_.isEqual(val.product.category.subscription, 'Yes')) {
-                                        if (!_.isEqual(data.plan, 'Onetime')) {
-                                            planChecked = false;
-                                        }
-                                    }
-                                }
-                                if (planChecked) {
-                                    DeliveryRequest.find({}).sort({
-                                        createdAt: -1
-                                    }).exec(function (err, fdata) {
-                                        if (err) {
-                                            console.log(err);
-                                            callback(err, null);
-                                        } else {
-                                            if (fdata.length > 0) {
-                                                if (fdata[0].requestID) {
-                                                    val.reqId = parseInt(fdata[0].requestID) + 1;
-                                                }
-                                            } else {
-                                                val.reqId = 1;
-                                            }
-                                            deliveryReqData.product = val.product._id;
-                                            deliveryReqData.Quantity = val.productQuantity;
-                                            deliveryReqData.deliverdate = data.deliverdate;
-                                            deliveryReqData.Order = data._id;
-                                            deliveryReqData.requestDate = new Date();
-                                            deliveryReqData.methodOfRequest = data.methodOfOrder;
-                                            deliveryReqData.requestID = val.reqId;
-                                            deliveryReqData.customer = data.customer._id
-                                            green("deliveryReqData--", deliveryReqData);
-                                            DeliveryRequest.saveData(deliveryReqData, function (err, savedDelivery) {
-                                                if (err) {
-                                                    red("error while creating delivery", err);
-                                                    // callback(err, null);
-                                                } else {
-                                                    console.log("savedDelivery--", savedDelivery);
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
                         }
                     },
                     function () {
@@ -293,7 +268,7 @@ var model = {
                                         if (err) {
                                             callback(err, null);
                                         } else {
-                                            var smsMessage = "Order has been confirmed from " + data.customer.name + " for order " + data.orderID + ". Please make the payment using url " + shortU
+                                            var smsMessage = "Your customer " + data.customer.name + " has confirmed the order  " + data.orderID + ". Click here to pay " + shortU
 
                                             var smsObj = {
                                                 "message": "HTBT",
@@ -324,8 +299,7 @@ var model = {
                         }
                     },
                     function () {
-                        if (_.isEqual(data.product[0].product.category.subscription, 'Yes') && data.razorpay_payment_id) {
-                            console.log("inside user updation");
+                        if (data.status == 'Paid') {
 
                             User.findOne({
                                 _id: data.customer._id
@@ -333,14 +307,16 @@ var model = {
                                 if (err) {
                                     callback(err, null);
                                 } else {
-                                    if (!_.isEmpty(userdata.subscribedProd[0])) {
-                                        userdata.subscribedProd[0].jarBalance = parseInt(userdata.subscribedProd[0].jarBalance) + parseInt(data.totalQuantity);
-                                    } else {
-                                        var subProd = {};
-                                        subProd.recentOrder = data._id
-                                        subProd.product = data.product[0].product;
-                                        subProd.jarBalance = parseInt(data.totalQuantity)
-                                        userdata.subscribedProd.push(subProd);
+                                    if (_.isEqual(data.product[0].product.category.subscription, 'Yes')) {
+                                        if (!_.isEmpty(userdata.subscribedProd[0])) {
+                                            userdata.subscribedProd[0].jarBalance = parseInt(userdata.subscribedProd[0].jarBalance) + parseInt(data.totalQuantity);
+                                        } else {
+                                            var subProd = {};
+                                            subProd.recentOrder = data._id
+                                            subProd.product = data.product[0].product;
+                                            subProd.jarBalance = parseInt(data.totalQuantity)
+                                            userdata.subscribedProd.push(subProd);
+                                        }
                                     }
                                     userdata.status = 'Active';
                                     userdata.save(function (err, updated) {
@@ -352,27 +328,104 @@ var model = {
                                     });
                                 }
                             });
-                            var smsMessage = "Order " + data.orderID + " confirmed! Download the HaTa App or call on 022 - 33024910 to schedule your first delivery."
-                            var smsObj = {
-                                "message": "HTBT",
-                                "sender": "HATABT",
-                                "sms": [{
-                                    "to": data.customer.mobile,
-                                    "message": smsMessage,
+                            if (!_.isEqual(data.methodOfPayment, 'Customer') && _.isEqual(data.product[0].product.category.subscription, 'Yes')) {
+                                console.log("When RP pays Customer will get this msg");
+                                var smsMessage = "Order " + data.orderID + " confirmed! Download the HaTa App or call on 022 - 33024910 to schedule your first delivery.";
+                                var smsObj = {
+                                    "message": "HTBT",
                                     "sender": "HATABT",
-                                }]
-                            };
-                            Config.sendSMS(smsObj, function (error, SMSResponse) {
-                                if (error || SMSResponse == undefined) {
-                                    console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
-                                    // callback(error, null);
-                                } else {
-                                    // callback(null, {
-                                    //     message: "OTP sent"
-                                    // });
-                                }
-                            })
+                                    "sms": [{
+                                        "to": data.customer.mobile,
+                                        "message": smsMessage,
+                                        "sender": "HATABT",
+                                    }]
+                                };
+                                Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                    if (error || SMSResponse == undefined) {
+                                        console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
+                                        // callback(error, null);
+                                    } else {
+                                        // callback(null, {
+                                        //     message: "OTP sent"
+                                        // });
+                                    }
+                                })
+                            } else if (!_.isEqual(data.methodOfPayment, 'Customer') && _.isEqual(data.product[0].product.category.subscription, 'No')) {
+                                console.log("when customer pays");
+                                var smsMessage = "Order " + data.orderID + " confirmed! Your delivery is scheduled for " + moment(data.deliverdate).format("dddd, MMM D");
+
+                                var smsObj = {
+                                    "message": "HTBT",
+                                    "sender": "HATABT",
+                                    "sms": [{
+                                        "to": data.customer.mobile,
+                                        "message": smsMessage,
+                                        "sender": "HATABT",
+                                    }]
+                                };
+                                Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                    if (error || SMSResponse == undefined) {
+                                        console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
+                                        // callback(error, null);
+                                    } else {
+                                        // callback(null, {
+                                        //     message: "OTP sent"
+                                        // });
+                                    }
+                                })
+
+                            } else if (_.isEqual(data.methodOfPayment, 'Customer') && _.isEqual(data.product[0].product.category.subscription, 'Yes')) {
+                                console.log("when customer pays");
+                                var smsMessage = "Payment successful! Order " + data.orderID + " is confirmed. Download the HaTa App or call on 022 - 33024910 to schedule your first delivery."
+
+                                var smsObj = {
+                                    "message": "HTBT",
+                                    "sender": "HATABT",
+                                    "sms": [{
+                                        "to": data.customer.mobile,
+                                        "message": smsMessage,
+                                        "sender": "HATABT",
+                                    }]
+                                };
+                                Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                    if (error || SMSResponse == undefined) {
+                                        console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
+                                        // callback(error, null);
+                                    } else {
+                                        // callback(null, {
+                                        //     message: "OTP sent"
+                                        // });
+                                    }
+                                })
+
+                            } else if (_.isEqual(data.methodOfPayment, 'Customer') && _.isEqual(data.product[0].product.category.subscription, 'No')) {
+                                console.log("when customer pays");
+                                var smsMessage = "Payment successful! Order " + data.orderID + " is confirmed. Your delivery is scheduled for " + moment(data.deliverdate).format("dddd, MMM D");
+
+                                var smsObj = {
+                                    "message": "HTBT",
+                                    "sender": "HATABT",
+                                    "sms": [{
+                                        "to": data.customer.mobile,
+                                        "message": smsMessage,
+                                        "sender": "HATABT",
+                                    }]
+                                };
+                                Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                    if (error || SMSResponse == undefined) {
+                                        console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
+                                        // callback(error, null);
+                                    } else {
+                                        // callback(null, {
+                                        //     message: "OTP sent"
+                                        // });
+                                    }
+                                })
+
+                            }
+
                         }
+
                     }
                 ], function (error, data) {
                     if (error) {
@@ -394,23 +447,26 @@ var model = {
         console.log("calculatePrice----", data)
         var prodList = data;
         _.forEach(prodList, function (val) {
+            var foundPrice = {};
             console.log("val in prodList", val);
-            if (!_.isEmpty(val.product.priceList)) {
-                var orderedPrice = _.orderBy(val.product.priceList, ['endRange'], ['asc']);
-                console.log("orderedPrice", orderedPrice);
-                foundPrice = {};
+            var orderedPrice = _.orderBy(val.product.priceList, function (n) {
+                return parseInt(n.endRange);
+            });
+
+            if (orderedPrice.length === 0) {
+                console.log("val.product.price--", val.product.price);
+                val.finalPrice = val.product.price;
+            } else {
                 _.each(orderedPrice, function (obj) {
-                    console.log("obj--", obj);
                     if (parseInt(val.productQuantity) <= parseInt(obj.endRange)) {
                         foundPrice = obj;
+                        val.finalPrice = obj.finalPrice;
                         return false;
                     }
                 });
-                console.log("val.finalPrice--", foundPrice.finalPrice);
-                val.finalPrice = foundPrice.finalPrice;
-            } else {
-                console.log("val.product.price--", val.product.price);
-                val.finalPrice = val.product.price;
+                if (val.productQuantity > parseInt(orderedPrice[orderedPrice.length - 1].endRange)) {
+                    val.finalPrice = orderedPrice[orderedPrice.length - 1].finalPrice;
+                }
             }
         });
 
@@ -421,7 +477,7 @@ var model = {
         console.log('inside save order', data);
         if (!data._id) {
             var year = new Date().getFullYear().toString().substr(2, 2);
-            var month = new Date().getMonth();
+            var month = new Date().getMonth() + 1;
             var strMon = '';
             console.log(month.toString().length, year);
             if (month.toString().length > 1) {
@@ -442,33 +498,15 @@ var model = {
                     console.log("order length", fdata.length);
                     if (fdata.length > 0) {
                         console.log(fdata[0]);
-                        var ID = parseInt(fdata[0].orderID.toString().substr(fdata[0].orderID.toString().length - 5, fdata[0].orderID.toString().length)) + 1;
+                        var ID = parseInt(fdata[0].orderID.toString().substr(4, fdata[0].orderID.toString().length)) + 1;
                         console.log(ID);
-                        if (ID.toString().length == 5) {
-                            orderID = "orderID" + year + strMon + ID;
-                            console.log("5", orderID);
-
-                        } else if (ID.toString().length == 4) {
-                            orderID = "orderID" + year + strMon + "0" + ID;
-                            console.log("4", orderID);
-
-                        } else if (ID.toString().length == 3) {
-                            orderID = "orderID" + year + strMon + "00" + ID;
-                            console.log("3", orderID);
-
-                        } else if (ID.toString().length == 2) {
-                            orderID = "orderID" + year + strMon + "000" + ID;
-                            console.log("2", orderID);
-
-                        } else {
-                            orderID = "orderID" + year + strMon + "0000" + ID;
-                            console.log("1", orderID);
-                        }
+                        orderID = year + strMon + ID;
+                        console.log("calculated order id", orderID);
                         // orderID="cust"+year+strMon+ID;
                         // console.log(orderID);
                     } else {
                         console.log("hello");
-                        orderID = "orderID" + year + strMon + "00001";
+                        orderID = year + strMon + "1";
                         console.log(orderID);
                     }
                     data.orderID = orderID;
@@ -477,6 +515,7 @@ var model = {
                     data.totalAmount = _.sumBy(data.product, function (o) {
                         return parseInt(o.finalPrice * o.productQuantity);
                     });
+                    console.log("totalAmount", data.totalAmount);
                     Order.saveData(data, function (err, savedData) {
                         if (err) {
                             console.log("err--", err);
@@ -546,41 +585,41 @@ var model = {
                     callback(err, null);
                 } else {
                     console.log("savedData--", savedData);
-                    if (data.product) {
-                        console.log("inside Delivery req create", data.product);
-                        var deliveryReqData = {};
-                        _.forEach(data.product, function (val) {
-                            console.log("val--", val);
-                            DeliveryRequest.find({}).sort({
-                                createdAt: -1
-                            }).exec(function (err, fdata) {
-                                if (err) {
-                                    console.log(err);
-                                    callback(err, null);
-                                } else {
-                                    if (fdata.length > 0) {
-                                        if (fdata[0].requestID) {
-                                            reqId = parseInt(fdata[0].requestID) + 1;
-                                        }
-                                    } else {
-                                        reqId = 1;
-                                    }
-                                    deliveryReqData.product = val.product;
-                                    deliveryReqData.Quantity = val.productQuantity;
-                                    deliveryReqData.deliverdate = data.deliverdate;
-                                    deliveryReqData.Order = savedData._id;
-                                    deliveryReqData.requestDate = new Date();
-                                    deliveryReqData.methodOfRequest = data.methodOfOrder;
-                                    deliveryReqData.requestID = reqId;
-                                    deliveryReqData.customer = data.customer
-                                    console.log("deliveryReqData--", deliveryReqData);
-                                    DeliveryRequest.saveData(deliveryReqData, function () {});
+                    // if (data.product) {
+                    //     console.log("inside Delivery req create", data.product);
+                    //     var deliveryReqData = {};
+                    //     _.forEach(data.product, function (val) {
+                    //         console.log("val--", val);
+                    //         DeliveryRequest.find({}).sort({
+                    //             createdAt: -1
+                    //         }).exec(function (err, fdata) {
+                    //             if (err) {
+                    //                 console.log(err);
+                    //                 callback(err, null);
+                    //             } else {
+                    //                 if (fdata.length > 0) {
+                    //                     if (fdata[0].requestID) {
+                    //                         reqId = parseInt(fdata[0].requestID) + 1;
+                    //                     }
+                    //                 } else {
+                    //                     reqId = 1;
+                    //                 }
+                    //                 deliveryReqData.product = val.product;
+                    //                 deliveryReqData.Quantity = val.productQuantity;
+                    //                 deliveryReqData.deliverdate = data.deliverdate;
+                    //                 deliveryReqData.Order = savedData._id;
+                    //                 deliveryReqData.requestDate = new Date();
+                    //                 deliveryReqData.methodOfRequest = data.methodOfOrder;
+                    //                 deliveryReqData.requestID = reqId;
+                    //                 deliveryReqData.customer = data.customer
+                    //                 console.log("deliveryReqData--", deliveryReqData);
+                    //                 DeliveryRequest.saveData(deliveryReqData, function () {});
 
-                                }
-                            });
+                    //             }
+                    //         });
 
-                        })
-                    }
+                    //     })
+                    // }
                     callback(null, savedData);
                 }
             })
@@ -591,6 +630,10 @@ var model = {
         console.log("inside saveOrderCheckout ", data);
         var userData = {};
         var partnerName;
+         if (data.methodofjoin) {
+            userData.methodofjoin = data.methodofjoin;
+        }
+        userData.accessLevel = 'Customer';
         if (data.customerName && data.customerMobile) {
             userData.name = data.customerName;
             userData.mobile = data.customerMobile;
@@ -684,7 +727,7 @@ var model = {
                 } else {
                     console.log("succefully completed the waterfall");
                     //send sms here;
-                    if (_.isEqual(savedOrder.orderFor, 'RMForCustomer')) {
+                    if (_.isEqual(savedOrder.orderFor, 'RMForCustomer') && _.isEqual(savedOrder.methodOfPayment, "Customer")) {
                         console.log("inside if----send msg to RM", savedOrder.orderID, partnerName);
                         var shortU;
                         // Shorten a long url and output the result
@@ -693,7 +736,43 @@ var model = {
                             .then(function (response) {
                                 console.log("shortUrl", response);
                                 shortU = response.data.url;
-                                var smsMessage = "We are processing your order " + savedOrder.orderID + " received through our partner " + partnerName + ". Please confirm on url " + shortU
+                                var smsMessage = "Welcome to the HaTa family! We have received your order " + savedOrder.orderID + " through our partner " + partnerName + ". You can confirm the order and pay here: " + shortU;
+
+                                var smsObj = {
+                                    "message": "HTBT",
+                                    "sender": "HATABT",
+                                    "sms": [{
+                                        "to": savedOrder.customer.mobile,
+                                        "message": smsMessage,
+                                        "sender": "HATABT",
+                                    }]
+                                };
+                                Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                    if (error || SMSResponse == undefined) {
+                                        console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
+                                        // callback(error, null);
+                                    } else {
+                                        console.log("sms sent successfully");
+                                        // callback(null, {
+                                        //     message: "OTP sent"
+                                        // });
+                                    }
+                                })
+                            }, function (error) {
+                                console.log("error while shortnening url", error)
+                            });
+
+                    } else if (_.isEqual(savedOrder.orderFor, 'RMForCustomer') && !_.isEqual(savedOrder.methodOfPayment, "Customer")) {
+                        console.log("inside if----send msg to RM", savedOrder.orderID, partnerName);
+                        var shortU;
+                        // Shorten a long url and output the result
+
+                        bitly.shorten(env.frontend + "/orderconfirmation/" + savedOrder._id)
+                            .then(function (response) {
+                                console.log("shortUrl", response);
+                                shortU = response.data.url;
+                                var smsMessage = "Welcome to the HaTa family! We have received your order " + savedOrder.orderID + " through our partner " + partnerName + ".Please confirm your order here: " + shortU;
+
                                 var smsObj = {
                                     "message": "HTBT",
                                     "sender": "HATABT",
@@ -736,6 +815,10 @@ var model = {
         var customerData = {};
         var orderData = {};
         var partnerName;
+        userData.accessLevel = 'Customer';
+        if (data.methodofjoin) {
+            userData.methodofjoin = data.methodofjoin;
+        }
         if (data.methodOfPayment) {
             orderData.methodOfPayment = data.methodOfPayment;
         }
@@ -865,15 +948,17 @@ var model = {
                     } else {
                         console.log("succefully completed the waterfall", savedOrder.customer.mobile);
                         //send sms here;
-                        if (_.isEqual(savedOrder.orderFor, 'RMForCustomer')) {
+                        if (_.isEqual(savedOrder.orderFor, 'RMForCustomer') && _.isEqual(savedOrder.methodOfPayment, "Customer")) {
+                            console.log("inside if----send msg to RM", savedOrder.orderID, partnerName);
                             var shortU;
                             // Shorten a long url and output the result
+
                             bitly.shorten(env.frontend + "/orderconfirmation/" + savedOrder._id)
                                 .then(function (response) {
                                     console.log("shortUrl", response);
                                     shortU = response.data.url;
-                                    var smsMessage = "We are processing your order " + savedOrder.orderID + " received through our partner " + partnerName + ". Please confirm on url " + shortU
-                                    console.log("smsMessage--\n", smsMessage);
+                                    var smsMessage = "Welcome to the HaTa family! We have received your order " + savedOrder.orderID + " through our partner " + partnerName + ". You can confirm the order and pay here: " + shortU;
+
                                     var smsObj = {
                                         "message": "HTBT",
                                         "sender": "HATABT",
@@ -897,6 +982,42 @@ var model = {
                                 }, function (error) {
                                     console.log("error while shortnening url", error)
                                 });
+
+                        } else if (_.isEqual(savedOrder.orderFor, 'RMForCustomer') && !_.isEqual(savedOrder.methodOfPayment, "Customer")) {
+                            console.log("inside if----send msg to RM", savedOrder.orderID, partnerName);
+                            var shortU;
+                            // Shorten a long url and output the result
+
+                            bitly.shorten(env.frontend + "/orderconfirmation/" + savedOrder._id)
+                                .then(function (response) {
+                                    console.log("shortUrl", response);
+                                    shortU = response.data.url;
+                                    var smsMessage = "Welcome to the HaTa family! We have received your order " + savedOrder.orderID + " through our partner " + partnerName + ".Please confirm your order here: " + shortU;
+
+                                    var smsObj = {
+                                        "message": "HTBT",
+                                        "sender": "HATABT",
+                                        "sms": [{
+                                            "to": savedOrder.customer.mobile,
+                                            "message": smsMessage,
+                                            "sender": "HATABT",
+                                        }]
+                                    };
+                                    Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                        if (error || SMSResponse == undefined) {
+                                            console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
+                                            // callback(error, null);
+                                        } else {
+                                            console.log("sms sent successfully");
+                                            // callback(null, {
+                                            //     message: "OTP sent"
+                                            // });
+                                        }
+                                    })
+                                }, function (error) {
+                                    console.log("error while shortnening url", error)
+                                });
+
                         } else {
                             console.log("Please provide mobile mumber");
                             // callback(null, {

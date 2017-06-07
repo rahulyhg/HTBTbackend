@@ -35,7 +35,7 @@
         </div>
 
 
-        <div class="row rowbgcolor" ng-if="orderData.type != 'Subscription'">
+        <div class="row rowbgcolor" ng-if="orderData.type != 'Subscription' || orderData.plan=='Onetime'">
             <div class="col-xs-2">
                 <div class="datemonth text-center">
                     <div class="datediv pad-10 date">

@@ -39,7 +39,7 @@
                 <input type="text" name="establishmentName" placeholder="Establishment Name" ng-model="data.establishmentName" class="form-control">
                 <div class="error-msg" ng-show="establishmentName.$invalid && establishmentName.$touched">Please enter valid Establishment Name</div>
             </div>
-            <div class="form-group" fields>
+            <div ng-if="data.accessLevel!=='Customer'" class="form-group" fields>
                 <label><span ng-if="data.accessLevel!=='Customer'">Establishment</span> Address</label>
                 <input type="text" name="establishmentAddress" placeholder="Establishment Address" ng-model="data.establishmentAddress" class="form-control">
                 <div class="error-msg" ng-show="establishmentAddress.$invalid && establishmentAddress.$touched">Please enter valid Establishment Address</div>
@@ -117,7 +117,8 @@
 </div>
 <div class="text-center mt20 odd-even-button">
     <button class="btn btn-default" type="button" ng-click="saveuser(data)">Save</button>
-    <a class="btn btn-danger" href="#/page/viewUser//">Cancel</a>
+    <a ng-if="data.accessLevel=='Customer'" class="btn btn-danger" href="#/page/viewCustomer//">Cancel</a>
+    <a ng-if="data.accessLevel!='Customer'" class="btn btn-danger" href="#/page/viewRelPartner//">Cancel</a>
 
 </div>
 </div>
@@ -165,8 +166,8 @@
                         </thead>
                         <tbody>
                             <tr ng-repeat="data1 in data.customer | filter:search.text ">
-                                <td>{{data1.customerId}}</td>
-                                <td>{{data1.name }}</td>
+                                <td>{{data1.customer.userID}}</td>
+                                <td>{{data1.customer.name }}</td>
                                 <td>
                                     <a class="btn btn-primary" ng-click="reassignedmodal(data.userID,data1,'Active')">
                                       Reassign
@@ -203,8 +204,8 @@
                             <tr>
                                 <th>Order ID</th>
                                 <th>Order Date</th>
-                                <th>Delivery Date</th>
                                 <th>Total Amount</th>
+                                <th>Status</th>
 
 
                                 <!-- <th width="150px">Actions</th> -->
@@ -214,8 +215,8 @@
                             <tr ng-repeat="data in OrderData | filter:search.text ">
                                 <td>{{data.orderID}}</td>
                                 <td>{{data.orderDate | date}}</td>
-                                <td>{{data.deliverdate | date }}</td>
                                 <td>{{data.totalAmount }}</td>
+                                <td>{{data.status }}</td>
 
                             </tr>
                         </tbody>
@@ -317,7 +318,8 @@
 </div>
 <div class="text-center mt20 odd-even-button">
     <button class="btn btn-default" type="button" ng-click="saveuser(data)">Save</button>
-    <a class="btn btn-danger" href="#/page/viewUser//">Cancel</a>
+   <a ng-if="data.accessLevel=='Customer'" class="btn btn-danger" href="#/page/viewCustomer//">Cancel</a>
+   <a ng-if="data.accessLevel!='Customer'" class="btn btn-danger" href="#/page/viewRelPartner//">Cancel</a>
 
 </div>
 </div>

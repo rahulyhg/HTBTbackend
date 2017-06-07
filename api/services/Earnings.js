@@ -121,6 +121,7 @@ var model = {
                             if (CurrentMonUser) {
                                 dashboardData.currentMonthUser = CurrentMonUser.length;
                             }
+                            dashboardData.credits=found.credits;
                             // callback(null, CurrentMonUser);
                         } else {
                             // callback({

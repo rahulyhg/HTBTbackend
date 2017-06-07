@@ -45,7 +45,8 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     if ($stateParams.orderId) {
 
       var formData = {};
-
+       $scope.orderData={};
+      $scope.orderData.shippingAddress = {};
       formData._id = $stateParams.orderId;
       apiService.apiCall("Order/getOne", formData, function (data) {
         if (data.value === true) {
@@ -57,6 +58,15 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
           $scope.orderData.billingAddressMobile = $scope.orderData.customer.mobile;
           if (_.isEqual($scope.orderData.paymentStatus, 'Paid')) {
             $state.go("linkexpire");
+          } else {
+            var custForm = {};
+            custForm._id = $scope.orderData.customer._id;
+            apiService.apiCall("Order/getOrderByUser", custForm, function (data) {
+              if (data.value === true) {
+                $scope.PreviousOrder = data.data[0];
+                $scope.orderData.shippingAddress = $scope.PreviousOrder.shippingAddress;
+              }
+            });
           }
           $scope.showaddr = true;
           $scope.addSameBillingDetails(true);
@@ -73,7 +83,12 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     };
     $scope.addShipBilDetails = function (orderData) {
       //redirect them to cart summery and payment gateway
-      orderData.shippingAddress = {};
+      if (!orderData.shippingAddress) {
+        orderData.shippingAddress = {};
+      }
+      if (!orderData.billingAddress) {
+        orderData.billingAddress = {};
+      }
       orderData.shippingAddress.name = orderData.shippingAddressName;
       orderData.shippingAddress.mobile = orderData.shippingAddressMobile;
       orderData.shippingAddress.email = orderData.shippingAddressEmail;
@@ -81,6 +96,14 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       orderData.billingAddress.mobile = orderData.billingAddressMobile;
       if ($scope.showaddr) {
         orderData.billingAddress = _.cloneDeep(orderData.shippingAddress);
+      }
+      if(!$scope.orderData.customer.email){
+        $scope.orderData.customer.email=orderData.shippingAddressEmail;
+          apiService.apiCall("User/save", $scope.orderData.customer, function (data) {
+        if (data.value === true) {
+          console.log("User updated successfully---");
+        }
+      });
       }
       apiService.apiCall("Order/save", orderData, function (data) {
         if (data.value === true) {
@@ -108,8 +131,8 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
           var pinForm = {};
           pinForm.pin = $scope.orderData.shippingAddress.pincode;
           apiService.getPinDetail(pinForm, function (pinData) {
-            if (pinData.value === true) {
-              $scope.daysByPincode = pinData.data;
+            if (pinData.data.value === true) {
+              $scope.daysByPincode = pinData.data.data;
               console.log($scope.daysByPincode.days);
             } else {
               $state.go("pincode");
@@ -121,19 +144,36 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
           _.each($scope.orderData.product, function (n, key) {
             $scope.amountToBePaid += parseFloat(n.product.price) * parseInt(n.productQuantity);
           });
+
+          if (!$scope.template.isRP) {
+            $scope.nameOnPayment = $scope.orderData.customer.name
+            $scope.emailOnPayment = $scope.orderData.customer.email;
+            $scope.mobileOnPayment = $scope.orderData.customer.mobile;
+          } else {
+            var rpFormData = {};
+            rpFormData._id = $scope.orderData.customer.relationshipId;
+            apiService.apiCall("User/getOne", rpFormData, function (data) {
+              if (data.value === true) {
+                $scope.rpData = data.data;
+              }
+            });
+            $scope.nameOnPayment = $scope.rpData.name;
+            $scope.emailOnPayment = $scope.rpData.email;
+            $scope.mobileOnPayment = $scope.rpData.mobile;
+          }
           $scope.options = {
             'key': 'rzp_test_BrwXxB7w8pKsfS',
             'amount': parseInt($scope.orderData.totalPrice) * 100,
-            'name': $scope.orderData.customer.name,
+            'name': $scope.nameOnPayment,
             'description': 'Pay for Order ' + $scope.orderData.orderID,
             'image': '',
             'handler': function (transaction) {
               $scope.transactionHandler(transaction);
             },
             'prefill': {
-              'name': $scope.orderData.customer.name,
-              'email': $scope.orderData.customer.email,
-              'contact': $scope.orderData.customer.mobile
+              'name': $scope.nameOnPayment,
+              'email': $scope.emailOnPayment,
+              'contact': $scope.mobileOnPayment
             },
             theme: {
               color: '#3399FF'
@@ -171,7 +211,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       orderData.status = 'Confirmed';
       apiService.apiCall("Order/orderConfirmationOrPay", orderData, function (data) {
         if (data.value === true) {
-          $state.go("thankyou");
+          $state.go("thankyoupage2");
           console.log("Order confirmed successfully--- redirect to thank you page");
 
         }
@@ -220,7 +260,6 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
         }
       });
       var diff = moment(data.date).diff(moment(), 'days')
-      console.log(a);
       if (diff <= 0) {
         retVal = true;
       }
@@ -406,6 +445,11 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
     TemplateService.title = "thankyou"; //This is the Title of the Website
   })
 
+  .controller('PaymentSuccessCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
+    $scope.template = TemplateService.getHTML("content/paymentsuccess.html");
+    TemplateService.title = "paymentsuccess"; //This is the Title of the Website
+  })
+
   .controller('LinkExpireCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
     $scope.template = TemplateService.getHTML("content/linkexpire.html");
     TemplateService.title = "linkexpire"; //This is the Title of the Website
@@ -418,9 +462,36 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
 
   .controller('PincodeCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
     $scope.template = TemplateService.getHTML("content/pincode.html");
-    TemplateService.title = "Pincode"; //This is the Title of the Website
+    TemplateService.title = "pincode"; //This is the Title of the Website
+
   })
 
+
+  .controller('SuccessConfirmCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
+    $scope.template = TemplateService.getHTML("content/successconfirm.html");
+    TemplateService.title = "successconfirm"; //This is the Title of the Website
+  })
+
+  .controller('WrongCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
+    $scope.template = TemplateService.getHTML("content/wrong.html");
+    TemplateService.title = "wrong"; //This is the Title of the Website
+  })
+
+  .controller('ThankYouPage2Ctrl', function ($scope, TemplateService, NavigationService, $timeout) {
+    $scope.template = TemplateService.getHTML("content/thankyoupage2.html");
+    TemplateService.title = "thankyoupage2"; //This is the Title of the Website
+  })
+
+  .controller('SuccessCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
+    $scope.template = TemplateService.getHTML("content/success.html");
+    TemplateService.title = "success"; //This is the Title of the Website
+  })
+
+
+  .controller('ThankYouConfirmCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
+    $scope.template = TemplateService.getHTML("content/thankyouconfirm.html");
+    TemplateService.title = "thankyouconfirm"; //This is the Title of the Website
+  })
 
   .controller('headerctrl', function ($scope, TemplateService) {
 

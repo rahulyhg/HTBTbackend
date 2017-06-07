@@ -544,7 +544,7 @@ var model = {
                                         callback(error, null);
                                     } else {
                                         callback(null, {
-                                            message: "OTP sent"
+                                            message: "OTP sent",dataObj
                                         });
                                     }
                                 });
