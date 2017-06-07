@@ -9651,7 +9651,6 @@ header {
 .orderplaced {
   font-size: 21px;
   width: 100%;
-  padding: 10px 10px 0 10px;
   text-align: center;
   color: #6d797e; }
 
@@ -9682,7 +9681,6 @@ header {
   font-weight: 500;
   color: #6d797e; }
 
-
 .pin-msg {
   font-size: 22px;
   padding: 10px;
@@ -9690,7 +9688,6 @@ header {
 
 .pin-head {
   font-size: 32px;
-  padding: 10px;
   text-align: center;
   color: #ff414d; }
 
@@ -9706,7 +9703,6 @@ header {
   padding: 10px;
   font-size: 16px;
   color: #6d797e; }
-
 
 #fancybox-loading,
 .fancybox-close,

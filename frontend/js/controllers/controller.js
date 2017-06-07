@@ -200,6 +200,9 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
         $scope.orderData.status = 'Confirmed';
         apiService.apiCall("Order/orderConfirmationOrPay", $scope.orderData, function (data) {
           if (data.value === true) {
+       if ($stateParams.rpId == "")
+       
+            $state.go("successconfirm",{orderId:$stateParams.orderId});
             console.log("payAndCapture");
             //redirect to thank you page
 
@@ -211,9 +214,11 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
       orderData.status = 'Confirmed';
       apiService.apiCall("Order/orderConfirmationOrPay", orderData, function (data) {
         if (data.value === true) {
-          $state.go("thankyou");
+          $state.go("thankyoupage2");
           console.log("Order confirmed successfully--- redirect to thank you page");
 
+        }else {
+          $state.go("wrong");
         }
       });
     }
@@ -443,6 +448,11 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
   .controller('ThankYouCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
     $scope.template = TemplateService.getHTML("content/thankyou.html");
     TemplateService.title = "thankyou"; //This is the Title of the Website
+  })
+
+  .controller('PaymentSuccessCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
+    $scope.template = TemplateService.getHTML("content/paymentsuccess.html");
+    TemplateService.title = "paymentsuccess"; //This is the Title of the Website
   })
 
   .controller('LinkExpireCtrl', function ($scope, TemplateService, NavigationService, $timeout) {

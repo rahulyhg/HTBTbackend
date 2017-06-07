@@ -9,11 +9,23 @@
     </div>
   </div>
   <div class="row rowbgcolor " ng-repeat="product in orderData.product">
-    <div class="col-xs-8 bgchkoutcol50Quant">
+    <div class="col-xs-8 bgchkoutcol50Quant" ng-if="product.jarDeposit">
+      <div>
+        <label class="bottlemain" for="">One time deposit</label>
+        <br>
+        <span class="qntlbl"> {{product.productQuantity}}{{product.unit}}   x ₹ {{product.product.deposit}}  </span>
+      </div>
+    </div>
+    <div class="col-xs-4 bgchkoutcol502">
+      <div>
+        <label class="rs" for="">₹  {{product.jarDeposit}}</label>
+      </div>
+    </div>
+    <div class="col-xs-8 bgchkoutcol50Quant" >
       <div>
         <label class="bottlemain" for="">{{product.product.name}}</label>
         <br>
-        <span class="qntlbl"> {{product.productQuantity}} Jars x ₹ {{product.finalPrice}} /Jar </span>
+        <span class="qntlbl"> {{product.productQuantity}} {{product.unit}} x ₹ {{product.finalPrice}} /{{product.unit}} </span>
       </div>
     </div>
     <div class="col-xs-4 bgchkoutcol502">
@@ -21,6 +33,7 @@
         <label class="rs" for="">₹  {{product.productQuantity * product.finalPrice}}</label>
       </div>
     </div>
+
   </div>
   <div class="row rowbgcolor">
     <div class="col-xs-8 savingscol501 ">
@@ -51,7 +64,7 @@
     <input class="inputsize" type="text" ng-model="orderData.shippingAddressMobile" placeholder="Mobile Number" disabled>
   </label>
     <label class=" item-input inputField">
-    <input class="inputsize" type="email" ng-model="orderData.shippingAddressEmail" placeholder="Email ID" required name="email">
+    <input class="inputsize" type="email" ng-model="orderData.shippingAddressEmail" placeholder="Email ID" required name="email" disabled="!orderData.shippingAddressEmail">
         <p class="error-msg"  ng-show="userForm.email.$error.required && userForm.email.$touched">Please Enter Your Email.</p>
   </label>
     <label class=" item-input inputField">
@@ -59,12 +72,12 @@
 
   </label>
     <label class=" item-input inputField">
-    <input class="inputsize" type="text" ng-model="orderData.shippingAddress.address" placeholder="Shipping Address" required name="shippingAddress">
+    <textarea class="inputsize" type="text" ng-model="orderData.shippingAddress.address" placeholder="Shipping Address" required name="shippingAddress"></textarea>
     <p class="error-msg"  ng-show="userForm.shippingAddress.$error.required && userForm.shippingAddress.$touched">Please Enter Shipping Address.</p>
   </label>
-    <label class=" item-input inputField">
+    <!--<label class=" item-input inputField">
     <input class="inputsize" type="text" ng-model="orderData.shippingAddress.address2" placeholder="..." >
-  </label>
+  </label>-->
     <label class=" item-input inputField">
     <input class="inputsize" ng-min="100000" ng-max="999999"  type="number"   ng-model="orderData.shippingAddress.pincode" placeholder="Pincode" required name="pincode" limit-to="6">
      <p class="error-msg"  ng-show="userForm.pincode.$error.required && userForm.pincode.$touched">Please Enter Pincode.</p>
@@ -97,11 +110,11 @@
     <input class="inputsize" type="text" ng-model="orderData.billingAddress.companyName"  placeholder="Company Name (Optional)" >
   </label>
       <label class=" item-input inputField">
-    <input class="inputsize" type="text" ng-model="orderData.billingAddress.address" placeholder="Billing Address" name="billingAddress"> <p class="error-msg"  ng-show="userForm.billingAddress.$error.required && userForm.billingAddress.$touched">Please Enter Billing Address.</p>
+    <textarea class="inputsize" type="text" ng-model="orderData.billingAddress.address" placeholder="Billing Address" name="billingAddress"> <p class="error-msg"  ng-show="userForm.billingAddress.$error.required && userForm.billingAddress.$touched">Please Enter Billing Address.</p></textarea>
   </label>
-      <label class=" item-input inputField">
+      <!--<label class=" item-input inputField">
     <input class="inputsize" type="text"  ng-model="orderData.billingAddress.address2"  placeholder="..." >
-  </label>
+  </label>-->
       <label class=" item-input inputField">
     <input class="inputsize" type="number" only-digits ng-model="orderData.billingAddress.pincode" placeholder="Pincode" name="pincodeBil" required limit-to="6">
      <p class="error-msg" ng-min="100000" ng-max="999999" ng-show="userForm.pincodeBil.$error.required && userForm.pincodeBil.$touched">Please Enter Pincode.</p>
