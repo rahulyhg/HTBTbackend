@@ -422,9 +422,36 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService, NavigationServic
 
   .controller('PincodeCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
     $scope.template = TemplateService.getHTML("content/pincode.html");
-    TemplateService.title = "Pincode"; //This is the Title of the Website
+    TemplateService.title = "pincode"; //This is the Title of the Website
+
   })
 
+
+.controller('SuccessConfirmCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
+    $scope.template = TemplateService.getHTML("content/successconfirm.html");
+    TemplateService.title = "successconfirm"; //This is the Title of the Website
+  })
+
+  .controller('WrongCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
+    $scope.template = TemplateService.getHTML("content/wrong.html");
+    TemplateService.title = "wrong"; //This is the Title of the Website
+  })
+
+.controller('ThankYouPage2Ctrl', function ($scope, TemplateService, NavigationService, $timeout) {
+    $scope.template = TemplateService.getHTML("content/thankyoupage2.html");
+    TemplateService.title = "thankyoupage2"; //This is the Title of the Website
+  })
+
+  .controller('SuccessCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
+    $scope.template = TemplateService.getHTML("content/success.html");
+    TemplateService.title = "success"; //This is the Title of the Website
+  })
+
+
+.controller('ThankYouConfirmCtrl', function ($scope, TemplateService, NavigationService, $timeout) {
+    $scope.template = TemplateService.getHTML("content/thankyouconfirm.html");
+    TemplateService.title = "thankyouconfirm"; //This is the Title of the Website
+  })
 
   .controller('headerctrl', function ($scope, TemplateService) {
 

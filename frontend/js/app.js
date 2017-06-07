@@ -58,6 +58,36 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
             controller: 'ThankYouCtrl'
         })
 
+.state('successconfirm', {
+            url: "/successconfirm",
+            templateUrl: tempateURL,
+            controller: 'SuccessConfirmCtrl'
+        })
+
+        .state('wrong', {
+            url: "/wrong",
+            templateUrl: tempateURL,
+            controller: 'WrongCtrl'
+        })
+
+         .state('thankyouconfirm', {
+            url: "/thankyouconfirm",
+            templateUrl: tempateURL,
+            controller: 'ThankYouConfirmCtrl'
+        })
+
+        .state('success', {
+            url: "/success",
+            templateUrl: tempateURL,
+            controller: 'SuccessCtrl'
+        })
+
+        .state('thankyoupage2', {
+            url: "/thankyoupage2",
+            templateUrl: tempateURL,
+            controller: 'ThankYouPage2Ctrl'
+        })
+
         .state('linkexpire', {
             url: "/linkexpire",
             templateUrl: tempateURL,
