@@ -12,7 +12,7 @@
                 </div>
             </div>
 
-            <div class="subplan" ng-if="orderData.type == 'Subscription'">
+            <div class="subplan" ng-if="orderData.type == 'Subscription' || orderData.plan=='Onetime'">
                 <label for="">Subscription Plan</label>
             </div>
             <div class="row rowbgcolor" ng-repeat="pr in orderData.product">
@@ -35,7 +35,7 @@
         </div>
 
 
-        <div class="row rowbgcolor" ng-if="orderData.type != 'Subscription'">
+        <div class="row rowbgcolor" ng-if="orderData.type != 'Subscription' || ">
             <div class="col-xs-2">
                 <div class="datemonth text-center">
                     <div class="datediv pad-10 date">

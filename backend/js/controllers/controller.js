@@ -625,20 +625,20 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             }
         };
 
-        $scope.planWisePrice = function (plan) {
-            if (_.isEqual(plan, "Monthly")) {
-                $scope.orderData.totalQuantity = 4 * parseInt($scope.orderData.product[0].productQuantity);
-                $scope.orderData.totalAmount = parseInt($scope.orderData.totalQuantity) * parseInt($scope.orderData.product[0].finalPrice);
-            }
-            if (_.isEqual(plan, "Quarterly")) {
-                $scope.orderData.totalQuantity = 12 * parseInt($scope.orderData.product[0].productQuantity);
-                $scope.orderData.totalAmount = parseInt($scope.orderData.totalQuantity) * parseInt($scope.orderData.product[0].finalPrice);
-            }
-            if (_.isEqual(plan, "Onetime")) {
-                $scope.orderData.totalQuantity = parseInt($scope.orderData.product[0].productQuantity);
-                $scope.orderData.totalAmount = parseInt($scope.orderData.totalQuantity) * parseInt($scope.orderData.product[0].finalPrice);
-            }
-        }
+        // $scope.planWisePrice = function (plan) {
+        //     if (_.isEqual(plan, "Monthly")) {
+        //         $scope.orderData.totalQuantity = 4 * parseInt($scope.orderData.product[0].productQuantity);
+        //         $scope.orderData.totalAmount = parseInt($scope.orderData.totalQuantity) * parseInt($scope.orderData.product[0].finalPrice);
+        //     }
+        //     if (_.isEqual(plan, "Quarterly")) {
+        //         $scope.orderData.totalQuantity = 12 * parseInt($scope.orderData.product[0].productQuantity);
+        //         $scope.orderData.totalAmount = parseInt($scope.orderData.totalQuantity) * parseInt($scope.orderData.product[0].finalPrice);
+        //     }
+        //     if (_.isEqual(plan, "Onetime")) {
+        //         $scope.orderData.totalQuantity = parseInt($scope.orderData.product[0].productQuantity);
+        //         $scope.orderData.totalAmount = parseInt($scope.orderData.totalQuantity) * parseInt($scope.orderData.product[0].finalPrice);
+        //     }
+        // }
         $scope.data1 = {};
         $scope.setcustomer = function (data) {
             $scope.orderData.customer = JSON.parse(data);

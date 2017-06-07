@@ -185,6 +185,7 @@ var model = {
                                 };
                                 index++;
                                 console.log("HHHHHHHHH");
+                                if(planChecked){
                                 async.waterfall([
                                     function createReqId(callback) {
                                         console.log("inside DeliveryRequest create");
@@ -239,7 +240,7 @@ var model = {
                                         callback1();
                                     }
                                 });
-
+                                }
 
                             }, function (error, data) {
                                 if (err) {
