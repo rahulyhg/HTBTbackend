@@ -49,6 +49,18 @@ var controller = {
             })
         }
     },
+    getOrderByRM: function (data, callback) {
+          if (req.body) {
+            Order.getOrderByRM(req.body, res.callback);
+        } else {
+            res.json({
+                value: false,
+                data: {
+                    message: "Invalid Request"
+                }
+            })
+        }
+    },
     saveOrderCheckout: function (req, res) {
         if (req.body) {
             Order.saveOrderCheckout(req.body, res.callback);
