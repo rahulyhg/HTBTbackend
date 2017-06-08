@@ -13,7 +13,8 @@
       <div>
         <label class="bottlemain" for="">One time deposit</label>
         <br>
-        <span class="qntlbl"> {{product.productQuantity}}{{product.unit}}   x ₹ {{product.product.AmtDeposit}}  </span>
+        <span class="qntlbl" ng-if="product.productQuantity = 1"> {{product.productQuantity}}{{product.product.unit}}   x ₹ {{product.product.AmtDeposit}}  </span>
+        <span class="qntlbl" ng-if="product.productQuantity > 1"> {{product.productQuantity}}{{product.product.unit}}s   x ₹ {{product.product.AmtDeposit}}  </span>
       </div>
     </div>
     <div class="col-xs-4 bgchkoutcol502" ng-if="product.jarDeposit">
@@ -25,7 +26,8 @@
       <div>
         <label class="bottlemain" for="">{{product.product.name}}</label>
         <br>
-        <span class="qntlbl"> {{product.productQuantity}} {{product.unit}} x ₹ {{product.finalPrice}} /{{product.unit}} </span>
+        <span class="qntlbl" ng-if="product.productQuantity = 1"> {{product.productQuantity}} {{product.product.unit}} x ₹ {{product.finalPrice}} </span>
+        <span class="qntlbl" ng-if="product.productQuantity > 1"> {{product.productQuantity}} {{product.product.unit}}s x ₹ {{product.finalPrice}} </span>
       </div>
     </div>
     <div class="col-xs-4 bgchkoutcol502">
