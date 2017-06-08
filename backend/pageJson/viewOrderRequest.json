@@ -5,32 +5,35 @@
     "sendIdWithCreate": true,
     "urlFields": ["_id"],
     "fields": [{
-      "name": "Date Of Request",
-      "isSort": "",
-      "tableRef": "requestDate"
-    },{
-      "name": "Request ID ",
-      "isSort": "",
-      "tableRef": "requestID"
-    },
-  
-    {
-      "name": "Status",
-      "isSort": "",
-      "tableRef": "status"
-    },{
-      "name": "Payment Status",
-      "isSort": "",
-      "tableRef": "paymentStatus"
-      }],
+            "name": "DatProduct",
+            "isSort": "",
+            "tableRef": "product",
+            "fieldToBeShown": "name",
+            "type": "fkListView"
+        }, {
+            "name": "Assigned Delivery Date",
+            "isSort": "",
+            "tableRef": "deliverdate"
+        },{
+            "name": "Quantity",
+            "isSort": "",
+            "tableRef": "Quantity"
+        },
+
+        {
+            "name": "Status",
+            "isSort": "",
+            "tableRef": "status"
+        }
+    ],
     "action": [{
         "name": "edit",
-      "icon": "fa-pencil",
-      "buttonClass": "btn-primary",
-      "type": "editOrderRequest",
-      "fieldsToSend": {
-          "_id": "_id"
-      }
+        "icon": "fa-pencil",
+        "buttonClass": "btn-primary",
+        "type": "editOrderRequest",
+        "fieldsToSend": {
+            "_id": "_id"
+        }
     }, {
         "name": "delete",
         "icon": "fa-trash",
