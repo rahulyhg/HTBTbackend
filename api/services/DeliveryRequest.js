@@ -180,10 +180,10 @@ var model = {
 
                                                 if (val.commissionType == foundUser.levelstatus) {
                                                     console.log("commisiontype matched", val.rate);
-                                                    if(foundUser.earnings){
+                                                    if(foundUser.earnings>0){
                                                       foundUser.earnings=foundUser.earnings+ (parseInt(val.rate) * parseInt(data.QuantityDelivered));
                                                     }else{
-                                                        foundUser.earnings= (parseInt(val.rate) * parseInt(data.QuantityDelivered)) ;
+                                                        foundUser.earnings= parseInt(val.rate) * parseInt(data.QuantityDelivered) ;
                                                     }
                                                     User.saveData(foundUser, function (err, savedEarningUser) {
                                                                     if (err) {
