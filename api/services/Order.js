@@ -158,7 +158,7 @@ var model = {
                                         return o.customer == data.customer._id;
                                     });
                                     console.log("customer indx", indx);
-                                    if (indx) {
+                                    if (indx>0) {
                                         RPdata.customer[parseInt(indx)].status = 'Existing';
                                     }
                                     User.saveData(RPdata, function (err, savedUser) {
