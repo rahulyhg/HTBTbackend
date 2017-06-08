@@ -179,7 +179,7 @@ var model = {
                                                 console.log("val.commissionType--", val.commissionType, "foundUser.levelstatus", foundUser.levelstatus, val.commissionType == foundUser.levelstatus);
 
                                                 if (val.commissionType == foundUser.levelstatus) {
-                                                    console.log("commisiontype matched", data.Order);
+                                                    console.log("commisiontype matched", val.rate);
                                                     if(foundUser.earnings){
                                                       foundUser.earnings=foundUser.earnings+ (parseInt(val.rate) * parseInt(data.QuantityDelivered));
                                                     }else{
@@ -193,7 +193,7 @@ var model = {
                                                             //callback(err, null);
                                                         } else {
                                                             console.log("foundEarnings ", foundEarnings);
-                                                            if (foundEarnings) {
+                                                            if (foundEarnings[0]) {
                                                                 console.log(" foundEarnings----inside if ", val.rate);
                                                                 foundEarnings.earnings = parseInt(foundEarnings.earnings) + (parseInt(val.rate) * parseInt(data.QuantityDelivered))
                                                                 Earnings.saveData(foundEarnings, function (err, savedEarnings) {
