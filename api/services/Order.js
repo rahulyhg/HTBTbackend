@@ -35,7 +35,7 @@ var schema = new Schema({
     couponCode: String,
     paymentStatus: {
         type: String,
-        enum: ['Paid', 'Unpaid', 'Payment Failed','Refund Pending','Refunded'],
+        enum: ['Paid', 'Unpaid', 'Payment Failed', 'Refund Pending', 'Refunded'],
         default: "Unpaid"
     },
     totalQuantity: String,
@@ -55,7 +55,7 @@ var schema = new Schema({
     methodOfOrder: {
         type: String,
         enum: ['Customer Representative', 'Relationship Partner', 'Application'],
-        default:'Customer Representative'
+        default: 'Customer Representative'
     },
     methodOfPayment: {
         type: String,
@@ -157,7 +157,10 @@ var model = {
                                     var indx = _.findIndex(RPdata.customer, function (o) {
                                         return o.customer == data.customer._id;
                                     });
-                                    RPdata.customer[parseInt(indx)].status = 'Existing';
+                                    console.log("customer indx", indx);
+                                    if (indx) {
+                                        RPdata.customer[parseInt(indx)].status = 'Existing';
+                                    }
                                     User.saveData(RPdata, function (err, savedUser) {
                                         if (err) {
                                             callback(err, null);

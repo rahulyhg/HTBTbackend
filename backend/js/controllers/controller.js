@@ -574,7 +574,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                     });
                 }
             });
-        }
+        };
         $scope.refund = function (data) {
             var modalInstance = $uibModal.open({
                 animation: $scope.animationsEnabled,
@@ -755,7 +755,23 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             //  $.jStorage.set('user', data.data);
             //  $.jStorage.set("accessToken", data.data.accessToken[0]);
         };
-
+        $scope.modalAddNotes = function (data) {
+            var modalInstance = $uibModal.open({
+                animation: $scope.animationsEnabled,
+                templateUrl: '/backend/views/modal/deliverynotes.html',
+                size: 'lg',
+                scope: $scope
+            });
+        };
+          $scope.addNotes = function (notes) {
+            var noteWithTime = {};
+            noteWithTime.note = notes.note;
+            noteWithTime.notestime = new Date();
+            console.log($scope.data.notes);
+            // noteWithTime._id=JSON.parse($stateParams.keyword)._id;
+            $scope.data.notes.push(noteWithTime);
+           
+        };
         $scope.addProduct = function (data) {
             var modalInstance = $uibModal.open({
                 animation: $scope.animationsEnabled,
@@ -769,47 +785,10 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             if (data.Quantity < data.QuantityDelivered) {
                 toastr.error("Quantity Delivered exceeds the total Quantity.");
             }
-        };
-
-        $scope.payNow = function () {
-            NavigationService.apiCall("Order/payNow", formData, function (data) {
-                if (data.value === true) {
-                    console.log("payNow");
-
-                }
-            });
-
-        };
-        $scope.options = {
-            'key': 'rzp_test_BrwXxB7w8pKsfS',
-            'amount': 100,
-            'name': '',
-            'description': 'Pay for Order #2323',
-            'image': '',
-            'handler': function (transaction) {
-                $scope.transactionHandler(transaction);
-            },
-            'prefill': {
-                'name': '',
-                'email': '',
-                'contact': ''
-            },
-            theme: {
-                color: '#3399FF'
+            if (data.QuantityDelivered == 0) {
+                $scope.modalAddNotes();
             }
         };
-
-        $scope.pay = function () {
-            $.getScript('https://checkout.razorpay.com/v1/checkout.js', function () {
-                var rzp1 = new Razorpay($scope.options);
-                rzp1.open();
-
-            });
-        };
-
-        $scope.transactionHandler = function (success) {
-            console.log("transaction", success);
-        }
 
     })
     .controller('EditProductCtrl', function ($scope, TemplateService,

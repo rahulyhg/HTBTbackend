@@ -83,11 +83,35 @@
 
         <div class="form-group" fields>
             <label>Quantity Delivered</label>
-            <input type="text" name="name" only-digits ng-change="compareQuantity(data)" placeholder="Total Payment" ng-model="data.QuantityDelivered"
+            <input type="text" name="name" only-digits ng-change="compareQuantity(data)" placeholder="Quantity Delivered" ng-model="data.QuantityDelivered"
                 class="form-control">
-
         </div>
-
+     <div class="sec">
+                <div>
+                    <table class="table table-input" ng-if="model.length != 0">
+                        <thead>
+                            <tr>
+                                <th ng-repeat="field in fields">{{field.name}}</th>
+                                <!-- <th width="150px">Actions</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data in data.notes | filter:search.text ">
+                                <td>{{data.note}}</td>
+                                <td>{{data.notestime | date}}</td>
+                                <!-- <td>
+                                  <a class="btn btn-primary" ng-click="editBox('Edit',data)">
+                                      <i class="Fa fa-pencil"></i>
+                                  </a>
+                                  <a class="btn btn-danger" ng-click="deleteBox($index, model)">
+                                      <i class="fa fa-trash"></i>
+                                  </a>
+                              </td> -->
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
 
     </div>
 </div>
@@ -97,5 +121,4 @@
     <button ng-if="data.status!='Delivery Scheduled'" class="btn btn-default" type="button" ng-click="saveDeliveryRequest(data)"
         disabled>Save</button>
     <a class="btn btn-danger" href="#/page/viewOrderRequest//">Cancel</a>
-   
 </div>

@@ -34,7 +34,12 @@ var schema = new Schema({
     },
     requestDate: Date,
     methodOfRequest: String, //IVR,App,Customer Representative
-
+   notes: [{
+        note: {
+            type: String
+        },
+        notestime: Date
+    }],
 });
 
 schema.plugin(deepPopulate, {});
@@ -138,7 +143,9 @@ var model = {
                             } else {
                                 if (foundcust) {
                                     // callback(null, found);
+                                    if (_.isEqual(val.product.category.subscription, 'Yes')) {
                                     foundcust.subscribedProd[0].jarBalance = foundcust.subscribedProd[0].jarBalance - data.QuantityDelivered;
+                                    }
                                     User.saveData(foundcust, function (err, savedCust) {
                                         if (err) {
                                             console.log("err", err);
