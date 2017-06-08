@@ -181,8 +181,10 @@ var model = {
                                                 if (val.commissionType == foundUser.levelstatus) {
                                                     console.log("commisiontype matched", val.rate);
                                                     if(foundUser.earnings>0){
+                                                        console.log("inside if",foundUser.earnings);
                                                       foundUser.earnings=foundUser.earnings+ (parseInt(val.rate) * parseInt(data.QuantityDelivered));
                                                     }else{
+                                                        console.log("inside else");
                                                         foundUser.earnings= parseInt(val.rate) * parseInt(data.QuantityDelivered) ;
                                                     }
                                                     User.saveData(foundUser, function (err, savedEarningUser) {

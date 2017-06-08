@@ -149,8 +149,10 @@ var model = {
                                 if (err) {
                                     callback(err, null);
                                 } else {
-                                    if (_.isEqual(data.methodOfPayment, 'credits')) {
-                                        RPdata.credits = parseInt(RPdata.credits) + parseInt(data.totalAmount);
+                                    if (_.isEqual(RPdata.earningsBlock, 'No')) {
+                                        if (_.isEqual(data.methodOfPayment, 'credits')) {
+                                            RPdata.credits = parseInt(RPdata.credits) + parseInt(data.totalAmount);
+                                        }
                                     }
                                     console.log("RPdata.customer", RPdata.customer);
                                     console.log("data.customer._id", data.customer._id);
@@ -158,7 +160,7 @@ var model = {
                                         return o.customer == data.customer._id;
                                     });
                                     console.log("customer indx", indx);
-                                    if (indx>0) {
+                                    if (indx > 0) {
                                         RPdata.customer[parseInt(indx)].status = 'Existing';
                                     }
                                     User.saveData(RPdata, function (err, savedUser) {
