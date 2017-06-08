@@ -35,7 +35,7 @@ var schema = new Schema({
     couponCode: String,
     paymentStatus: {
         type: String,
-        enum: ['Paid', 'Unpaid', 'Payment Failed'],
+        enum: ['Paid', 'Unpaid', 'Payment Failed','Refund Pending','Refunded'],
         default: "Unpaid"
     },
     totalQuantity: String,
@@ -54,7 +54,8 @@ var schema = new Schema({
     orderDate: Date,
     methodOfOrder: {
         type: String,
-        enum: ['Customer Representative', 'Relationship Partner', 'Application']
+        enum: ['Customer Representative', 'Relationship Partner', 'Application'],
+        default:'Customer Representative'
     },
     methodOfPayment: {
         type: String,
@@ -151,12 +152,12 @@ var model = {
                                     if (_.isEqual(data.methodOfPayment, 'credits')) {
                                         RPdata.credits = parseInt(RPdata.credits) + parseInt(data.totalAmount);
                                     }
-                                    _.forEach(RPdata.customer, function (val) {
-                                        if (_.isEqual(val.customer, data.customer._id)) {
-                                            console.log("Matched customer");
-                                            val.status = 'Existing';
-                                        }
+                                    console.log("RPdata.customer", RPdata.customer);
+                                    console.log("data.customer._id", data.customer._id);
+                                    var indx = _.findIndex(RPdata.customer, function (o) {
+                                        return o.customer == data.customer._id;
                                     });
+                                    RPdata.customer[parseInt(indx)].status = 'Existing';
                                     User.saveData(RPdata, function (err, savedUser) {
                                         if (err) {
                                             callback(err, null);

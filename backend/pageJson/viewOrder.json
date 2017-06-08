@@ -22,9 +22,13 @@
             "fieldToBeShown": "mobile",
             "type": "fkListView"
         }, {
-            "name": "Status",
+            "name": "Order Status",
             "isSort": "",
             "tableRef": "status"
+        },{
+            "name": "Payment Status",
+            "isSort": "",
+            "tableRef": "paymentStatus"
         }
     ],
     "action": [{

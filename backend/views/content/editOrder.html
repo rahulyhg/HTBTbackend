@@ -65,13 +65,21 @@
               <option value="Unpaid">Unpaid</option>
             </select>
             </div>-->
+            <div class="form-group" fields>
+                <label>Payment Status</label>
+                <input ng-if="orderData.paymentStatus!='Refund Pending'" type="text" name="mobile" placeholder="" ng-model="orderData.paymentStatus" class="form-control" disabled>
+                 <select ng-if="orderData.paymentStatus=='Refund Pending'" class="form-control" name="" ng-model="orderData.paymentStatus">
+              <option  value="Refund Pending">Refund Pending</option>
+              <option value="Refunded">Refunded</option>
+            </select>
+            </div>
             <div class="form-group">
                 <label>Status</label>
                 <select class="form-control" name="" ng-model="orderData.status" ng-change="cancel(orderData.status)">
               <option value="Processing">Processing</option>
               <option value="Confirmed">Confirmed</option>
               <option value="Paid">Paid</option>
-              <option value="Cancelled">Cancelled</option>
+              <option ng-if="showMe" value="Cancelled">Cancelled</option>
             </select>
             </div>
             <!--<div class="form-group" fields>

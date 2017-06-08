@@ -528,7 +528,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         $scope.orderData.product = [];
         $scope.orderData.totalAmount = 0;
         $scope.orderData.totalQuantity = 0;
-
+        $scope.showMe = true;
         $scope.productList = [];
         NavigationService.apiCall("user/getAllCustomer", formData, function (data) {
             if (data.value === true) {
@@ -551,18 +551,38 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 if (data.value === true) {
                     console.log("Order", data.data);
                     $scope.orderData = data.data;
+                    if (_.isEqual($scope.orderData.paymentStatus, 'Refund Pending')) {
+                        $scope.refund();
+                    }
                     NavigationService.apiCall("DeliveryRequest/getDeliveryRequestByOrder", formData, function (data) {
-                        if (data.value === true) {
-                            console.log("DeliveryRequest", data.data);
-                            $scope.deliveryReq = data.data;
+                        if (data.value === true && data.data[0]) {
+                            $scope.deliveryReq = data.data[0];
+                            console.log("DeliveryRequest", $scope.deliveryReq);
+                            console.log(new Date());
+                            console.log(new Date($scope.deliveryReq.deliverdate));
+
+                            if (new Date($scope.deliveryReq.deliverdate) > new Date()) {
+
+                                $scope.showMe = true;
+                                console.log("it will work");
+                            } else {
+                                $scope.showMe = false;
+                                console.log("it won't work");
+                            }
 
                         }
-
                     });
                 }
-
             });
         }
+        $scope.refund = function (data) {
+            var modalInstance = $uibModal.open({
+                animation: $scope.animationsEnabled,
+                templateUrl: '/backend/views/modal/refund.html',
+                size: 'sm',
+                scope: $scope
+            });
+        };
         $scope.cancel = function (data) {
             if (data == 'Cancelled') {
                 var modalInstance = $uibModal.open({
@@ -652,19 +672,30 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             $scope.orderData.customer = JSON.parse(data);
         };
         $scope.saveOrder = function (data) {
-            if (!data._id) {
-                data.methodOfOrder = "Relationship Partner";
-            }
-            if (_.isEqual(data.product[0].product.category.subscription, 'Yes')) {
-                if (_.isEqual(data.plan, "Monthly")) {
-                    data.totalQuantity = 4 * Number(data.product[0].productQuantity)
-                } else if (_.isEqual(data.plan, "Quarterly")) {
-                    data.totalQuantity = 12 * Number(data.product[0].productQuantity)
-                } else {
-                    data.totalQuantity = data.productQuantity
-                }
-            }
+
+            // if (_.isEqual(data.product[0].product.category.subscription, 'Yes')) {
+            //     if (_.isEqual(data.plan, "Monthly")) {
+            //         data.totalQuantity = 4 * Number(data.product[0].productQuantity)
+            //     } else if (_.isEqual(data.plan, "Quarterly")) {
+            //         data.totalQuantity = 12 * Number(data.product[0].productQuantity)
+            //     } else {
+            //         data.totalQuantity = data.productQuantity
+            //     }
+            // }
             console.log("saved data", data.product[0].length);
+            NavigationService.apiCall("Order/saveOrder", data, function (data) {
+                if (data.value === true) {
+                    console.log("Order---data saved ", data.data);
+                }
+            });
+            $state.go("page", {
+                id: "viewOrder"
+            });
+        };
+        $scope.cancelOrder = function (data) {
+            if (_.isEqual(data.paymentStatus, 'Paid')) {
+                data.paymentStatus = 'Refund Pending';
+            }
             NavigationService.apiCall("Order/saveOrder", data, function (data) {
                 if (data.value === true) {
                     console.log("Order---data saved ", data.data);

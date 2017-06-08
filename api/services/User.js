@@ -77,7 +77,8 @@ var schema = new Schema({
     },
     earningsBlock: {
         type: String,
-        enum: ['Yes', 'No']
+        enum: ['Yes', 'No'],
+        default:'No'
     },
     methodofjoin: {
         type: String,

@@ -7,7 +7,7 @@ var schema = new Schema({
     delivertime: {
         type: String,
         enum: ['8 AM to 1 PM', '1 PM to 6 PM'],
-        default:'1 PM to 6 PM'
+        default: '1 PM to 6 PM'
     },
     status: {
         type: String, //Delivery Scheduled ,In Transit,Full Delivery Successful,Partial Delivery Successful,Delivery Failed
@@ -91,7 +91,7 @@ var model = {
     },
     //to update the delivery request after product is delivered 
     saveDeliveryRequest: function (data, callback) {
-        if (data.Quantity > data.QuantityDelivered && data.QuantityDelivered>0) {
+        if (data.Quantity > data.QuantityDelivered && data.QuantityDelivered > 0) {
             data.status = "Partial Delivery Successful";
         } else if (data.Quantity == data.QuantityDelivered) {
             data.status = "Full Delivery Successful";
@@ -101,7 +101,7 @@ var model = {
         DeliveryRequest.saveData(data, function (err, savedData) {
             if (err) {
                 callback(err, null);
-            } else { 
+            } else {
                 async.parallel([
                     //Function to search event name
                     function () {
@@ -163,48 +163,55 @@ var model = {
                                 } else {
                                     if (foundUser) {
                                         console.log("foundUser--", foundUser);
-                                        _.forEach(data.product.commission, function (val) {
-                                            console.log("val.commissionType--", val.commissionType, "foundUser.levelstatus", foundUser.levelstatus, val.commissionType == foundUser.levelstatus);
+                                        if (_.isEqual(foundUser.earningsBlock, 'No')) {
+                                            _.forEach(data.product.commission, function (val) {
+                                                console.log("val.commissionType--", val.commissionType, "foundUser.levelstatus", foundUser.levelstatus, val.commissionType == foundUser.levelstatus);
 
-                                            if (val.commissionType == foundUser.levelstatus) {
-                                                console.log("commisiontype matched", data.Order);
-                                                Earnings.findOne({
-                                                    order: data.Order._id
-                                                }).exec(function (err, foundEarnings) {
-                                                    if (err) {
-                                                        console.log("Earnings", err);
-                                                        //callback(err, null);
-                                                    } else {
-                                                        console.log("foundEarnings ", foundEarnings);
-                                                        if (foundEarnings) {
-                                                            console.log(" foundEarnings----inside if ", val.rate);
-                                                            foundEarnings.earnings = parseInt(foundEarnings.earnings) + (parseInt(val.rate) * parseInt(data.QuantityDelivered))
-                                                            Earnings.saveData(foundEarnings, function (err, savedEarnings) {
-                                                                if (err) {
-                                                                    console.log("err", err);
-                                                                } else {
-                                                                    console.log("foundEarnings updated");
-                                                                }
-                                                            });
-                                                        } else {
-                                                            console.log(" foundEarnings----inside else ", val.rate);
-                                                            var newEarning = {};
-                                                            newEarning.order = data.Order._id;
-                                                            newEarning.relationshipPartner = data.customer.relationshipId;
-                                                            newEarning.earnings = parseInt(val.rate) * parseInt(data.QuantityDelivered);
-                                                            Earnings.saveData(newEarning, function (err, savedEarnings) {
-                                                                if (err) {
-                                                                    console.log("err", err);
-                                                                } else {
-                                                                    console.log("newEarning saved");
-                                                                }
-                                                            });
-                                                            console.log("not found");
-                                                        }
+                                                if (val.commissionType == foundUser.levelstatus) {
+                                                    console.log("commisiontype matched", data.Order);
+                                                    if(foundUser.earnings){
+                                                      foundUser.earnings=foundUser.earnings+ (parseInt(val.rate) * parseInt(data.QuantityDelivered));
+                                                    }else{
+                                                        foundUser.earnings= (parseInt(val.rate) * parseInt(data.QuantityDelivered)) ;
                                                     }
-                                                });
-                                            }
-                                        })
+                                                    Earnings.findOne({
+                                                        order: data.Order._id
+                                                    }).exec(function (err, foundEarnings) {
+                                                        if (err) {
+                                                            console.log("Earnings", err);
+                                                            //callback(err, null);
+                                                        } else {
+                                                            console.log("foundEarnings ", foundEarnings);
+                                                            if (foundEarnings) {
+                                                                console.log(" foundEarnings----inside if ", val.rate);
+                                                                foundEarnings.earnings = parseInt(foundEarnings.earnings) + (parseInt(val.rate) * parseInt(data.QuantityDelivered))
+                                                                Earnings.saveData(foundEarnings, function (err, savedEarnings) {
+                                                                    if (err) {
+                                                                        console.log("err", err);
+                                                                    } else {
+                                                                        console.log("foundEarnings updated");
+                                                                    }
+                                                                });
+                                                            } else {
+                                                                console.log(" foundEarnings----inside else ", val.rate);
+                                                                var newEarning = {};
+                                                                newEarning.order = data.Order._id;
+                                                                newEarning.relationshipPartner = data.customer.relationshipId;
+                                                                newEarning.earnings = parseInt(val.rate) * parseInt(data.QuantityDelivered);
+                                                                Earnings.saveData(newEarning, function (err, savedEarnings) {
+                                                                    if (err) {
+                                                                        console.log("err", err);
+                                                                    } else {
+                                                                        console.log("newEarning saved");
+                                                                    }
+                                                                });
+                                                                console.log("not found");
+                                                            }
+                                                        }
+                                                    });
+                                                }
+                                            })
+                                        }
                                     } else {
                                         console.log("relationshipId not found");
 
@@ -332,7 +339,7 @@ var model = {
         DeliveryRequest.find({
             Order: data._id
         }).lean().sort({
-            _id: -1
+            _id: 1
         }).exec(function (err, found) {
             if (err) {
                 callback(err, null);
