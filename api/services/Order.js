@@ -126,6 +126,30 @@ var model = {
 
             });
     },
+    getOrderByRM: function (data, callback) {
+        console.log("data", data)
+        Order.find().deepPopulate("customer product.product")
+            .lean().sort({
+                _id: -1
+            }).exec(function (err, found) {
+                if (err) {
+                    callback(err, null);
+                } else {
+                    if (found) {
+                        var newFound = _.filter(found,function(n) {
+                            var abc = n.customer.relationshipId + "";
+                            return n.customer.relationshipId == data._id;
+                        });
+                        callback(null, newFound);
+                    } else {
+                        callback({
+                            message: "Invalid data!"
+                        }, null);
+                    }
+                }
+
+            });
+    },
     //call this while confirming the order or when payment is made 
     orderConfirmationOrPay: function (data, callback) {
         console.log("data----", data.product[0].product.category);
