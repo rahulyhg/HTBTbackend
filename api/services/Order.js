@@ -309,15 +309,22 @@ var model = {
                                 } else {
                                     console.log("m inside updating use");
                                     if (_.isEqual(data.product[0].product.category.subscription, 'Yes')) {
-                                        console.log("subscription product-----if",_.isEmpty(userdata.subscribedProd[0]));
+                                        console.log("subscription product-----if", _.isEmpty(userdata.subscribedProd[0]));
                                         if (!_.isEmpty(userdata.subscribedProd[0])) {
-                                            userdata.subscribedProd[0].recentOrder=data._id;
-                                            userdata.subscribedProd[0].jarBalance = parseInt(userdata.subscribedProd[0].jarBalance) + parseInt(data.productQuantity);
+                                            userdata.subscribedProd[0].recentOrder = data._id;
+                                            userdata.subscribedProd[0].product = data.product[0].product;
+                                            userdata.subscribedProd[0].jarBalance = parseInt(userdata.subscribedProd[0].jarBalance) + parseInt(data.product[0].productQuantity);
+                                            if (data.product[0].jarDeposit) {
+                                                userdata.subscribedProd[0].jarDeposit = userdata.subscribedProd[0].jarDeposit + parseInt(data.product[0].jarDeposit);
+                                            }
                                         } else {
                                             var subProd = {};
                                             subProd.recentOrder = data._id;
                                             subProd.product = data.product[0].product;
                                             subProd.jarBalance = parseInt(data.product[0].productQuantity);
+                                            if (data.product[0].jarDeposit) {
+                                                subProd.jarDeposit = parseInt(data.product[0].jarDeposit);
+                                            }
                                             userdata.subscribedProd.push(subProd);
                                         }
                                     }
@@ -331,7 +338,7 @@ var model = {
                                     });
                                 }
                             });
-                            if (!_.isEqual(data.methodOfPayment, 'Customer') && (_.isEqual(data.product[0].product.category.subscription, 'Yes') && data.plan!='Onetime')) {
+                            if (!_.isEqual(data.methodOfPayment, 'Customer') && (_.isEqual(data.product[0].product.category.subscription, 'Yes') && data.plan != 'Onetime')) {
                                 console.log("When RP pays Customer will get this msg");
                                 var smsMessage = "Order #" + data.orderID + " confirmed! Download the HaTa App or call on 022 - 33024910 to schedule your first delivery.";
                                 var smsObj = {
@@ -353,9 +360,9 @@ var model = {
                                         // });
                                     }
                                 })
-                            } else if (!_.isEqual(data.methodOfPayment, 'Customer') && (_.isEqual(data.product[0].product.category.subscription, 'No')|| data.plan=='Onetime')) {
+                            } else if (!_.isEqual(data.methodOfPayment, 'Customer') && (_.isEqual(data.product[0].product.category.subscription, 'No') || data.plan == 'Onetime')) {
                                 console.log("when customer pays");
-                                var smsMessage = "Order #" + data.orderID + " confirmed! Your delivery is scheduled for " + moment(data.deliverdate).add(1,"day").format("dddd, MMM D");
+                                var smsMessage = "Order #" + data.orderID + " confirmed! Your delivery is scheduled for " + moment(data.deliverdate).add(1, "day").format("dddd, MMM D");
 
                                 var smsObj = {
                                     "message": "HTBT",
@@ -403,7 +410,7 @@ var model = {
 
                             } else if (_.isEqual(data.methodOfPayment, 'Customer') && _.isEqual(data.product[0].product.category.subscription, 'No')) {
                                 console.log("when customer pays");
-                                var smsMessage = "Payment successful! Order #" + data.orderID + " is confirmed. Your delivery is scheduled for " + moment(data.deliverdate).add(1,"day").format("dddd, MMM D");
+                                var smsMessage = "Payment successful! Order #" + data.orderID + " is confirmed. Your delivery is scheduled for " + moment(data.deliverdate).add(1, "day").format("dddd, MMM D");
 
                                 var smsObj = {
                                     "message": "HTBT",

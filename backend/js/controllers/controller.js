@@ -549,8 +549,16 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             formData._id = JSON.parse($stateParams.keyword)._id;
             NavigationService.apiCall("Order/getOne", formData, function (data) {
                 if (data.value === true) {
-                    console.log("login", data.data);
+                    console.log("Order", data.data);
                     $scope.orderData = data.data;
+                    NavigationService.apiCall("DeliveryRequest/getDeliveryRequestByOrder", formData, function (data) {
+                        if (data.value === true) {
+                            console.log("DeliveryRequest", data.data);
+                            $scope.deliveryReq = data.data;
+
+                        }
+
+                    });
                 }
 
             });

@@ -120,7 +120,7 @@ var schema = new Schema({
         productQuantity: {
             type: Number,
         },
-        finalPrice: Number
+        finalPrice: Number,
     }],
     cart: {
         totalAmount: Number,
@@ -137,6 +137,10 @@ var schema = new Schema({
             ref: 'Product',
         },
         jarBalance: {
+            type: Number,
+            default: 0
+        },
+        jarDeposit: {
             type: Number,
             default: 0
         }
