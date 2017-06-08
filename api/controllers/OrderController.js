@@ -49,7 +49,7 @@ var controller = {
             })
         }
     },
-    getOrderByRM: function (data, callback) {
+    getOrderByRM: function (req,res) {
           if (req.body) {
             Order.getOrderByRM(req.body, res.callback);
         } else {
