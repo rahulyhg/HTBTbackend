@@ -193,7 +193,7 @@ var model = {
                                                             //callback(err, null);
                                                         } else {
                                                             console.log("foundEarnings ", foundEarnings);
-                                                            if (foundEarnings[0]) {
+                                                            if (foundEarnings) {
                                                                 console.log(" foundEarnings----inside if ", val.rate);
                                                                 foundEarnings.earnings = parseInt(foundEarnings.earnings) + (parseInt(val.rate) * parseInt(data.QuantityDelivered))
                                                                 Earnings.saveData(foundEarnings, function (err, savedEarnings) {
