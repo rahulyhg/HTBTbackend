@@ -267,15 +267,16 @@
         </div>
         <div class="form-group" fields ng-if="data.accessLevel=='Customer'">
             <label>Current Jar Balance</label>
-            <input type="text" name="jarbalance" placeholder="Current Jar Balance" ng-model="subscription.balance" class="form-control" readonly>
+            <input type="text" name="jarbalance" placeholder="Current Jar Balance" ng-model="data.subscribedProd[0].jarBalance" class="form-control" readonly>
         </div>
         <div class="form-group" fields ng-if="data.accessLevel=='Customer'">
             <label>Current Jar Deposit</label>
-            <input type="text" name="jardeposit" placeholder="Current Jar Balance" ng-model="subscription.totalQuantity" class="form-control" readonly>
+            <input type="text" name="jardeposit" placeholder="Current Jar Balance" ng-model="data.subscribedProd[0].jardeposit" class="form-control" readonly>
         </div>
         <div class="form-group" ng-if="data.accessLevel=='Customer'">
             <label>Last method of payment</label>
-            <input type="text" name="jardeposit" placeholder="Last method of payment" value="{{OrderData[OrderData.length-1].methodOfPayment}}" class="form-control" readonly>
+            <input ng-if="OrderData[0].methodOfPayment!='Customer'" type="text" name="jardeposit" placeholder="Last method of payment" value="{{OrderData[0].methodOfPayment}}" class="form-control" readonly>
+              <input ng-if="OrderData[0].methodOfPayment=='Customer'" type="text" name="jardeposit" placeholder="Last method of payment" value="Online" class="form-control" readonly>
 
         </div>
         <div class="sec">
