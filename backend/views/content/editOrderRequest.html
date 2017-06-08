@@ -65,7 +65,7 @@
 
             <div class="form-group">
                 <label>Delivery Status</label>
-                <select class="form-control" name="" ng-model="data.status">
+                <select class="form-control" name="" ng-model="data.status" disabled>
               <option value="Delivery Scheduled">Delivery Scheduled</option>
               <option value="In Transit">In Transit</option>
               <option value="Full Delivery Successful">Full Delivery Successful</option>
@@ -117,8 +117,8 @@
 </div>
 </div>
 <div class="text-center mt20 odd-even-button">
-    <button ng-if="data.status=='Delivery Scheduled'" class="btn btn-default" type="button" ng-click="saveDeliveryRequest(data)">Save</button>
-    <button ng-if="data.status!='Delivery Scheduled'" class="btn btn-default" type="button" ng-click="saveDeliveryRequest(data)"
+    <button ng-if="data.status=='Delivery Scheduled'  || data.status=='Delivery Failed'" class="btn btn-default" type="button" ng-click="saveDeliveryRequest(data)">Save</button>
+    <button ng-if="data.status!='Delivery Scheduled' && data.status!='Delivery Failed'" class="btn btn-default" type="button" ng-click="saveDeliveryRequest(data)"
         disabled>Save</button>
     <a class="btn btn-danger" href="#/page/viewOrderRequest//">Cancel</a>
 </div>

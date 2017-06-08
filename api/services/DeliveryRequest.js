@@ -42,12 +42,16 @@ var schema = new Schema({
     }],
 });
 
-schema.plugin(deepPopulate, {});
+schema.plugin(deepPopulate, {
+     'product.category': {
+            select: ''
+        }
+});
 schema.plugin(uniqueValidator);
 schema.plugin(timestamps);
 module.exports = mongoose.model('DeliveryRequest', schema);
 
-var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "product Order customer", "product Order customer"));
+var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "product Order customer product.category", "product Order customer product.category"));
 var model = {
     //to schedule the delivery 'data.customer is required here'
     scheduleDelivery: function (data, callback) {
@@ -143,7 +147,7 @@ var model = {
                             } else {
                                 if (foundcust) {
                                     // callback(null, found);
-                                    if (_.isEqual(val.product.category.subscription, 'Yes')) {
+                                    if (_.isEqual(data.product.category.subscription, 'Yes')) {
                                     foundcust.subscribedProd[0].jarBalance = foundcust.subscribedProd[0].jarBalance - data.QuantityDelivered;
                                     }
                                     User.saveData(foundcust, function (err, savedCust) {
