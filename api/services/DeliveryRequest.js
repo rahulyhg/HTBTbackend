@@ -185,6 +185,13 @@ var model = {
                                                     }else{
                                                         foundUser.earnings= (parseInt(val.rate) * parseInt(data.QuantityDelivered)) ;
                                                     }
+                                                    User.saveData(foundUser, function (err, savedEarningUser) {
+                                                                    if (err) {
+                                                                        console.log("err", err);
+                                                                    } else {
+                                                                        console.log("earnings saved inside user");
+                                                                    }
+                                                                });
                                                     Earnings.findOne({
                                                         order: data.Order._id
                                                     }).exec(function (err, foundEarnings) {
