@@ -479,16 +479,14 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         };
         returnDeposit = function (returnDetails) {
             var returnData = {};
-            if ($scope.data.subscribedProd[0]) {
-                if ($scope.data.subscribedProd[0].jarDeposit < returnDetails.amountGiven) {
-                    toastr.error("Amount Exceeds the jar Deposit amount.");
-                }
+            if ($scope.data.subscribedProd[0] && $scope.data.subscribedProd[0].jarDeposit < returnDetails.amountGiven) {
+                toastr.error("Amount Exceeds the jar Deposit amount.");
             } else {
                 returnData.amountGiven = returnDetails.amountGiven;
                 returnData.methodOfReturn = returnDetails.methodOfReturn;
                 returnData.givenDate = new Date();
                 $scope.data.depositHistory.push(returnData);
-                $scope.data.subscribedProd[0].jarDeposit=$scope.data.subscribedProd[0].jarDeposit- returnDetails.amountGiven;
+                $scope.data.subscribedProd[0].jarDeposit = $scope.data.subscribedProd[0].jarDeposit - returnDetails.amountGiven;
                 NavigationService.apiCall("User/save", $scope.data, function (data) {
                     console.log("login", data.data);
                 });
