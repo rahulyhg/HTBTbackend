@@ -471,10 +471,8 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
 
         $scope.compareDeposite = function (amt) {
             console.log("data1,data2", amt, $scope.data.subscribedProd[0].jarDeposit);
-            if ($scope.data.subscribedProd[0]) {
-                if ($scope.data.subscribedProd[0].jarDeposit < amt) {
+                if ( $scope.data.subscribedProd[0] &&$scope.data.subscribedProd[0].jarDeposit < amt) {
                     toastr.error("Amount Exceeds the jar Deposit amount.");
-                }
             }
         };
         returnDeposit = function (returnDetails) {
