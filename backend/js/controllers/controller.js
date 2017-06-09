@@ -456,21 +456,56 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             });
 
         };
-         $scope.settleEarnings=function(settle){
-          var settledData={};
-          settledData.earnings= $scope.data.earnings;
-          settledData.transactionId=settle.transactionId;
-          settledData.settledDate=new Date();
+
+        $scope.settleEarnings = function (settle) {
+            var settledData = {};
+            settledData.earnings = $scope.data.earnings;
+            settledData.transactionId = settle.transactionId;
+            settledData.settledDate = new Date();
             $scope.data.earningHistory.push(settledData)
-              $scope.data.earnings=0;
-             NavigationService.apiCall("User/save", $scope.data, function (data) {
+            $scope.data.earnings = 0;
+            NavigationService.apiCall("User/save", $scope.data, function (data) {
                 console.log("login", data.data);
             });
-         };
-          $scope.modalSettle = function (data) {
+        };
+
+        $scope.compareDeposite = function (amt) {
+            console.log("data1,data2", amt, $scope.data.subscribedProd[0].jarDeposit);
+            if ($scope.data.subscribedProd[0]) {
+                if ($scope.data.subscribedProd[0].jarDeposit < amt) {
+                    toastr.error("Amount Exceeds the jar Deposit amount.");
+                }
+            }
+        };
+        returnDeposit = function (returnDetails) {
+            var returnData = {};
+            if ($scope.data.subscribedProd[0]) {
+                if ($scope.data.subscribedProd[0].jarDeposit < returnDetails.amountGiven) {
+                    toastr.error("Amount Exceeds the jar Deposit amount.");
+                }
+            } else {
+                returnData.amountGiven = returnDetails.amountGiven;
+                returnData.methodOfReturn = returnDetails.methodOfReturn;
+                returnData.givenDate = new Date();
+                $scope.data.depositHistory.push(returnData);
+                $scope.data.subscribedProd[0].jarDeposit=$scope.data.subscribedProd[0].jarDeposit- returnDetails.amountGiven;
+                NavigationService.apiCall("User/save", $scope.data, function (data) {
+                    console.log("login", data.data);
+                });
+            }
+        };
+        $scope.modalSettle = function (data) {
             var modalInstance = $uibModal.open({
                 animation: $scope.animationsEnabled,
                 templateUrl: '/backend/views/modal/settlement.html',
+                size: 'lg',
+                scope: $scope
+            });
+        };
+        $scope.modalReturn = function (data) {
+            var modalInstance = $uibModal.open({
+                animation: $scope.animationsEnabled,
+                templateUrl: '/backend/views/modal/returndeposit.html',
                 size: 'lg',
                 scope: $scope
             });
@@ -780,14 +815,14 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 scope: $scope
             });
         };
-          $scope.addNotes = function (notes) {
+        $scope.addNotes = function (notes) {
             var noteWithTime = {};
             noteWithTime.note = notes.note;
             noteWithTime.notestime = new Date();
             console.log($scope.data.notes);
             // noteWithTime._id=JSON.parse($stateParams.keyword)._id;
             $scope.data.notes.push(noteWithTime);
-           
+
         };
         $scope.addProduct = function (data) {
             var modalInstance = $uibModal.open({

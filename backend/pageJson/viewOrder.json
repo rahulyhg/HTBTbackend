@@ -52,13 +52,7 @@
             "value": "_id"
         }
     }],
-    "button": [{
-
-        "name": "Create",
-        "icon": "plus",
-        "class": "btn-success",
-        "type": "editOrder"
-    }],
+    "button": [],
     "apiCall": {
         "url": "Order/search",
         "params": "_id"

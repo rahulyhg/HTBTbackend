@@ -1211,6 +1211,7 @@ var model = {
                             }, function (error) {
                                 console.log("error while shortnening url", error)
                             });
+                        callback(null, []);
 
                     } else if (_.isEqual(found.orderFor, 'RMForCustomer') && !_.isEqual(found.methodOfPayment, "Customer")) {
                         console.log("inside if----send msg to RM", found.orderID, found.customer.relationshipId.name);
@@ -1221,7 +1222,7 @@ var model = {
                             .then(function (response) {
                                 console.log("shortUrl", response);
                                 shortU = response.data.url;
-                                var smsMessage = "Welcome to the HaTa family! We have received your order #" + found.orderID + " through our partner " + found.customer.relationshipId + ".Please confirm your order here: " + shortU;
+                                var smsMessage = "Welcome to the HaTa family! We have received your order #" + found.orderID + " through our partner " + found.customer.relationshipId.name + ".Please confirm your order here: " + shortU;
 
                                 var smsObj = {
                                     "message": "HTBT",
@@ -1246,12 +1247,12 @@ var model = {
                             }, function (error) {
                                 console.log("error while shortnening url", error)
                             });
-
+                        callback(null, []);
                     } else {
                         console.log("Please provide mobile mumber");
-                        // callback(null, {
-                        //     message: "Please provide mobile mumber"
-                        // });
+                        callback(null, {
+                            message: "Please provide mobile mumber"
+                        });
                     }
                 }
             }

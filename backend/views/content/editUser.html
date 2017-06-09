@@ -144,40 +144,40 @@
         </div>
         <div class="form-group " fields ng-if="data.accessLevel!='Customer'">
             <label>Earnings since last settlement</label>
-            <input type="number" name="earnings" class="earningsInput" placeholder="Earnings For This Month" ng-model="data.earnings" class="form-control"
-                readonly>
+            <input type="number" name="earnings" class="earningsInput" placeholder="Earnings For This Month" ng-model="data.earnings"
+                class="form-control" readonly>
             <a class="btn btn-primary settled" ng-click="modalSettle(data.earnings)">
             Settled
         </a>
             <div class="error-msg" ng-show="earnings.$invalid && earnings.$touched">Please enter valid Earnings For This Month</div>
         </div>
-         <div>
-                <!-- <a class="btn btn-primary pull-right" ng-click="modalAddNotes(data.notes)">Add New</a> -->
-                <label>Earnings History<span ng-show="type.required"></span></label>
-               
+        <div ng-if="data.accessLevel!='Customer'">
+            <!-- <a class="btn btn-primary pull-right" ng-click="modalAddNotes(data.notes)">Add New</a> -->
+            <label>Earnings History<span ng-show="type.required"></span></label>
+
+        </div>
+        <div class="sec" ng-if="data.accessLevel!='Customer'">
+            <div>
+                <table class="table table-input" ng-if="model.length != 0">
+                    <thead>
+                        <tr>
+                            <th>Earnings</th>
+                            <th>Transaction ID</th>
+                            <th>Transaction Date</th>
+                            <!-- <th width="150px">Actions</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data1 in data.earningHistory | filter:search.text ">
+                            <td>{{data1.earnings}}</td>
+                            <td>{{data1.transactionId}}</td>
+                            <td>{{data1.settledDate | date}}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-           <div class="sec">
-                <div>
-                    <table class="table table-input" ng-if="model.length != 0">
-                        <thead>
-                            <tr>
-                                <th>Earnings</th>
-                                <th>Transaction ID</th>
-                                <th>Transaction Date</th>
-                                <!-- <th width="150px">Actions</th> -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="data1 in data.earningHistory | filter:search.text ">
-                                <td>{{data1.earnings}}</td>
-                                <td>{{data1.transactionId}}</td>
-                                <td>{{data1.settledDate | date}}</td>
-                               
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
+        </div>
 
         <div class="sec" ng-if="data.accessLevel!='Customer'">
             <div>
@@ -302,10 +302,40 @@
             <input type="text" name="jarbalance" placeholder="Current Jar Balance" ng-model="data.subscribedProd[0].jarBalance" class="form-control"
                 readonly>
         </div>
-        <div class="form-group" fields ng-if="data.accessLevel=='Customer'">
+        <div class="form-group " fields ng-if="data.accessLevel=='Customer' && data.subscribedProd[0]">
             <label>Current Jar Deposit</label>
-            <input type="text" name="jardeposit" placeholder="Current Jar Balance" ng-model="data.subscribedProd[0].jarDeposit" class="form-control"
-                readonly>
+            <input type="number" name="jardeposit" class="earningsInput" placeholder="Current Jar Deposit" ng-model="data.subscribedProd[0].jarDeposit"
+                class="form-control" readonly>
+            <a class="btn btn-primary settled" ng-click="modalReturn(data.subscribedProd[0].jarDeposit)">
+            Return
+        </a>
+        </div>
+        <div ng-if="data.accessLevel=='Customer' && data.subscribedProd[0]">
+            <!-- <a class="btn btn-primary pull-right" ng-click="modalAddNotes(data.notes)">Add New</a> -->
+            <label>Jar Deposit History<span ng-show="type.required"></span></label>
+
+        </div>
+        <div class="sec" ng-if="data.accessLevel=='Customer' && data.subscribedProd[0]">
+            <div>
+                <table class="table table-input" ng-if="model.length != 0">
+                    <thead>
+                        <tr>
+                            <th>Deposit retured</th>
+                            <th>methodOfReturn</th>
+                            <th>Date</th>
+                            <!-- <th width="150px">Actions</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data1 in data.depositHistory | filter:search.text ">
+                            <td>{{data1.amountGiven}}</td>
+                            <td>{{data1.methodOfReturn}}</td>
+                            <td>{{data1.givenDate | date}}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
         <div class="form-group" ng-if="data.accessLevel=='Customer'">
             <label>Last method of payment</label>
