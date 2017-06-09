@@ -475,7 +475,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                     toastr.error("Amount Exceeds the jar Deposit amount.");
             }
         };
-        returnDeposit = function (returnDetails) {
+         $scope.returnDeposit = function (returnDetails) {
             var returnData = {};
             if ($scope.data.subscribedProd[0] && $scope.data.subscribedProd[0].jarDeposit < returnDetails.amountGiven) {
                 toastr.error("Amount Exceeds the jar Deposit amount.");
