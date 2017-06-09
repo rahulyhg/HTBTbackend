@@ -151,12 +151,12 @@
         </a>
             <div class="error-msg" ng-show="earnings.$invalid && earnings.$touched">Please enter valid Earnings For This Month</div>
         </div>
-         <div>
+         <div ng-if="data.accessLevel!='Customer'">
                 <!-- <a class="btn btn-primary pull-right" ng-click="modalAddNotes(data.notes)">Add New</a> -->
                 <label>Earnings History<span ng-show="type.required"></span></label>
                
             </div>
-           <div class="sec">
+           <div class="sec" ng-if="data.accessLevel!='Customer'">
                 <div>
                     <table class="table table-input" ng-if="model.length != 0">
                         <thead>
