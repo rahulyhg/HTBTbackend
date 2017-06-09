@@ -489,7 +489,7 @@ myApp.controller('HomeCtrl', function($scope, TemplateService, NavigationService
 .controller('PincodeCtrl', function($scope, TemplateService, $stateParams,NavigationService, $timeout) {
     $scope.template = TemplateService.getHTML("content/pincode.html");
     TemplateService.title = "pincode"; //This is the Title of the Website
-    $state.orderdata = $stateParams.orderId;
+    $scope.orderdata = $stateParams.orderId;
 })
 
 
