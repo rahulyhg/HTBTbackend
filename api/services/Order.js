@@ -136,9 +136,11 @@ var model = {
                     callback(err, null);
                 } else {
                     if (found) {
-                        var newFound = _.filter(found,function(n) {
-                            var abc = n.customer.relationshipId + "";
-                            return n.customer.relationshipId == data._id;
+                        var newFound = _.filter(found, function (n) {
+                            if (n.customer.relationshipId) {
+                                var abc = n.customer.relationshipId + "";
+                                return n.customer.relationshipId == data._id;
+                            }
                         });
                         callback(null, newFound);
                     } else {

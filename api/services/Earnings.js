@@ -113,7 +113,7 @@ var model = {
                         if (found) {
                            // console.log("CurrentMonUser---", found);
                             var CurrentMonUser = _.filter(found.customer, function (o) {
-                                if (o.addedDate > dayOne && o.addedDate <= lastDay) {
+                                if (o.addedDate > dayOne && o.addedDate <= lastDay && o.status=='Existing') {
                                     return o;
                                 }
                             });
