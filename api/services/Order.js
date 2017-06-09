@@ -88,6 +88,9 @@ schema.plugin(deepPopulate, {
         'customer': {
             select: ''
         },
+        'customer.relationshipId': {
+            select: ''
+        },
         'product.product': {
             select: ''
         },
@@ -175,11 +178,11 @@ var model = {
                                 if (err) {
                                     callback(err, null);
                                 } else {
-                                    if (_.isEqual(RPdata.earningsBlock, 'No')) {
-                                        if (_.isEqual(data.methodOfPayment, 'credits')) {
-                                            RPdata.credits = parseInt(RPdata.credits) + parseInt(data.totalAmount);
-                                        }
-                                    }
+                                    // if (_.isEqual(RPdata.earningsBlock, 'No')) {
+                                    //     if (_.isEqual(data.methodOfPayment, 'credits')) {
+                                    //         RPdata.credits = parseInt(RPdata.credits) + parseInt(data.totalAmount);
+                                    //     }
+                                    // }
                                     console.log("RPdata.customer", RPdata.customer);
                                     console.log("data.customer._id", data.customer._id);
                                     var indx = _.findIndex(RPdata.customer, function (o) {
@@ -1165,6 +1168,95 @@ var model = {
         })
 
     },
+    resendLink: function (data, callback) {
+        Order.findOne({
+            _id: data.orderId
+        }).deepPopulate("customer customer.relationshipId").exec(function (err, found) {
+            if (err) {
+                callback(err, null);
+            } else {
+                if (found) {
+                    console.log("found--", found);
+                    if (_.isEqual(found.orderFor, 'RMForCustomer') && _.isEqual(found.methodOfPayment, "Customer")) {
+                        console.log("inside if----send msg to RM", found.orderID, found.customer.relationshipId.name);
+                        var shortU;
+                        // Shorten a long url and output the result
+
+                        bitly.shorten(env.frontend + "/orderconfirmation/" + found._id)
+                            .then(function (response) {
+                                console.log("shortUrl", response);
+                                shortU = response.data.url;
+                                var smsMessage = "Welcome to the HaTa family! We have received your order #" + found.orderID + " through our partner " + found.customer.relationshipId.name + ". You can confirm the order and pay here: " + shortU;
+
+                                var smsObj = {
+                                    "message": "HTBT",
+                                    "sender": "HATABT",
+                                    "sms": [{
+                                        "to": found.customer.mobile,
+                                        "message": smsMessage,
+                                        "sender": "HATABT",
+                                    }]
+                                };
+                                Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                    if (error || SMSResponse == undefined) {
+                                        console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
+                                        // callback(error, null);
+                                    } else {
+                                        console.log("sms sent successfully");
+                                        // callback(null, {
+                                        //     message: "OTP sent"
+                                        // });
+                                    }
+                                })
+                            }, function (error) {
+                                console.log("error while shortnening url", error)
+                            });
+
+                    } else if (_.isEqual(found.orderFor, 'RMForCustomer') && !_.isEqual(found.methodOfPayment, "Customer")) {
+                        console.log("inside if----send msg to RM", found.orderID, found.customer.relationshipId.name);
+                        var shortU;
+                        // Shorten a long url and output the result
+
+                        bitly.shorten(env.frontend + "/orderconfirmation/" + found._id)
+                            .then(function (response) {
+                                console.log("shortUrl", response);
+                                shortU = response.data.url;
+                                var smsMessage = "Welcome to the HaTa family! We have received your order #" + found.orderID + " through our partner " + found.customer.relationshipId + ".Please confirm your order here: " + shortU;
+
+                                var smsObj = {
+                                    "message": "HTBT",
+                                    "sender": "HATABT",
+                                    "sms": [{
+                                        "to": found.customer.mobile,
+                                        "message": smsMessage,
+                                        "sender": "HATABT",
+                                    }]
+                                };
+                                Config.sendSMS(smsObj, function (error, SMSResponse) {
+                                    if (error || SMSResponse == undefined) {
+                                        console.log("Order >>> confirmOrder >>> Config.sendSMS >>> error >>>", error);
+                                        // callback(error, null);
+                                    } else {
+                                        console.log("sms sent successfully");
+                                        // callback(null, {
+                                        //     message: "OTP sent"
+                                        // });
+                                    }
+                                })
+                            }, function (error) {
+                                console.log("error while shortnening url", error)
+                            });
+
+                    } else {
+                        console.log("Please provide mobile mumber");
+                        // callback(null, {
+                        //     message: "Please provide mobile mumber"
+                        // });
+                    }
+                }
+            }
+        });
+    }
     //to get Last Three month orders of RM
     // getLastThreeMonthOrder: function (data, callback) {
     //     console.log(ObjectId(data.user));

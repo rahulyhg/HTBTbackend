@@ -35,7 +35,7 @@ var schema = new Schema({
     },
     landLine: {
         type: String,
-        default:""
+        default: ""
     },
     earnings: {
         type: Number,
@@ -58,8 +58,13 @@ var schema = new Schema({
         enum: ['Customer', 'Relationship Partner']
     },
     dateofjoin: Date,
-
-
+    earningHistory: [{
+        earnings: {
+            type: Number
+        },
+        transactionId: String,
+        settledDate: Date
+    }],
     otp: String,
     lastRank: String,
     verification: {
@@ -78,7 +83,7 @@ var schema = new Schema({
     earningsBlock: {
         type: String,
         enum: ['Yes', 'No'],
-        default:'No'
+        default: 'No'
     },
     methodofjoin: {
         type: String,
@@ -129,7 +134,7 @@ var schema = new Schema({
         DiscountAmount: String
     },
     subscribedProd: [{
-         recentOrder: {
+        recentOrder: {
             type: Schema.Types.ObjectId,
             ref: 'Order',
         },
@@ -166,8 +171,8 @@ schema.plugin(deepPopulate, {
         'cartProducts.product': {
             select: ''
         },
-        'subscribedProd.recentOrder':{
-            select:''
+        'subscribedProd.recentOrder': {
+            select: ''
         }
     }
 });
@@ -520,7 +525,7 @@ var model = {
                         });
                     } else {
                         console.log("user data found so just updating");
-                        
+
                         User.findOneAndUpdate({
                             mobile: dataObj.mobile,
                             accessLevel: data.accessLevel
@@ -549,7 +554,8 @@ var model = {
                                         callback(error, null);
                                     } else {
                                         callback(null, {
-                                            message: "OTP sent",dataObj
+                                            message: "OTP sent",
+                                            dataObj
                                         });
                                     }
                                 });

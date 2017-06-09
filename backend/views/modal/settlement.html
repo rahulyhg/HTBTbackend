@@ -1,0 +1,20 @@
+<form name="modalForm">
+    <div class="modal-header">
+        <h4 class="modal-title">Please enter the Transaction Id/No.</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Transaction ID</label>
+                    <input type="text" name="notes" ng-model="settle.transactionId" placeholder="Enter Transaction ID/No" class="form-control" required>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-disabled="modalForm.$invalid" ng-click="settleEarnings(settle);$dismiss();">Save Notes</button>
+    </div>
+</form>

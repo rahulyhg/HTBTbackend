@@ -6,63 +6,74 @@
     "pageType": "create",
     "urlFields": ["OtherProduct"],
     "fields": [{
-        "name": "Name",
-        "type": "text",
-        "tableRef": "name",
-        "placeholder": "Enter Name",
-        "id": "name",
-        "validation": ["required", "trim", "unique"],
-        "url": ""
-    }, {
-      "name": "Price",
-      "type": "text",
-      "tableRef": "price",
-      "placeholder": "Enter price",
-      "id": "price",
-      "validation": ["required", "trim", "unique"],
-      "url": ""
+            "name": "Name",
+            "type": "text",
+            "tableRef": "name",
+            "placeholder": "Enter Name",
+            "id": "name",
+            "validation": ["required", "trim", "unique"],
+            "url": ""
+        }, {
+            "name": "Price",
+            "type": "text",
+            "tableRef": "price",
+            "placeholder": "Enter price",
+            "id": "price",
+            "validation": ["required", "trim", "unique"],
+            "url": ""
 
-   }, {
-              "name": "Add ones",
-        "type": "tags",
-        "tableRef": "addones",
-        "placeholder": "Enter Addones",
-        "id": "addones",
-        "validation": ["", "trim", ""],
-        "url": "",
-        "dropDownField": "",
-        "dropDownType": "single",
-        "onView": true,
-        "dropDown": ["Save Time", "Save Space"]
-    }, {
-        "name": "Big Image",
-        "type": "image",
-        "tableRef": "bigImage",
-        "placeholder": "Big Image",
-        "id": "bigImage",
-        "view": true,
-        "disabled": true,
-        "url": ""
-    }, {
-        "name": "Small Image",
-        "type": "image",
-        "tableRef": "smallImage",
-        "placeholder": "Small Card",
-        "id": "smallImage",
-        "view": true,
-        "disabled": true,
-        "url": ""
+        }, {
+            "name": "Add ones",
+            "type": "tags",
+            "tableRef": "addones",
+            "placeholder": "Enter Addones",
+            "id": "addones",
+            "validation": ["", "trim", ""],
+            "url": "",
+            "dropDownField": "",
+            "dropDownType": "single",
+            "onView": true,
+            "dropDown": ["Save Time", "Save Space"]
+        }, {
+            "name": "Unit",
+            "type": "text",
+            "tableRef": "unit",
+            "placeholder": "Enter unit",
+            "id": "unit",
+            "validation": ["required", "trim", ""],
+            "url": ""
 
-    }, {
-     "name": "Description",
-     "type": "text",
-     "tableRef": "description",
-     "placeholder": "Enter  description",
-     "id": "description",
-     "validation": ["", "trim", ""],
-     "url": ""
+        },
+        {
+            "name": "Big Image",
+            "type": "image",
+            "tableRef": "bigImage",
+            "placeholder": "Big Image",
+            "id": "bigImage",
+            "view": true,
+            "disabled": true,
+            "url": ""
+        }, {
+            "name": "Small Image",
+            "type": "image",
+            "tableRef": "smallImage",
+            "placeholder": "Small Card",
+            "id": "smallImage",
+            "view": true,
+            "disabled": true,
+            "url": ""
 
-    }],
+        }, {
+            "name": "Description",
+            "type": "text",
+            "tableRef": "description",
+            "placeholder": "Enter  description",
+            "id": "description",
+            "validation": ["", "trim", ""],
+            "url": ""
+
+        }
+    ],
     "action": [{
         "name": "submit",
         "action": "submitOtherProduct",
@@ -72,7 +83,7 @@
                 "id": "viewOtherProduct"
             }
         }
-        
+
     }, {
 
         "name": "cancel",

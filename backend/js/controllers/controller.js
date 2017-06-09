@@ -413,14 +413,12 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                                     if (_.isEqual(val1.product.subscription, 'yes')) {
                                         $scope.subscription = val;
                                     }
-
                                 })
                             })
                             console.log("$scope.subscription", $scope.subscription);
                             //  $.jStorage.set('user', data.data);
                             //  $.jStorage.set("accessToken", data.data.accessToken[0]);
                         }
-
                     });
 
                     NavigationService.apiCall("DeliveryRequest/getDeliveryRequestByUser", formData, function (data) {
@@ -457,6 +455,25 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 console.log("login", data.data);
             });
 
+        };
+         $scope.settleEarnings=function(settle){
+          var settledData={};
+          settledData.earnings= $scope.data.earnings;
+          settledData.transactionId=settle.transactionId;
+          settledData.settledDate=new Date();
+            $scope.data.earningHistory.push(settledData)
+              $scope.data.earnings=0;
+             NavigationService.apiCall("User/save", $scope.data, function (data) {
+                console.log("login", data.data);
+            });
+         };
+          $scope.modalSettle = function (data) {
+            var modalInstance = $uibModal.open({
+                animation: $scope.animationsEnabled,
+                templateUrl: '/backend/views/modal/settlement.html',
+                size: 'lg',
+                scope: $scope
+            });
         };
         NavigationService.apiCall("User/getAllActiveRelPartner", {}, function (data) {
             console.log("login", data.data);

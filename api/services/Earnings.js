@@ -61,43 +61,43 @@ var model = {
                 })
             },
 
-            function (complete) {
-                var now = moment();
-                var days = moment(now).daysInMonth();
-                var currMonth = moment(now).month();
-                var dayOne = moment().date(1).month(currMonth).toDate();
-                var lastDay = moment().date(days).month(currMonth).toDate();
-                Earnings.aggregate([{
-                        $match: {
-                            createdAt: {
-                                $gte: dayOne,
-                                $lt: lastDay
-                            }
-                        }
-                    },
-                    {
-                        $match: {
-                            'relationshipPartner': ObjectId(data.user)
-                        }
-                    }
-                ]).exec(function (err, found) {
-                    if (err) {
-                        console.log(err);
-                        callback(err, null);
-                    } else {
-                       // console.log("currentMonthEarnings", found.credits);
-                        dashboardData.currentMonthCredits = found.credits;
-                        var earnings = _.sum(_.map(found, "earnings"));
-                       // console.log("found", earnings);
-                        if (earnings) {
-                            dashboardData.currentMonthEarnings = earnings;
+            // function (complete) {
+            //     var now = moment();
+            //     var days = moment(now).daysInMonth();
+            //     var currMonth = moment(now).month();
+            //     var dayOne = moment().date(1).month(currMonth).toDate();
+            //     var lastDay = moment().date(days).month(currMonth).toDate();
+            //     Earnings.aggregate([{
+            //             $match: {
+            //                 createdAt: {
+            //                     $gte: dayOne,
+            //                     $lt: lastDay
+            //                 }
+            //             }
+            //         },
+            //         {
+            //             $match: {
+            //                 'relationshipPartner': ObjectId(data.user)
+            //             }
+            //         }
+            //     ]).exec(function (err, found) {
+            //         if (err) {
+            //             console.log(err);
+            //             callback(err, null);
+            //         } else {
+            //            // console.log("currentMonthEarnings", found.credits);
+            //             dashboardData.currentMonthCredits = found.credits;
+            //             var earnings = _.sum(_.map(found, "earnings"));
+            //            // console.log("found", earnings);
+            //             if (earnings) {
+            //                 dashboardData.currentMonthEarnings = earnings;
 
-                        }
-                        // callback(null, earnings);
-                    }
-                    complete();
-                })
-            },
+            //             }
+            //             // callback(null, earnings);
+            //         }
+            //         complete();
+            //     })
+            // },
             function (complete) {
                 var now = moment();
                 var days = moment(now).daysInMonth();
@@ -122,6 +122,7 @@ var model = {
                                 dashboardData.currentMonthUser = CurrentMonUser.length;
                             }
                             dashboardData.credits=found.credits;
+                           dashboardData.currentMonthEarnings=found.earnings;
                             // callback(null, CurrentMonUser);
                         } else {
                             // callback({

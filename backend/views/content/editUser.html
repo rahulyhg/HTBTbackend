@@ -95,7 +95,8 @@
             </div>
             <div class="form-group" ng-if="data.accessLevel=='Customer'">
                 <label>Method Of Joining</label>
-                <input type="text" name="methodofjoin" placeholder="Method Of Joining" ng-model="data.methodofjoin" class="form-control" readonly>
+                <input type="text" name="methodofjoin" placeholder="Method Of Joining" ng-model="data.methodofjoin" class="form-control"
+                    readonly>
 
                 <!--<select class="form-control" name="" ng-model="data.methodofjoin">
               <option value="">Relationship Partner</option>
@@ -135,18 +136,49 @@
     <div class="form-elements-sec">
         <div class="form-group" ng-if="data.accessLevel!='Customer'">
             <label>Current Status:</label>
-                <!--<input type="text" name="levelstatus" placeholder="Current Status" ng-model="data.levelstatus" class="form-control" readonly>-->
+            <!--<input type="text" name="levelstatus" placeholder="Current Status" ng-model="data.levelstatus" class="form-control" readonly>-->
 
             <select class="form-control" name="levelstatus" ng-model="data.levelstatus">
            <option value="{{level._id}}" ng-repeat="level in partnerLevel">{{level.name}}</option>
          </select>
         </div>
-
-        <div class="form-group" fields ng-if="data.accessLevel!='Customer'">
-            <label>Earnings For This Month</label>
-            <input type="number" name="lastMonthEarnings" placeholder="Earnings For This Month" ng-model="data.lastMonthEarnings" class="form-control" readonly>
-            <div class="error-msg" ng-show="lastMonthEarnings.$invalid && lastMonthEarnings.$touched">Please enter valid Earnings For This Month</div>
+        <div class="form-group " fields ng-if="data.accessLevel!='Customer'">
+            <label>Earnings since last settlement</label>
+            <input type="number" name="earnings" class="earningsInput" placeholder="Earnings For This Month" ng-model="data.earnings" class="form-control"
+                readonly>
+            <a class="btn btn-primary settled" ng-click="modalSettle(data.earnings)">
+            Settled
+        </a>
+            <div class="error-msg" ng-show="earnings.$invalid && earnings.$touched">Please enter valid Earnings For This Month</div>
         </div>
+         <div>
+                <!-- <a class="btn btn-primary pull-right" ng-click="modalAddNotes(data.notes)">Add New</a> -->
+                <label>Earnings History<span ng-show="type.required"></span></label>
+               
+            </div>
+           <div class="sec">
+                <div>
+                    <table class="table table-input" ng-if="model.length != 0">
+                        <thead>
+                            <tr>
+                                <th>Earnings</th>
+                                <th>Transaction ID</th>
+                                <th>Transaction Date</th>
+                                <!-- <th width="150px">Actions</th> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data1 in data.earningHistory | filter:search.text ">
+                                <td>{{data1.earnings}}</td>
+                                <td>{{data1.transactionId}}</td>
+                                <td>{{data1.settledDate | date}}</td>
+                               
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         <div class="sec" ng-if="data.accessLevel!='Customer'">
             <div>
                 <!-- <a class="btn btn-primary pull-right" ng-click="modalAddNotes(data.notes)">Add New</a> -->
@@ -243,7 +275,7 @@
                                 <th>Request Date</th>
                                 <th>Status</th>
                                 <th>Delivery Date</th>
-                              
+
 
 
                                 <!-- <th width="150px">Actions</th> -->
@@ -255,7 +287,7 @@
                                 <td>{{data.requestDate | date}}</td>
                                 <td>{{data.status }}</td>
                                 <td>{{data.deliverdate | date}}</td>
-                             
+
 
                             </tr>
                         </tbody>
@@ -267,16 +299,20 @@
         </div>
         <div class="form-group" fields ng-if="data.accessLevel=='Customer'">
             <label>Current Jar Balance</label>
-            <input type="text" name="jarbalance" placeholder="Current Jar Balance" ng-model="data.subscribedProd[0].jarBalance" class="form-control" readonly>
+            <input type="text" name="jarbalance" placeholder="Current Jar Balance" ng-model="data.subscribedProd[0].jarBalance" class="form-control"
+                readonly>
         </div>
         <div class="form-group" fields ng-if="data.accessLevel=='Customer'">
             <label>Current Jar Deposit</label>
-            <input type="text" name="jardeposit" placeholder="Current Jar Balance" ng-model="data.subscribedProd[0].jarDeposit" class="form-control" readonly>
+            <input type="text" name="jardeposit" placeholder="Current Jar Balance" ng-model="data.subscribedProd[0].jarDeposit" class="form-control"
+                readonly>
         </div>
         <div class="form-group" ng-if="data.accessLevel=='Customer'">
             <label>Last method of payment</label>
-            <input ng-if="OrderData[0].methodOfPayment!='Customer'" type="text" name="jardeposit" placeholder="Last method of payment" value="{{OrderData[0].methodOfPayment}}" class="form-control" readonly>
-              <input ng-if="OrderData[0].methodOfPayment=='Customer'" type="text" name="jardeposit" placeholder="Last method of payment" value="Online" class="form-control" readonly>
+            <input ng-if="OrderData[0].methodOfPayment!='Customer'" type="text" name="jardeposit" placeholder="Last method of payment"
+                value="{{OrderData[0].methodOfPayment}}" class="form-control" readonly>
+            <input ng-if="OrderData[0].methodOfPayment=='Customer'" type="text" name="jardeposit" placeholder="Last method of payment"
+                value="Online" class="form-control" readonly>
 
         </div>
         <div class="sec">
@@ -319,8 +355,8 @@
 </div>
 <div class="text-center mt20 odd-even-button">
     <button class="btn btn-default" type="button" ng-click="saveuser(data)">Save</button>
-   <a ng-if="data.accessLevel=='Customer'" class="btn btn-danger" href="#/page/viewCustomer//">Cancel</a>
-   <a ng-if="data.accessLevel!='Customer'" class="btn btn-danger" href="#/page/viewRelPartner//">Cancel</a>
+    <a ng-if="data.accessLevel=='Customer'" class="btn btn-danger" href="#/page/viewCustomer//">Cancel</a>
+    <a ng-if="data.accessLevel!='Customer'" class="btn btn-danger" href="#/page/viewRelPartner//">Cancel</a>
 
 </div>
 </div>
