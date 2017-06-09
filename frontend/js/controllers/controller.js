@@ -131,14 +131,14 @@ myApp.controller('HomeCtrl', function($scope, TemplateService, NavigationService
         apiService.apiCall("Order/getOne", formData, function(data) {
             if (data.value === true) {
                 $scope.orderData = data.data;
-               
+
                 var pinForm = {};
                 pinForm.pin = $scope.orderData.shippingAddress.pincode;
                 apiService.getPinDetail(pinForm, function(pinData) {
                     if (pinData.data.value === true) {
                         $scope.daysByPincode = pinData.data.data;
-                        if(!$scope.orderData.deliverdate) {
-                          $scope.orderData.deliverdate = apiService.getNextDate($scope.daysByPincode.days);
+                        if (!$scope.orderData.deliverdate) {
+                            $scope.orderData.deliverdate = apiService.getNextDate($scope.daysByPincode.days);
                         }
                     } else {
                         $state.go("pincode");
@@ -234,7 +234,9 @@ myApp.controller('HomeCtrl', function($scope, TemplateService, NavigationService
         console.log($scope.dt);
         apiService.apiCall("Order/orderConfirmationOrPay", orderData, function(data) {
             if (data.value === true) {
-                $state.go("thankyoupage2");
+                $state.go("thankyoupage2", {
+                    RpName: $scope.nameOnPayment
+                });
                 console.log("Order confirmed successfully--- redirect to thank you page");
 
             } else {
@@ -251,7 +253,7 @@ myApp.controller('HomeCtrl', function($scope, TemplateService, NavigationService
             })
             // $scope.template = TemplateService.getHTML("/terms.html");
     }
-   
+
 
     $scope.inlineOptions = {
         customClass: getDayClass,
@@ -491,9 +493,13 @@ myApp.controller('HomeCtrl', function($scope, TemplateService, NavigationService
     TemplateService.title = "wrong"; //This is the Title of the Website
 })
 
-.controller('ThankYouPage2Ctrl', function($scope, TemplateService, NavigationService, $timeout) {
+.controller('ThankYouPage2Ctrl', function($scope, TemplateService, apiService, $stateParams, NavigationService, $timeout) {
     $scope.template = TemplateService.getHTML("content/thankyoupage2.html");
     TemplateService.title = "thankyoupage2"; //This is the Title of the Website
+    $scope.orderdata = {};
+    $scope.orderdata.name= $stateParams.RpName;
+
+
 })
 
 .controller('SuccessCtrl', function($scope, TemplateService, NavigationService, $timeout) {

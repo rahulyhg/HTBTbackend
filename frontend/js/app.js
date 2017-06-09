@@ -89,7 +89,7 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
         })
 
         .state('thankyoupage2', {
-            url: "/thankyoupage2",
+            url: "/thankyoupage2/:RpName",
             templateUrl: tempateURL,
             controller: 'ThankYouPage2Ctrl'
         })
