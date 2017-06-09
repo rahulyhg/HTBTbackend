@@ -65,6 +65,13 @@ var schema = new Schema({
         transactionId: String,
         settledDate: Date
     }],
+     depositHistory: [{
+        amountGiven: {
+            type: Number
+        },
+        methodOfReturn: String,
+        givenDate: Date
+    }],
     otp: String,
     lastRank: String,
     verification: {

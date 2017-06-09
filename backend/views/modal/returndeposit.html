@@ -1,0 +1,24 @@
+<form name="modalForm">
+    <div class="modal-header">
+        <h4 class="modal-title">Please enter the amount returned to the customer.</h4>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Amount returned</label>
+                    <input type="text" name="notes" ng-change="compareDeposite(retunedData.amountGiven)" ng-model="retunedData.amountGiven" placeholder="Enter Transaction ID/No" class="form-control" required>
+                </div>
+            </div>
+             <div class="col-md-12">
+                    <label>Method of Return</label>
+                    <input type="text" name="Quantity" placeholder="Quantity" ng-model="retunedData.methodOfReturn" class="form-control" required>
+                </div>
+
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-disabled="modalForm.$invalid" ng-click="returnDeposit(retunedData);$dismiss();">Save Notes</button>
+    </div>
+</form>

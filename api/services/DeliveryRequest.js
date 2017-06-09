@@ -151,8 +151,10 @@ var model = {
                             } else {
                                 if (foundcust) {
                                     // callback(null, found);
-                                    if (_.isEqual(data.product.category.subscription, 'Yes')) {
-                                        foundcust.subscribedProd[0].jarBalance = foundcust.subscribedProd[0].jarBalance - data.QuantityDelivered;
+                                    if (data.product.category) {
+                                        if (_.isEqual(data.product.category.subscription, 'Yes')) {
+                                            foundcust.subscribedProd[0].jarBalance = foundcust.subscribedProd[0].jarBalance - data.QuantityDelivered;
+                                        }
                                     }
                                     User.saveData(foundcust, function (err, savedCust) {
                                         if (err) {
@@ -168,7 +170,7 @@ var model = {
                         });
                     },
                     function () {
-                        console.log("inside earning calculation",data.customer._id,data.customer.relationshipId);
+                        console.log("inside earning calculation", data.customer._id, data.customer.relationshipId);
                         if (data.customer.relationshipId) {
                             User.findOne({
                                 _id: data.customer.relationshipId
@@ -378,7 +380,7 @@ var model = {
                     "as": "product"
                 }
             },
-             {
+            {
                 $unwind: {
                     path: "$product",
                     "preserveNullAndEmptyArrays": true
@@ -388,13 +390,24 @@ var model = {
                 $match: {
                     'customer.relationshipId': ObjectId(data.user)
                 }
+            },
+            {
+                $match: {
+                    $or: [{
+                        'status': 'Full Delivery Successful'
+                    }, {
+                        'status': 'Partial Delivery Successful'
+                    }]
+                }
             }
+
+
         ]).exec(function (err, found) {
             if (err) {
                 console.log(err);
                 callback(err, null);
             } else {
-                console.log("found", found);
+                // console.log("found", found);
                 callback(null, found);
             }
         })
