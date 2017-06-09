@@ -234,11 +234,19 @@ myApp.controller('HomeCtrl', function($scope, TemplateService, NavigationService
         console.log($scope.dt);
         apiService.apiCall("Order/orderConfirmationOrPay", orderData, function(data) {
             if (data.value === true) {
-                $state.go("thankyoupage2", {
-                    RpName: $scope.nameOnPayment
-                });
-                console.log("Order confirmed successfully--- redirect to thank you page");
+                var rpFormData = {};
+                rpFormData._id = $scope.orderData.customer.relationshipId;
+                apiService.apiCall("User/getOne", rpFormData, function(data) {
+                    if (data.value === true) {
+                        $scope.rpData = data.data;
+                        $scope.nameOnPayment = $scope.rpData.name;
 
+                        $state.go("thankyoupage2", {
+                            RpName: $scope.nameOnPayment
+                        });
+                        console.log("Order confirmed successfully--- redirect to thank you page");
+                    }
+                });
             } else {
                 $state.go("wrong");
             }
@@ -497,7 +505,7 @@ myApp.controller('HomeCtrl', function($scope, TemplateService, NavigationService
     $scope.template = TemplateService.getHTML("content/thankyoupage2.html");
     TemplateService.title = "thankyoupage2"; //This is the Title of the Website
     $scope.orderdata = {};
-    $scope.orderdata.name= $stateParams.RpName;
+    $scope.orderdata.name = $stateParams.RpName;
 
 
 })
