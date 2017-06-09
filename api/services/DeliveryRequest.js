@@ -180,7 +180,7 @@ var model = {
                                 } else {
                                     if (foundUser) {
                                         console.log("foundUser--", foundUser);
-                                        if (_.isEqual(foundUser.earningsBlock, 'No')) {
+                                        if (_.isEqual(foundUser.earningsBlock, 'No') && data.product.commission) {
                                             _.forEach(data.product.commission, function (val) {
                                                 console.log("val.commissionType--", val.commissionType, "foundUser.levelstatus", foundUser.levelstatus, val.commissionType == foundUser.levelstatus);
 
