@@ -101,7 +101,7 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
         })
 
 .state('pincode', {
-            url: "/pincode",
+            url: "/pincode/:orderId",
             templateUrl: tempateURL,
             controller: 'PincodeCtrl'
         })

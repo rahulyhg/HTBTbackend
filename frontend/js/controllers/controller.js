@@ -141,7 +141,9 @@ myApp.controller('HomeCtrl', function($scope, TemplateService, NavigationService
                             $scope.orderData.deliverdate = apiService.getNextDate($scope.daysByPincode.days);
                         }
                     } else {
-                        $state.go("pincode");
+                        $state.go("pincode", {
+                            orderId: $scope.orderData._id
+                        });
                         $scope.orderData.status = "Outside Delivery Zone";
                         apiService.apiCall("Order/save", $scope.orderData, function(data) {
                             console.log(data);
@@ -484,10 +486,10 @@ myApp.controller('HomeCtrl', function($scope, TemplateService, NavigationService
     TemplateService.title = "Sorry"; //This is the Title of the Website
 })
 
-.controller('PincodeCtrl', function($scope, TemplateService, NavigationService, $timeout) {
+.controller('PincodeCtrl', function($scope, TemplateService, $stateParams,NavigationService, $timeout) {
     $scope.template = TemplateService.getHTML("content/pincode.html");
     TemplateService.title = "pincode"; //This is the Title of the Website
-
+    $state.orderdata = $stateParams.orderId;
 })
 
 
