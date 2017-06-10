@@ -180,7 +180,7 @@ myApp.controller('HomeCtrl', function ($scope, TemplateService,
                         $scope.emailOnPayment = $scope.orderData.customer.email;
                         $scope.mobileOnPayment = $scope.orderData.customer.mobile;
                         $scope.options = {
-                            'key': 'rzp_test_BrwXxB7w8pKsfS',
+                            'key': 'rzp_live_gFWckrbme2wT4J',
                             'amount': parseInt($scope.orderData.totalPrice) * 100,
                             'name': $scope.nameOnPayment,
                             'description': 'Pay for Order ' + $scope.orderData.orderID,
