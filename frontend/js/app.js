@@ -39,7 +39,7 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
             controller: 'ReviewCtrl'
         })
 
-         .state('paymentRP', {
+        .state('paymentRP', {
             url: "/payment/:orderId/:rpId",
             templateUrl: tempateURL,
             controller: 'ReviewCtrl'
@@ -58,14 +58,14 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
             controller: 'ThankYouCtrl'
         })
 
-.state('paymentsuccess', {
+        .state('paymentsuccess', {
             url: "/paymentsuccess",
             templateUrl: tempateURL,
             controller: 'PaymentSuccessCtrl'
         })
 
-.state('successconfirm', {
-            url: "/successconfirm",
+        .state('successconfirm', {
+            url: "/successconfirm/:orderId/:deliverydate",
             templateUrl: tempateURL,
             controller: 'SuccessConfirmCtrl'
         })
@@ -76,14 +76,14 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
             controller: 'WrongCtrl'
         })
 
-         .state('thankyouconfirm', {
+        .state('thankyouconfirm', {
             url: "/thankyouconfirm",
             templateUrl: tempateURL,
             controller: 'ThankYouConfirmCtrl'
         })
 
         .state('success', {
-            url: "/success",
+            url: "/success/:orderId",
             templateUrl: tempateURL,
             controller: 'SuccessCtrl'
         })
@@ -100,8 +100,8 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
             controller: 'LinkExpireCtrl'
         })
 
-.state('pincode', {
-            url: "/pincode",
+        .state('pincode', {
+            url: "/pincode/:orderId",
             templateUrl: tempateURL,
             controller: 'PincodeCtrl'
         })
@@ -123,21 +123,21 @@ myApp.config(function ($stateProvider, $urlRouterProvider, $httpProvider, $locat
 
 // For Language JS
 myApp.config(function ($translateProvider) {
-    $translateProvider.translations('en', LanguageEnglish);
-    $translateProvider.translations('hi', LanguageHindi);
-    $translateProvider.preferredLanguage('en');
-})
+        $translateProvider.translations('en', LanguageEnglish);
+        $translateProvider.translations('hi', LanguageHindi);
+        $translateProvider.preferredLanguage('en');
+    })
 
 
 
-.directive("limitTo", [function() {
-      return {
-          restrict: "A",
-          link: function(scope, elem, attrs) {
-              var limit = parseInt(attrs.limitTo);
-              angular.element(elem).on("keypress", function(e) {
-                  if (this.value.length == limit) e.preventDefault();
-              });
-          }
-      }
-  }]);
+    .directive("limitTo", [function () {
+        return {
+            restrict: "A",
+            link: function (scope, elem, attrs) {
+                var limit = parseInt(attrs.limitTo);
+                angular.element(elem).on("keypress", function (e) {
+                    if (this.value.length == limit) e.preventDefault();
+                });
+            }
+        }
+    }]);

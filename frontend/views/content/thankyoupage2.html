@@ -6,7 +6,8 @@
 <div class="img-div">
     <img class="img-width" src="img/tick.png" alt="">
 </div>
- <div class="orderplaced">Your order has been sent to {{confirmedData.name}}</div>
+ <div class="orderplaced" ng-if="!confirmedData.name">Your order has been sent to our partner</div>
+ <div class="orderplaced" ng-if="confirmedData.name">Your order has been sent to {{confirmedData.name}}</div>
  <span class="sorrymsg"> Once we receive the payment from our partner, you will receive an order confirmation message via SMS</span>
   </div>
 
