@@ -65,7 +65,7 @@ var schema = new Schema({
         transactionId: String,
         settledDate: Date
     }],
-     depositHistory: [{
+    depositHistory: [{
         amountGiven: {
             type: Number
         },
@@ -645,5 +645,30 @@ var model = {
 
         });
     },
+
+    getByMobileNo: function (data, callback) {
+        console.log("data", data)
+        User.findOne({
+            mobile: data.mobile,
+        }).exec(function (err, found) {
+            if (err) {
+                callback(err, null);
+            } else {
+                if (found) {
+                    if (found.relationshipId+"" == data.user) {
+                        callback(null, "Your customer");
+                    } else {
+                        callback({
+                            message: "customer exist!"
+                        }, null);
+                    }
+                } else {
+                    callback(null, "User not found");
+                }
+            }
+
+        });
+    }
+
 };
 module.exports = _.assign(module.exports, exports, model);

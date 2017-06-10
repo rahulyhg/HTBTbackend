@@ -157,7 +157,7 @@ var model = {
     },
     //call this while confirming the order or when payment is made 
     orderConfirmationOrPay: function (data, callback) {
-        console.log("data----", data.product[0].product.category);
+        console.log("data----", data);
         var confirmationToRP = false;
         if (!data.razorpay_payment_id) {
             confirmationToRP = true;
@@ -419,7 +419,7 @@ var model = {
                                     }
                                 })
 
-                            } else if (_.isEqual(data.methodOfPayment, 'Customer') && _.isEqual(data.product[0].product.category.subscription, 'Yes')) {
+                            } else if (_.isEqual(data.methodOfPayment, 'Customer') && (_.isEqual(data.product[0].product.category.subscription, 'Yes') && data.plan != 'Onetime')) {
                                 console.log("when customer pays");
                                 var smsMessage = "Payment successful! Order #" + data.orderID + " is confirmed. Download the HaTa App or call on 022 - 33024910 to schedule your first delivery."
 
@@ -443,7 +443,7 @@ var model = {
                                     }
                                 })
 
-                            } else if (_.isEqual(data.methodOfPayment, 'Customer') && _.isEqual(data.product[0].product.category.subscription, 'No')) {
+                            } else if (_.isEqual(data.methodOfPayment, 'Customer') && (_.isEqual(data.product[0].product.category.subscription, 'No') || data.plan == 'Onetime')) {
                                 console.log("when customer pays");
                                 var smsMessage = "Payment successful! Order #" + data.orderID + " is confirmed. Your delivery is scheduled for " + moment(data.deliverdate).add(1, "day").format("dddd, MMM D");
 
