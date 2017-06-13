@@ -147,11 +147,10 @@ var model = {
             count: maxRow
         };
         Product.find({
-               category:{ $ne: null }
             }).deepPopulate('category').order(options)
             .keyword(options)
             .page(options, callback);
-    },
+    },// //    category:{ $ne: null }
 
     getAllOtherProduct: function (data, callback) {
         console.log("data", data);

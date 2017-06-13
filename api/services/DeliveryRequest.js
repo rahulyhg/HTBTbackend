@@ -59,47 +59,144 @@ var exports = _.cloneDeep(require("sails-wohlig-service")(schema, "product Order
 var model = {
     //to schedule the delivery 'data.customer is required here'
     scheduleDelivery: function (data, callback) {
+        console.log("data--", data);
         var reqID = '';
         User.findOne({
             _id: data.customer
-        }).exec(function (err, userData) {
+        }).deepPopulate('subscribedProd.recentOrder').exec(function (err, userData) {
             if (err) {
                 console.log(err);
                 callback(err, null);
             } else {
                 console.log("userData", userData);
-                if (userData.subscribedProd[0].jarBalance > data.Quantity) {
-                    data.product = userData.subscribedProd[0].product;
-                    DeliveryRequest.find({}).sort({
-                        createdAt: -1
-                    }).exec(function (err, fdata) {
-                        if (err) {
-                            console.log(err);
-                            callback(err, null);
-                        } else {
-                            if (fdata.length > 0) {
-                                console.log(fdata[0]);
-                                reqId = parseInt(fdata[0].requestID) + 1;
-                            } else {
-                                console.log("no data");
-                                reqID = 1;
-                                console.log(reqID);
+                DeliveryRequest.find({
+                    Order: data.order
+                }).exec(function (err, previousDelivery) {
+                    if (err) {
+                        console.log(err);
+                    } else {
+                        if (!_.isEmpty(previousDelivery)) {
+                            console.log("inside if----data found");
+                            var deliveryReqData = {};
+                            if (userData.subscribedProd[0].jarBalance > data.Quantity) {
+                                deliveryReqData.product = userData.subscribedProd[0].product;
+                                DeliveryRequest.find({}).sort({
+                                    createdAt: -1
+                                }).exec(function (err, fdata) {
+                                    if (err) {
+                                        console.log(err);
+                                        callback(err, null);
+                                    } else {
+                                        if (fdata.length > 0) {
+                                            console.log(fdata[0]);
+                                            reqId = parseInt(fdata[0].requestID) + 1;
+                                        } else {
+                                            console.log("no data");
+                                            reqID = 1;
+                                        }
+                                        console.log(reqID);
+                                        deliveryReqData.deliverdate = data.deliverdate;
+                                        deliveryReqData.delivertime = data.delivertime;
+                                        deliveryReqData.Order = data.order;
+                                        deliveryReqData.requestDate = new Date();
+                                        deliveryReqData.methodOfRequest = data.methodOfRequest;
+                                        deliveryReqData.requestID = reqId;
+                                        deliveryReqData.customer = data.customer;
+                                        console.log("deliveryReqData--if222", deliveryReqData);
+                                        DeliveryRequest.saveData(deliveryReqData, function (err, savedData) {
+                                            if (err) {
+                                                callback(err, null);
+                                            } else {
+                                                callback(null, savedData);
+                                            }
+                                        })
+                                    }
+                                });
                             }
-                            data.requestID = reqID;
-                            data.requestDate = new Date();
-                            DeliveryRequest.saveData(data, function (err, savedData) {
-                                if (err) {
-                                    callback(err, null);
-                                } else {
-                                    callback(null, savedData);
-                                }
-                            })
-                        }
-                    });
-                }
+                        } else {
+                            console.log("inside else----data found");
+                            var index = 0;
+                            var deliveryReqData = {};
+                            var savedDeliveryData = {};
+                            async.eachSeries(userData.subscribedProd[0].recentOrder.product, function (val, callback1) {
+                                val.reqId = 0;
+                                console.log("HHHHHHHHH");
+                                async.waterfall([
+                                    function createReqId(callback) {
+                                        console.log("inside DeliveryRequest create");
+                                        DeliveryRequest.find({}).sort({
+                                            createdAt: -1
+                                        }).exec(function (err, fdata) {
+                                            if (err) {
+                                                console.log(err);
+                                                callback(err, null);
+                                            } else {
+                                                if (fdata.length > 0) {
+                                                    if (fdata[0].requestID) {
+                                                        reqId = parseInt(fdata[0].requestID) + 1;
+                                                    }
+                                                } else {
+                                                    reqId = 1;
+                                                }
 
+                                                callback(null, reqId);
+                                            }
+                                        });
+                                    },
+                                    function saveDeliveryReq(reqId, callback) {
+                                        console.log("reqId--", reqId);
+                                        deliveryReqData.product = val.product;
+                                        if (index == 0 && val.product) {
+                                            deliveryReqData.Quantity = data.Quantity;
+                                        } else {
+                                            deliveryReqData.Quantity = val.productQuantity;
+                                        }
+                                        index++;
+
+                                        deliveryReqData.deliverdate = data.deliverdate;
+                                        deliveryReqData.delivertime = data.delivertime;
+                                        deliveryReqData.Order = data.order;
+                                        deliveryReqData.requestDate = new Date();
+                                        deliveryReqData.methodOfRequest = data.methodOfRequest;
+                                        deliveryReqData.requestID = reqId;
+                                        deliveryReqData.customer = data.customer;
+                                        green("deliveryReqData--", deliveryReqData);
+                                        DeliveryRequest.saveData(deliveryReqData, function (err, savedDelivery) {
+                                            if (err) {
+                                                red("error while creating delivery", err);
+                                                callback(err, null);
+                                            } else {
+                                                console.log("savedDelivery--", index, "-indx", savedDelivery);
+                                                savedDeliveryData = savedDelivery;
+                                                callback(null, []);
+                                            }
+                                        });
+                                    }
+                                ], function asyncComplete(err, savedDelivery) {
+                                    if (err) {
+                                        console.warn('Error creating delivery request JSON.', err);
+                                        callback1();
+                                        // callback(err, null);
+                                    } else {
+                                        console.log("succefully completed the waterfall");
+                                        console.log("send callback1");
+                                        callback1();
+                                    }
+                                });
+                            }, function (error, data) {
+                                if (err) {
+                                    console.log("error found in doLogin.else callback1");
+                                    // callback3(null, err);
+                                } else {
+                                    console.log("complted async series");
+                                    callback(null, savedDeliveryData);
+                                }
+                            });
+                        }
+                    }
+                });
             }
-        })
+        });
 
     },
     //to update the delivery request after product is delivered 
@@ -260,7 +357,7 @@ var model = {
     },
     //to get perticular user's delivery request
     getLastJarScheduledByUser: function (data, callback) {
-        console.log("data", data)
+        console.log("data", data);
         User.findOne({
             _id: data.customer
         }).exec(function (err, found) {
@@ -269,7 +366,7 @@ var model = {
             } else {
                 if (found) {
                     DeliveryRequest.find({
-                        customer: data._id,
+                        customer: data.customer,
                         product: found.subscribedProd[0].product,
                         status: 'Delivery Scheduled'
                     }).lean().sort({

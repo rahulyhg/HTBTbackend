@@ -31,12 +31,14 @@ myApp.factory('NavigationService', function ($http) {
         classis: "active",
         sref: "#/page/viewProduct//",
         icon: "phone"
-    },{
-        name: "Other Products",
-        classis: "active",
-        sref: "#/page/viewOtherProduct//",
-        icon: "phone"
-    },{
+    },
+    // {
+    //     name: "Other Products",
+    //     classis: "active",
+    //     sref: "#/page/viewOtherProduct//",
+    //     icon: "phone"
+    // },
+    {
         name: "Pincode",
         classis: "active",
         sref: "#/page/viewPincode//",

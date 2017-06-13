@@ -2,8 +2,13 @@ module.exports = _.cloneDeep(require("sails-wohlig-controller"));
 var Razorpay = require('razorpay');
 var request = require('request');
 //var rzp = new Razorpay({
-var key_id = 'rzp_live_gFWckrbme2wT4J'; // your `KEY_ID`
-var key_secret = 'dIrrwrkOvawy3KfJkiZw0axd'; // your `KEY_SECRET`
+//Live credentials
+ var key_id = 'rzp_live_gFWckrbme2wT4J'; // your `KEY_ID`
+ var key_secret = 'dIrrwrkOvawy3KfJkiZw0axd'; // your `KEY_SECRET`
+
+//testing credentials
+// var key_id = 'rzp_test_BrwXxB7w8pKsfS'; // your `KEY_ID`
+// var key_secret = 'Lccm56IPsufU4X3id7CqE1RS'; // your `KEY_SECRET`
 //})
 var controller = {
     orderConfirmationOrPay: function (req, res) {
@@ -19,13 +24,12 @@ var controller = {
                         Order.orderConfirmationOrPay(req.body, res.callback);
                     } else if (_.isEqual(JSON.parse(body).status, 'failed')) {
                         req.body.paymentStatus = 'Payment Failed';
-                        req.body.status = 'Payment Failed';                        
+                        req.body.status = 'Payment Failed';
                         Order.orderConfirmationOrPay(req.body, res.callback);
                     }
                 });
-            }
-            else{
-            Order.orderConfirmationOrPay(req.body, res.callback);
+            } else {
+                Order.orderConfirmationOrPay(req.body, res.callback);
             }
 
         } else {
@@ -49,8 +53,8 @@ var controller = {
             })
         }
     },
-    getOrderByRM: function (req,res) {
-          if (req.body) {
+    getOrderByRM: function (req, res) {
+        if (req.body) {
             Order.getOrderByRM(req.body, res.callback);
         } else {
             res.json({
@@ -61,8 +65,8 @@ var controller = {
             })
         }
     },
-    resendLink: function (req,res) {
-          if (req.body) {
+    resendLink: function (req, res) {
+        if (req.body) {
             Order.resendLink(req.body, res.callback);
         } else {
             res.json({
