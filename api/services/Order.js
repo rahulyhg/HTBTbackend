@@ -480,8 +480,6 @@ var model = {
                         callback(null, data);
                     }
                 }) //End of async.parallel
-
-
                 callback(null, data)
             }
         });
@@ -1257,7 +1255,35 @@ var model = {
                 }
             }
         });
-    }
+    },
+    getOrderWithDelivery: function (data, callback) {
+        var mergedData = [];
+        Order.find({}).sort({
+            createdAt: -1
+        }).exec(function (err, orderData) {
+            if (err) {
+                console.log(err);
+                // callback(err, null);
+            } else {
+                DeliveryRequest.find({}).sort({
+                    createdAt: -1
+                }).exec(function (err, deliveryData) {
+                    if (err) {
+                        console.log(err);
+                        callback(err, null);
+                    } else {
+                        console.log("deliveryData--", deliveryData.length);
+                        mergedData = _.union(orderData, deliveryData);
+                        console.log("mergedData--", mergedData.length);
+                        mergedData = _.orderBy(mergedData, ['createdAt'], ['asc']);
+                        callback(null, mergedData);
+                    }
+                });
+            }
+        });
+
+
+    },
     //to get Last Three month orders of RM
     // getLastThreeMonthOrder: function (data, callback) {
     //     console.log(ObjectId(data.user));

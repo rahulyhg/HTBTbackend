@@ -77,6 +77,18 @@ var controller = {
             })
         }
     },
+    getOrderWithDelivery: function (req, res) {
+        if (req.body) {
+            Order.getOrderWithDelivery(req.body, res.callback);
+        } else {
+            res.json({
+                value: false,
+                data: {
+                    message: "Invalid Request"
+                }
+            })
+        }
+    },
     saveOrderCheckout: function (req, res) {
         if (req.body) {
             Order.saveOrderCheckout(req.body, res.callback);

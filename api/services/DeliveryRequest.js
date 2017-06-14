@@ -99,6 +99,7 @@ var model = {
                                         deliveryReqData.delivertime = data.delivertime;
                                         deliveryReqData.Order = data.order;
                                         deliveryReqData.requestDate = new Date();
+                                        deliveryReqData.Quantity = data.Quantity;
                                         deliveryReqData.methodOfRequest = data.methodOfRequest;
                                         deliveryReqData.requestID = reqId;
                                         deliveryReqData.customer = data.customer;
@@ -376,7 +377,7 @@ var model = {
                             callback(err, null);
                         } else {
                             if (found) {
-                                callback(null, found);
+                                callback(null, found[0]);
                             } else {
                                 callback({
                                     message: "No Data found!"
@@ -399,35 +400,45 @@ var model = {
             } else {
                 if (found) {
                     DeliveryRequest.find({
+                        Order: data.order,
+                        status: 'Delivery Scheduled',
                         deliverdate: {
                             $gt: new Date()
                         },
-                        customer: found._id,
-                        product: found.subscribedProd[0].product,
-                        status: 'Delivery Scheduled'
+                        customer: found._id
                     }).lean().sort({
                         _id: -1
                     }).exec(function (err, foundDelivery) {
                         if (err) {
                             callback(err, null);
                         } else {
-                            if (foundDelivery) {
-                                foundDelivery.status = 'Cancelled';
-                                DeliveryRequest.saveData(foundDelivery, function (err, data) {
+                            async.eachSeries(foundDelivery, function (val, callback1) {
+                                val.status = 'Cancelled';
+                                DeliveryRequest.saveData(val, function (err, data) {
                                     if (err) {
                                         console.log("error while cancelling the request");
+                                        callback1();
                                     } else {
                                         console.log("DeliveryRequest request cance Successfully");
-
+                                        callback1();
                                     }
                                 })
-                            } else {
-                                callback({
-                                    message: "No Data found!"
-                                }, null);
-                            }
+
+                            }, function (error, data) {
+                                if (err) {
+                                    console.log("error found in doLogin.else callback1");
+                                    callback(null, err);
+                                } else {
+                                    console.log("complted async series");
+                                    callback(null, "Cancelled");
+                                }
+                            })
                         }
                     });
+                } else {
+                    callback({
+                        message: "Invalid data!"
+                    }, null);
                 }
             }
         });
