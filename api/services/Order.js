@@ -110,8 +110,9 @@ var model = {
     getOrderByUser: function (data, callback) {
         console.log("data", data)
         Order.find({
-                customer: data._id
-            }).deepPopulate("customer product.product")
+                customer: data._id,
+                paymentStatus: 'Paid'
+            }).deepPopulate("product.product")
             .lean().sort({
                 _id: -1
             }).exec(function (err, found) {
@@ -1257,15 +1258,31 @@ var model = {
         });
     },
     getOrderWithDelivery: function (data, callback) {
+        console.log("data", data);
         var mergedData = [];
-        Order.find({}).sort({
+        Order.find({
+            customer: data._id,
+            $or: [{
+                plan: 'Monthly'
+            }, {
+                plan: 'Quarterly'
+            }],
+            paymentStatus: 'Paid'
+        }).deepPopulate("product.product").sort({
             createdAt: -1
         }).exec(function (err, orderData) {
             if (err) {
                 console.log(err);
                 // callback(err, null);
             } else {
-                DeliveryRequest.find({}).sort({
+                DeliveryRequest.find({
+                    customer: data._id,
+                    $or: [{
+                        'status': 'Full Delivery Successful'
+                    }, {
+                        'status': 'Partial Delivery Successful'
+                    }]
+                }).deepPopulate("product").sort({
                     createdAt: -1
                 }).exec(function (err, deliveryData) {
                     if (err) {
@@ -1275,7 +1292,7 @@ var model = {
                         console.log("deliveryData--", deliveryData.length);
                         mergedData = _.union(orderData, deliveryData);
                         console.log("mergedData--", mergedData.length);
-                        mergedData = _.orderBy(mergedData, ['createdAt'], ['asc']);
+                        mergedData = _.orderBy(mergedData, ['createdAt'], ['desc']);
                         callback(null, mergedData);
                     }
                 });

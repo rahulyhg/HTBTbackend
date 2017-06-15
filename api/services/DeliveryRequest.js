@@ -47,6 +47,9 @@ var schema = new Schema({
 });
 
 schema.plugin(deepPopulate, {
+     'product': {
+        select: ''
+    },
     'product.category': {
         select: ''
     }

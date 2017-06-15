@@ -48,6 +48,7 @@
     "mongoose-url-slugs": "^0.2.1",
     "mongoose-validators": "^0.1.0",
     "monguurl": "^0.1.0",
+    "node-cron": "^1.2.0",
     "node-xlsx": "^0.7.4",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
