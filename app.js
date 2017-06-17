@@ -20,17 +20,43 @@
 
 // Ensure we're in the project directory, so relative paths work as expected
 // no matter where we actually lift from.
+
 process.chdir(__dirname);
 var mongoose;
 mongoose = require('mongoose');
 
-global["database"] = "htbt";
+global.database = "htbt";
 mongoose.Promise = global.Promise;
-mongoose.connect('mongodb://localhost:27017/' + database, function (err) {
-    if (err) {
-        console.log(err);
-    }
-});
+if (process.env.name == "HTBT Development - 8090") {
+    global["env"] = require("./config/env/testing.js");
+    mongoose.connect('mongodb://localhost:27017/' + "htbtDevelopment", function (err, data) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Database Connected to Absolute");
+        }
+    });
+} else if (process.env.name == "HTBT - 8080") {
+    global["env"] = require("./config/env/production.js");
+    mongoose.connect('mongodb://localhost:27017/' + database, function (err, data) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Database Connected to Absolute");
+        }
+    });
+} else {
+    global["env"] = require("./config/env/development.js");
+    mongoose.connect('mongodb://localhost:27017/' + database, function (err, data) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Database Connected to Absolute");
+        }
+    });
+}
+
+
 // Ensure a "sails" can be located:
 (function () {
     var sails;

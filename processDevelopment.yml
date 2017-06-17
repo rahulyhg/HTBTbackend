@@ -1,0 +1,5 @@
+apps:
+  - script: "app.js"
+    name: "HTBT Development - 8090"
+    watch: false
+    args: "--prod --port 8090"
