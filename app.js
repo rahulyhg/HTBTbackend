@@ -27,13 +27,15 @@ mongoose = require('mongoose');
 
 global.database = "htbt";
 mongoose.Promise = global.Promise;
+console.log(process.env.name);
 if (process.env.name == "HTBT Development - 8090") {
+    console.log("Testing is Connected");
     global["env"] = require("./config/env/testing.js");
     mongoose.connect('mongodb://localhost:27017/' + "htbtDevelopment", function (err, data) {
         if (err) {
             console.log(err);
         } else {
-            console.log("Database Connected to Absolute");
+            console.log("Database Connected to Testing HTBT");
         }
     });
 } else if (process.env.name == "HTBT - 8080") {
@@ -42,7 +44,7 @@ if (process.env.name == "HTBT Development - 8090") {
         if (err) {
             console.log(err);
         } else {
-            console.log("Database Connected to Absolute");
+            console.log("Database Connected to HTBT");
         }
     });
 } else {
@@ -51,7 +53,7 @@ if (process.env.name == "HTBT Development - 8090") {
         if (err) {
             console.log(err);
         } else {
-            console.log("Database Connected to Absolute");
+            console.log("Database Connected to HTBT Development");
         }
     });
 }
