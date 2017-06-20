@@ -47,7 +47,7 @@ var schema = new Schema({
 });
 
 schema.plugin(deepPopulate, {
-     'product': {
+    'product': {
         select: ''
     },
     'product.category': {
@@ -369,25 +369,31 @@ var model = {
                 callback(err, null);
             } else {
                 if (found) {
-                    DeliveryRequest.find({
-                        customer: data.customer,
-                        product: found.subscribedProd[0].product,
-                        status: 'Delivery Scheduled'
-                    }).lean().sort({
-                        _id: -1
-                    }).exec(function (err, found) {
-                        if (err) {
-                            callback(err, null);
-                        } else {
-                            if (found) {
-                                callback(null, found[0]);
+                    if (found.subscribedProd) {
+                        DeliveryRequest.find({
+                            customer: data.customer,
+                            product: found.subscribedProd[0].product,
+                            status: 'Delivery Scheduled'
+                        }).lean().sort({
+                            _id: -1
+                        }).exec(function (err, found) {
+                            if (err) {
+                                callback(err, null);
                             } else {
-                                callback({
-                                    message: "No Data found!"
-                                }, null);
+                                if (found) {
+                                    callback(null, found[0]);
+                                } else {
+                                    callback({
+                                        message: "No Data found!"
+                                    }, null);
+                                }
                             }
-                        }
-                    });
+                        });
+                    } else {
+                        callback({
+                            message: "No Data found!"
+                        }, null);
+                    }
                 }
             }
         });
