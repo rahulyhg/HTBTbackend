@@ -365,7 +365,7 @@ var model = {
                                         }
                                     }
                                     userdata.status = 'Active';
-                                    userdata.save(function (err, updated) {
+                                    User.saveData(userdata,function (err, updated) {
                                         if (err) {
                                             console.log("error occured in user update");
                                         } else {
