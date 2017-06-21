@@ -347,6 +347,7 @@ var model = {
                                     if (_.isEqual(data.product[0].product.category.subscription, 'Yes')) {
                                         console.log("subscription product-----if", _.isEmpty(userdata.subscribedProd[0]));
                                         if (!_.isEmpty(userdata.subscribedProd[0])) {
+                                            console.log("inside if---add jar balance");
                                             userdata.subscribedProd[0].recentOrder = data._id;
                                             userdata.subscribedProd[0].product = data.product[0].product;
                                             userdata.subscribedProd[0].jarBalance = parseInt(userdata.subscribedProd[0].jarBalance) + parseInt(data.product[0].productQuantity);
@@ -354,6 +355,8 @@ var model = {
                                                 userdata.subscribedProd[0].jarDeposit = userdata.subscribedProd[0].jarDeposit + parseInt(data.product[0].jarDeposit);
                                             }
                                         } else {
+                                            console.log("inside else---create jar balance");
+                                            
                                             var subProd = {};
                                             subProd.recentOrder = data._id;
                                             subProd.product = data.product[0].product;
