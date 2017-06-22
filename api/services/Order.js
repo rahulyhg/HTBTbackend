@@ -683,6 +683,9 @@ var model = {
         if (data.methodofjoin) {
             userData.methodofjoin = data.methodofjoin;
         }
+          if(data.deliverdate){
+            data.deliverdate=data.deliverdate;
+        }
         userData.accessLevel = 'Customer';
         if (data.customerName && data.customerMobile) {
             userData.name = data.customerName;
@@ -874,6 +877,9 @@ var model = {
         }
         if (data.orderFor) {
             orderData.orderFor = data.orderFor;
+        }
+        if(data.deliverdate){
+            orderData.deliverdate=data.deliverdate;
         }
         if (data.customerName && data.customerMobile) {
             userData.name = data.customerName;
