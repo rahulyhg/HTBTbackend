@@ -1285,7 +1285,7 @@ var model = {
                     }, {
                         'status': 'Partial Delivery Successful'
                     }]
-                }).deepPopulate("product").sort({
+                }).deepPopulate("product.category").sort({
                     createdAt: -1
                 }).exec(function (err, deliveryData) {
                     if (err) {
