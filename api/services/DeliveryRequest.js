@@ -423,9 +423,10 @@ var model = {
                         if (err) {
                             callback(err, null);
                         } else {
+                            console.log("foundDelivery",foundDelivery.length);
                             async.eachSeries(foundDelivery, function (val, callback1) {
                                 val.status = 'Cancelled';
-                                DeliveryRequest.saveData(val, function (err, data) {
+                                DeliveryRequest.saveData(val, function (err, deliveryData) {
                                     if (err) {
                                         console.log("error while cancelling the request");
                                         callback1();
