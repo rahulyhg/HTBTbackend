@@ -3,12 +3,12 @@ var Razorpay = require('razorpay');
 var request = require('request');
 //var rzp = new Razorpay({
 //Live credentials
- var key_id = 'rzp_live_gFWckrbme2wT4J'; // your `KEY_ID`
- var key_secret = 'dIrrwrkOvawy3KfJkiZw0axd'; // your `KEY_SECRET`
+//  var key_id = 'rzp_live_gFWckrbme2wT4J'; // your `KEY_ID`
+//  var key_secret = 'dIrrwrkOvawy3KfJkiZw0axd'; // your `KEY_SECRET`
 
 //testing credentials
-// var key_id = 'rzp_test_BrwXxB7w8pKsfS'; // your `KEY_ID`
-// var key_secret = 'Lccm56IPsufU4X3id7CqE1RS'; // your `KEY_SECRET`
+var key_id = 'rzp_test_BrwXxB7w8pKsfS'; // your `KEY_ID`
+var key_secret = 'Lccm56IPsufU4X3id7CqE1RS'; // your `KEY_SECRET`
 //})
 var controller = {
     orderConfirmationOrPay: function (req, res) {

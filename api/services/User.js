@@ -196,7 +196,7 @@ var model = {
         console.log("data", data)
         User.findOne({
             _id: data._id
-        }).exec(function (err, found) {
+        }).deepPopulate('subscribedProd.recentOrder').exec(function (err, found) {
             if (err) {
                 callback(err, null);
             } else {

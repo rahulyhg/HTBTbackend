@@ -347,6 +347,7 @@ var model = {
                                     if (_.isEqual(data.product[0].product.category.subscription, 'Yes')) {
                                         console.log("subscription product-----if", _.isEmpty(userdata.subscribedProd[0]));
                                         if (!_.isEmpty(userdata.subscribedProd[0])) {
+                                            console.log("inside if---add jar balance");
                                             userdata.subscribedProd[0].recentOrder = data._id;
                                             userdata.subscribedProd[0].product = data.product[0].product;
                                             userdata.subscribedProd[0].jarBalance = parseInt(userdata.subscribedProd[0].jarBalance) + parseInt(data.product[0].productQuantity);
@@ -354,6 +355,8 @@ var model = {
                                                 userdata.subscribedProd[0].jarDeposit = userdata.subscribedProd[0].jarDeposit + parseInt(data.product[0].jarDeposit);
                                             }
                                         } else {
+                                            console.log("inside else---create jar balance");
+                                            
                                             var subProd = {};
                                             subProd.recentOrder = data._id;
                                             subProd.product = data.product[0].product;
@@ -365,7 +368,7 @@ var model = {
                                         }
                                     }
                                     userdata.status = 'Active';
-                                    userdata.save(function (err, updated) {
+                                    User.saveData(userdata,function (err, updated) {
                                         if (err) {
                                             console.log("error occured in user update");
                                         } else {
@@ -680,6 +683,9 @@ var model = {
         if (data.methodofjoin) {
             userData.methodofjoin = data.methodofjoin;
         }
+          if(data.deliverdate){
+            data.deliverdate=data.deliverdate;
+        }
         userData.accessLevel = 'Customer';
         if (data.customerName && data.customerMobile) {
             userData.name = data.customerName;
@@ -871,6 +877,9 @@ var model = {
         }
         if (data.orderFor) {
             orderData.orderFor = data.orderFor;
+        }
+        if(data.deliverdate){
+            orderData.deliverdate=data.deliverdate;
         }
         if (data.customerName && data.customerMobile) {
             userData.name = data.customerName;
@@ -1282,7 +1291,7 @@ var model = {
                     }, {
                         'status': 'Partial Delivery Successful'
                     }]
-                }).deepPopulate("product").sort({
+                }).deepPopulate("product.category").sort({
                     createdAt: -1
                 }).exec(function (err, deliveryData) {
                     if (err) {

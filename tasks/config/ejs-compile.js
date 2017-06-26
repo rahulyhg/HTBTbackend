@@ -6,8 +6,12 @@ module.exports = function (grunt) {
     }
     var env = false;
     var isProduction = grunt.option('production');
+    var isTesting = grunt.option('testing');
     if (isProduction) {
         env = require("../../config/env/production.js");
+        productionString = "production";
+    } else if (isTesting) {
+        env = require("../../config/env/testing.js");
         productionString = "production";
     } else {
         env = require("../../config/env/development.js");
