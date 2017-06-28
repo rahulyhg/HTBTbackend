@@ -173,10 +173,8 @@ myApp.factory('NavigationService', function ($http) {
             });
 
         },
-        makePaid: function (form, callback) {
-            $http.post(adminurl + 'order/orderConfirmationOrPayBackend', {
-                file: form.file
-            }).then(function (data) {
+        makePaid: function (data, callback) {
+            $http.post(adminurl + 'order/orderConfirmationOrPayBackend', data).then(function (data) {
                 data = data.data;
                 callback(data);
             });
