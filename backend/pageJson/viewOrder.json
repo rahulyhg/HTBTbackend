@@ -15,7 +15,7 @@
             "fieldToBeShown": "name",
             "type": "fkListView"
         },
-         {
+        {
             "name": "Customer Mobile No.",
             "isSort": "",
             "tableRef": "customer",
@@ -25,33 +25,41 @@
             "name": "Order Status",
             "isSort": "",
             "tableRef": "status"
-        },{
+        }, {
             "name": "Payment Status",
             "isSort": "",
             "tableRef": "paymentStatus"
         }
     ],
     "action": [{
-        "name": "edit",
-        "icon": "fa-pencil",
-        "buttonClass": "btn-primary",
-        "type": "editOrder",
-        "fieldsToSend": {
-            "_id": "_id"
+            "name": "edit",
+            "icon": "fa-pencil",
+            "buttonClass": "btn-primary",
+            "type": "editOrder",
+            "fieldsToSend": {
+                "_id": "_id"
+            }
+        }, {
+            "name": "delete",
+            "icon": "fa-trash",
+            "buttonClass": "btn-danger",
+            "type": "apiCallConfirm",
+            "title": "Delete Order",
+            "content": "Are you sure you want to delete Order?",
+            "api": "Order/delete",
+            "fieldsToSend": {
+                "name": "_id",
+                "value": "_id"
+            }
+        },
+        {
+            "name": "MakePaid",
+            "icon": "fa-money",
+            "buttonClass": "btn-warning",
+            "type": "makePaid",
+            "api": "Order/delete"
         }
-    }, {
-        "name": "delete",
-        "icon": "fa-trash",
-        "buttonClass": "btn-danger",
-        "type": "apiCallConfirm",
-        "title": "Delete Order",
-        "content": "Are you sure you want to delete Order?",
-        "api": "Order/delete",
-        "fieldsToSend": {
-            "name": "_id",
-            "value": "_id"
-        }
-    }],
+    ],
     "button": [],
     "apiCall": {
         "url": "Order/search",

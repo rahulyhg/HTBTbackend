@@ -356,7 +356,7 @@ var model = {
                                             }
                                         } else {
                                             console.log("inside else---create jar balance");
-                                            
+
                                             var subProd = {};
                                             subProd.recentOrder = data._id;
                                             subProd.product = data.product[0].product;
@@ -368,7 +368,7 @@ var model = {
                                         }
                                     }
                                     userdata.status = 'Active';
-                                    User.saveData(userdata,function (err, updated) {
+                                    User.saveData(userdata, function (err, updated) {
                                         if (err) {
                                             console.log("error occured in user update");
                                         } else {
@@ -683,8 +683,8 @@ var model = {
         if (data.methodofjoin) {
             userData.methodofjoin = data.methodofjoin;
         }
-          if(data.deliverdate){
-            data.deliverdate=data.deliverdate;
+        if (data.deliverdate) {
+            data.deliverdate = data.deliverdate;
         }
         userData.accessLevel = 'Customer';
         if (data.customerName && data.customerMobile) {
@@ -878,8 +878,8 @@ var model = {
         if (data.orderFor) {
             orderData.orderFor = data.orderFor;
         }
-        if(data.deliverdate){
-            orderData.deliverdate=data.deliverdate;
+        if (data.deliverdate) {
+            orderData.deliverdate = data.deliverdate;
         }
         if (data.customerName && data.customerMobile) {
             userData.name = data.customerName;
@@ -1129,7 +1129,7 @@ var model = {
                 console.log("found", found);
                 callback(null, found);
             }
-        })
+        });
 
     },
     //to get previous month orders of RM

@@ -88,8 +88,7 @@ myApp.service('JsonService', function ($http, TemplateService, $state, toastr, $
       } else {
         window.location.href = action.action;
       }
-    }
-    else {
+    } else {
       if (value && action && action.fieldsToSend) {
         var keyword = {};
         _.each(action.fieldsToSend, function (n, key) {
@@ -100,46 +99,42 @@ myApp.service('JsonService', function ($http, TemplateService, $state, toastr, $
       if (action && action.type == "page") {
         $state.go("page", sendTo);
       } else if (action && action.type == "editUser") {
-       if (action.fieldsToSend) {
-         var keyword = {};
-         _.each(action.fieldsToSend, function (n, key) {
-           keyword[key] = value[n];
-         });
-         sendTo.keyword = JSON.stringify(keyword);
-       }
-       $state.go("editUser", sendTo);
-     }
-     else if (action && action.type == "editOrder") {
-       if (action.fieldsToSend) {
-         var keyword = {};
-         _.each(action.fieldsToSend, function (n, key) {
-           keyword[key] = value[n];
-         });
-         sendTo.keyword = JSON.stringify(keyword);
-       }
-       $state.go("editOrder", sendTo);
-     }
-     else if (action && action.type == "editOrderRequest") {
-       if (action.fieldsToSend) {
-         var keyword = {};
-         _.each(action.fieldsToSend, function (n, key) {
-           keyword[key] = value[n];
-         });
-         sendTo.keyword = JSON.stringify(keyword);
-       }
-       $state.go("editOrderRequest", sendTo);
-     }
-     else if (action && action.type == "editProduct") {
-       if (action.fieldsToSend) {
-         var keyword = {};
-         _.each(action.fieldsToSend, function (n, key) {
-           keyword[key] = value[n];
-         });
-         sendTo.keyword = JSON.stringify(keyword);
-       }
-       $state.go("editProduct", sendTo);
-     }
- else if (action && action.type == "apiCallConfirm") {
+        if (action.fieldsToSend) {
+          var keyword = {};
+          _.each(action.fieldsToSend, function (n, key) {
+            keyword[key] = value[n];
+          });
+          sendTo.keyword = JSON.stringify(keyword);
+        }
+        $state.go("editUser", sendTo);
+      } else if (action && action.type == "editOrder") {
+        if (action.fieldsToSend) {
+          var keyword = {};
+          _.each(action.fieldsToSend, function (n, key) {
+            keyword[key] = value[n];
+          });
+          sendTo.keyword = JSON.stringify(keyword);
+        }
+        $state.go("editOrder", sendTo);
+      } else if (action && action.type == "editOrderRequest") {
+        if (action.fieldsToSend) {
+          var keyword = {};
+          _.each(action.fieldsToSend, function (n, key) {
+            keyword[key] = value[n];
+          });
+          sendTo.keyword = JSON.stringify(keyword);
+        }
+        $state.go("editOrderRequest", sendTo);
+      } else if (action && action.type == "editProduct") {
+        if (action.fieldsToSend) {
+          var keyword = {};
+          _.each(action.fieldsToSend, function (n, key) {
+            keyword[key] = value[n];
+          });
+          sendTo.keyword = JSON.stringify(keyword);
+        }
+        $state.go("editProduct", sendTo);
+      } else if (action && action.type == "apiCallConfirm") {
         globalfunction.confDel(function (value2) {
           if (value2) {
             NavigationService.delete(action.api, value, function (data) {
@@ -150,6 +145,15 @@ myApp.service('JsonService', function ($http, TemplateService, $state, toastr, $
                 toastr.error("There was an error while deleting " + JsonService.json.title, JsonService.json.title + " deleting error");
               }
             });
+          }
+        });
+      } else if (action && action.type == "makePaid") {
+        NavigationService.makePaid(value, function (data) {
+          if (data.value) {
+            toastr.success("Order changed to Paid");
+            JsonService.refreshView();
+          } else {
+            toastr.error("There was an error");
           }
         });
       }

@@ -38,7 +38,21 @@ var controller = {
                 data: {
                     message: "Invalid Request"
                 }
-            })
+            });
+        }
+    },
+    orderConfirmationOrPayBackend: function (req, res) {
+        if (req.body) {
+            req.body.paymentStatus = 'Paid';
+            req.body.status = 'Paid';
+            Order.orderConfirmationOrPay(req.body, res.callback);
+        } else {
+            res.json({
+                value: false,
+                data: {
+                    message: "Invalid Request"
+                }
+            });
         }
     },
     getOrderByUser: function (req, res) {

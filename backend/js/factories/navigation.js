@@ -7,68 +7,69 @@ var uploadurl = imgurl;
 
 myApp.factory('NavigationService', function ($http) {
     var navigation = [{
-        name: "Users’ Summary",
-        classis: "active",
-        sref: "#/page/viewUser//",
-        icon: "phone"
-    },{
-        name: "Customer",
-        classis: "active",
-        sref: "#/page/viewCustomer//",
-        icon: "phone"
-    },{
-        name: "Relationship Partner",
-        classis: "active",
-        sref: "#/page/viewRelPartner//",
-        icon: "phone"
-    },{
-        name: "Categories",
-        classis: "active",
-        sref: "#/page/viewCategories//",
-        icon: "phone"
-    },{
-        name: "Products",
-        classis: "active",
-        sref: "#/page/viewProduct//",
-        icon: "phone"
-    },
-    // {
-    //     name: "Other Products",
-    //     classis: "active",
-    //     sref: "#/page/viewOtherProduct//",
-    //     icon: "phone"
-    // },
-    {
-        name: "Pincode",
-        classis: "active",
-        sref: "#/page/viewPincode//",
-        icon: "phone"
-    },{
-        name: "Coupon",
-        classis: "active",
-        sref: "#/page/viewCoupon//",
-        icon: "phone"
-    },{
-        name: "Levels",
-        classis: "active",
-        sref: "#/page/viewPartnerLevel//",
-        icon: "phone"
-    },{
-        name: "Order",
-        classis: "active",
-        sref: "#/page/viewOrder//",
-        icon: "phone"
-    },{
-        name: "Delivery Request",
-        classis: "active",
-        sref: "#/page/viewOrderRequest//",
-        icon: "phone"
-    },{
-        name: "Inventory",
-        classis: "active",
-        sref: "#/page/viewInventory//",
-        icon: "phone"
-    }];
+            name: "Users’ Summary",
+            classis: "active",
+            sref: "#/page/viewUser//",
+            icon: "phone"
+        }, {
+            name: "Customer",
+            classis: "active",
+            sref: "#/page/viewCustomer//",
+            icon: "phone"
+        }, {
+            name: "Relationship Partner",
+            classis: "active",
+            sref: "#/page/viewRelPartner//",
+            icon: "phone"
+        }, {
+            name: "Categories",
+            classis: "active",
+            sref: "#/page/viewCategories//",
+            icon: "phone"
+        }, {
+            name: "Products",
+            classis: "active",
+            sref: "#/page/viewProduct//",
+            icon: "phone"
+        },
+        // {
+        //     name: "Other Products",
+        //     classis: "active",
+        //     sref: "#/page/viewOtherProduct//",
+        //     icon: "phone"
+        // },
+        {
+            name: "Pincode",
+            classis: "active",
+            sref: "#/page/viewPincode//",
+            icon: "phone"
+        }, {
+            name: "Coupon",
+            classis: "active",
+            sref: "#/page/viewCoupon//",
+            icon: "phone"
+        }, {
+            name: "Levels",
+            classis: "active",
+            sref: "#/page/viewPartnerLevel//",
+            icon: "phone"
+        }, {
+            name: "Order",
+            classis: "active",
+            sref: "#/page/viewOrder//",
+            icon: "phone"
+        }, {
+            name: "Delivery Request",
+            classis: "active",
+            sref: "#/page/viewOrderRequest//",
+            icon: "phone"
+        }, {
+            name: "Inventory",
+            classis: "active",
+            sref: "#/page/viewInventory//",
+            icon: "phone"
+        }
+    ];
 
     return {
         getnav: function () {
@@ -171,6 +172,14 @@ myApp.factory('NavigationService', function ($http) {
 
             });
 
+        },
+        makePaid: function (form, callback) {
+            $http.post(adminurl + 'order/orderConfirmationOrPayBackend', {
+                file: form.file
+            }).then(function (data) {
+                data = data.data;
+                callback(data);
+            });
         },
 
     };
