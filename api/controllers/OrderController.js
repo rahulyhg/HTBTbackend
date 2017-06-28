@@ -43,15 +43,9 @@ var controller = {
     },
     orderConfirmationOrPayBackend: function (req, res) {
         if (req.body) {
-            if (_.isEqual(JSON.parse(body).status, 'authorized')) {
-                req.body.paymentStatus = 'Paid';
-                req.body.status = 'Paid';
-                Order.orderConfirmationOrPay(req.body, res.callback);
-            } else if (_.isEqual(JSON.parse(body).status, 'failed')) {
-                req.body.paymentStatus = 'Payment Failed';
-                req.body.status = 'Payment Failed';
-                Order.orderConfirmationOrPay(req.body, res.callback);
-            }
+            req.body.paymentStatus = 'Paid';
+            req.body.status = 'Paid';
+            Order.orderConfirmationOrPay(req.body, res.callback);
         } else {
             res.json({
                 value: false,
