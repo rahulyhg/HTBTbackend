@@ -232,6 +232,7 @@ var model = {
                                                     console.log(err);
                                                     callback(err, null);
                                                 } else {
+                                                    reqId = 1;
                                                     if (fdata.length > 0) {
                                                         if (fdata[0].requestID) {
                                                             reqId = parseInt(fdata[0].requestID) + 1;
