@@ -22,12 +22,12 @@
                 <label>Order ID </label>
                 <input type="text" name="userID" placeholder="Order ID" ng-model="data.Order.orderID" class="form-control" readonly>
             </div>
-              
+
             <div class="form-group" fields>
                 <label>Product ID </label>
                 <input type="text" name="userID" placeholder="Product ID" ng-model="data.product.productID" class="form-control" readonly>
             </div>
-    
+
             <div class="form-group" fields>
                 <label>Customer ID </label>
                 <input type="text" name="userID" placeholder="Customer ID " ng-model="data.customer.userID" class="form-control" readonly>
@@ -38,7 +38,8 @@
             </div>
             <div class="form-group" fields>
                 <label>Customer Mobile Number</label>
-                <input type="text" name="mobile" placeholder="Mobile Number" ng-model="data.Order.shippingAddress.mobile" class="form-control" disabled>
+                <input type="text" name="mobile" placeholder="Mobile Number" ng-model="data.Order.shippingAddress.mobile" class="form-control"
+                    disabled>
 
             </div>
             <div class="form-group" fields>
@@ -49,7 +50,8 @@
             </div>
             <div class="form-group" fields>
                 <label>Customer Pincode </label>
-                <input type="text" name="pincode" placeholder="pincode" ng-model="data.Order.shippingAddress.pincode" class="form-control" disabled>
+                <input type="text" name="pincode" placeholder="pincode" ng-model="data.Order.shippingAddress.pincode" class="form-control"
+                    disabled>
 
             </div>
 
@@ -67,7 +69,7 @@
 
             <div class="form-group">
                 <label>Delivery Status</label>
-                 <input type="text" name="name" placeholder="Delivery status" ng-model="data.status" value="" class="form-control" disabled>
+                <input type="text" name="name" placeholder="Delivery status" ng-model="data.status" value="" class="form-control" disabled>
                 <!--<select class="form-control" name="" ng-model="data.status" disabled>
               <option value="Delivery Scheduled">Delivery Scheduled</option>
               <option value="In Transit">In Transit</option>
@@ -75,8 +77,8 @@
               <option value="Partial Delivery Successful">Partial Delivery Successful</option>
                <option value="Delivery Failed">Delivery Failed</option>
                <option value="Cancelled">Cancelled</option>-->
-               
-            </select>
+
+                </select>
             </div>
         </div>
 
@@ -91,20 +93,20 @@
             <input type="text" name="name" only-digits ng-change="compareQuantity(data)" placeholder="Quantity Delivered" ng-model="data.QuantityDelivered"
                 class="form-control">
         </div>
-     <div class="sec">
-                <div>
-                    <table class="table table-input" ng-if="model.length != 0">
-                        <thead>
-                            <tr>
-                                <th ng-repeat="field in fields">{{field.name}}</th>
-                                <!-- <th width="150px">Actions</th> -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="data in data.notes | filter:search.text ">
-                                <td>{{data.note}}</td>
-                                <td>{{data.notestime | date}}</td>
-                                <!-- <td>
+        <div class="sec">
+            <div>
+                <table class="table table-input" ng-if="model.length != 0">
+                    <thead>
+                        <tr>
+                            <th ng-repeat="field in fields">{{field.name}}</th>
+                            <!-- <th width="150px">Actions</th> -->
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in data.notes | filter:search.text ">
+                            <td>{{data.note}}</td>
+                            <td>{{data.notestime | date}}</td>
+                            <!-- <td>
                                   <a class="btn btn-primary" ng-click="editBox('Edit',data)">
                                       <i class="Fa fa-pencil"></i>
                                   </a>
@@ -112,58 +114,50 @@
                                       <i class="fa fa-trash"></i>
                                   </a>
                               </td> -->
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+        </div>
 
     </div>
 </div>
 <div class="widget" ng-if="!edit">
     <div class="form-elements-sec">
         <div class="sec">
-            <div  class="form-group" fields>
-                <label>Date Of Request</label>
-                <input type="date" name="userID" placeholder="Date Of Request" ng-model="data.requestDate" class="form-control" required >
-            </div>
-   
-      
-                 <div class="form-group" >
-                <label>Order ID*:</label>
-                <select class="form-control" ng-model="data.Order.orderID" ng-change="getOrder(data.Order.orderID)"  ng-options="cat1.orderID as cat1.orderID for cat1 in orderData"   required>
-              <!--<option value="{{cat1.orderID}}"  ng-repeat="cat1 in orderData track by $index" required >{{cat1._id}}</option>-->
+
+            <div class="form-group">
+                <label>Customer*:</label>{{data.customer.userID}}
+                <select class="form-control" ng-model="data.customer" ng-change="getOrder(data.customer)" required>
+              <option value="{{cat1}}"  ng-repeat="cat1 in userData track by $index" required >{{cat1.userID}}</option>
             </select>
             </div>
-        
-             <div class="form-group" >
-                <label>Product ID*:</label>
-                <select class="form-control" name="name" ng-model="data.product.productID" ng-change="getProduct(data.product.productID)"   ng-options="cat1.product as cat1.product.productID for cat1 in singleOrder.product"  required>
-           </select>
-            </div>
-
-            <div class="form-group" fields>
-                <label>Customer ID </label>{{data._id}}
-                <input type="text" name="userID" placeholder="Customer ID " ng-model="data.customer.userID" class="form-control" readonly>
+            <div class="form-group">
+                <label>Order ID*:</label>
+                <input type="text" name="name" placeholder="Order ID" ng-model="data.customer.subscribedProd[0].recentOrder.orderID" class="form-control"
+                    disabled>
+                </select>
             </div>
             <div class="form-group" fields>
                 <label>Customer Name </label>
-                <input type="text" name="name" placeholder="name" ng-model="data.Order.shippingAddress.name" class="form-control" disabled>
+                <input type="text" name="name" placeholder="name" ng-model="data.customer.name" class="form-control" disabled>
             </div>
             <div class="form-group" fields>
                 <label>Customer Mobile Number</label>
-                <input type="text" name="mobile" placeholder="Mobile Number" ng-model="data.Order.shippingAddress.mobile" class="form-control" disabled>
+                <input type="text" name="mobile" placeholder="Mobile Number" ng-model="data.customer.subscribedProd[0].recentOrder.shippingAddress.mobile"
+                    class="form-control" disabled>
 
             </div>
             <div class="form-group" fields>
                 <label>Customer Address </label>
-                <input type="text" name="name" placeholder="establishmentAddress" ng-model="data.Order.shippingAddress.address" class="form-control"
-                    disabled>
+                <input type="text" name="name" placeholder="establishmentAddress" ng-model="data.customer.subscribedProd[0].recentOrder.shippingAddress.address"
+                    class="form-control" disabled>
 
             </div>
             <div class="form-group" fields>
                 <label>Customer Pincode </label>
-                <input type="text" name="pincode" placeholder="pincode" ng-model="data.Order.shippingAddress.pincode" class="form-control" disabled>
+                <input type="text" name="pincode" placeholder="pincode" ng-model="data.customer.subscribedProd[0].recentOrder.shippingAddress.pincode"
+                    class="form-control" disabled>
 
             </div>
             <div class="form-group" fields>
@@ -172,8 +166,8 @@
                     class="form-control" required>
 
             </div>
-       
-              <div class="form-group" >
+
+            <div class="form-group">
                 <label>Assigned Delivery Time :</label>
                 <select class="form-control" name="name" ng-model="data.delivertime" required>
               <option value="8 AM to 1 PM"  required>8 AM to 1 PM</option>'8 AM to 1 PM', '1 PM to 6 PM'
@@ -181,25 +175,12 @@
             </select>
             </div>
 
-            <div class="form-group">
-                <label>Delivery Status</label>
-                 <!--<input type="text" name="name" placeholder="Delivery status" ng-model="data.status" value="" class="form-control" disabled>-->
-                <select class="form-control" name="" ng-model="data.status" >
-              <option value="Delivery Scheduled">Delivery Scheduled</option>
-              <option value="In Transit">In Transit</option>
-              <option value="Full Delivery Successful">Full Delivery Successful</option>
-              <option value="Partial Delivery Successful">Partial Delivery Successful</option>
-               <option value="Delivery Failed">Delivery Failed</option>
-               <option value="Cancelled">Cancelled</option>
-               
-            </select>
-            </div>
         </div>
 
         <div class="form-group" fields>
             <label>Quantity</label>
-            <input type="text" only-digits name="name" placeholder="Quantity" ng-model="data.Quantity" value="" class="form-control"
-                disabled>
+            <input type="text" only-digits name="name" placeholder="Quantity" ng-model="data.customer.subscribedProd[0].jarBalance" value=""
+                class="form-control" disabled>
         </div>
 
         <div class="form-group" fields>
@@ -207,45 +188,17 @@
             <input type="text" name="name" only-digits ng-change="compareQuantity(data)" placeholder="Quantity Delivered" ng-model="data.QuantityDelivered"
                 class="form-control">
         </div>
-     <div class="sec">
-                <div>
-                    <table class="table table-input" ng-if="model.length != 0">
-                        <thead>
-                            <tr>
-                                <th ng-repeat="field in fields">{{field.name}}</th>
-                                <!-- <th width="150px">Actions</th> -->
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="data in data.notes | filter:search.text ">
-                                <td>{{data.note}}</td>
-                                <td>{{data.notestime | date}}</td>
-                                <!-- <td>
-                                  <a class="btn btn-primary" ng-click="editBox('Edit',data)">
-                                      <i class="Fa fa-pencil"></i>
-                                  </a>
-                                  <a class="btn btn-danger" ng-click="deleteBox($index, model)">
-                                      <i class="fa fa-trash"></i>
-                                  </a>
-                              </td> -->
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
 
     </div>
 </div>
-</div>
 <div class="text-center mt20 odd-even-button" ng-if="!edit">
-    <button ng-if="data.status=='Delivery Scheduled'  || data.status=='Delivery Failed'" class="btn btn-default" type="button" ng-click="scheduleDelivery(data)">Save</button>
-    <button ng-if="data.status!='Delivery Scheduled' && data.status!='Delivery Failed'" class="btn btn-default" type="button" ng-click="scheduleDelivery(data)"
-        disabled>Save</button>
+    <button class="btn btn-default" type="button" ng-click="scheduleDelivery(data)">Save</button>
     <a class="btn btn-danger" href="#/page/viewOrderRequest//">Cancel</a>
 </div>
 <div class="text-center mt20 odd-even-button" ng-if="edit">
-    <button ng-if="data.status=='Delivery Scheduled'  || data.status=='Delivery Failed'" class="btn btn-default" type="button" ng-click="saveDeliveryRequest(data)">Save</button>
-    <button ng-if="data.status!='Delivery Scheduled' && data.status!='Delivery Failed'" class="btn btn-default" type="button" ng-click="saveDeliveryRequest(data)"
-        disabled>Save</button>
+    <button ng-if="data.status=='Delivery Scheduled'  || data.status=='Delivery Failed'" class="btn btn-default" type="button"
+        ng-click="saveDeliveryRequest(data)">Save</button>
+    <button ng-if="data.status!='Delivery Scheduled' && data.status!='Delivery Failed'" class="btn btn-default" type="button"
+        ng-click="saveDeliveryRequest(data)" disabled>Save</button>
     <a class="btn btn-danger" href="#/page/viewOrderRequest//">Cancel</a>
 </div>

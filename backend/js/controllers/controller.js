@@ -776,8 +776,15 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             }
 
         });
+        NavigationService.apiCall("user/getAllCustomer", formData, function (data) {
+            if (data.value === true) {
+                console.log("getAllCustomer", data.data);
+                $scope.userData = data.data.results;
+            }
+
+        });
         $scope.saveDeliveryRequest = function (data) {
-          
+
             if (data.Quantity < data.QuantityDelivered) {
                 toastr.error("Quantity Delivered exceeds the total Quantity.");
             } else {
@@ -795,15 +802,14 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 }
             }
         };
-          $scope.scheduleDelivery = function (data) {
-          $scope.data.order = data.Order._id;
-          
+        $scope.scheduleDelivery = function (data) {
+           
             if (data.Quantity < data.QuantityDelivered) {
                 toastr.error("Quantity Delivered exceeds the total Quantity.");
             } else {
-                if (data.product.quantity < data.QuantityDelivered) {
-                    toastr.error("Inventory for this product is low.");
-                } else {
+                // if (data.product.quantity < data.QuantityDelivered) {
+                //     toastr.error("Inventory for this product is low.");
+                // } else {
                     NavigationService.apiCall("DeliveryRequest/scheduleDelivery", data, function (data) {
                         if (data.value === true) {
                             console.log("Order---data saved ", data.data);
@@ -812,10 +818,10 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                             });
                         }
                     });
-                }
+                // }
             }
         };
-        
+
         if (!_.isEmpty($stateParams.keyword)) {
             $scope.data = {};
             var formData = {};
@@ -830,36 +836,34 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             //  $.jStorage.set('user', data.data);
             //  $.jStorage.set("accessToken", data.data.accessToken[0]);
         };
+     
         $scope.getOrder = function (data2) {
-            console.log($scope.orderData);
-
-            $scope.singleOrder = _.find($scope.orderData, function (o) {
-                if (o.orderID == data2) {
-                    return o;
+            console.log("-----------",JSON.parse(data2));
+               $scope.data.customer = JSON.parse(data2);
+               $scope.data.Order=$scope.data.customer.subscribedProd[0].recentOrder._id;
+               $scope.data.Quantity =$scope.data.customer.subscribedProd[0].jarBalance
+              var formUser = {};
+            formUser._id = $scope.data.customer._id;
+            NavigationService.apiCall("User/getOne", formUser, function (data) {
+                if (data.value === true) {
+                    console.log("login", data.data);
+                     $scope.data.customer=data.data;
                 }
-
             });
-            // $scope.singleOrder = data2;
-            console.log($scope.singleOrder);
-
-            $scope.data.Order = $scope.singleOrder;
-            $scope.data.customer = $scope.singleOrder.customer;
-            // $scope.data.Order.shippingAddress.address = $scope.singleOrder.shippingAddress.address;
-
         }
         $scope.getProduct = function (data1) {
-                        console.log($scope.singleOrder);
+            console.log($scope.singleOrder);
 
             $scope.singleProduct = _.find($scope.singleOrder.product, function (value) {
-                                        console.log(value.product.productID , data1);
+                console.log(value.product.productID, data1);
 
                 if (value.product.productID == data1.productID) {
-                                    console.log(value);
+                    console.log(value);
 
                     return value;
                 }
             });
-                        $scope.data.product = $scope.singleProduct;
+            $scope.data.product = $scope.singleProduct;
 
             // $scope.singleProduct = data1;
             $scope.data.Quantity = $scope.singleProduct.productQuantity
@@ -891,8 +895,8 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             });
         };
         $scope.compareQuantity = function (data) {
-            console.log("data1,data2", data.Quantity, data.QuantityDelivered);
-            if (data.Quantity < data.QuantityDelivered) {
+            console.log("data1,data2", data.customer.subscribedProd[0].jarBalance, data.QuantityDelivered);
+            if (data.customer.subscribedProd[0].jarBalance < data.QuantityDelivered) {
                 toastr.error("Quantity Delivered exceeds the total Quantity.");
             }
             if (data.QuantityDelivered == 0) {
