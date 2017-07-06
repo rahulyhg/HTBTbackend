@@ -471,11 +471,11 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
 
         $scope.compareDeposite = function (amt) {
             console.log("data1,data2", amt, $scope.data.subscribedProd[0].jarDeposit);
-                if ( $scope.data.subscribedProd[0] &&$scope.data.subscribedProd[0].jarDeposit < amt) {
-                    toastr.error("Amount Exceeds the jar Deposit amount.");
+            if ($scope.data.subscribedProd[0] && $scope.data.subscribedProd[0].jarDeposit < amt) {
+                toastr.error("Amount Exceeds the jar Deposit amount.");
             }
         };
-         $scope.returnDeposit = function (returnDetails) {
+        $scope.returnDeposit = function (returnDetails) {
             var returnData = {};
             if ($scope.data.subscribedProd[0] && $scope.data.subscribedProd[0].jarDeposit < returnDetails.amountGiven) {
                 toastr.error("Amount Exceeds the jar Deposit amount.");
@@ -755,13 +755,18 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         };
 
     })
-    .controller('EditOrderRequestCtrl', function ($scope, $state, TemplateService, NavigationService, JsonService, $timeout, $state, $stateParams, $uibModal, toastr) {
+    .controller('EditOrderRequestCtrl', function ($scope, $state, TemplateService, NavigationService, JsonService, $timeout, $stateParams, $uibModal, toastr) {
         $scope.template = TemplateService.changecontent("editOrderRequest");
         $scope.menutitle = NavigationService.makeactive("editOrderRequest");
         TemplateService.title = $scope.menutitle;
         $scope.navigation = NavigationService.getnav();
         console.log("$stateParams---", JSON.stringify($stateParams.keyword));
         var formData = {};
+        $scope.edit = false;
+        $scope.data = {};
+        $scope.data.customer = {};
+        $scope.data.Order = {};
+
         NavigationService.apiCall("Order/search", formData, function (data) {
             if (data.value === true) {
                 console.log("Order---data ", data.data);
@@ -772,7 +777,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
 
         });
         $scope.saveDeliveryRequest = function (data) {
-
+          
             if (data.Quantity < data.QuantityDelivered) {
                 toastr.error("Quantity Delivered exceeds the total Quantity.");
             } else {
@@ -790,12 +795,34 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 }
             }
         };
+          $scope.scheduleDelivery = function (data) {
+          $scope.data.order = data.Order._id;
+          
+            if (data.Quantity < data.QuantityDelivered) {
+                toastr.error("Quantity Delivered exceeds the total Quantity.");
+            } else {
+                if (data.product.quantity < data.QuantityDelivered) {
+                    toastr.error("Inventory for this product is low.");
+                } else {
+                    NavigationService.apiCall("DeliveryRequest/scheduleDelivery", data, function (data) {
+                        if (data.value === true) {
+                            console.log("Order---data saved ", data.data);
+                            $state.go("page", {
+                                id: "viewOrderRequest"
+                            });
+                        }
+                    });
+                }
+            }
+        };
+        
         if (!_.isEmpty($stateParams.keyword)) {
             $scope.data = {};
             var formData = {};
             formData._id = JSON.parse($stateParams.keyword)._id;
             NavigationService.apiCall("DeliveryRequest/getOne", formData, function (data) {
                 if (data.value === true) {
+                    $scope.edit = true;
                     console.log("login", data.data);
                     $scope.data = data.data;
                 }
@@ -803,6 +830,41 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             //  $.jStorage.set('user', data.data);
             //  $.jStorage.set("accessToken", data.data.accessToken[0]);
         };
+        $scope.getOrder = function (data2) {
+            console.log($scope.orderData);
+
+            $scope.singleOrder = _.find($scope.orderData, function (o) {
+                if (o.orderID == data2) {
+                    return o;
+                }
+
+            });
+            // $scope.singleOrder = data2;
+            console.log($scope.singleOrder);
+
+            $scope.data.Order = $scope.singleOrder;
+            $scope.data.customer = $scope.singleOrder.customer;
+            // $scope.data.Order.shippingAddress.address = $scope.singleOrder.shippingAddress.address;
+
+        }
+        $scope.getProduct = function (data1) {
+                        console.log($scope.singleOrder);
+
+            $scope.singleProduct = _.find($scope.singleOrder.product, function (value) {
+                                        console.log(value.product.productID , data1);
+
+                if (value.product.productID == data1.productID) {
+                                    console.log(value);
+
+                    return value;
+                }
+            });
+                        $scope.data.product = $scope.singleProduct;
+
+            // $scope.singleProduct = data1;
+            $scope.data.Quantity = $scope.singleProduct.productQuantity
+            console.log($scope.singleProduct);
+        }
         $scope.modalAddNotes = function (data) {
             var modalInstance = $uibModal.open({
                 animation: $scope.animationsEnabled,
