@@ -178,14 +178,14 @@
         </div>
 
         <div class="form-group" fields>
-            <label>Quantity</label>
-            <input type="text" only-digits name="name" placeholder="Quantity" ng-model="data.customer.subscribedProd[0].jarBalance" value=""
+            <label>Jar Balance</label>
+            <input type="text" only-digits name="name" placeholder="Jar Balance" ng-model="data.customer.subscribedProd[0].jarBalance" value=""
                 class="form-control" disabled>
         </div>
 
         <div class="form-group" fields>
             <label>Quantity Delivered</label>
-            <input type="text" name="name" only-digits ng-change="compareQuantity(data)" placeholder="Quantity Delivered" ng-model="data.QuantityDelivered"
+            <input type="number" name="name" ng-change="compareQuantity(data)" placeholder="Quantity" ng-model="data.Quantity"
                 class="form-control">
         </div>
 

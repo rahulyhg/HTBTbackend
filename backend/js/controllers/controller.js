@@ -803,22 +803,23 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             }
         };
         $scope.scheduleDelivery = function (data) {
-           
-            if (data.Quantity < data.QuantityDelivered) {
-                toastr.error("Quantity Delivered exceeds the total Quantity.");
+            if ($scope.limitQuantity < data.Quantity) {
+                toastr.error("Quantity exceeds the per week limit.");
+            }
+            else if(data.Quantity<=0){
+                toastr.error("Please provide some valid Quantity.");
+
             } else {
-                // if (data.product.quantity < data.QuantityDelivered) {
-                //     toastr.error("Inventory for this product is low.");
-                // } else {
-                    NavigationService.apiCall("DeliveryRequest/scheduleDelivery", data, function (data) {
-                        if (data.value === true) {
-                            console.log("Order---data saved ", data.data);
-                            $state.go("page", {
-                                id: "viewOrderRequest"
-                            });
-                        }
-                    });
-                // }
+                data.customer = data.customer._id;
+          data.methodOfRequest=  "Customer Representative";
+                NavigationService.apiCall("DeliveryRequest/scheduleDelivery", data, function (data) {
+                    if (data.value === true) {
+                        console.log("Order---data saved ", data.data);
+                        $state.go("page", {
+                            id: "viewOrderRequest"
+                        });
+                    }
+                });
             }
         };
 
@@ -836,18 +837,17 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             //  $.jStorage.set('user', data.data);
             //  $.jStorage.set("accessToken", data.data.accessToken[0]);
         };
-     
+
         $scope.getOrder = function (data2) {
-            console.log("-----------",JSON.parse(data2));
-               $scope.data.customer = JSON.parse(data2);
-               $scope.data.Order=$scope.data.customer.subscribedProd[0].recentOrder._id;
-               $scope.data.Quantity =$scope.data.customer.subscribedProd[0].jarBalance
-              var formUser = {};
+            console.log("-----------", JSON.parse(data2));
+            $scope.data.customer = JSON.parse(data2);
+            var formUser = {};
             formUser._id = $scope.data.customer._id;
             NavigationService.apiCall("User/getOne", formUser, function (data) {
                 if (data.value === true) {
                     console.log("login", data.data);
-                     $scope.data.customer=data.data;
+                    $scope.data.customer = data.data;
+                    $scope.data.order = $scope.data.customer.subscribedProd[0].recentOrder._id;
                 }
             });
         }
@@ -895,13 +895,20 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             });
         };
         $scope.compareQuantity = function (data) {
-            console.log("data1,data2", data.customer.subscribedProd[0].jarBalance, data.QuantityDelivered);
-            if (data.customer.subscribedProd[0].jarBalance < data.QuantityDelivered) {
-                toastr.error("Quantity Delivered exceeds the total Quantity.");
+            console.log(data)
+            $scope.limitQuantity = null;
+            if (data.customer.subscribedProd[0].recentOrder.plan == 'Monthly') {
+                $scope.limitQuantity = data.customer.subscribedProd[0].recentOrder.product[0].productQuantity / 4;
+                if ($scope.limitQuantity < data.Quantity) {
+                    toastr.error("Quantity exceeds the per week limit.");
+                }
+            } else if (data.customer.subscribedProd[0].recentOrder.plan == 'Quarterly') {
+                $scope.limitQuantity = data.customer.subscribedProd[0].recentOrder.product[0].productQuantity / 12;
+                if ($scope.limitQuantity < data.Quantity) {
+                    toastr.error("Quantity exceeds the per week limit.");
+                }
             }
-            if (data.QuantityDelivered == 0) {
-                $scope.modalAddNotes();
-            }
+
         };
 
     })
