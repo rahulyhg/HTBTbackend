@@ -776,12 +776,11 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             }
 
         });
-        NavigationService.apiCall("user/getAllCustomer", formData, function (data) {
+        NavigationService.apiCall("user/getAllCustomerWithoutLimit", formData, function (data) {
             if (data.value === true) {
-                console.log("getAllCustomer", data.data);
-                $scope.userData = data.data.results;
+                console.log("getAllCustomerWithoutLimit", data.data);
+                $scope.userData = data.data;
             }
-
         });
         $scope.saveDeliveryRequest = function (data) {
 

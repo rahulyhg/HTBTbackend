@@ -240,6 +240,24 @@ var model = {
             .keyword(options)
             .page(options, callback);
     },
+    getAllCustomerWithoutLimit: function (data, callback) {
+        User.find({
+            accessLevel: "Customer"
+        }).exec(function (err, found) {
+            if (err) {
+                callback(err, null);
+            } else {
+                if (found) {
+                    callback(null, found);
+                } else {
+                    callback({
+                        message: "Incorrect Credentials!"
+                    }, null);
+                }
+            }
+
+        });
+    },
     //to get all partners
     getAllRelPartner: function (data, callback) {
         console.log("data", data)
@@ -656,7 +674,7 @@ var model = {
                 callback(err, null);
             } else {
                 if (found) {
-                    if (found.relationshipId+"" == data.user) {
+                    if (found.relationshipId + "" == data.user) {
                         callback(null, "Your customer");
                     } else {
                         callback({
