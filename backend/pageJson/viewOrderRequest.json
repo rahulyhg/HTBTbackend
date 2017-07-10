@@ -34,20 +34,16 @@
         "fieldsToSend": {
             "_id": "_id"
         }
-    }, {
-        "name": "delete",
-        "icon": "fa-trash",
-        "buttonClass": "btn-danger",
-        "type": "apiCallConfirm",
-        "title": "Delete Order",
-        "content": "Are you sure you want to delete Order?",
-        "api": "deliveryRequest/delete",
-        "fieldsToSend": {
-            "name": "_id",
-            "value": "_id"
-        }
     }],
-    "button": [],
+      "button": [{
+
+        "name": "Create",
+        "icon": "plus",
+        "class": "btn-success",
+         "type": "editOrderRequest"
+       
+    }],
+ 
     "apiCall": {
         "url": "DeliveryRequest/search",
         "params": "_id"

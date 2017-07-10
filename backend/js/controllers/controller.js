@@ -471,11 +471,11 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
 
         $scope.compareDeposite = function (amt) {
             console.log("data1,data2", amt, $scope.data.subscribedProd[0].jarDeposit);
-                if ( $scope.data.subscribedProd[0] &&$scope.data.subscribedProd[0].jarDeposit < amt) {
-                    toastr.error("Amount Exceeds the jar Deposit amount.");
+            if ($scope.data.subscribedProd[0] && $scope.data.subscribedProd[0].jarDeposit < amt) {
+                toastr.error("Amount Exceeds the jar Deposit amount.");
             }
         };
-         $scope.returnDeposit = function (returnDetails) {
+        $scope.returnDeposit = function (returnDetails) {
             var returnData = {};
             if ($scope.data.subscribedProd[0] && $scope.data.subscribedProd[0].jarDeposit < returnDetails.amountGiven) {
                 toastr.error("Amount Exceeds the jar Deposit amount.");
@@ -755,19 +755,31 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         };
 
     })
-    .controller('EditOrderRequestCtrl', function ($scope, $state, TemplateService, NavigationService, JsonService, $timeout, $state, $stateParams, $uibModal, toastr) {
+    .controller('EditOrderRequestCtrl', function ($scope, $state, TemplateService, NavigationService, JsonService, $timeout, $stateParams, $uibModal, toastr) {
         $scope.template = TemplateService.changecontent("editOrderRequest");
         $scope.menutitle = NavigationService.makeactive("editOrderRequest");
         TemplateService.title = $scope.menutitle;
         $scope.navigation = NavigationService.getnav();
         console.log("$stateParams---", JSON.stringify($stateParams.keyword));
         var formData = {};
+        $scope.edit = false;
+        $scope.data = {};
+        $scope.data.customer = {};
+        $scope.data.Order = {};
+
         NavigationService.apiCall("Order/search", formData, function (data) {
             if (data.value === true) {
                 console.log("Order---data ", data.data);
                 $scope.orderData = data.data.results;
                 //  $.jStorage.set('user', data.data);
                 //  $.jStorage.set("accessToken", data.data.accessToken[0]);
+            }
+
+        });
+        NavigationService.apiCall("user/getAllCustomer", formData, function (data) {
+            if (data.value === true) {
+                console.log("getAllCustomer", data.data);
+                $scope.userData = data.data.results;
             }
 
         });
@@ -790,12 +802,34 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
                 }
             }
         };
+        $scope.scheduleDelivery = function (data) {
+            if ($scope.limitQuantity < data.Quantity) {
+                toastr.error("Quantity exceeds the per week limit.");
+            }
+            else if(data.Quantity<=0){
+                toastr.error("Please provide some valid Quantity.");
+
+            } else {
+                data.customer = data.customer._id;
+          data.methodOfRequest=  "Customer Representative";
+                NavigationService.apiCall("DeliveryRequest/scheduleDelivery", data, function (data) {
+                    if (data.value === true) {
+                        console.log("Order---data saved ", data.data);
+                        $state.go("page", {
+                            id: "viewOrderRequest"
+                        });
+                    }
+                });
+            }
+        };
+
         if (!_.isEmpty($stateParams.keyword)) {
             $scope.data = {};
             var formData = {};
             formData._id = JSON.parse($stateParams.keyword)._id;
             NavigationService.apiCall("DeliveryRequest/getOne", formData, function (data) {
                 if (data.value === true) {
+                    $scope.edit = true;
                     console.log("login", data.data);
                     $scope.data = data.data;
                 }
@@ -803,6 +837,38 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             //  $.jStorage.set('user', data.data);
             //  $.jStorage.set("accessToken", data.data.accessToken[0]);
         };
+
+        $scope.getOrder = function (data2) {
+            console.log("-----------", JSON.parse(data2));
+            $scope.data.customer = JSON.parse(data2);
+            var formUser = {};
+            formUser._id = $scope.data.customer._id;
+            NavigationService.apiCall("User/getOne", formUser, function (data) {
+                if (data.value === true) {
+                    console.log("login", data.data);
+                    $scope.data.customer = data.data;
+                    $scope.data.order = $scope.data.customer.subscribedProd[0].recentOrder._id;
+                }
+            });
+        }
+        $scope.getProduct = function (data1) {
+            console.log($scope.singleOrder);
+
+            $scope.singleProduct = _.find($scope.singleOrder.product, function (value) {
+                console.log(value.product.productID, data1);
+
+                if (value.product.productID == data1.productID) {
+                    console.log(value);
+
+                    return value;
+                }
+            });
+            $scope.data.product = $scope.singleProduct;
+
+            // $scope.singleProduct = data1;
+            $scope.data.Quantity = $scope.singleProduct.productQuantity
+            console.log($scope.singleProduct);
+        }
         $scope.modalAddNotes = function (data) {
             var modalInstance = $uibModal.open({
                 animation: $scope.animationsEnabled,
@@ -829,13 +895,20 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
             });
         };
         $scope.compareQuantity = function (data) {
-            console.log("data1,data2", data.Quantity, data.QuantityDelivered);
-            if (data.Quantity < data.QuantityDelivered) {
-                toastr.error("Quantity Delivered exceeds the total Quantity.");
+            console.log(data)
+            $scope.limitQuantity = null;
+            if (data.customer.subscribedProd[0].recentOrder.plan == 'Monthly') {
+                $scope.limitQuantity = data.customer.subscribedProd[0].recentOrder.product[0].productQuantity / 4;
+                if ($scope.limitQuantity < data.Quantity) {
+                    toastr.error("Quantity exceeds the per week limit.");
+                }
+            } else if (data.customer.subscribedProd[0].recentOrder.plan == 'Quarterly') {
+                $scope.limitQuantity = data.customer.subscribedProd[0].recentOrder.product[0].productQuantity / 12;
+                if ($scope.limitQuantity < data.Quantity) {
+                    toastr.error("Quantity exceeds the per week limit.");
+                }
             }
-            if (data.QuantityDelivered == 0) {
-                $scope.modalAddNotes();
-            }
+
         };
 
     })
