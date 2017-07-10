@@ -81,7 +81,7 @@ var model = {
                         if (!_.isEmpty(previousDelivery)) {
                             console.log("inside if----data found");
                             var deliveryReqData = {};
-                            if (userData.subscribedProd[0].jarBalance > data.Quantity) {
+                            if (userData.subscribedProd[0].jarBalance >= data.Quantity) {
                                 deliveryReqData.product = userData.subscribedProd[0].product;
                                 DeliveryRequest.find({}).sort({
                                     createdAt: -1
