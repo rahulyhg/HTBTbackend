@@ -32754,6 +32754,9 @@ body {
     width: 100%;
     display: inline-block; }
 
+.reassigned {
+  height: 200px !important; }
+
 /* Start writing sass here */
 #fancybox-loading, .fancybox-close, .fancybox-next span, .fancybox-prev span {
   background-image: url(../img/fancybox_sprite.png); }

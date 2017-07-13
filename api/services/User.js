@@ -293,35 +293,25 @@ var model = {
     //to get all active partners
     getAllActiveRelPartner: function (data, callback) {
         console.log("data", data)
-        var maxRow = Config.maxRow;
-
-        var page = 1;
-        if (data.page) {
-            page = data.page;
-        }
-        var field = data.field;
-
-        var options = {
-            field: data.field,
-            filters: {
-                keyword: {
-                    fields: ['name'],
-                    term: data.keyword
-                }
-            },
-            sort: {
-                asc: 'name'
-            },
-            start: (page - 1) * maxRow,
-            count: maxRow
-        };
         User.find({
                 accessLevel: "Relationship Partner",
-                status: "Active"
+                status: "Active",
+                verification:"Not Verified"
 
-            }).order(options)
-            .keyword(options)
-            .page(options, callback);
+            }).exec(function (err, found) {
+            if (err) {
+                callback(err, null);
+            } else {
+                if (found) {
+                    callback(null, found);
+                } else {
+                    callback({
+                        message: "Incorrect Credentials!"
+                    }, null);
+                }
+            }
+
+        });
 
     },
     //to save user data

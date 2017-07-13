@@ -508,7 +508,7 @@ myApp.controller('DashboardCtrl', function ($scope, TemplateService, NavigationS
         };
         NavigationService.apiCall("User/getAllActiveRelPartner", {}, function (data) {
             console.log("login", data.data);
-            $scope.activePartner = data.data.results;
+            $scope.activePartner = data.data;
         });
         $scope.reassignedmodal = function (rel, cust, status) {
             if (status = "Suspend") {
