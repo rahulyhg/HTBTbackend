@@ -2,7 +2,7 @@
     <div class="modal-header">
         <h4 class="modal-title">Reassigned Relationship Partner</h4>
     </div>
-    <div class="modal-body">
+    <div class="modal-body reassigned">
    <div class="form-group">
 
     <label>Relationship Partner <span ng-show="type.required">*</span></label>
@@ -12,7 +12,7 @@
         <ui-select-match placeholder="RelationShip">
             <sapn>RelationShip</sapn>
         </ui-select-match>
-        <ui-select-choices repeat="tag in activePartner | filter:$select.search" refresh-delay="0" refresh="refreshTags($select.search)">
+        <ui-select-choices repeat="tag in activePartner | filter:$select.search" refresh-delay="0" refresh="refreshTags($select.search)" position='down'>
             <span >{{tag.name}}</span>
         </ui-select-choices>
     </ui-select>

@@ -113,7 +113,7 @@ var model = {
                                             } else {
                                                 callback(null, savedData);
                                             }
-                                        })
+                                        });
                                     }
                                 });
                             }
