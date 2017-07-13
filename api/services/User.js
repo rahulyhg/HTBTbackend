@@ -296,7 +296,7 @@ var model = {
         User.find({
                 accessLevel: "Relationship Partner",
                 status: "Active",
-                verification:"Not Verified"
+                verification:"Verified"
 
             }).exec(function (err, found) {
             if (err) {
